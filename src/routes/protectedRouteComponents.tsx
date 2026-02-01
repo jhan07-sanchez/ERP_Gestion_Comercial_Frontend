@@ -15,6 +15,7 @@ import ComprasList from '@/modules/compras/pages/ComprasList';
 import CompraCreate from '@/modules/compras/pages/CompraCreate';
 import ProveedoresList from '@/modules/proveedores/pages/ProveedoresList';
 import ProveedorCreate from '@/modules/proveedores/pages/ProveedorCreate';
+import { Dashboard } from '@/modules/dashboard'; //  Importar del módulo dashboard
 import type { ProtectedRouteKey } from '@/routes/routes.config';
 
 type RouteComponentProps = Record<string, string | undefined>;
@@ -23,7 +24,7 @@ export const protectedRouteComponents: Record<
   ProtectedRouteKey,
   ComponentType<RouteComponentProps>
 > = {
-  Dashboard: PlaceholderPage,
+  Dashboard,
   Ventas: PlaceholderPage,
   Reportes: PlaceholderPage,
   Configuracion: PlaceholderPage,

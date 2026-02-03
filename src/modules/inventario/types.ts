@@ -40,17 +40,18 @@ export interface ProductoCreateInput {
   nombre: string;
   codigo: string;
   descripcion?: string;
-  categoria_id: number;
+  categoria: number;
   precio_venta: number;
   precio_compra?: number;
   stock_minimo: number;
+  estado?: boolean;
+  imagen?: File | null;
   fecha_ingreso?: string; // Fecha de ingreso al inventario
 }
 
 // Producto para actualizar
 export interface ProductoUpdateInput {
   nombre?: string;
-  codigo?: string;
   descripcion?: string;
   categoria?: number;
   precio_venta?: number;

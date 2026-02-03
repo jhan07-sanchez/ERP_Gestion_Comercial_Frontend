@@ -115,3 +115,19 @@ export interface SuccessResponse<T> {
   detail: string;
   data: T;
 }
+
+
+/**
+ * Tipo exclusivo para formularios (Create / Edit)
+ * NO es el payload del backend
+ */
+export interface ProductoFormValues {
+  nombre: string;
+  codigo: string;
+  descripcion?: string;
+  categoria: number;        // siempre number en UI
+  precio_venta: number;
+  precio_compra?: number;
+  stock_minimo: number;
+  estado?: boolean;         // solo visible en editar
+}

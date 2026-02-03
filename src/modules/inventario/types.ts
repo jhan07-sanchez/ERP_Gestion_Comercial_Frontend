@@ -9,6 +9,10 @@ export interface Categoria {
   descripcion?: string;
   fecha_creacion?: string;
 }
+export interface CategoriaSimple {
+  id: number;
+  nombre: string;
+}
 
 // Producto
 export interface Producto {
@@ -27,6 +31,7 @@ export interface Producto {
 
 // Producto para listar (respuesta del servidor)
 export interface ProductoList extends Producto {
+  categoria_info?: CategoriaSimple;
   stock_actual?: number;
 }
 

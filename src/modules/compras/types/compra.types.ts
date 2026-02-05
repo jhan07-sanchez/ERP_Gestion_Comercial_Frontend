@@ -1,13 +1,4 @@
-// src/modules/compras/types.ts
-export interface Proveedor {
-  id: number;
-  nombre: string;
-  contacto: string;
-  telefono: string;
-  email: string;
-  estado: boolean;
-}
-
+// src/modules/compras/types/compra.types.ts
 export interface CompraItem {
   id: number;
   producto_id: number;

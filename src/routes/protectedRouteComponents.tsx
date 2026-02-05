@@ -13,7 +13,7 @@ import ProductoCreate from '@/modules/inventario/pages/ProductoCreate';
 import ProductoEdit from '@/modules/inventario/pages/ProductoEdit';
 import ComprasList from '@/modules/compras/pages/ComprasList';
 import CompraCreate from '@/modules/compras/pages/CompraCreate';
-import ProveedoresList from '@/modules/proveedores/pages/ProveedoresList';
+import ProveedorList from '@/modules/proveedores/pages/ProveedorList';
 import ProveedorCreate from '@/modules/proveedores/pages/ProveedorCreate';
 import { Dashboard } from '@/modules/dashboard'; //  Importar del módulo dashboard
 import type { ProtectedRouteKey } from '@/routes/routes.config';
@@ -34,7 +34,7 @@ export const protectedRouteComponents: Record<
   ClientesList,
   ClienteCreate,
   ClienteEdit,
-  ProveedoresList,
+  ProveedorList,
   ProveedorCreate,
   ComprasList,
   CompraCreate,

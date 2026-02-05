@@ -1,20 +1,27 @@
-// src/modules/compras/pages/CompraCreate.tsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui";
-import { useCompras } from "../hooks/useCompras";
-import { useProveedores } from "../../inventario/hooks/useProveedores";
-import { CompraForm, type CompraCreateInput } from "../components/CompraForm";
-import type { Proveedor } from "../types";
+
+import { useCompras } from "../hooks/useCompra";
+import { CompraForm } from "../components/CompraForm";
+
+import type { CompraCreateInput } from "../types";
+import type { CompraFormData } from "../types/compra-form.types";
+
+import { useProveedor } from "@/modules/proveedores/hooks/useProveedor";
 
 export default function CompraCreate() {
   const navigate = useNavigate();
-  const { create, error } = useCompras();
-  const { proveedores, isLoading: loadingProveedores } = useProveedores();
 
+  // Hooks de dominio
+  const { create, error } = useCompras();
+  const { proveedores, loading: loadingProveedores } = useProveedor();
+
+  // Estado UI
   const [submitting, setSubmitting] = useState(false);
 
-  const [formData, setFormData] = useState<CompraCreateInput>({
+  // Estado del formulario (NO DTO del backend)
+  const [formData, setFormData] = useState<CompraFormData>({
     numero_factura: "",
     fecha: new Date().toISOString().split("T")[0],
     proveedor_id: 0,
@@ -22,13 +29,26 @@ export default function CompraCreate() {
     items: [],
   });
 
+  // Submit
   const handleSubmit = async () => {
     setSubmitting(true);
+
     try {
-      await create(formData);
+      // Transformación UI → API
+      const payload: CompraCreateInput = {
+        numero_factura: formData.numero_factura,
+        fecha: formData.fecha,
+        proveedor_id: formData.proveedor_id,
+        observaciones: formData.observaciones,
+        items: formData.items.map((item) => ({
+          producto_id: item.producto_id,
+          cantidad: item.cantidad,
+          precio_unitario: item.precio_unitario,
+        })),
+      };
+
+      await create(payload);
       navigate("/compras");
-    } catch (err) {
-      console.error("Error al crear compra:", err);
     } finally {
       setSubmitting(false);
     }

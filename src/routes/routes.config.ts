@@ -23,7 +23,7 @@ export type ProtectedRouteKey =
   | 'ClientesList'
   | 'ClienteCreate'
   | 'ClienteEdit'
-  | 'ProveedoresList'
+  | 'ProveedorList'
   | 'ProveedorCreate'
   | 'ComprasList'
   | 'CompraCreate';
@@ -40,7 +40,7 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
   { path: 'clientes', componentKey: 'ClientesList' },
   { path: 'clientes/crear', componentKey: 'ClienteCreate' },
   { path: 'clientes/:id/editar', componentKey: 'ClienteEdit' },
-  { path: 'proveedores', componentKey: 'ProveedoresList' },
+  { path: 'proveedores', componentKey: 'ProveedorList' },
   { path: 'proveedores/crear', componentKey: 'ProveedorCreate' },
   { path: 'compras', componentKey: 'ComprasList' },
   { path: 'compras/crear', componentKey: 'CompraCreate' },

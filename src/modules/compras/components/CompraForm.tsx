@@ -1,20 +1,25 @@
 // src/modules/compras/components/CompraForm.tsx
 import { useState } from "react";
 import { Card, Button, Input, Select } from "@/components/ui";
-import { Proveedor, CompraItem, CompraCreateInput } from "../types";
-import { useProveedores } from "../../inventario/hooks/useProveedores";
+import type { Proveedor } from "@/modules/proveedores/types/proveedor.types";
+
+import type {
+  CompraFormData,
+  CompraItemForm,
+} from "../types/compra-form.types";
 
 interface CompraFormProps {
   mode: "create" | "edit";
-  value: CompraCreateInput;
-  proveedores: Proveedor[];
+  value: CompraFormData;
+  proveedores: Proveedor[]; // ← ahora ES el correcto
   loadingProveedores: boolean;
   submitting: boolean;
   error?: string | null;
-  onChange: (data: CompraCreateInput) => void;
+  onChange: (data: CompraFormData) => void;
   onSubmit: () => void;
   onCancel: () => void;
 }
+
 
 export function CompraForm({
   mode,
@@ -27,8 +32,12 @@ export function CompraForm({
   onSubmit,
   onCancel,
 }: CompraFormProps) {
-  const { proveedores: proveedoresList } = useProveedores();
-  const [items, setItems] = useState<CompraItem[]>(value.items || []);
+  const [items, setItems] = useState<CompraItemForm[]>(value.items);
+
+  const proveedorOptions = proveedores.map((p) => ({
+    label: p.nombre,
+    value: p.id,
+  }));
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -39,169 +48,111 @@ export function CompraForm({
 
   const handleItemChange = (
     index: number,
-    field: keyof CompraItem,
-    value: number,
+    field: keyof CompraItemForm,
+    fieldValue: number,
   ) => {
-    const newItems = [...items];
-    newItems[index] = { ...newItems[index], [field]: value };
-
-    // Actualizar subtotal
-    newItems[index].subtotal =
-      newItems[index].cantidad * newItems[index].precio_unitario;
+    const newItems = items.map((item, i) =>
+      i === index ? { ...item, [field]: fieldValue } : item,
+    );
 
     setItems(newItems);
     onChange({ ...value, items: newItems });
   };
 
   const addItem = () => {
-    setItems([
-      ...items,
-      {
-        id: Date.now(),
-        producto_id: 0,
-        producto_nombre: "",
-        cantidad: 1,
-        precio_unitario: 0,
-        subtotal: 0,
-      },
-    ]);
+    const newItem: CompraItemForm = {
+      id: Date.now(),
+      producto_id: 0,
+      producto_nombre: "",
+      cantidad: 1,
+      precio_unitario: 0,
+      subtotal: 0,
+    };
+
+    const newItems = [...items, newItem];
+    setItems(newItems);
+    onChange({ ...value, items: newItems });
   };
 
   const removeItem = (index: number) => {
-    setItems(items.filter((_, i) => i !== index));
+    const newItems = items.filter((_, i) => i !== index);
+    setItems(newItems);
+    onChange({ ...value, items: newItems });
   };
 
-  const validateForm = (): boolean => {
-    if (!value.numero_factura?.trim()) {
-      alert("El número de factura es obligatorio");
-      return false;
-    }
-
-    if (value.items.length === 0) {
-      alert("Debes agregar al menos un producto a la compra");
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-    onSubmit();
-  };
+  const total = items.reduce(
+    (sum, item) => sum + item.cantidad * item.precio_unitario,
+    0,
+  );
 
   return (
     <Card>
       <Card.Content>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Mensajes de Error */}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSubmit();
+          }}
+          className="space-y-6"
+        >
           {error && (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-              <div className="flex items-center gap-2">
-                <svg
-                  className="w-5 h-5 text-red-600"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <p className="text-red-700 font-medium">{error}</p>
-              </div>
+            <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+              {error}
             </div>
           )}
 
-          {/* Información Básica */}
-          <div className="border-b pb-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              Información de la Compra
-            </h2>
+          {/* Datos básicos */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+              label="Número de Factura"
+              name="numero_factura"
+              value={value.numero_factura}
+              onChange={handleChange}
+              disabled={submitting}
+            />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input
-                label="Número de Factura"
-                name="numero_factura"
-                value={value.numero_factura || ""}
-                onChange={handleChange}
-                placeholder="Ej: FAC-2024-001"
-                required
-                disabled={submitting}
-              />
+            <Input
+              label="Fecha"
+              type="date"
+              name="fecha"
+              value={value.fecha}
+              onChange={handleChange}
+              disabled={submitting}
+            />
 
-              <Input
-                label="Fecha"
-                type="date"
-                name="fecha"
-                value={value.fecha || new Date().toISOString().split("T")[0]}
-                onChange={handleChange}
-                disabled={submitting}
-              />
+            <Select
+              label="Proveedor"
+              value={value.proveedor_id}
+              options={proveedorOptions}
+              onChange={(val) =>
+                onChange({ ...value, proveedor_id: Number(val) })
+              }
+              disabled={loadingProveedores || submitting}
+            />
 
-              <Select
-                label="Proveedor"
-                name="proveedor_id"
-                value={value.proveedor_id || 0}
-                onChange={(e) =>
-                  onChange({ ...value, proveedor_id: Number(e.target.value) })
-                }
-                disabled={loadingProveedores || submitting}
-                required
-              >
-                <option value={0}>Seleccionar proveedor</option>
-                {proveedores.map((proveedor) => (
-                  <option key={proveedor.id} value={proveedor.id}>
-                    {proveedor.nombre} - {proveedor.telefono}
-                  </option>
-                ))}
-              </Select>
-
-              <Input
-                label="Estado"
-                type="text"
-                value={mode === "create" ? "PENDIENTE" : value.estado || ""}
-                disabled
-                helperText="El estado se actualiza automáticamente"
-              />
-            </div>
+            <Input
+              label="Estado"
+              value={mode === "create" ? "PENDIENTE" : "EDITANDO"}
+              disabled
+            />
           </div>
 
-          {/* Items de Compra */}
-          <div className="border-b pb-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">
-                Productos en la Compra
-              </h2>
-              <Button
-                variant="secondary"
-                type="button"
-                onClick={addItem}
-                disabled={submitting}
-              >
-                + Agregar Producto
+          {/* Items */}
+          <div>
+            <div className="flex justify-between mb-4">
+              <h3 className="font-semibold">Productos</h3>
+              <Button type="button" onClick={addItem}>
+                + Agregar
               </Button>
             </div>
 
             {items.map((item, index) => (
-              <div
-                key={item.id}
-                className="border rounded-lg p-4 mb-4 relative"
-              >
-                <button
-                  type="button"
-                  onClick={() => removeItem(index)}
-                  className="absolute top-2 right-2 text-red-500 hover:text-red-700"
-                >
-                  ✕
-                </button>
-
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <Select
-                    label="Producto"
-                    value={item.producto_id || 0}
+              <div key={item.id} className="border p-4 mb-4 rounded-lg">
+                <div className="grid grid-cols-4 gap-4">
+                  <Input
+                    label="Producto ID"
+                    type="number"
+                    value={item.producto_id}
                     onChange={(e) =>
                       handleItemChange(
                         index,
@@ -209,11 +160,7 @@ export function CompraForm({
                         Number(e.target.value),
                       )
                     }
-                    disabled={submitting}
-                  >
-                    <option value={0}>Seleccionar producto</option>
-                    {/* Aquí se cargarían los productos */}
-                  </Select>
+                  />
 
                   <Input
                     label="Cantidad"
@@ -226,12 +173,10 @@ export function CompraForm({
                         Number(e.target.value),
                       )
                     }
-                    min="1"
-                    disabled={submitting}
                   />
 
                   <Input
-                    label="Precio Unitario"
+                    label="Precio"
                     type="number"
                     value={item.precio_unitario}
                     onChange={(e) =>
@@ -241,75 +186,47 @@ export function CompraForm({
                         Number(e.target.value),
                       )
                     }
-                    step="0.01"
-                    disabled={submitting}
                   />
 
                   <Input
                     label="Subtotal"
-                    value={item.subtotal.toFixed(2)}
+                    value={(item.cantidad * item.precio_unitario).toFixed(2)}
                     disabled
-                    helperText="Se calcula automáticamente"
                   />
                 </div>
+
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => removeItem(index)}
+                  className="mt-2"
+                >
+                  Eliminar
+                </Button>
               </div>
             ))}
 
-            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-gray-700">
-                  Total de la Compra:
-                </span>
-                <span className="text-2xl font-bold text-gray-900">
-                  $
-                  {items
-                    .reduce((sum, item) => sum + item.subtotal, 0)
-                    .toFixed(2)}
-                </span>
-              </div>
+            <div className="text-right font-bold text-xl">
+              Total: ${total.toFixed(2)}
             </div>
           </div>
 
           {/* Observaciones */}
-          <div className="border-b pb-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              Observaciones
-            </h2>
-            <textarea
-              name="observaciones"
-              value={value.observaciones || ""}
-              onChange={handleChange}
-              rows={3}
-              placeholder="Notas adicionales sobre la compra..."
-              disabled={submitting}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg
-                       focus:ring-2 focus:ring-blue-200 focus:border-blue-500
-                       disabled:bg-gray-50 disabled:cursor-not-allowed"
-            />
-          </div>
+          <textarea
+            name="observaciones"
+            value={value.observaciones || ""}
+            onChange={handleChange}
+            className="w-full border rounded-lg p-3"
+            placeholder="Observaciones"
+          />
 
           {/* Acciones */}
-          <div className="flex justify-end gap-4 pt-6 border-t">
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={onCancel}
-              disabled={submitting}
-            >
+          <div className="flex justify-end gap-4">
+            <Button type="button" variant="secondary" onClick={onCancel}>
               Cancelar
             </Button>
-
-            <Button
-              type="submit"
-              variant="primary"
-              disabled={submitting}
-              isLoading={submitting}
-            >
-              {submitting
-                ? "Guardando..."
-                : mode === "create"
-                  ? "Crear Compra"
-                  : "Actualizar Compra"}
+            <Button type="submit">
+              {mode === "create" ? "Crear Compra" : "Actualizar Compra"}
             </Button>
           </div>
         </form>

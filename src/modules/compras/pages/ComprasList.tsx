@@ -1,188 +1,218 @@
-// src/modules/compras/pages/ComprasList.tsx
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, Table } from "@/components/ui";
-import { useCompras } from "../hooks/useCompras";
-import { Compra } from "../types";
-
-// Formateador simple de moneda
-const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat("es-CO", {
-    style: "currency",
-    currency: "COP",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(value);
-};
+import { useCompras } from "../hooks/useCompra";
+import { useCompraActions } from "../hooks/useCompraActions";
+import { CompraItem } from "../components/CompraItem";
 
 export default function ComprasList() {
   const navigate = useNavigate();
-  const { compras, count, loading, error, fetchCompras } = useCompras();
-  const [page, setPage] = useState(1);
-  const PAGE_SIZE = 10;
 
-  useEffect(() => {
-    fetchCompras({ page, page_size: PAGE_SIZE });
-  }, [page]);
+  const { compras, loading, error, refresh } = useCompras();
+  const {
+    deleteCompra,
+    loading: actionLoading,
+    error: actionError,
+  } = useCompraActions();
 
-  // Mensaje de bienvenida para primera vez
-  if (compras.length === 0 && !loading && !error && count === 0) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterEstado, setFilterEstado] = useState<
+    "all" | "completed" | "cancelled" | "pending"
+  >("all");
+
+
+  // 🔎 Filtrar compras
+  const filteredCompras = compras.filter((compra) => {
+    const matchesSearch =
+      compra.numero_factura?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      compra.proveedor_nombre?.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesFilter =
+      filterEstado === "all" ||
+      (filterEstado === "completed" && compra.estado === "RECIBIDO") ||
+      (filterEstado === "cancelled" && compra.estado === "CANCELADO") ||
+      (filterEstado === "pending" && compra.estado === "PENDIENTE");
+
+    return matchesSearch && matchesFilter;
+  });
+
+  // ➕ Crear compra
+  const handleCreate = () => {
+    navigate("/compras/create");
+  };
+
+  // ✏️ Editar compra
+  const handleEdit = (id: number) => {
+    navigate(`/compras/edit/${id}`);
+  };
+
+  // 👁️ Ver detalle
+  const handleViewDetail = (id: number) => {
+    navigate(`/compras/${id}`);
+  };
+
+  // 🗑️ Eliminar compra
+  const handleDelete = async (id: number) => {
+    const success = await deleteCompra(id);
+    if (success) {
+      refresh();
+    }
+  };
+
+  // 🧹 Limpiar filtros
+  const handleClearFilters = () => {
+    setSearchTerm("");
+    setFilterEstado("all");
+  };
+
+  // ⏳ Loading
+  if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-[60vh] text-center">
-        <div className="text-8xl mb-6">📦</div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          ¡Bienvenido al Módulo de Compras!
-        </h1>
-        <p className="text-gray-600 max-w-md mb-8">
-          Este es tu primer acceso al módulo de compras. Para empezar, registra
-          tu primera compra a un proveedor.
-        </p>
-        <Button
-          variant="primary"
-          size="lg"
-          onClick={() => navigate("/compras/nueva")}
-          className="px-8 py-4 text-lg"
-        >
-          + Registrar Primera Compra
-        </Button>
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Cargando compras...</p>
+      </div>
+    );
+  }
+
+  // ❌ Error
+  if (error) {
+    return (
+      <div className="error-container">
+        <div className="alert alert-error">
+          <h3>Error al cargar compras</h3>
+          <p>{error}</p>
+          <button onClick={refresh} className="btn btn-primary">
+            Reintentar
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="compra-list-page">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">
-            Compras a Proveedores
-          </h1>
-          <p className="text-gray-600 mt-1">
-            Registra y gestiona todas las compras realizadas
+      <div className="page-header">
+        <div className="header-content">
+          <h1>Compras</h1>
+          <p className="subtitle">
+            Gestiona tus compras ({filteredCompras.length} de {compras.length})
           </p>
         </div>
 
-        <Button
-          variant="primary"
-          onClick={() => navigate("/compras/nueva")}
-          className="px-6 py-2.5"
-        >
-          + Nueva Compra
-        </Button>
+        <button onClick={handleCreate} className="btn btn-primary">
+          <span>➕</span> Nueva Compra
+        </button>
       </div>
 
-      {/* Contenido */}
-      <Card>
-        <Card.Content>
-          {error && (
-            <div className="p-4 mb-6 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-700 font-medium flex items-center gap-2">
-                <span>⚠️</span> {error}
-              </p>
-            </div>
+      {/* Error acciones */}
+      {actionError && (
+        <div className="alert alert-error">
+          <p>{actionError}</p>
+        </div>
+      )}
+
+      {/* Filtros */}
+      <div className="filters-section">
+        <div className="search-box">
+          <input
+            type="text"
+            placeholder="Buscar por proveedor o factura..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="search-input"
+          />
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm("")}
+              className="clear-search"
+              title="Limpiar búsqueda"
+            >
+              ✕
+            </button>
           )}
+        </div>
 
-          {loading ? (
-            <div className="flex flex-col items-center justify-center h-64">
-              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mb-4"></div>
-              <p className="text-gray-600">Cargando compras...</p>
-            </div>
-          ) : compras.length === 0 ? (
-            <div className="text-center py-16">
-              <div className="text-5xl mb-4">📦</div>
-              <p className="text-gray-500 text-lg">
-                No hay compras registradas
-              </p>
-              <Button
-                variant="secondary"
-                className="mt-6 px-8 py-3"
-                onClick={() => navigate("/compras/nueva")}
-              >
-                Registrar Primera Compra
-              </Button>
-            </div>
-          ) : (
-            <>
-              <div className="overflow-x-auto">
-                <Table>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.Head>ID</Table.Head>
-                      <Table.Head>Proveedor</Table.Head>
-                      <Table.Head>Fecha</Table.Head>
-                      <Table.Head>Total</Table.Head>
-                      <Table.Head>Acciones</Table.Head>
-                    </Table.Row>
-                  </Table.Header>
+        <div className="filter-buttons">
+          <button
+            className={`filter-btn ${filterEstado === "all" ? "active" : ""}`}
+            onClick={() => setFilterEstado("all")}
+          >
+            Todas ({compras.length})
+          </button>
+          <button
+            className={`filter-btn ${
+              filterEstado === "completed" ? "active" : ""
+            }`}
+            onClick={() => setFilterEstado("completed")}
+          >
+            Completadas (
+            {compras.filter((c) => c.estado === "RECIBIDO").length})
+          </button>
+          <button
+            className={`filter-btn ${
+              filterEstado === "cancelled" ? "active" : ""
+            }`}
+            onClick={() => setFilterEstado("cancelled")}
+          >
+            Anuladas ({compras.filter((c) => c.estado === "CANCELADO").length})
+          </button>
+          <button
+            className={`filter-btn ${
+              filterEstado === "pending" ? "active" : ""
+            }`}
+            onClick={() => setFilterEstado("pending")}
+          >
+            Pendientes ({compras.filter((c) => c.estado === "PENDIENTE").length})
+          </button>
+        </div>
 
-                  <Table.Body>
-                    {compras.map((compra) => (
-                      <Table.Row key={compra.id}>
-                        <Table.Cell className="font-mono">
-                          #{compra.id}
-                        </Table.Cell>
-                        <Table.Cell className="font-medium">
-                          {compra.proveedor_nombre ||
-                            "Proveedor no identificado"}
-                        </Table.Cell>
-                        <Table.Cell>
-                          {new Date(compra.fecha).toLocaleDateString("es-CO", {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          })}
-                        </Table.Cell>
-                        <Table.Cell className="font-bold text-green-700">
-                          {formatCurrency(compra.total)}
-                        </Table.Cell>
-                        <Table.Cell>
-                          <div className="flex gap-2">
-                            <Button
-                              variant="secondary"
-                              size="sm"
-                              onClick={() =>
-                                navigate(`/compras/${compra.id}/editar`)
-                              }
-                            >
-                              Ver
-                            </Button>
-                          </div>
-                        </Table.Cell>
-                      </Table.Row>
-                    ))}
-                  </Table.Body>
-                </Table>
-              </div>
+        {(searchTerm || filterEstado !== "all") && (
+          <button
+            onClick={handleClearFilters}
+            className="btn btn-secondary btn-sm"
+          >
+            Limpiar filtros
+          </button>
+        )}
+      </div>
 
-              {/* Paginación */}
-              <div className="flex justify-between items-center mt-6 pt-4 border-t">
-                <div className="text-sm text-gray-500">
-                  Mostrando {Math.min((page - 1) * PAGE_SIZE + 1, count)} -{" "}
-                  {Math.min(page * PAGE_SIZE, count)} de {count} compras
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    disabled={page === 1}
-                    onClick={() => setPage((p) => p - 1)}
-                  >
-                    Anterior
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    disabled={page * PAGE_SIZE >= count}
-                    onClick={() => setPage((p) => p + 1)}
-                  >
-                    Siguiente
-                  </Button>
-                </div>
-              </div>
-            </>
+      {/* Lista */}
+      {filteredCompras.length === 0 ? (
+        <div className="empty-state">
+          <div className="empty-icon">🧾</div>
+          <h3>No se encontraron compras</h3>
+          <p>
+            {compras.length === 0
+              ? "Comienza registrando tu primera compra"
+              : "Prueba ajustando los filtros"}
+          </p>
+          {compras.length === 0 && (
+            <button onClick={handleCreate} className="btn btn-primary">
+              Crear Compra
+            </button>
           )}
-        </Card.Content>
-      </Card>
+        </div>
+      ) : (
+        <div className="compras-grid">
+          {filteredCompras.map((compra) => (
+            <CompraItem
+              key={compra.id}
+              compra={compra}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              onView={handleViewDetail}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Overlay acciones */}
+      {actionLoading && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
     </div>
   );
 }

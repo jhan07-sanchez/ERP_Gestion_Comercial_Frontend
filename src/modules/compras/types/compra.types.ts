@@ -1,47 +1,139 @@
-// src/modules/compras/types/compra.types.ts
-export interface CompraItem {
+/**
+ * Tipos para el módulo Compras
+ */
+
+// ===============================
+// Proveedor
+// ===============================
+export interface Proveedor {
   id: number;
-  producto_id: number;
-  producto_nombre: string;
+  nombre: string;
+  identificacion?: string;
+  telefono?: string;
+  email?: string;
+  direccion?: string;
+  estado: boolean;
+  fecha_creacion?: string;
+}
+
+export interface ProveedorSimple {
+  id: number;
+  nombre: string;
+}
+
+// ===============================
+// Compra
+// ===============================
+export interface Compra {
+  id: number;
+  proveedor: Proveedor | number;
+  fecha: string; // YYYY-MM-DD
+  observaciones?: string;
+  total: number;
+  estado: boolean;
+  fecha_creacion?: string;
+  fecha_actualizacion?: string;
+}
+
+// ===============================
+// Compra para listar
+// ===============================
+export interface CompraList extends Compra {
+  proveedor_info?: ProveedorSimple;
+  total_items?: number;
+}
+
+// ===============================
+// Detalle de compra
+// ===============================
+export interface CompraDetalle {
+  id: number;
+  compra: number;
+  producto: number;
   cantidad: number;
   precio_unitario: number;
   subtotal: number;
 }
 
-export interface Compra {
-  id: number;
-  numero_factura: string;
-  fecha: string;
-  proveedor_id: number;
-  proveedor_nombre: string;
-  estado: "PENDIENTE" | "RECIBIDO" | "CANCELADO";
-  total: number;
-  observaciones: string | null;
-  items: CompraItem[];
+// ===============================
+// Compra con detalles (DETAIL)
+// ===============================
+export interface CompraDetail extends Compra {
+  detalles: CompraDetalle[];
 }
 
+
+// ===============================
+// Compra para crear
+// ===============================
 export interface CompraCreateInput {
-  numero_factura: string;
+  proveedor: number;
   fecha: string;
-  proveedor_id: number;
   observaciones?: string;
-  items: {
-    producto_id: number;
+  detalles: CompraDetalleCreateInput[];
+}
+
+// ===============================
+// Compra para actualizar
+// ===============================
+export interface CompraUpdateInput {
+  proveedor?: number;
+  fecha?: string;
+  observaciones?: string;
+  estado?: boolean;
+  detalles?: CompraDetalleCreateInput[];
+}
+
+// ===============================
+// Detalle de compra (crear / editar)
+// ===============================
+export interface CompraDetalleCreateInput {
+  producto: number;
+  cantidad: number;
+  precio_unitario: number;
+}
+
+// ===============================
+// Filtros de compras
+// ===============================
+export interface CompraFilters {
+  search?: string;
+  proveedor_id?: number;
+  estado?: boolean;
+  fecha_inicio?: string;
+  fecha_fin?: string;
+}
+
+// ===============================
+// Respuesta paginada (reutilizable)
+// ===============================
+export interface PaginatedResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
+
+// ===============================
+// Respuesta genérica de éxito
+// ===============================
+export interface SuccessResponse<T> {
+  detail: string;
+  data: T;
+}
+
+/**
+ * Tipo exclusivo para formularios (Create / Edit)
+ * NO es el payload del backend
+ */
+export interface CompraFormValues {
+  proveedor: number; // siempre number en UI
+  fecha: string;
+  observaciones?: string;
+  estado?: boolean;
+  detalles: {
+    producto: number;
     cantidad: number;
     precio_unitario: number;
-  }[];
-}
-
-export interface CompraUpdateInput {
-  numero_factura?: string;
-  fecha?: string;
-  proveedor_id?: number;
-  estado?: "PENDIENTE" | "RECIBIDO" | "CANCELADO";
-  observaciones?: string;
-  items?: {
-    id?: number;
-    producto_id?: number;
-    cantidad?: number;
-    precio_unitario?: number;
   }[];
 }

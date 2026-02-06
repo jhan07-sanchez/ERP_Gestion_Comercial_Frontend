@@ -1,35 +1,71 @@
 import { useState } from "react";
-import { deleteCompra as deleteCompraApi } from "../api/compras.api";
+import { comprasAPI } from "../api/compras.api";
 import type { AxiosError } from "axios";
+import type { CompraCreateInput, CompraUpdateInput } from "../types";
 
 interface ApiError {
   detail?: string;
 }
 
-export function useCompraActions() {
+export function useCompraActions(onSuccess?: () => Promise<void>) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  /**
-   * 🗑️ Eliminar compra
-   */
+  const createCompra = async (data: CompraCreateInput): Promise<boolean> => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      await comprasAPI.createCompra(data);
+      await onSuccess?.();
+
+      return true;
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
+      setError(axiosError.response?.data?.detail ?? "Error al crear la compra");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateCompra = async (
+    id: number,
+    data: CompraUpdateInput,
+  ): Promise<boolean> => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      await comprasAPI.updateCompra(id, data);
+      await onSuccess?.();
+
+      return true;
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
+      setError(
+        axiosError.response?.data?.detail ?? "Error al actualizar la compra",
+      );
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const deleteCompra = async (id: number): Promise<boolean> => {
     try {
       setLoading(true);
       setError(null);
 
-      await deleteCompraApi(id);
+      await comprasAPI.deleteCompra(id);
+      await onSuccess?.();
 
       return true;
     } catch (err) {
       const axiosError = err as AxiosError<ApiError>;
-
-      console.error("❌ Error al eliminar compra:", axiosError);
-
       setError(
         axiosError.response?.data?.detail ?? "Error al eliminar la compra",
       );
-
       return false;
     } finally {
       setLoading(false);
@@ -37,6 +73,8 @@ export function useCompraActions() {
   };
 
   return {
+    createCompra,
+    updateCompra,
     deleteCompra,
     loading,
     error,

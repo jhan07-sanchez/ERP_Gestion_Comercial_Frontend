@@ -1,218 +1,197 @@
-import { useState } from "react";
+/**
+ * Listado de compras.
+ * Muestra tabla con todas las compras y acciones para crear, editar, eliminar
+ */
+
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCompras } from "../hooks/useCompra";
-import { useCompraActions } from "../hooks/useCompraActions";
-import { CompraItem } from "../components/CompraItem";
+import { Card, Button, Input, Table, Badge } from "@/components/ui";
+import { useCompras } from "../hooks/useCompras";
+import type { CompraFilters } from "../types";
 
 export default function ComprasList() {
   const navigate = useNavigate();
 
-  const { compras, loading, error, refresh } = useCompras();
   const {
+    compras,
+    isLoading,
+    error,
+    fetchCompras,
     deleteCompra,
-    loading: actionLoading,
-    error: actionError,
-  } = useCompraActions();
+    applyFilters,
+  } = useCompras();
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterEstado, setFilterEstado] = useState<
-    "all" | "completed" | "cancelled" | "pending"
-  >("all");
 
+  // Cargar compras al montar
+  useEffect(() => {
+    fetchCompras();
+  }, [fetchCompras]);
 
-  // 🔎 Filtrar compras
-  const filteredCompras = compras.filter((compra) => {
-    const matchesSearch =
-      compra.numero_factura?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      compra.proveedor_nombre?.toLowerCase().includes(searchTerm.toLowerCase());
-
-    const matchesFilter =
-      filterEstado === "all" ||
-      (filterEstado === "completed" && compra.estado === "RECIBIDO") ||
-      (filterEstado === "cancelled" && compra.estado === "CANCELADO") ||
-      (filterEstado === "pending" && compra.estado === "PENDIENTE");
-
-    return matchesSearch && matchesFilter;
-  });
-
-  // ➕ Crear compra
-  const handleCreate = () => {
-    navigate("/compras/create");
+  // Búsqueda
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
+    const filters: CompraFilters = value ? { search: value } : {};
+    applyFilters(filters);
   };
 
-  // ✏️ Editar compra
-  const handleEdit = (id: number) => {
-    navigate(`/compras/edit/${id}`);
-  };
-
-  // 👁️ Ver detalle
-  const handleViewDetail = (id: number) => {
-    navigate(`/compras/${id}`);
-  };
-
-  // 🗑️ Eliminar compra
+  // Eliminación
   const handleDelete = async (id: number) => {
-    const success = await deleteCompra(id);
-    if (success) {
-      refresh();
+    if (window.confirm("¿Estás seguro de que deseas eliminar esta compra?")) {
+      try {
+        await deleteCompra(id);
+      } catch (err) {
+        console.error("Error al eliminar compra:", err);
+      }
     }
   };
 
-  // 🧹 Limpiar filtros
-  const handleClearFilters = () => {
-    setSearchTerm("");
-    setFilterEstado("all");
-  };
-
-  // ⏳ Loading
-  if (loading) {
+  // Loading inicial
+  if (isLoading && compras.length === 0) {
     return (
-      <div className="loading-container">
-        <div className="spinner"></div>
-        <p>Cargando compras...</p>
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Cargando compras...</p>
+        </div>
       </div>
     );
   }
 
-  // ❌ Error
+  // Error
   if (error) {
     return (
-      <div className="error-container">
-        <div className="alert alert-error">
-          <h3>Error al cargar compras</h3>
-          <p>{error}</p>
-          <button onClick={refresh} className="btn btn-primary">
-            Reintentar
-          </button>
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold text-gray-900">Compras</h1>
+          <Button onClick={() => navigate("/compras/crear")}>
+            Nueva Compra
+          </Button>
         </div>
+
+        <Card>
+          <Card.Content>
+            <p className="text-red-600 mb-4">{error}</p>
+            <Button onClick={() => fetchCompras()}>Reintentar</Button>
+          </Card.Content>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="compra-list-page">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="page-header">
-        <div className="header-content">
-          <h1>Compras</h1>
-          <p className="subtitle">
-            Gestiona tus compras ({filteredCompras.length} de {compras.length})
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Compras</h1>
+          <p className="text-gray-600 mt-1">
+            Gestiona las compras realizadas a proveedores
           </p>
         </div>
-
-        <button onClick={handleCreate} className="btn btn-primary">
-          <span>➕</span> Nueva Compra
-        </button>
+        <Button
+          onClick={() => navigate("../compras/crear", { relative: "route" })}
+        >
+          Nueva Compra
+        </Button>
       </div>
 
-      {/* Error acciones */}
-      {actionError && (
-        <div className="alert alert-error">
-          <p>{actionError}</p>
-        </div>
-      )}
-
-      {/* Filtros */}
-      <div className="filters-section">
-        <div className="search-box">
-          <input
-            type="text"
-            placeholder="Buscar por proveedor o factura..."
+      {/* Búsqueda */}
+      <Card>
+        <Card.Content>
+          <Input
+            placeholder="Buscar por proveedor, fecha o número de compra..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
+            onChange={(e) => handleSearch(e.target.value)}
           />
-          {searchTerm && (
-            <button
-              onClick={() => setSearchTerm("")}
-              className="clear-search"
-              title="Limpiar búsqueda"
-            >
-              ✕
-            </button>
+        </Card.Content>
+      </Card>
+
+      {/* Tabla */}
+      <Card>
+        <Card.Content className="overflow-x-auto">
+          {compras.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-600">No hay compras registradas</p>
+              <Button
+                className="mt-4"
+                onClick={() =>
+                  navigate("../compras/crear", { relative: "route" })
+                }
+              >
+                Registrar primera compra
+              </Button>
+            </div>
+          ) : (
+            <Table>
+              <thead>
+                <tr className="border-b">
+                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
+                    Nº
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
+                    Proveedor
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
+                    Fecha
+                  </th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                    Total
+                  </th>
+                  <th className="text-center py-3 px-4 font-semibold text-gray-900">
+                    Estado
+                  </th>
+                  <th className="text-center py-3 px-4 font-semibold text-gray-900">
+                    Acciones
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {compras.map((compra) => (
+                  <tr key={compra.id} className="border-b hover:bg-gray-50">
+                    <td className="py-3 px-4 text-gray-700">{compra.id}</td>
+                    <td className="py-3 px-4 text-gray-900 font-medium">
+                      {compra.proveedor_info?.nombre || "—"}
+                    </td>
+                    <td className="py-3 px-4 text-gray-600">
+                      {new Date(compra.fecha).toLocaleDateString("es-CO")}
+                    </td>
+                    <td className="py-3 px-4 text-right text-gray-900">
+                      ${compra.total.toLocaleString("es-CO")}
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      <Badge variant={compra.estado ? "success" : "danger"}>
+                        {compra.estado ? "Confirmada" : "Anulada"}
+                      </Badge>
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        <Button
+                          size="sm"
+                          onClick={() =>
+                            navigate(`../compras/${compra.id}/editar`, {
+                              relative: "route",
+                            })
+                          }
+                        >
+                          Editar
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          onClick={() => handleDelete(compra.id)}
+                        >
+                          Eliminar
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
           )}
-        </div>
-
-        <div className="filter-buttons">
-          <button
-            className={`filter-btn ${filterEstado === "all" ? "active" : ""}`}
-            onClick={() => setFilterEstado("all")}
-          >
-            Todas ({compras.length})
-          </button>
-          <button
-            className={`filter-btn ${
-              filterEstado === "completed" ? "active" : ""
-            }`}
-            onClick={() => setFilterEstado("completed")}
-          >
-            Completadas (
-            {compras.filter((c) => c.estado === "RECIBIDO").length})
-          </button>
-          <button
-            className={`filter-btn ${
-              filterEstado === "cancelled" ? "active" : ""
-            }`}
-            onClick={() => setFilterEstado("cancelled")}
-          >
-            Anuladas ({compras.filter((c) => c.estado === "CANCELADO").length})
-          </button>
-          <button
-            className={`filter-btn ${
-              filterEstado === "pending" ? "active" : ""
-            }`}
-            onClick={() => setFilterEstado("pending")}
-          >
-            Pendientes ({compras.filter((c) => c.estado === "PENDIENTE").length})
-          </button>
-        </div>
-
-        {(searchTerm || filterEstado !== "all") && (
-          <button
-            onClick={handleClearFilters}
-            className="btn btn-secondary btn-sm"
-          >
-            Limpiar filtros
-          </button>
-        )}
-      </div>
-
-      {/* Lista */}
-      {filteredCompras.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-icon">🧾</div>
-          <h3>No se encontraron compras</h3>
-          <p>
-            {compras.length === 0
-              ? "Comienza registrando tu primera compra"
-              : "Prueba ajustando los filtros"}
-          </p>
-          {compras.length === 0 && (
-            <button onClick={handleCreate} className="btn btn-primary">
-              Crear Compra
-            </button>
-          )}
-        </div>
-      ) : (
-        <div className="compras-grid">
-          {filteredCompras.map((compra) => (
-            <CompraItem
-              key={compra.id}
-              compra={compra}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              onView={handleViewDetail}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Overlay acciones */}
-      {actionLoading && (
-        <div className="loading-overlay">
-          <div className="spinner"></div>
-        </div>
-      )}
+        </Card.Content>
+      </Card>
     </div>
   );
 }

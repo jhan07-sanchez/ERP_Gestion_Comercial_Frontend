@@ -1,46 +1,68 @@
 import axiosInstance from "@/api/axios";
-import type { Compra } from "../types/compra.types";
+import type {
+  Compra,
+  CompraList,
+  CompraCreateInput,
+  CompraUpdateInput,
+  CompraFilters,
+  PaginatedResponse,
+  CompraDetail,
+} from "../types";
 
-const API_URL = "/api/compras";
+const API_BASE = "/compras";
 
-/**
- * 📦 Obtener lista de compras
- */
-export const getCompras = async (): Promise<Compra[]> => {
-  const response = await axiosInstance.get<Compra[]>(API_URL);
-  return response.data;
-};
+export const comprasAPI = {
+  getCompras: async (
+    filters?: CompraFilters,
+    page = 1,
+  ): Promise<PaginatedResponse<CompraList>> => {
+    const params = new URLSearchParams();
 
-/**
- * 📄 Obtener una compra por ID
- */
-export const getCompraById = async (id: number): Promise<Compra> => {
-  const response = await axiosInstance.get<Compra>(`${API_URL}/${id}/`);
-  return response.data;
-};
+    if (filters?.search) params.append("search", filters.search);
+    if (filters?.proveedor_id)
+      params.append("proveedor_id", String(filters.proveedor_id));
+    if (filters?.estado !== undefined)
+      params.append("estado", String(filters.estado));
 
-/**
- * ➕ Crear compra
- */
-export const createCompra = async (data: Compra): Promise<Compra> => {
-  const response = await axiosInstance.post<Compra>(API_URL, data);
-  return response.data;
-};
+    if (filters?.fecha_inicio)
+      params.append("fecha_inicio", filters.fecha_inicio);
+    if (filters?.fecha_fin) params.append("fecha_fin", filters.fecha_fin);
 
-/**
- * ✏️ Actualizar compra
- */
-export const updateCompra = async (
-  id: number,
-  data: Compra,
-): Promise<Compra> => {
-  const response = await axiosInstance.put<Compra>(`${API_URL}/${id}/`, data);
-  return response.data;
-};
+    params.append("page", String(page));
 
-/**
- * 🗑️ Eliminar compra
- */
-export const deleteCompra = async (id: number): Promise<void> => {
-  await axiosInstance.delete(`${API_URL}/${id}/`);
+    const response = await axiosInstance.get(`${API_BASE}/`, { params });
+    return response.data;
+  },
+
+  getCompra: async (id: number): Promise<CompraDetail> => {
+    const response = await axiosInstance.get(`${API_BASE}/${id}/`);
+    return response.data;
+  },
+
+  createCompra: async (data: CompraCreateInput): Promise<Compra> => {
+    const response = await axiosInstance.post(`${API_BASE}/`, data);
+    return response.data;
+  },
+
+  updateCompra: async (
+    id: number,
+    data: CompraUpdateInput,
+  ): Promise<Compra> => {
+    const response = await axiosInstance.patch(`${API_BASE}/${id}/`, data);
+    return response.data;
+  },
+
+  deleteCompra: async (id: number): Promise<void> => {
+    await axiosInstance.delete(`${API_BASE}/${id}/`);
+  },
+
+  confirmarCompra: async (id: number) => {
+    const response = await axiosInstance.post(`${API_BASE}/${id}/confirmar/`);
+    return response.data;
+  },
+
+  anularCompra: async (id: number) => {
+    const response = await axiosInstance.post(`${API_BASE}/${id}/anular/`);
+    return response.data;
+  },
 };

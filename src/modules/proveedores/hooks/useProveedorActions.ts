@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { proveedoresAPI } from "../api/proveedores.api";
 import type { AxiosError } from "axios";
-import type { ProveedorCreateInput, ProveedorUpdateInput } from "../types";
+import type { ProveedorCreateInput, ProveedorUpdateInput } from "../types/proveedor.types";
 
 interface ApiError {
   detail?: string;

@@ -4,7 +4,7 @@ import type {
   ProveedorList,
   ProveedorFilters,
   PaginatedResponse,
-} from "../types";
+} from "../types/proveedor.types";
 
 export function useProveedorList() {
   const [proveedores, setProveedores] = useState<ProveedorList[]>([]);

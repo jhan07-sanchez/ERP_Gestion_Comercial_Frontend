@@ -160,8 +160,8 @@ export default function ProveedorList() {
                       {proveedor.email || "—"}
                     </td>
                     <td className="py-3 px-4 text-center">
-                      <Badge variant={proveedor.activo ? "success" : "danger"}>
-                        {proveedor.activo ? "Activo" : "Inactivo"}
+                      <Badge variant={proveedor.estado ? "success" : "danger"}>
+                        {proveedor.estado ? "Activo" : "Inactivo"}
                       </Badge>
                     </td>
                     <td className="py-3 px-4 text-center">

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { proveedoresAPI } from "../api/proveedores.api";
-import type { ProveedorDetail } from "../types";
+import type { ProveedorDetail } from "../types/proveedor.types";
 
 export function useProveedorDetail() {
   const [loading, setLoading] = useState(false);

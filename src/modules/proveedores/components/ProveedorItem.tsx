@@ -37,25 +37,25 @@ export const ProveedorItem: React.FC<ProveedorItemProps> = ({
   };
 
   const handleToggleActivo = () => {
-    const mensaje = proveedor.activo
+    const mensaje = proveedor.estado
       ? `¿Desactivar al proveedor "${proveedor.nombre}"?`
       : `¿Activar al proveedor "${proveedor.nombre}"?`;
 
     if (window.confirm(mensaje)) {
-      onToggleActivo(proveedor.id, !proveedor.activo);
+      onToggleActivo(proveedor.id, !proveedor.estado);
     }
   };
 
   return (
-    <div className={`proveedor-item ${!proveedor.activo ? "inactive" : ""}`}>
+    <div className={`proveedor-item ${!proveedor.estado ? "inactive" : ""}`}>
       <div className="proveedor-item-header">
         <div className="proveedor-info">
           <h3 className="proveedor-nombre">{proveedor.nombre}</h3>
-          <span className="proveedor-documento">{proveedor.documento}</span>
+          <span className="proveedor-documento">{proveedor.identificacion}</span>
           <span
-            className={`proveedor-status ${proveedor.activo ? "active" : "inactive"}`}
+            className={`proveedor-status ${proveedor.estado ? "active" : "inactive"}`}
           >
-            {proveedor.activo ? "Activo" : "Inactivo"}
+            {proveedor.estado ? "Activo" : "Inactivo"}
           </span>
         </div>
       </div>
@@ -86,14 +86,14 @@ export const ProveedorItem: React.FC<ProveedorItemProps> = ({
           <div className="detail-item">
             <span className="detail-label">Creado:</span>
             <span className="detail-value">
-              {formatFecha(proveedor.fecha_creacion)}
+              {formatFecha(proveedor.fecha_creacion || "")}
             </span>
           </div>
 
           <div className="detail-item">
             <span className="detail-label">Actualizado:</span>
             <span className="detail-value">
-              {formatFecha(proveedor.fecha_actualizacion)}
+              {formatFecha(proveedor.fecha_actualizacion || "")}
             </span>
           </div>
         </div>
@@ -118,11 +118,11 @@ export const ProveedorItem: React.FC<ProveedorItemProps> = ({
 
         <button
           onClick={handleToggleActivo}
-          className={`btn btn-sm ${proveedor.activo ? "btn-warning" : "btn-success"}`}
-          title={proveedor.activo ? "Desactivar" : "Activar"}
+          className={`btn btn-sm ${proveedor.estado ? "btn-warning" : "btn-success"}`}
+          title={proveedor.estado ? "Desactivar" : "Activar"}
         >
-          <span>{proveedor.activo ? "🚫" : "✅"}</span>
-          {proveedor.activo ? "Desactivar" : "Activar"}
+          <span>{proveedor.estado ? "🚫" : "✅"}</span>
+          {proveedor.estado ? "Desactivar" : "Activar"}
         </button>
 
         <button

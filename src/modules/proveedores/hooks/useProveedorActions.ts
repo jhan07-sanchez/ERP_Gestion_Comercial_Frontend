@@ -1,67 +1,31 @@
-// proveedores/hooks/useProveedorActions.ts
-
 import { useState } from "react";
-import type { Proveedor, ProveedorFormData } from "../types/proveedor.types";
-import { proveedoresApi } from "../api";
+import { proveedoresAPI } from "../api/proveedores.api";
+import type { AxiosError } from "axios";
+import type { ProveedorCreateInput, ProveedorUpdateInput } from "../types";
 
-export const useProveedorActions = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+interface ApiError {
+  detail?: string;
+}
+
+export function useProveedorActions(onSuccess?: () => Promise<void>) {
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<boolean>(false);
 
-  // Crear nuevo proveedor
   const createProveedor = async (
-    data: ProveedorFormData,
-  ): Promise<Proveedor | null> => {
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
+    data: ProveedorCreateInput,
+  ): Promise<boolean> => {
     try {
-      const newProveedor = await proveedoresApi.create(data);
-      setSuccess(true);
-      return newProveedor;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error al crear proveedor");
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  };
+      setLoading(true);
+      setError(null);
 
-  // Actualizar proveedor existente
-  const updateProveedor = async (
-    id: number,
-    data: ProveedorFormData,
-  ): Promise<Proveedor | null> => {
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
-    try {
-      const updatedProveedor = await proveedoresApi.update(id, data);
-      setSuccess(true);
-      return updatedProveedor;
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Error al actualizar proveedor",
-      );
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  };
+      await proveedoresAPI.createProveedor(data);
+      await onSuccess?.();
 
-  // Eliminar proveedor
-  const deleteProveedor = async (id: number): Promise<boolean> => {
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
-    try {
-      await proveedoresApi.delete(id);
-      setSuccess(true);
       return true;
     } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
       setError(
-        err instanceof Error ? err.message : "Error al eliminar proveedor",
+        axiosError.response?.data?.detail ?? "Error al crear el proveedor",
       );
       return false;
     } finally {
@@ -69,44 +33,54 @@ export const useProveedorActions = () => {
     }
   };
 
-  // Activar o desactivar proveedor
-  const toggleActivoProveedor = async (
+  const updateProveedor = async (
     id: number,
-    activo: boolean,
-  ): Promise<Proveedor | null> => {
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
+    data: ProveedorUpdateInput,
+  ): Promise<boolean> => {
     try {
-      const updatedProveedor = await proveedoresApi.toggleActivo(id, activo);
-      setSuccess(true);
-      return updatedProveedor;
+      setLoading(true);
+      setError(null);
+
+      await proveedoresAPI.updateProveedor(id, data);
+      await onSuccess?.();
+
+      return true;
     } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
       setError(
-        err instanceof Error
-          ? err.message
-          : "Error al cambiar estado del proveedor",
+        axiosError.response?.data?.detail ?? "Error al actualizar el proveedor",
       );
-      return null;
+      return false;
     } finally {
       setLoading(false);
     }
   };
 
-  // Limpiar mensajes de error y éxito
-  const clearMessages = () => {
-    setError(null);
-    setSuccess(false);
+  const deleteProveedor = async (id: number): Promise<boolean> => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      await proveedoresAPI.deleteProveedor(id);
+      await onSuccess?.();
+
+      return true;
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
+      setError(
+        axiosError.response?.data?.detail ?? "Error al eliminar el proveedor",
+      );
+      return false;
+    } finally {
+      setLoading(false);
+    }
   };
 
   return {
-    loading,
-    error,
-    success,
     createProveedor,
     updateProveedor,
     deleteProveedor,
-    toggleActivoProveedor,
-    clearMessages,
+    loading,
+    error,
   };
-};
+}

@@ -1,69 +1,53 @@
-// proveedores/api/proveedores.api.ts
+import axiosInstance from "@/api/axios";
+import type {
+  Proveedor,
+  ProveedorList,
+  ProveedorCreateInput,
+  ProveedorUpdateInput,
+  ProveedorFilters,
+  PaginatedResponse,
+  ProveedorDetail,
+} from "../types/proveedor.types";
 
-import type { Proveedor, ProveedorFormData } from "../types/proveedor.types";
+const API_BASE = "/proveedores";
 
-// En Vite, las variables de entorno se acceden con import.meta.env
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+export const proveedoresAPI = {
+  getProveedores: async (
+    filters?: ProveedorFilters,
+    page = 1,
+  ): Promise<PaginatedResponse<ProveedorList>> => {
+    const params = new URLSearchParams();
 
-export const proveedoresApi = {
-  // Obtener todos los proveedores
-  getAll: async (): Promise<Proveedor[]> => {
-    const response = await fetch(`${API_URL}/proveedores/`);
-    if (!response.ok) throw new Error("Error al obtener proveedores");
-    return response.json();
+    if (filters?.search) params.append("search", filters.search);
+    if (filters?.documento) params.append("documento", filters.documento);
+    if (filters?.activo !== undefined)
+      params.append("activo", String(filters.activo));
+
+    params.append("page", String(page));
+
+    const response = await axiosInstance.get(`${API_BASE}/`, { params });
+    return response.data;
   },
 
-  // Obtener un proveedor por ID
-  getById: async (id: number): Promise<Proveedor> => {
-    const response = await fetch(`${API_URL}/proveedores/${id}/`);
-    if (!response.ok) throw new Error("Error al obtener proveedor");
-    return response.json();
+  getProveedor: async (id: number): Promise<ProveedorDetail> => {
+    const response = await axiosInstance.get(`${API_BASE}/${id}/`);
+    return response.data;
   },
 
-  // Crear nuevo proveedor
-  create: async (data: ProveedorFormData): Promise<Proveedor> => {
-    const response = await fetch(`${API_URL}/proveedores/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) throw new Error("Error al crear proveedor");
-    return response.json();
+  createProveedor: async (data: ProveedorCreateInput): Promise<Proveedor> => {
+    const response = await axiosInstance.post(`${API_BASE}/`, data);
+    return response.data;
   },
 
-  // Actualizar proveedor
-  update: async (id: number, data: ProveedorFormData): Promise<Proveedor> => {
-    const response = await fetch(`${API_URL}/proveedores/${id}/`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) throw new Error("Error al actualizar proveedor");
-    return response.json();
+  updateProveedor: async (
+    id: number,
+    data: ProveedorUpdateInput,
+  ): Promise<Proveedor> => {
+    const response = await axiosInstance.patch(`${API_BASE}/${id}/`, data);
+    return response.data;
   },
 
-  // Eliminar proveedor
-  delete: async (id: number): Promise<void> => {
-    const response = await fetch(`${API_URL}/proveedores/${id}/`, {
-      method: "DELETE",
-    });
-    if (!response.ok) throw new Error("Error al eliminar proveedor");
-  },
-
-  // Activar/Desactivar proveedor
-  toggleActivo: async (id: number, activo: boolean): Promise<Proveedor> => {
-    const response = await fetch(`${API_URL}/proveedores/${id}/`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ activo }),
-    });
-    if (!response.ok) throw new Error("Error al cambiar estado del proveedor");
-    return response.json();
+  deleteProveedor: async (id: number): Promise<void> => {
+    await axiosInstance.delete(`${API_BASE}/${id}/`);
   },
 };

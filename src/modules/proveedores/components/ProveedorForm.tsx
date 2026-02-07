@@ -1,230 +1,191 @@
-// proveedores/components/ProveedorForm.tsx
+/**
+ * 📝 COMPONENTE: ProveedorForm
+ *
+ * Formulario reutilizable para crear y editar proveedores
+ *
+ * CARACTERÍSTICAS:
+ * - Create / Edit
+ * - Controlado (value + onChange)
+ * - Validación clara
+ * - UI pura (sin lógica de negocio)
+ */
 
-import React, { useState, useEffect } from "react";
-import type { Proveedor, ProveedorFormData } from "../types/proveedor.types";
+import { Card, Button, Input } from "@/components/ui";
+import type { ProveedorFormData } from "../types/proveedor.types";
 
 interface ProveedorFormProps {
-  proveedor?: Proveedor | null;
-  onSubmit: (data: ProveedorFormData) => void;
-  onCancel: () => void;
-  loading?: boolean;
+  value: ProveedorFormData;
+
+  // Estados
+  submitting?: boolean;
   error?: string | null;
+
+  // Eventos
+  onChange: (data: ProveedorFormData) => void;
+  onSubmit: () => void;
+  onCancel: () => void;
 }
 
-export const ProveedorForm: React.FC<ProveedorFormProps> = ({
-  proveedor,
+export function ProveedorForm({
+  value,
+  submitting = false,
+  error,
+  onChange,
   onSubmit,
   onCancel,
-  loading = false,
-  error = null,
-}) => {
-  const [formData, setFormData] = useState<ProveedorFormData>({
-    nombre: "",
-    documento: "",
-    telefono: "",
-    email: "",
-    direccion: "",
-    activo: true,
-  });
-
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
-  // Cargar datos del proveedor si existe (modo edición)
-  useEffect(() => {
-    if (!proveedor) return;
-
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setFormData((prev) => ({
-      ...prev,
-      nombre: proveedor.nombre,
-      documento: proveedor.documento,
-      telefono: proveedor.telefono,
-      email: proveedor.email,
-      direccion: proveedor.direccion,
-      activo: proveedor.activo,
-    }));
-  }, [proveedor]);
-
-
-  // Manejar cambios en los inputs
+}: ProveedorFormProps) {
+  /**
+   * 🔄 Cambios simples
+   * (misma lógica que CompraForm)
+   */
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const { name, value, type } = e.target;
+    const { name, value: inputValue, type } = e.target as HTMLInputElement;
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]:
-        type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
-    }));
+    let processedValue: string | boolean = inputValue;
 
-    // Limpiar error del campo cuando el usuario escribe
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
+    if (type === "checkbox") {
+      processedValue = (e.target as HTMLInputElement).checked;
     }
+
+    onChange({
+      ...value,
+      [name]: processedValue,
+    });
   };
 
-  // Validar formulario
+  /**
+   * ✅ Validación
+   */
   const validateForm = (): boolean => {
-    const newErrors: { [key: string]: string } = {};
-
-    if (!formData.nombre.trim()) {
-      newErrors.nombre = "El nombre es requerido";
+    if (!value.nombre.trim()) {
+      alert("El nombre del proveedor es obligatorio");
+      return false;
     }
 
-    if (!formData.documento.trim()) {
-      newErrors.documento = "El documento es requerido";
+    if (value.email && !value.email.includes("@")) {
+      alert("El email no es válido");
+      return false;
     }
 
-    if (formData.email && !isValidEmail(formData.email)) {
-      newErrors.email = "El email no es válido";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return true;
   };
 
-  // Validar formato de email
-  const isValidEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  // Manejar envío del formulario
+  /**
+   * 🚀 Envío
+   */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      onSubmit(formData);
-    }
+    if (!validateForm()) return;
+
+    onSubmit();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="proveedor-form">
-      <div className="form-container">
-        {/* Mensaje de error general */}
-        {error && (
-          <div className="alert alert-error">
-            <p>{error}</p>
+    <Card>
+      <Card.Content>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Error */}
+          {error && (
+            <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-700 font-medium">{error}</p>
+            </div>
+          )}
+
+          {/* Datos principales */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+              label="Nombre"
+              name="nombre"
+              value={value.nombre}
+              onChange={handleChange}
+              disabled={submitting}
+              required
+            />
+
+            <Input
+              label="Documento"
+              name="identificacion"
+              value={value.identificacion ?? ""}
+              onChange={handleChange}
+              disabled={submitting}
+            />
+
+            <Input
+              label="Teléfono"
+              name="telefono"
+              value={value.telefono ?? ""}
+              onChange={handleChange}
+              disabled={submitting}
+            />
+
+            <Input
+              label="Email"
+              name="email"
+              type="email"
+              value={value.email ?? ""}
+              onChange={handleChange}
+              disabled={submitting}
+            />
           </div>
-        )}
 
-        {/* Nombre */}
-        <div className="form-group">
-          <label htmlFor="nombre">
-            Nombre <span className="required">*</span>
-          </label>
-          <input
-            type="text"
-            id="nombre"
-            name="nombre"
-            value={formData.nombre}
-            onChange={handleChange}
-            className={errors.nombre ? "input-error" : ""}
-            disabled={loading}
-            placeholder="Ej: Distribuidora ABC"
-          />
-          {errors.nombre && (
-            <span className="error-message">{errors.nombre}</span>
-          )}
-        </div>
-
-        {/* Documento */}
-        <div className="form-group">
-          <label htmlFor="documento">
-            Documento (RUT/NIT/DNI) <span className="required">*</span>
-          </label>
-          <input
-            type="text"
-            id="documento"
-            name="documento"
-            value={formData.documento}
-            onChange={handleChange}
-            className={errors.documento ? "input-error" : ""}
-            disabled={loading}
-            placeholder="Ej: 12345678-9"
-          />
-          {errors.documento && (
-            <span className="error-message">{errors.documento}</span>
-          )}
-        </div>
-
-        {/* Teléfono */}
-        <div className="form-group">
-          <label htmlFor="telefono">Teléfono</label>
-          <input
-            type="text"
-            id="telefono"
-            name="telefono"
-            value={formData.telefono}
-            onChange={handleChange}
-            disabled={loading}
-            placeholder="Ej: +56 9 1234 5678"
-          />
-        </div>
-
-        {/* Email */}
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className={errors.email ? "input-error" : ""}
-            disabled={loading}
-            placeholder="Ej: contacto@proveedor.com"
-          />
-          {errors.email && (
-            <span className="error-message">{errors.email}</span>
-          )}
-        </div>
-
-        {/* Dirección */}
-        <div className="form-group">
-          <label htmlFor="direccion">Dirección</label>
+          {/* Dirección */}
           <textarea
-            id="direccion"
             name="direccion"
-            value={formData.direccion}
+            value={value.direccion ?? ""}
             onChange={handleChange}
-            disabled={loading}
             rows={3}
-            placeholder="Ej: Av. Principal 123, Santiago"
+            placeholder="Dirección..."
+            className="w-full border rounded-lg p-3"
+            disabled={submitting}
           />
-        </div>
 
-        {/* Estado Activo */}
-        <div className="form-group checkbox-group">
-          <label htmlFor="activo">
+          {/* Fecha de Creación */}
+          <div className="border-b pb-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Fecha de Creación
+            </h2>
+            <Input
+              label="Fecha de Ingreso"
+              type="date"
+              name="fecha_ingreso"
+              value={value.fecha_creacion ? value.fecha_creacion.split("T")[0] : ""}
+              onChange={handleChange}
+              disabled={submitting}
+            />
+          </div>
+
+          {/* Estado */}
+          <label className="flex items-center gap-2">
             <input
               type="checkbox"
-              id="activo"
-              name="activo"
-              checked={formData.activo}
+              name="estado"
+              checked={value.estado}
               onChange={handleChange}
-              disabled={loading}
+              disabled={submitting}
             />
-            <span>Proveedor activo</span>
+            Proveedor activo
           </label>
-        </div>
 
-        {/* Botones */}
-        <div className="form-actions">
-          <button
-            type="button"
-            onClick={onCancel}
-            className="btn btn-secondary"
-            disabled={loading}
-          >
-            Cancelar
-          </button>
-          <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? "Guardando..." : proveedor ? "Actualizar" : "Crear"}
-          </button>
-        </div>
-      </div>
-    </form>
+          {/* Acciones */}
+          <div className="flex justify-end gap-4 pt-6 border-t">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={onCancel}
+              disabled={submitting}
+            >
+              Cancelar
+            </Button>
+
+            <Button type="submit" isLoading={submitting}>
+              Guardar Proveedor
+            </Button>
+          </div>
+        </form>
+      </Card.Content>
+    </Card>
   );
-};
+}

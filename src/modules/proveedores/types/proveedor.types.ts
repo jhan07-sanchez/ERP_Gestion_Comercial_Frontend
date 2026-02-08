@@ -8,7 +8,7 @@
 export interface Proveedor {
   id: number;
   nombre: string;
-  identificacion?: string;
+  documento?: string;
   telefono?: string;
   email?: string;
   direccion?: string;
@@ -40,7 +40,7 @@ export interface ProveedorDetail extends Proveedor {}
 // ===============================
 export interface ProveedorCreateInput {
   nombre: string;
-  identificacion?: string;
+  documento?: string;
   telefono?: string;
   email?: string;
   direccion?: string;
@@ -53,7 +53,7 @@ export interface ProveedorCreateInput {
 // ===============================
 export interface ProveedorUpdateInput {
   nombre?: string;
-  identificacion?: string;
+  documento?: string;
   telefono?: string;
   email?: string;
   direccion?: string;
@@ -67,7 +67,6 @@ export interface ProveedorUpdateInput {
 export interface ProveedorFilters {
   search?: string;
   documento?: string;
-  activo?: boolean;
   estado?: boolean;
 }
 
@@ -95,7 +94,7 @@ export interface SuccessResponse<T> {
  */
 export interface ProveedorFormData {
   nombre: string;
-  identificacion?: string;
+  documento?: string;
   telefono?: string;
   email?: string;
   direccion?: string;

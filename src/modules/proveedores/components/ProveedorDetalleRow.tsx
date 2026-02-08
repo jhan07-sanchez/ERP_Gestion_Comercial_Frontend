@@ -62,7 +62,7 @@ export const ProveedorDetalleList: React.FC<ProveedorDetalleListProps> = ({
   return (
     <div className="proveedor-detalle-list">
       <ProveedorDetalleRow label="Nombre" value={proveedor.nombre} />
-      <ProveedorDetalleRow label="Documento" value={proveedor.identificacion ?? "-"} />
+      <ProveedorDetalleRow label="Documento" value={proveedor.documento ?? "-"} />
       <ProveedorDetalleRow
         label="Teléfono"
         value={proveedor.telefono ?? "-"}

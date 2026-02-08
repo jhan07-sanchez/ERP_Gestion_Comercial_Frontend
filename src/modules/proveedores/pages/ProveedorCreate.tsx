@@ -29,7 +29,7 @@ export default function ProveedorCreate() {
    */
   const [formData, setFormData] = useState<ProveedorFormData>({
     nombre: "",
-    identificacion: "",
+    documento: "",
     telefono: "",
     email: "",
     direccion: "",
@@ -94,7 +94,7 @@ export default function ProveedorCreate() {
 
     const hasData =
       formData.nombre.trim().length > 0 ||
-      (formData.identificacion ?? "").trim().length > 0 ||
+      (formData.documento ?? "").trim().length > 0 ||
       (formData.telefono ?? "").trim().length > 0 ||
       (formData.email ?? "").trim().length > 0 ||
       (formData.direccion ?? "").trim().length > 0;

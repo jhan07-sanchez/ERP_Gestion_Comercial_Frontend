@@ -7,7 +7,7 @@ interface ProveedorItemProps {
   proveedor: Proveedor;
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
-  onToggleActivo: (id: number, activo: boolean) => void;
+  onToggleestado: (id: number, estado: boolean) => void;
   onViewDetail: (id: number) => void;
 }
 
@@ -15,7 +15,7 @@ export const ProveedorItem: React.FC<ProveedorItemProps> = ({
   proveedor,
   onEdit,
   onDelete,
-  onToggleActivo,
+  onToggleestado,
   onViewDetail,
 }) => {
   const formatFecha = (fecha: string) => {
@@ -36,13 +36,13 @@ export const ProveedorItem: React.FC<ProveedorItemProps> = ({
     }
   };
 
-  const handleToggleActivo = () => {
+  const handleToggleEstado = () => {
     const mensaje = proveedor.estado
       ? `¿Desactivar al proveedor "${proveedor.nombre}"?`
       : `¿Activar al proveedor "${proveedor.nombre}"?`;
 
     if (window.confirm(mensaje)) {
-      onToggleActivo(proveedor.id, !proveedor.estado);
+      onToggleestado(proveedor.id, !proveedor.estado);
     }
   };
 
@@ -51,7 +51,7 @@ export const ProveedorItem: React.FC<ProveedorItemProps> = ({
       <div className="proveedor-item-header">
         <div className="proveedor-info">
           <h3 className="proveedor-nombre">{proveedor.nombre}</h3>
-          <span className="proveedor-documento">{proveedor.identificacion}</span>
+          <span className="proveedor-documento">{proveedor.documento}</span>
           <span
             className={`proveedor-status ${proveedor.estado ? "active" : "inactive"}`}
           >
@@ -117,7 +117,7 @@ export const ProveedorItem: React.FC<ProveedorItemProps> = ({
         </button>
 
         <button
-          onClick={handleToggleActivo}
+          onClick={handleToggleEstado}
           className={`btn btn-sm ${proveedor.estado ? "btn-warning" : "btn-success"}`}
           title={proveedor.estado ? "Desactivar" : "Activar"}
         >

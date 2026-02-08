@@ -29,7 +29,7 @@ export const ProveedorResumen: React.FC<ProveedorResumenProps> = ({
       <div className="resumen-body">
         <div className="resumen-info">
           <span className="info-label">Documento:</span>
-          <span className="info-value">{proveedor.identificacion}</span>
+          <span className="info-value">{proveedor.documento}</span>
         </div>
 
         {proveedor.telefono && (

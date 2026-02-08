@@ -47,14 +47,14 @@ export default function ProveedorDetailPage() {
     }
   };
 
-  const handleToggleActivo = async () => {
+  const handleToggleEstado = async () => {
     if (!proveedorId || !proveedor) return;
 
     if (
       window.confirm(
         proveedor.estado
           ? `¿Desactivar "${proveedor.nombre}"?`
-          : `¿Activar "${proveedor.nombre}"?`
+          : `¿Activar "${proveedor.nombre}"?`,
       )
     ) {
       const ok = await updateProveedor(proveedorId, {
@@ -110,7 +110,7 @@ export default function ProveedorDetailPage() {
           </button>
 
           <button
-            onClick={handleToggleActivo}
+            onClick={handleToggleEstado}
             className={`btn ${
               proveedor.estado ? "btn-warning" : "btn-success"
             }`}

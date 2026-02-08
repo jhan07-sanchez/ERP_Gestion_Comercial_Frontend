@@ -107,8 +107,8 @@ export function ProveedorForm({
 
             <Input
               label="Documento"
-              name="identificacion"
-              value={value.identificacion ?? ""}
+              name="documento"
+              value={value.documento ?? ""}
               onChange={handleChange}
               disabled={submitting}
             />

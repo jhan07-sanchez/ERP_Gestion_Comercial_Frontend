@@ -20,8 +20,8 @@ export const proveedoresAPI = {
 
     if (filters?.search) params.append("search", filters.search);
     if (filters?.documento) params.append("documento", filters.documento);
-    if (filters?.activo !== undefined)
-      params.append("activo", String(filters.activo));
+    if (filters?.estado !== undefined)
+      params.append("estado", String(filters.estado));
 
     params.append("page", String(page));
 

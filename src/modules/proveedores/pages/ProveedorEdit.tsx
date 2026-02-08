@@ -1,6 +1,6 @@
 // proveedores/pages/ProveedorEdit.tsx
 
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ProveedorForm } from "../components/ProveedorForm";
 import { useProveedor } from "../hooks/useProveedor";
@@ -11,27 +11,48 @@ export default function ProveedorEdit() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
-  const proveedorId = id ? parseInt(id) : undefined;
+  const proveedorId = id ? parseInt(id, 10) : undefined;
 
-  const { proveedor, loading, error } = useProveedor(proveedorId);
+  const { getProveedor, loading, error } = useProveedor();
   const {
     updateProveedor,
     loading: updateLoading,
     error: updateError,
   } = useProveedorActions();
 
+  // ✅ Estado local del formulario (OBLIGATORIO)
+  const [formData, setFormData] = useState<ProveedorFormData | null>(null);
+
+  // ✅ Validar ID
   useEffect(() => {
     if (id && isNaN(Number(id))) {
       navigate("/proveedores");
     }
   }, [id, navigate]);
 
-  const handleSubmit = async (data: ProveedorFormData) => {
+  // ✅ Cargar proveedor
+  useEffect(() => {
     if (!proveedorId) return;
 
-    const updatedProveedor = await updateProveedor(proveedorId, data);
+    const fetchProveedor = async () => {
+      try {
+        const data = await getProveedor(proveedorId);
+        setFormData(data);
+      } catch {
+        // error manejado por el hook
+      }
+    };
 
-    if (updatedProveedor) {
+    fetchProveedor();
+  }, [proveedorId, getProveedor]);
+
+  // ✅ Submit SIN parámetros (como pide ProveedorForm)
+  const handleSubmit = async () => {
+    if (!proveedorId || !formData) return;
+
+    const ok = await updateProveedor(proveedorId, formData);
+
+    if (ok) {
       alert("Proveedor actualizado exitosamente");
       navigate("/proveedores");
     }
@@ -41,7 +62,7 @@ export default function ProveedorEdit() {
     navigate("/proveedores");
   };
 
-  if (loading) {
+  if (loading || !formData) {
     return (
       <div className="loading-container">
         <div className="spinner"></div>
@@ -50,12 +71,12 @@ export default function ProveedorEdit() {
     );
   }
 
-  if (error || !proveedor) {
+  if (error) {
     return (
       <div className="error-container">
         <div className="alert alert-error">
           <h3>Error al cargar proveedor</h3>
-          <p>{error || "Proveedor no encontrado"}</p>
+          <p>{error}</p>
           <button
             onClick={() => navigate("/proveedores")}
             className="btn btn-primary"
@@ -76,20 +97,21 @@ export default function ProveedorEdit() {
           </button>
           <div>
             <h1>Editar Proveedor</h1>
-            <p className="subtitle">Modificando: {proveedor.nombre}</p>
+            <p className="subtitle">Modificando: {formData.nombre}</p>
           </div>
         </div>
       </div>
 
       <div className="form-container">
         <ProveedorForm
-          proveedor={proveedor}
+          value={formData}
+          onChange={setFormData}
           onSubmit={handleSubmit}
           onCancel={handleCancel}
-          loading={updateLoading}
+          submitting={updateLoading}
           error={updateError}
         />
       </div>
     </div>
   );
-};
+}

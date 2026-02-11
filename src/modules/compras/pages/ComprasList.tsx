@@ -151,7 +151,7 @@ export default function ComprasList() {
                   <tr key={compra.id} className="border-b hover:bg-gray-50">
                     <td className="py-3 px-4 text-gray-700">{compra.id}</td>
                     <td className="py-3 px-4 text-gray-900 font-medium">
-                      {compra.proveedor_info?.nombre || "—"}
+                      {compra.proveedor_info?.nombre || "----"}
                     </td>
                     <td className="py-3 px-4 text-gray-600">
                       {new Date(compra.fecha).toLocaleDateString("es-CO")}

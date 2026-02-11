@@ -40,9 +40,14 @@ export const comprasAPI = {
   },
 
   createCompra: async (data: CompraCreateInput): Promise<Compra> => {
-    const response = await axiosInstance.post(`${API_BASE}/`, data);
+    const response = await axiosInstance.post(`${API_BASE}/`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     return response.data;
   },
+
 
   updateCompra: async (
     id: number,

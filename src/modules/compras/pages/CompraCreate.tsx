@@ -56,7 +56,7 @@ export default function CompraCreate() {
    * 🧠 Estado inicial del formulario (UI ONLY)
    */
   const [formData, setFormData] = useState<CompraFormData>({
-    proveedor: 0,
+    proveedor_id: 0,
     fecha: new Date().toISOString().split("T")[0],
     observaciones: "",
     detalles: [],
@@ -94,7 +94,7 @@ export default function CompraCreate() {
    */
   const validateForm = (): { valid: boolean; message?: string } => {
     // Validar proveedor
-    if (!formData.proveedor || formData.proveedor === 0) {
+    if (!formData.proveedor_id || formData.proveedor_id === 0) {
       return { valid: false, message: "Debes seleccionar un proveedor" };
     }
 
@@ -155,13 +155,13 @@ export default function CompraCreate() {
    */
   const convertToAPIFormat = (data: CompraFormData) => {
     return {
-      proveedor: data.proveedor,
+      proveedor_id: data.proveedor_id,
       fecha: data.fecha,
       observaciones: data.observaciones?.trim() || undefined,
       detalles: data.detalles.map((d) => ({
-        producto: d.producto,
+        producto_id: d.producto,
         cantidad: d.cantidad,
-        precio_unitario: d.precio_unitario,
+        precio_compra: d.precio_unitario,
       })),
     };
   };
@@ -250,7 +250,7 @@ export default function CompraCreate() {
     if (submitting) return;
 
     const hasData =
-      formData.proveedor !== 0 ||
+      formData.proveedor_id !== 0 ||
       formData.detalles.length > 0 ||
       (formData.observaciones?.trim() ?? "").length > 0;
 

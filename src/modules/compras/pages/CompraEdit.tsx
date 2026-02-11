@@ -109,16 +109,16 @@ export default function CompraEdit() {
           proveedor:
             typeof compra.proveedor === "number"
               ? compra.proveedor
-              : compra.proveedor.id,
+              : compra.proveedor,
           fecha: compra.fecha,
           observaciones: compra.observaciones ?? "",
           estado: compra.estado,
           total: compra.total,
           detalles: compra.detalles.map((d) => ({
-            producto: d.producto,
+            producto: d.producto_id,
             cantidad: d.cantidad,
-            precio_unitario: d.precio_unitario,
-            subtotal: d.cantidad * d.precio_unitario,
+            precio_unitario: d.precio_compra,
+            subtotal: d.cantidad * d.precio_compra,
           })),
         };
 
@@ -206,9 +206,9 @@ export default function CompraEdit() {
       observaciones: data.observaciones?.trim() || undefined,
       estado: data.estado,
       detalles: data.detalles.map((d) => ({
-        producto: d.producto,
+        producto_id: d.producto,
         cantidad: d.cantidad,
-        precio_unitario: d.precio_unitario,
+        precio_compra: d.precio_unitario,
       })),
     };
   };

@@ -27,7 +27,7 @@ export interface CompraDetalleForm {
  * 🔹 Datos del formulario (UI ONLY)
  */
 export interface CompraFormData {
-  proveedor: number;
+  proveedor_id: number;
   fecha: string; // YYYY-MM-DD
   observaciones?: string;
   detalles: CompraDetalleForm[];
@@ -154,7 +154,7 @@ export function CompraForm({
    * ✅ Validación
    */
   const validateForm = (): boolean => {
-    if (!value.proveedor) {
+    if (!value.proveedor_id) {
       alert("Debes seleccionar un proveedor");
       return false;
     }
@@ -206,9 +206,14 @@ export function CompraForm({
           {/* Información general */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <select
-              name="proveedor"
-              value={value.proveedor || 0}
-              onChange={handleChange}
+              name="proveedor_id"
+              value={value.proveedor_id || 0}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  proveedor_id: Number(e.target.value), // 🔥 aquí convertimos
+                })
+              }
               disabled={submitting}
               className="w-full px-4 py-2 border rounded-lg"
             >
@@ -248,7 +253,7 @@ export function CompraForm({
             {value.detalles.map((detalle, index) => (
               <div key={index} className="grid grid-cols-5 gap-3 items-center">
                 <select
-                  value={detalle.producto}
+                  value={detalle.producto || 0}
                   onChange={(e) =>
                     updateDetalle(index, "producto", Number(e.target.value))
                   }

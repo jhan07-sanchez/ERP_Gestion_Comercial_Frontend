@@ -26,7 +26,7 @@ export interface ProveedorSimple {
 // ===============================
 export interface Compra {
   id: number;
-  proveedor: Proveedor | number;
+  proveedor_id: number;
   fecha: string; // YYYY-MM-DD
   observaciones?: string;
   total: number;
@@ -67,7 +67,7 @@ export interface CompraDetail extends Compra {
 // Compra para crear
 // ===============================
 export interface CompraCreateInput {
-  proveedor: number;
+  proveedor_id: number;
   fecha: string;
   observaciones?: string;
   detalles: CompraDetalleCreateInput[];
@@ -77,7 +77,7 @@ export interface CompraCreateInput {
 // Compra para actualizar
 // ===============================
 export interface CompraUpdateInput {
-  proveedor?: number;
+  proveedor_id?: number;
   fecha?: string;
   observaciones?: string;
   estado?: boolean;
@@ -127,7 +127,7 @@ export interface SuccessResponse<T> {
  * NO es el payload del backend
  */
 export interface CompraFormValues {
-  proveedor: number; // siempre number en UI
+  proveedor_id: number; // siempre number en UI
   fecha: string;
   observaciones?: string;
   estado?: boolean;

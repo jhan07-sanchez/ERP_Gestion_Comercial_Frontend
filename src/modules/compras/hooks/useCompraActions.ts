@@ -17,6 +17,7 @@ import type { AxiosError } from "axios";
 import type { Compra, CompraCreateInput, CompraUpdateInput } from "../types";
 
 
+
 interface ApiError {
   detail?: string;
   [key: string]: unknown;
@@ -44,26 +45,10 @@ export function useCompraActions(onSuccess?: () => Promise<void>) {
       setError(null);
       console.log(JSON.stringify(data, null, 2));
 
-      // 🔥 TRANSFORMACIÓN OBLIGATORIA
-      const payload: CompraCreateInput = {
-        proveedor: data.proveedor,
-        fecha: data.fecha,
-        observaciones: data.observaciones,
-        detalles: data.detalles.map((d) => ({
-          producto_id: d.producto_id,
-          cantidad: d.cantidad,
-          precio_compra: d.precio_compra,
-        })),
-      };
+      // Enviar directamente al API
+      const newCompra = await comprasAPI.createCompra(data);
 
-
-
-      console.log(
-        "📦 [useCompraActions] Payload FINAL:",
-        JSON.stringify(payload, null, 2),
-      );
-
-      const newCompra = await comprasAPI.createCompra(payload);
+        console.log("✅ [useCompraActions] Compra creada:", newCompra);
 
       if (onSuccess) {
         await onSuccess();

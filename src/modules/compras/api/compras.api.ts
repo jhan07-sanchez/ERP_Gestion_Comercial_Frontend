@@ -9,7 +9,7 @@ import type {
   CompraDetail,
 } from "../types";
 
-const API_BASE = "/compras";
+const API_BASE = "/compras/compras";
 
 export const comprasAPI = {
   getCompras: async (

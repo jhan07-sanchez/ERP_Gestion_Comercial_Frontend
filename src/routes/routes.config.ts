@@ -25,6 +25,7 @@ export type ProtectedRouteKey =
   | 'ClienteEdit'
   | 'ProveedorList'
   | 'ProveedorCreate'
+  | 'ProveedorEdit'
   | 'ComprasList'
   | 'CompraCreate';
 
@@ -42,6 +43,8 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
   { path: 'clientes/:id/editar', componentKey: 'ClienteEdit' },
   { path: 'proveedores', componentKey: 'ProveedorList' },
   { path: 'proveedores/crear', componentKey: 'ProveedorCreate' },
+  { path: 'proveedores/:id/editar', componentKey: 'ProveedorEdit' },
+
   { path: 'compras', componentKey: 'ComprasList' },
   { path: 'compras/crear', componentKey: 'CompraCreate' },
   { path: 'reportes', componentKey: 'Reportes', placeholderProps: { title: 'Reportes', description: 'Reportes y estadísticas.' } },

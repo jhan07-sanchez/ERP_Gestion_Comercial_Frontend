@@ -6,6 +6,8 @@ import { ProveedorForm } from "../components/ProveedorForm";
 import { useProveedor } from "../hooks/useProveedor";
 import { useProveedorActions } from "../hooks/useProveedorActions";
 import type { ProveedorFormData } from "../types/proveedor.types";
+import { Button } from "@/components/ui";
+
 
 export default function ProveedorEdit() {
   const navigate = useNavigate();
@@ -89,15 +91,22 @@ export default function ProveedorEdit() {
   }
 
   return (
-    <div className="proveedor-edit-page">
+    <div className="space-y-6">
       <div className="page-header">
-        <div className="header-content">
-          <button onClick={handleCancel} className="btn-back" title="Volver">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="secondary"
+            onClick={handleCancel}
+            disabled={updateLoading}
+          >
             ← Volver
-          </button>
+          </Button>
+
           <div>
-            <h1>Editar Proveedor</h1>
-            <p className="subtitle">Modificando: {formData.nombre}</p>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Editar Proveedor
+            </h1>
+            <p className="text-gray-600 mt-1">Modificando: {formData.nombre}</p>
           </div>
         </div>
       </div>

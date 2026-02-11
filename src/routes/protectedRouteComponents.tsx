@@ -17,6 +17,7 @@ import ProveedorList from '@/modules/proveedores/pages/ProveedorList';
 import ProveedorCreate from '@/modules/proveedores/pages/ProveedorCreate';
 import { Dashboard } from '@/modules/dashboard'; //  Importar del módulo dashboard
 import type { ProtectedRouteKey } from '@/routes/routes.config';
+import ProveedorEdit from '../modules/proveedores/pages/ProveedorEdit';
 
 type RouteComponentProps = Record<string, string | undefined>;
 
@@ -35,6 +36,7 @@ export const protectedRouteComponents: Record<
   ClienteCreate,
   ClienteEdit,
   ProveedorList,
+  ProveedorEdit,
   ProveedorCreate,
   ComprasList,
   CompraCreate,

@@ -49,9 +49,9 @@ export interface CompraList extends Compra {
 export interface CompraDetalle {
   id: number;
   compra: number;
-  producto: number;
+  producto_id: number;
   cantidad: number;
-  precio_unitario: number;
+  precio_compra: number;
   subtotal: number;
 }
 
@@ -88,9 +88,9 @@ export interface CompraUpdateInput {
 // Detalle de compra (crear / editar)
 // ===============================
 export interface CompraDetalleCreateInput {
-  producto: number;
+  producto_id: number;
   cantidad: number;
-  precio_unitario: number;
+  precio_compra: number;
 }
 
 // ===============================
@@ -132,8 +132,8 @@ export interface CompraFormValues {
   observaciones?: string;
   estado?: boolean;
   detalles: {
-    producto: number;
+    producto_id: number;
     cantidad: number;
-    precio_unitario: number;
+    precio_compra: number;
   }[];
 }

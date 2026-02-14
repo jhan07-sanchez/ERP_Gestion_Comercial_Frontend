@@ -66,8 +66,10 @@ export const comprasAPI = {
     return response.data;
   },
 
-  anularCompra: async (id: number) => {
-    const response = await axiosInstance.post(`${API_BASE}/${id}/anular/`);
+  anularCompra: async (id: number, motivo: string) => {
+    const response = await axiosInstance.post(`${API_BASE}/${id}/anular/`, {
+      motivo,
+    });
     return response.data;
   },
 };

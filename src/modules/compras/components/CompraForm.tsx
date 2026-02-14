@@ -12,6 +12,7 @@
  */
 
 import { Card, Button, Input } from "@/components/ui";
+import type { EstadoCompra } from "../types";
 
 /**
  * 🔹 Detalle de compra (UI ONLY)
@@ -32,7 +33,7 @@ export interface CompraFormData {
   observaciones?: string;
   detalles: CompraDetalleForm[];
   total: number; // calculado en UI
-  estado?: boolean; // solo en edit
+  estado?: EstadoCompra; // solo en edit
 }
 
 interface CompraFormProps {
@@ -211,7 +212,7 @@ export function CompraForm({
               onChange={(e) =>
                 onChange({
                   ...value,
-                  proveedor_id: Number(e.target.value), // 🔥 aquí convertimos
+                  proveedor_id: Number(e.target.value), //  aquí convertimos
                 })
               }
               disabled={submitting}
@@ -316,15 +317,22 @@ export function CompraForm({
 
           {/* Estado (solo edit) */}
           {mode === "edit" && (
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                name="estado"
-                checked={value.estado ?? true}
-                onChange={handleChange}
-              />
-              Compra activa
-            </label>
+            <select
+              name="estado"
+              value={value.estado ?? "pendiente"}
+              onChange={(e) =>
+                onChange({
+                  ...value,
+                  estado: e.target.value as EstadoCompra,
+                })
+              }
+              disabled={submitting}
+              className="w-full px-4 py-2 border rounded-lg"
+            >
+              <option value="PENDIENTE">Pendiente</option>
+              <option value="REALIZADA">Realizada</option>
+              <option value="ANULADA">Anulada</option>
+            </select>
           )}
 
           {/* Acciones */}

@@ -27,7 +27,8 @@ export type ProtectedRouteKey =
   | 'ProveedorCreate'
   | 'ProveedorEdit'
   | 'ComprasList'
-  | 'CompraCreate';
+  | 'CompraCreate'
+  | 'CompraEdit';
 
 /**
  * Rutas protegidas (path relativo al layout).
@@ -47,6 +48,7 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
 
   { path: 'compras', componentKey: 'ComprasList' },
   { path: 'compras/crear', componentKey: 'CompraCreate' },
+  { path: 'compras/:id/editar', componentKey: 'CompraEdit' },
   { path: 'reportes', componentKey: 'Reportes', placeholderProps: { title: 'Reportes', description: 'Reportes y estadísticas.' } },
   { path: 'configuracion', componentKey: 'Configuracion', placeholderProps: { title: 'Configuración', description: 'Configuración del sistema.' } },
 ];

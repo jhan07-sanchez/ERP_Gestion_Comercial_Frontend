@@ -5,11 +5,25 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, Button, Input, Table, Badge } from "@/components/ui";
+import { Card, Button, Input, Table, Badge } from "@/components/ui"
 import { useCompras } from "../hooks/useCompras";
-import type { CompraFilters } from "../types";
+import type { CompraFilters, EstadoCompra } from "../types";
 
-export default function ComprasList() {
+
+  
+  // Mapeo visual del estado (UI layer)
+  const estadoVariantMap: Record<
+    EstadoCompra,
+    "success" | "warning" | "danger"
+  > = {
+    REALIZADA: "success",
+    PENDIENTE: "warning",
+    ANULADA: "danger",
+  };
+
+
+  export default function ComprasList() {
+
   const navigate = useNavigate();
 
   const {
@@ -17,11 +31,17 @@ export default function ComprasList() {
     isLoading,
     error,
     fetchCompras,
-    deleteCompra,
     applyFilters,
+    confirmarCompra,
+    anularCompra,
+    loadingConfirm,
+    loadingAnular,
   } = useCompras();
 
+
   const [searchTerm, setSearchTerm] = useState("");
+
+  
 
   // Cargar compras al montar
   useEffect(() => {
@@ -35,16 +55,28 @@ export default function ComprasList() {
     applyFilters(filters);
   };
 
-  // Eliminación
-  const handleDelete = async (id: number) => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar esta compra?")) {
-      try {
-        await deleteCompra(id);
-      } catch (err) {
-        console.error("Error al eliminar compra:", err);
-      }
-    }
+  const handleConfirmar = async (id: number) => {
+    const confirm = window.confirm(
+      "¿Confirmar esta compra? Esto actualizará el inventario.",
+    );
+    if (!confirm) return;
+
+    await confirmarCompra(id);
   };
+
+  const handleAnular = async (id: number) => {
+    const motivo = window.prompt("Motivo de la anulación:");
+
+    if (!motivo) {
+      alert("Debes ingresar un motivo.");
+      return;
+    }
+
+    await anularCompra(id, motivo);
+  };
+
+
+
 
   // Loading inicial
   if (isLoading && compras.length === 0) {
@@ -159,30 +191,52 @@ export default function ComprasList() {
                     <td className="py-3 px-4 text-right text-gray-900">
                       ${compra.total.toLocaleString("es-CO")}
                     </td>
+
                     <td className="py-3 px-4 text-center">
-                      <Badge variant={compra.estado ? "success" : "danger"}>
-                        {compra.estado ? "Confirmada" : "Anulada"}
+                      <Badge variant={estadoVariantMap[compra.estado]}>
+                        {compra.estado}
                       </Badge>
                     </td>
+
                     <td className="py-3 px-4 text-center">
                       <div className="flex items-center justify-center gap-2">
-                        <Button
-                          size="sm"
-                          onClick={() =>
-                            navigate(`../compras/${compra.id}/editar`, {
-                              relative: "route",
-                            })
-                          }
-                        >
-                          Editar
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="danger"
-                          onClick={() => handleDelete(compra.id)}
-                        >
-                          Eliminar
-                        </Button>
+                        {/* Solo se puede editar si está pendiente */}
+                        {compra.estado === "PENDIENTE" && (
+                          <Button
+                            size="sm"
+                            onClick={() =>
+                              navigate(`../compras/${compra.id}/editar`, {
+                                relative: "route",
+                              })
+                            }
+                          >
+                            Editar
+                          </Button>
+                        )}
+
+                        {/* Confirmar solo si está pendiente */}
+                        {compra.estado === "PENDIENTE" && (
+                          <Button
+                            size="sm"
+                            variant="success"
+                            onClick={() => handleConfirmar(compra.id)}
+                          >
+                            {loadingConfirm ? "Confirmando..." : "Confirmar"}
+                            Confirmar
+                          </Button>
+                        )}
+
+                        {/* Anular si no está anulada */}
+                        {compra.estado !== "ANULADA" && (
+                          <Button
+                            size="sm"
+                            variant="danger"
+                            onClick={() => handleAnular(compra.id)}
+                          >
+                            {loadingAnular ? "Anulando..." : "Anular"}
+                            Anular
+                          </Button>
+                        )}
                       </div>
                     </td>
                   </tr>

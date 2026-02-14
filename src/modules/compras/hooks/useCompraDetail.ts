@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { comprasAPI } from "../api/compras.api";
 import type { CompraDetail } from "../types";
 
@@ -6,7 +6,7 @@ export function useCompraDetail() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const getCompra = async (id: number): Promise<CompraDetail> => {
+  const getCompra = useCallback(async (id: number): Promise<CompraDetail> => {
     setLoading(true);
     setError(null);
 
@@ -18,7 +18,7 @@ export function useCompraDetail() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   return { getCompra, loading, error };
 }

@@ -68,35 +68,17 @@ export function ProductoForm({
    */
   const handleChange = (
     e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ) => {
-    const { name, value: inputValue, type } = e.target as HTMLInputElement;
+    const { name, value: inputValue } = e.target;
 
-    // Obtener checked solo si es checkbox
-    const checked =
-      type === "checkbox" ? (e.target as HTMLInputElement).checked : undefined;
-
-    // Convertir valor según el tipo de campo
-    let processedValue: string | number | boolean = inputValue;
-
-    if (type === "checkbox") {
-      processedValue = checked ?? false;
-    } else if (
-      ["precio_venta", "precio_compra", "stock_minimo", "categoria"].includes(
-        name,
-      )
-    ) {
-      // Convertir a número, usar 0 si es inválido
-      processedValue = Number(inputValue) || 0;
-    }
-
-    // Actualizar estado del formulario
     onChange({
       ...value,
-      [name]: processedValue,
+      [name]: inputValue,
     });
   };
+
 
   /**
    * Valida el formulario antes de enviar

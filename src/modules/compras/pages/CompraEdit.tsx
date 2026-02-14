@@ -79,54 +79,49 @@ export default function CompraEdit() {
    * Esto asegura que los dropdowns tengan opciones cuando se mapeen los datos
    */
   useEffect(() => {
+    if (!id) return;
+    if (loadingProveedores || loadingProductos) return;
+
     const loadCompra = async () => {
-      if (!id) {
-        console.error("❌ No se proporcionó ID de compra");
-        navigate("/compras");
-        return;
-      }
-
-      // Esperar a que terminen de cargar los catálogos
-      if (loadingProveedores || loadingProductos) {
-        console.log("⏳ Esperando catálogos...");
-        return;
-      }
-
-      // Verificar que haya proveedores y productos
-      if (proveedores.length === 0 || productos.length === 0) {
-        console.warn("⚠️ No hay proveedores o productos disponibles");
-        return;
-      }
-
-      console.log(`📥 Cargando compra ID: ${id}`);
-
       try {
-        const compra = await getCompra(Number(id));
-        console.log("✅ Compra cargada:", compra);
+        console.log(`🔍 Cargando compra con ID: ${id}`);
 
-        // Mapear datos a formato del formulario
+        const compra = await getCompra(Number(id));
+
+        console.log("📦 Compra recibida:", compra);
+        console.log("📦 Proveedor ID (correcto):", compra.proveedor_id);
+
+        // ✅ MAPEO CORREGIDO - usar "proveedor_id" en lugar de "proveedor"
         const mappedData: CompraFormData = {
-          proveedor:
-            typeof compra.proveedor === "number"
-              ? compra.proveedor
-              : compra.proveedor,
+          proveedor_id: Number(compra.proveedor_id), // 👈 CAMBIO AQUÍ
           fecha: compra.fecha,
-          observaciones: compra.observaciones ?? "",
+          observaciones: compra.observaciones || "",
           estado: compra.estado,
-          total: compra.total,
-          detalles: compra.detalles.map((d) => ({
-            producto: d.producto_id,
-            cantidad: d.cantidad,
-            precio_unitario: d.precio_compra,
-            subtotal: d.cantidad * d.precio_compra,
-          })),
+          total: parseFloat(compra.total.toString()) || 0,
+          detalles: (compra.detalles || []).map((d) => {
+            console.log("  📦 Mapeando detalle:", {
+              producto: d.producto_id,
+              cantidad: d.cantidad,
+              precio_compra: d.precio_compra,
+            });
+
+            return {
+              producto: Number(d.producto_id), // 👈 También sin _id
+              cantidad: Number(d.cantidad),
+              precio_unitario: Number(d.precio_compra),
+              subtotal: Number(d.cantidad) * Number(d.precio_compra),
+            };
+          }),
         };
 
+        console.log("✅ Datos mapeados correctamente:", mappedData);
+
         setFormData(mappedData);
-        console.log("✅ Compra mapeada:", mappedData);
       } catch (err) {
-        console.error("❌ Error al cargar compra:", err);
-        alert("Error al cargar la compra. Será redirigido al listado.");
+        console.error("❌ Error al cargar la compra:", err);
+        alert(
+          `Error al cargar la compra: ${err instanceof Error ? err.message : "Error desconocido"}`,
+        );
         navigate("/compras");
       } finally {
         setLoading(false);
@@ -134,15 +129,7 @@ export default function CompraEdit() {
     };
 
     loadCompra();
-  }, [
-    id,
-    getCompra,
-    navigate,
-    loadingProveedores,
-    loadingProductos,
-    proveedores.length,
-    productos.length,
-  ]);
+  }, [id, getCompra, navigate, loadingProveedores, loadingProductos]);
 
   /**
    * ✅ Validaciones del lado del cliente
@@ -153,7 +140,7 @@ export default function CompraEdit() {
     }
 
     // Validar proveedor
-    if (!formData.proveedor || formData.proveedor === 0) {
+    if (!formData.proveedor_id || formData.proveedor_id === 0) {
       return { valid: false, message: "Debes seleccionar un proveedor" };
     }
 
@@ -201,7 +188,7 @@ export default function CompraEdit() {
    */
   const convertToAPIFormat = (data: CompraFormData): CompraUpdateInput => {
     return {
-      proveedor: data.proveedor,
+      proveedor_id: data.proveedor_id,
       fecha: data.fecha,
       observaciones: data.observaciones?.trim() || undefined,
       estado: data.estado,
@@ -287,6 +274,7 @@ export default function CompraEdit() {
   /**
    * ❌ Mostrar error si no se pudieron cargar los catálogos
    */
+  
   if (errorProveedores || errorProductos) {
     return (
       <div className="flex items-center justify-center min-h-screen">

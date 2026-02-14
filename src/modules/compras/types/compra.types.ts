@@ -20,6 +20,7 @@ export interface ProveedorSimple {
   id: number;
   nombre: string;
 }
+export type EstadoCompra = "PENDIENTE" | "REALIZADA" | "ANULADA";
 
 // ===============================
 // Compra
@@ -30,7 +31,7 @@ export interface Compra {
   fecha: string; // YYYY-MM-DD
   observaciones?: string;
   total: number;
-  estado: boolean;
+  estado: EstadoCompra;
   fecha_creacion?: string;
   fecha_actualizacion?: string;
 }
@@ -80,7 +81,7 @@ export interface CompraUpdateInput {
   proveedor_id?: number;
   fecha?: string;
   observaciones?: string;
-  estado?: boolean;
+  estado?: EstadoCompra;
   detalles?: CompraDetalleCreateInput[];
 }
 
@@ -99,7 +100,7 @@ export interface CompraDetalleCreateInput {
 export interface CompraFilters {
   search?: string;
   proveedor_id?: number;
-  estado?: boolean;
+  estado?: EstadoCompra;
   fecha_inicio?: string;
   fecha_fin?: string;
 }
@@ -130,7 +131,7 @@ export interface CompraFormValues {
   proveedor_id: number; // siempre number en UI
   fecha: string;
   observaciones?: string;
-  estado?: boolean;
+  estado?: EstadoCompra;
   detalles: {
     producto_id: number;
     cantidad: number;

@@ -222,7 +222,6 @@ import type { CompraFilters, EstadoCompra } from "../types";
                             onClick={() => handleConfirmar(compra.id)}
                           >
                             {loadingConfirm ? "Confirmando..." : "Confirmar"}
-                            Confirmar
                           </Button>
                         )}
 
@@ -234,7 +233,6 @@ import type { CompraFilters, EstadoCompra } from "../types";
                             onClick={() => handleAnular(compra.id)}
                           >
                             {loadingAnular ? "Anulando..." : "Anular"}
-                            Anular
                           </Button>
                         )}
                       </div>

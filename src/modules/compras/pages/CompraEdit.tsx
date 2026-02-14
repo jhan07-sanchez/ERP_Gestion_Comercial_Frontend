@@ -93,20 +93,20 @@ export default function CompraEdit() {
 
         // ✅ MAPEO CORREGIDO - usar "proveedor_id" en lugar de "proveedor"
         const mappedData: CompraFormData = {
-          proveedor_id: Number(compra.proveedor_id), // 👈 CAMBIO AQUÍ
+          proveedor_id: Number(compra.proveedor) || 0, // 👈 CAMBIO AQUÍ
           fecha: compra.fecha,
           observaciones: compra.observaciones || "",
           estado: compra.estado,
           total: parseFloat(compra.total.toString()) || 0,
           detalles: (compra.detalles || []).map((d) => {
             console.log("  📦 Mapeando detalle:", {
-              producto: d.producto_id,
+              producto: d.producto,
               cantidad: d.cantidad,
               precio_compra: d.precio_compra,
             });
 
             return {
-              producto: Number(d.producto_id), // 👈 También sin _id
+              producto: Number(d.producto), // 👈 También sin _id
               cantidad: Number(d.cantidad),
               precio_unitario: Number(d.precio_compra),
               subtotal: Number(d.cantidad) * Number(d.precio_compra),
@@ -274,7 +274,7 @@ export default function CompraEdit() {
   /**
    * ❌ Mostrar error si no se pudieron cargar los catálogos
    */
-  
+
   if (errorProveedores || errorProductos) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -342,6 +342,7 @@ export default function CompraEdit() {
 
       {/* Formulario */}
       <CompraForm
+        key={`compra-${formData.proveedor_id}-${formData.detalles.length}`}
         mode="edit"
         value={formData}
         proveedores={proveedores}

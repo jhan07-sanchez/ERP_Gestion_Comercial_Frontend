@@ -50,7 +50,7 @@ export interface CompraList extends Compra {
 export interface CompraDetalle {
   id: number;
   compra: number;
-  producto_id: number;
+  producto: number;
   cantidad: number;
   precio_compra: number;
   subtotal: number;
@@ -61,8 +61,12 @@ export interface CompraDetalle {
 // ===============================
 export interface CompraDetail extends Compra {
   detalles: CompraDetalle[];
+  proveedor: number; // ✅ Django envía esto
+  proveedor_nombre?: string; // ✅ Django también envía esto
+  proveedor_info?: ProveedorSimple; // ✅ Y esto
+  fecha: string;
+  estado: EstadoCompra;
 }
-
 
 // ===============================
 // Compra para crear
@@ -133,7 +137,7 @@ export interface CompraFormValues {
   observaciones?: string;
   estado?: EstadoCompra;
   detalles: {
-    producto_id: number;
+    producto: number;
     cantidad: number;
     precio_compra: number;
   }[];

@@ -71,4 +71,10 @@ export const productosAPI = {
       movimientos: MovimientoInventario[];
     };
   },
+
+  getSiguienteCodigo: async (): Promise<{ codigo: string }> => {
+    const response = await axiosInstance.get(`${API_BASE}/siguiente_codigo/`);
+    return response.data;
+    },
+
 };

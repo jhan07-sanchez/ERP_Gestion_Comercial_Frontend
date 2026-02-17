@@ -85,6 +85,21 @@ export function useProductoActions(onRefresh?: () => Promise<void>) {
     [onRefresh],
   );
 
+  const getSiguienteCodigo = useCallback(async (): Promise<string> => {
+    try {
+      const response = await productosAPI.getSiguienteCodigo();
+      return response.codigo;
+    } catch (err) {
+      const msg =
+        err instanceof Error
+          ? err.message
+          : "Error al obtener siguiente código";
+      setError(msg);
+      throw new Error(msg);
+    }
+  }, []);
+
+
   return {
     error,
     getProducto,
@@ -93,5 +108,6 @@ export function useProductoActions(onRefresh?: () => Promise<void>) {
     deleteProducto,
     activarProducto,
     desactivarProducto,
+    getSiguienteCodigo,
   };
 }

@@ -14,6 +14,7 @@ import ProductoEdit from '@/modules/inventario/pages/ProductoEdit';
 import ComprasList from '@/modules/compras/pages/ComprasList';
 import CompraCreate from '@/modules/compras/pages/CompraCreate';
 import CompraEdit from "@/modules/compras/pages/CompraEdit";
+import CompraDetalles from "@/modules/compras/pages/CompraDetalles";
 import ProveedorList from '@/modules/proveedores/pages/ProveedorList';
 import ProveedorCreate from '@/modules/proveedores/pages/ProveedorCreate';
 import { Dashboard } from '@/modules/dashboard'; //  Importar del módulo dashboard
@@ -42,5 +43,6 @@ export const protectedRouteComponents: Record<
   ComprasList,
   CompraCreate,
   CompraEdit,
+  CompraDetalles,
 
 };

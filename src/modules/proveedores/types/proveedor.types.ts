@@ -28,12 +28,14 @@ export interface ProveedorSimple {
 // ===============================
 // Proveedor para listar
 // ===============================
-export interface ProveedorList extends Proveedor {}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface ProveedorList extends Proveedor { }
 
 // ===============================
 // Proveedor DETAIL
 // ===============================
-export interface ProveedorDetail extends Proveedor {}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface ProveedorDetail extends Proveedor { }
 
 // ===============================
 // Proveedor para crear

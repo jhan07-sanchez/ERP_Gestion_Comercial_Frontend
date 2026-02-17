@@ -5,25 +5,19 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, Button, Input, Table, Badge } from "@/components/ui"
+import { Card, Button, Input, Table, Badge } from "@/components/ui";
 import { useCompras } from "../hooks/useCompras";
 import type { CompraFilters, EstadoCompra } from "../types";
 
-
-  
-  // Mapeo visual del estado (UI layer)
-  const estadoVariantMap: Record<
-    EstadoCompra,
-    "success" | "warning" | "danger"
-  > = {
+// Mapeo visual del estado (UI layer)
+const estadoVariantMap: Record<EstadoCompra, "success" | "warning" | "danger"> =
+  {
     REALIZADA: "success",
     PENDIENTE: "warning",
     ANULADA: "danger",
   };
 
-
-  export default function ComprasList() {
-
+export default function ComprasList() {
   const navigate = useNavigate();
 
   const {
@@ -38,10 +32,7 @@ import type { CompraFilters, EstadoCompra } from "../types";
     loadingAnular,
   } = useCompras();
 
-
   const [searchTerm, setSearchTerm] = useState("");
-
-  
 
   // Cargar compras al montar
   useEffect(() => {
@@ -74,9 +65,6 @@ import type { CompraFilters, EstadoCompra } from "../types";
 
     await anularCompra(id, motivo);
   };
-
-
-
 
   // Loading inicial
   if (isLoading && compras.length === 0) {
@@ -162,13 +150,19 @@ import type { CompraFilters, EstadoCompra } from "../types";
                     Nº
                   </th>
                   <th className="text-left py-3 px-4 font-semibold text-gray-900">
+                    Nº Compra
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
                     Proveedor
                   </th>
                   <th className="text-left py-3 px-4 font-semibold text-gray-900">
                     Fecha
                   </th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
+                    Producto
+                  </th>
                   <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Total
+                    Total compra
                   </th>
                   <th className="text-center py-3 px-4 font-semibold text-gray-900">
                     Estado
@@ -183,11 +177,18 @@ import type { CompraFilters, EstadoCompra } from "../types";
                   <tr key={compra.id} className="border-b hover:bg-gray-50">
                     <td className="py-3 px-4 text-gray-700">{compra.id}</td>
                     <td className="py-3 px-4 text-gray-900 font-medium">
+                      {compra.numero_compra || "----"}
+                    </td>
+                    <td className="py-3 px-4 text-gray-900 font-medium">
                       {compra.proveedor_info?.nombre || "----"}
                     </td>
                     <td className="py-3 px-4 text-gray-600">
                       {new Date(compra.fecha).toLocaleDateString("es-CO")}
                     </td>
+                    <td className="py-3 px-4 text-gray-600">
+                      {compra.productos_resumen || "----"}
+                    </td>
+
                     <td className="py-3 px-4 text-right text-gray-900">
                       ${compra.total.toLocaleString("es-CO")}
                     </td>
@@ -235,6 +236,17 @@ import type { CompraFilters, EstadoCompra } from "../types";
                             {loadingAnular ? "Anulando..." : "Anular"}
                           </Button>
                         )}
+
+                        {/*Detalles de la compra*/}
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          onClick={() =>
+                            navigate(`../compras/${compra.id}/detalles`)
+                          }
+                        >
+                          Ver detalle
+                        </Button>
                       </div>
                     </td>
                   </tr>

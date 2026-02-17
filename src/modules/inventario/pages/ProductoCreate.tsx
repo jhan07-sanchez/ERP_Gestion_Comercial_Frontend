@@ -18,7 +18,7 @@ export default function ProductoCreate() {
   // ✅ AGREGADO: codigo en estado inicial
   const [formData, setFormData] = useState<ProductoFormData>({
     nombre: "",
-    codigo: "", // Campo editable ahora
+    codigo: "", // Nuevo campo para código único
     descripcion: "",
     categoria: 0,
     precio_venta: 0,
@@ -30,7 +30,6 @@ export default function ProductoCreate() {
   const convertToAPIFormat = (data: ProductoFormData) => {
     return {
       nombre: data.nombre.trim(),
-      codigo: data.codigo.trim(), // Código manual del usuario
       descripcion: data.descripcion?.trim() || undefined,
       categoria: data.categoria, // ✅ CLAVE: DRF espera "categoria", no "categoria_id"
       precio_venta: data.precio_venta,

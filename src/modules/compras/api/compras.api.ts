@@ -48,7 +48,6 @@ export const comprasAPI = {
     return response.data;
   },
 
-
   updateCompra: async (
     id: number,
     data: CompraUpdateInput,

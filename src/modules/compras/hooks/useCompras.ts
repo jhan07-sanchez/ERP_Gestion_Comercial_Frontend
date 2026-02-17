@@ -3,7 +3,6 @@ import { useCompraActions } from "./useCompraActions";
 import { useCompraDetail } from "./useCompraDetail";
 import type { Compra } from "../types";
 
-
 export function useCompras() {
   const list = useComprasList();
   const actions = useCompraActions(async (compraActualizada) => {
@@ -13,7 +12,6 @@ export function useCompras() {
           c.id === compraActualizada.id ? compraActualizada : c,
         ),
       );
-
     }
   });
 

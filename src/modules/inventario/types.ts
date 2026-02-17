@@ -38,7 +38,7 @@ export interface ProductoList extends Producto {
 // Producto para crear
 export interface ProductoCreateInput {
   nombre: string;
-  codigo: string;
+  codigo?: string;
   descripcion?: string;
   categoria: number;
   precio_venta: number;

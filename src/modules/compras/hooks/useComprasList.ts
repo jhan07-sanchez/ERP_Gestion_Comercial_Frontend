@@ -58,6 +58,6 @@ export function useComprasList() {
     fetchCompras,
     applyFilters,
     changePage,
-    setCompras
+    setCompras,
   };
 }

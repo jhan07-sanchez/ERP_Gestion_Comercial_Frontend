@@ -90,16 +90,6 @@ export function ProductoForm({
       alert("El nombre del producto es obligatorio");
       return false;
     }
-    // ✅ Validar código en modo creación
-    if (mode === "create" && (!value.codigo || !value.codigo.trim())) {
-      alert("El código del producto es obligatorio");
-      return false;
-    }
-
-    if (mode === "create" && value.codigo.trim().length < 3) {
-      alert("El código debe tener al menos 3 caracteres");
-      return false;
-    }
 
     if (!value.categoria || value.categoria === 0) {
       alert("Debes seleccionar una categoría");
@@ -174,18 +164,14 @@ export function ProductoForm({
 
               {/* Campo Código: editable en creación, deshabilitado en edición */}
               <Input
-                label="Código"
-                name="codigo" // ← Agregar name para que handleChange lo capture
-                value={value.codigo || ""}
-                onChange={handleChange}
-                disabled={mode === "edit"} // ← Solo deshabilitado en edición
-                required={mode === "create"}
-                placeholder={mode === "create" ? "Ej: PROD-000001" : ""}
-                helperText={
-                  mode === "create"
-                    ? "Ingresa un código único para el producto (ej: PROD-000001)"
-                    : "Código único asignado por el sistema - No modificable"
-                }
+              label="Código"
+              name="codigo"
+              value={value.codigo || ""}
+              readOnly
+              disabled
+              helperText="Código generado automáticamente por el sistema"
+              placeholder="Se generará automáticamente"
+
               />
 
               <div className="md:col-span-2">

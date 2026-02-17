@@ -19,6 +19,9 @@ export interface Proveedor {
 export interface ProveedorSimple {
   id: number;
   nombre: string;
+  documento?: string;
+  telefono?: string;
+  email?: string;
 }
 export type EstadoCompra = "PENDIENTE" | "REALIZADA" | "ANULADA";
 
@@ -27,6 +30,7 @@ export type EstadoCompra = "PENDIENTE" | "REALIZADA" | "ANULADA";
 // ===============================
 export interface Compra {
   id: number;
+  numero_compra: string;
   proveedor_id: number;
   fecha: string; // YYYY-MM-DD
   observaciones?: string;
@@ -34,6 +38,14 @@ export interface Compra {
   estado: EstadoCompra;
   fecha_creacion?: string;
   fecha_actualizacion?: string;
+  estado_badge: {
+    color: "success" | "warning" | "danger";
+    texto: string;
+    icono: string;
+  };
+  created_at: string;
+  total_productos?: number;
+  total_unidades?: number;
 }
 
 // ===============================
@@ -42,6 +54,7 @@ export interface Compra {
 export interface CompraList extends Compra {
   proveedor_info?: ProveedorSimple;
   total_items?: number;
+  productos_resumen?: string;
 }
 
 // ===============================
@@ -51,9 +64,24 @@ export interface CompraDetalle {
   id: number;
   compra: number;
   producto: number;
+  producto_nombre: string;
   cantidad: number;
   precio_compra: number;
   subtotal: number;
+  margen_potencial: {
+    precio_venta_actual: number;
+    ganancia_unitaria: number;
+    ganancia_total: number;
+    margen_porcentaje: number;
+    valor_compra: number;
+    valor_venta_potencial: number;
+    ganancia_potencial: number;
+  };
+  motivo_anulacion?: string | null;
+  // PERMISOS INLINE
+  puede_editar: boolean;
+  puede_confirmar: boolean;
+  puede_anular: boolean;
 }
 
 // ===============================
@@ -61,11 +89,19 @@ export interface CompraDetalle {
 // ===============================
 export interface CompraDetail extends Compra {
   detalles: CompraDetalle[];
-  proveedor: number; // ✅ Django envía esto
-  proveedor_nombre?: string; // ✅ Django también envía esto
-  proveedor_info?: ProveedorSimple; // ✅ Y esto
+  proveedor: number;
+  proveedor_nombre?: string;
+  usuario_nombre?: string;
+  usuario_email?: string;
+  proveedor_info: ProveedorSimple;
   fecha: string;
   estado: EstadoCompra;
+  margen_potencial: {
+    valor_compra: number;
+    valor_venta_potencial: number;
+    ganancia_potencial: number;
+    margen_porcentaje: number;
+  };
 }
 
 // ===============================
@@ -103,6 +139,8 @@ export interface CompraDetalleCreateInput {
 // ===============================
 export interface CompraFilters {
   search?: string;
+  numero_compra?: number;
+  proveedor_nombre?: string;
   proveedor_id?: number;
   estado?: EstadoCompra;
   fecha_inicio?: string;
@@ -141,4 +179,17 @@ export interface CompraFormValues {
     cantidad: number;
     precio_compra: number;
   }[];
+}
+
+export interface ApiSuccessResponse<T> {
+  success: boolean;
+  message?: string;
+  data: T;
+}
+
+export interface PaginationState {
+  currentPage: number;
+  totalPages: number;
+  pageSize: number;
+  totalCount: number;
 }

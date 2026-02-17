@@ -16,15 +16,13 @@ import { comprasAPI } from "../api/compras.api";
 import type { AxiosError } from "axios";
 import type { Compra, CompraCreateInput, CompraUpdateInput } from "../types";
 
-
-
 interface ApiError {
   detail?: string;
   [key: string]: unknown;
 }
 
 export function useCompraActions(
-  onSuccess?: (compra?: Compra) => Promise<void> | void
+  onSuccess?: (compra?: Compra) => Promise<void> | void,
 ) {
   // Estados separados para cada operación
   const [loadingCreate, setLoadingCreate] = useState(false);
@@ -32,7 +30,6 @@ export function useCompraActions(
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [loadingConfirm, setLoadingConfirm] = useState(false);
   const [loadingAnular, setLoadingAnular] = useState(false);
-
 
   const [error, setError] = useState<string | null>(null);
 
@@ -53,7 +50,7 @@ export function useCompraActions(
       // Enviar directamente al API
       const newCompra = await comprasAPI.createCompra(data);
 
-        console.log("✅ [useCompraActions] Compra creada:", newCompra);
+      console.log("✅ [useCompraActions] Compra creada:", newCompra);
 
       if (onSuccess) {
         await onSuccess();
@@ -77,7 +74,6 @@ export function useCompraActions(
       setLoadingCreate(false);
     }
   };
-
 
   /**
    * Actualizar compra existente
@@ -182,70 +178,68 @@ export function useCompraActions(
   };
 
   // Acciones de confirmar y anular compra
-    const confirmarCompra = async (id: number): Promise<Compra | null> => {
-      try {
-        setLoadingConfirm(true);
-        setError(null);
+  const confirmarCompra = async (id: number): Promise<Compra | null> => {
+    try {
+      setLoadingConfirm(true);
+      setError(null);
 
-        const response = await comprasAPI.confirmarCompra(id);
+      const response = await comprasAPI.confirmarCompra(id);
 
-        if (onSuccess) {
-          await onSuccess(response.compra ?? response);
-        }
-
-        return response.compra ?? response;
-      } catch (err) {
-        const axiosError = err as AxiosError<ApiError>;
-
-        let errorMessage = "Error al confirmar la compra";
-
-        if (axiosError.response?.data?.detail) {
-          errorMessage = axiosError.response.data.detail;
-        } else if (axiosError.message) {
-          errorMessage = axiosError.message;
-        }
-
-        setError(errorMessage);
-        return null;
-      } finally {
-        setLoadingConfirm(false);
+      if (onSuccess) {
+        await onSuccess(response.compra ?? response);
       }
-    };
 
-    const anularCompra = async (
-      id: number,
-      motivo: string,
-    ): Promise<Compra | null> => {
-      try {
-        setLoadingAnular(true);
-        setError(null);
+      return response.compra ?? response;
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
 
-        const response = await comprasAPI.anularCompra(id , motivo);
+      let errorMessage = "Error al confirmar la compra";
 
-        if (onSuccess) {
-          await onSuccess(response.compra ?? response);
-        }
-
-        return response.compra ?? response;
-      } catch (err) {
-        const axiosError = err as AxiosError<ApiError>;
-
-        let errorMessage = "Error al anular la compra";
-
-        if (axiosError.response?.data?.detail) {
-          errorMessage = axiosError.response.data.detail;
-        } else if (axiosError.message) {
-          errorMessage = axiosError.message;
-        }
-
-        setError(errorMessage);
-        return null;
-      } finally {
-        setLoadingAnular(false);
+      if (axiosError.response?.data?.detail) {
+        errorMessage = axiosError.response.data.detail;
+      } else if (axiosError.message) {
+        errorMessage = axiosError.message;
       }
-    };
 
+      setError(errorMessage);
+      return null;
+    } finally {
+      setLoadingConfirm(false);
+    }
+  };
 
+  const anularCompra = async (
+    id: number,
+    motivo: string,
+  ): Promise<Compra | null> => {
+    try {
+      setLoadingAnular(true);
+      setError(null);
+
+      const response = await comprasAPI.anularCompra(id, motivo);
+
+      if (onSuccess) {
+        await onSuccess(response.compra ?? response);
+      }
+
+      return response.compra ?? response;
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
+
+      let errorMessage = "Error al anular la compra";
+
+      if (axiosError.response?.data?.detail) {
+        errorMessage = axiosError.response.data.detail;
+      } else if (axiosError.message) {
+        errorMessage = axiosError.message;
+      }
+
+      setError(errorMessage);
+      return null;
+    } finally {
+      setLoadingAnular(false);
+    }
+  };
 
   // Estado de loading consolidado (cualquier operación en curso)
   const loading =
@@ -256,17 +250,17 @@ export function useCompraActions(
     loadingAnular;
 
   return {
-  createCompra,
-  updateCompra,
-  deleteCompra,
-  confirmarCompra,
-  anularCompra,
-  loading,
-  loadingCreate,
-  loadingUpdate,
-  loadingDelete,
-  loadingConfirm,
-  loadingAnular,
-  error,
+    createCompra,
+    updateCompra,
+    deleteCompra,
+    confirmarCompra,
+    anularCompra,
+    loading,
+    loadingCreate,
+    loadingUpdate,
+    loadingDelete,
+    loadingConfirm,
+    loadingAnular,
+    error,
   };
 }

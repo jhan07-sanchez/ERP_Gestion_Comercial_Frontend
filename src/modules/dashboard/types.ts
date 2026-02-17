@@ -6,17 +6,20 @@
 
 // Estadísticas de KPI
 export interface KPIStats {
+  totalProducts: number;
+  productsTrend: "up" | "down" | "stable";
+  productsPercentage: number;
   totalSales: number;
-  salesTrend: 'up' | 'down' | 'stable';
+  salesTrend: "up" | "down" | "stable";
   salesPercentage: number;
   pendingOrders: number;
-  ordersTrend: 'up' | 'down' | 'stable';
+  ordersTrend: "up" | "down" | "stable";
   ordersPercentage: number;
   lowStockProducts: number;
-  stockTrend: 'up' | 'down' | 'stable';
+  stockTrend: "up" | "down" | "stable";
   stockPercentage: number;
   newCustomers: number;
-  customersTrend: 'up' | 'down' | 'stable';
+  customersTrend: "up" | "down" | "stable";
   customersPercentage: number;
 }
 

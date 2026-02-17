@@ -196,69 +196,102 @@ export function CompraForm({
   return (
     <Card>
       <Card.Content>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-8">
           {/* Error */}
           {error && (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div className="p-4 bg-red-50 border border-red-200 rounded-xl shadow-sm">
               <p className="text-red-700 font-medium">{error}</p>
             </div>
           )}
 
           {/* Información general */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <select
-              name="proveedor_id"
-              value={value.proveedor_id || 0}
-              onChange={(e) =>
-                onChange({
-                  ...value,
-                  proveedor_id: Number(e.target.value), //  aquí convertimos
-                })
-              }
-              disabled={submitting}
-              className="w-full px-4 py-2 border rounded-lg"
-            >
-              <option value={0}>Seleccionar proveedor</option>
-              {proveedores.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.nombre}
-                </option>
-              ))}
-            </select>
+          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-6">
+            <h3 className="text-lg font-semibold text-gray-800">
+              Información General
+            </h3>
 
-            <Input
-              type="date"
-              name="fecha"
-              label="Fecha"
-              value={value.fecha}
-              onChange={handleChange}
-              disabled={submitting}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Proveedor */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-600">
+                  Proveedor
+                </label>
+                <select
+                  name="proveedor_id"
+                  value={value.proveedor_id || 0}
+                  onChange={(e) =>
+                    onChange({
+                      ...value,
+                      proveedor_id: Number(e.target.value),
+                    })
+                  }
+                  disabled={submitting}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+                >
+                  <option value={0}>Seleccionar proveedor</option>
+                  {proveedores.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Fecha */}
+              <Input
+                type="date"
+                name="fecha"
+                label="Fecha"
+                value={value.fecha}
+                onChange={handleChange}
+                disabled={submitting}
+              />
+            </div>
+
+            {/* Observaciones */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-600">
+                Observaciones
+              </label>
+              <textarea
+                name="observaciones"
+                value={value.observaciones ?? ""}
+                onChange={handleChange}
+                rows={3}
+                placeholder="Escribe una nota adicional sobre la compra..."
+                className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition resize-none"
+                disabled={submitting}
+              />
+            </div>
           </div>
-
-          {/* Observaciones */}
-          <textarea
-            name="observaciones"
-            value={value.observaciones ?? ""}
-            onChange={handleChange}
-            rows={3}
-            placeholder="Observaciones..."
-            className="w-full border rounded-lg p-3"
-            disabled={submitting}
-          />
 
           {/* Detalles */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Productos</h3>
+            <h3 className="text-lg font-semibold">Seleccionar productos</h3>
+
+            {/* Encabezado tipo tabla */}
+            {value.detalles.length > 0 && (
+              <div className="grid grid-cols-5 gap-3 bg-gray-100 px-3 py-2 rounded-lg font-semibold text-sm text-gray-600">
+                <div>Producto</div>
+                <div className="text-center">Cantidad</div>
+                <div className="text-center">Precio Unitario</div>
+                <div className="text-right">Subtotal</div>
+                <div></div>
+              </div>
+            )}
 
             {value.detalles.map((detalle, index) => (
-              <div key={index} className="grid grid-cols-5 gap-3 items-center">
+              <div
+                key={index}
+                className="grid grid-cols-5 gap-3 items-center bg-white px-3 py-2 rounded-lg border border-gray-200 shadow-sm"
+              >
+                {/* Producto */}
                 <select
                   value={detalle.producto || 0}
                   onChange={(e) =>
                     updateDetalle(index, "producto", Number(e.target.value))
                   }
-                  className="border rounded-lg px-2 py-1"
+                  className="border rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 >
                   <option value={0}>Producto</option>
                   {productos.map((p) => (
@@ -268,8 +301,10 @@ export function CompraForm({
                   ))}
                 </select>
 
+                {/* Cantidad */}
                 <Input
                   type="number"
+                  label=""
                   value={detalle.cantidad}
                   onChange={(e) =>
                     updateDetalle(index, "cantidad", Number(e.target.value))
@@ -277,8 +312,10 @@ export function CompraForm({
                   min={1}
                 />
 
+                {/* Precio Unitario */}
                 <Input
                   type="number"
+                  label=""
                   value={detalle.precio_unitario}
                   onChange={(e) =>
                     updateDetalle(
@@ -291,10 +328,12 @@ export function CompraForm({
                   step="0.01"
                 />
 
-                <div className="font-medium">
+                {/* Subtotal */}
+                <div className="font-semibold text-right text-green-600">
                   ${detalle.subtotal.toFixed(2)}
                 </div>
 
+                {/* Eliminar */}
                 <Button
                   type="button"
                   variant="danger"
@@ -311,8 +350,15 @@ export function CompraForm({
           </div>
 
           {/* Total */}
-          <div className="text-right text-xl font-bold">
-            Total: ${value.total.toFixed(2)}
+          <div className="flex justify-end">
+            <div className="bg-gray-900 text-white px-8 py-4 rounded-xl shadow-lg min-w-[250px] text-right">
+              <p className="text-sm uppercase tracking-wide text-gray-300">
+                Total de la Compra
+              </p>
+              <p className="text-3xl font-bold mt-1">
+                ${value.total.toFixed(2)}
+              </p>
+            </div>
           </div>
 
           {/* Estado (solo edit) */}

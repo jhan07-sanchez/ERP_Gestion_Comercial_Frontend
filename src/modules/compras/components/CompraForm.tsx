@@ -13,6 +13,8 @@
 
 import { Card, Button, Input } from "@/components/ui";
 import type { EstadoCompra } from "../types";
+import { formatCurrency } from "@/utils/formatters";
+
 
 /**
  * 🔹 Detalle de compra (UI ONLY)
@@ -314,23 +316,22 @@ export function CompraForm({
 
                 {/* Precio Unitario */}
                 <Input
-                  type="number"
+                  type="text"
                   label=""
-                  value={detalle.precio_unitario}
-                  onChange={(e) =>
-                    updateDetalle(
-                      index,
-                      "precio_unitario",
-                      Number(e.target.value),
-                    )
-                  }
-                  min={0}
-                  step="0.01"
+                  value={formatCurrency(detalle.precio_unitario)}
+                  onChange={(e) => {
+                    // quitar todo lo que no sea número
+                    const rawValue = e.target.value.replace(/\D/g, "");
+
+                    const numberValue = Number(rawValue) || 0;
+
+                    updateDetalle(index, "precio_unitario", numberValue);
+                  }}
                 />
 
                 {/* Subtotal */}
                 <div className="font-semibold text-right text-green-600">
-                  ${detalle.subtotal.toFixed(2)}
+                  {formatCurrency(detalle.subtotal)}
                 </div>
 
                 {/* Eliminar */}
@@ -356,7 +357,7 @@ export function CompraForm({
                 Total de la Compra
               </p>
               <p className="text-3xl font-bold mt-1">
-                ${value.total.toFixed(2)}
+                {formatCurrency(value.total)}
               </p>
             </div>
           </div>

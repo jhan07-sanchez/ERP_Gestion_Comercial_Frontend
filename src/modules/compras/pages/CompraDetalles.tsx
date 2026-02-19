@@ -3,6 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button, Card, Table} from "@/components/ui";
 import { useCompras } from "../hooks/useCompras";
 import type { CompraDetail } from "../types";
+import {
+  formatCurrency,
+  formatNumber,
+  numberClass,
+  formatPercentage,
+} from "@/utils/formatters";
+
 
 export default function CompraDetallePage() {
   const { id } = useParams<{ id: string }>();
@@ -77,14 +84,24 @@ export default function CompraDetallePage() {
               <strong>Fecha:</strong> {compra.fecha}
             </p>
             <p>
-              <strong>Total:</strong> $
-              {Number(compra.total).toLocaleString("es-CO")}
+              <strong>Total: </strong>
+              {""}
+              <span className={numberClass}>
+                {formatCurrency(compra.total)}
+              </span>
             </p>
             <p>
-              <strong>Total productos:</strong> {compra.total_productos}
+              <strong>Total productos: </strong> {""}
+              <span className={numberClass}>
+                {formatNumber(compra.total_productos)}
+              </span>
             </p>
             <p>
-              <strong>Total unidades:</strong> {compra.total_unidades}
+              <strong>Total unidades: </strong>
+              {""}
+              <span className={numberClass}>
+                {formatNumber(compra.total_unidades)}
+              </span>
             </p>
             <p>
               <strong>Registrado por:</strong> {compra.usuario_nombre}
@@ -101,25 +118,31 @@ export default function CompraDetallePage() {
           <h3 className="font-semibold text-lg">Margen Potencial</h3>
 
           <p>
-            <strong>Valor compra:</strong> $
-            {compra.margen_potencial.valor_compra.toLocaleString("es-CO")}
+            <strong>Valor compra: </strong>
+            <span className={numberClass}>
+              {formatCurrency(compra.margen_potencial.valor_compra)}
+            </span>
           </p>
 
           <p>
-            <strong>Valor venta potencial:</strong> $
-            {compra.margen_potencial.valor_venta_potencial.toLocaleString(
-              "es-CO",
-            )}
+            <strong>Valor venta potencial: </strong>
+            <span className={numberClass}>
+              {formatCurrency(compra.margen_potencial.valor_venta_potencial)}
+            </span>
           </p>
 
           <p className="text-green-600 font-semibold">
-            <strong>Ganancia potencial:</strong> $
-            {compra.margen_potencial.ganancia_potencial.toLocaleString("es-CO")}
+            <strong>Ganancia potencial: </strong>
+            <span className={numberClass}>
+              {formatCurrency(compra.margen_potencial.ganancia_potencial)}
+            </span>
           </p>
 
           <p>
-            <strong>Margen %:</strong>{" "}
-            {compra.margen_potencial.margen_porcentaje}%
+            <strong>Margen %: </strong>{" "}
+            <span className={numberClass}>
+              {formatPercentage(compra.margen_potencial.margen_porcentaje)}
+            </span>
           </p>
         </Card.Content>
       </Card>
@@ -148,27 +171,29 @@ export default function CompraDetallePage() {
                 <tr key={d.id}>
                   <td className="font-mono text-center">{d.producto}</td>
                   <td className="text-center">{d.producto_nombre}</td>
-                  <td className="font-mono text-center">{d.cantidad}</td>
-                  <td className="font-mono text-center">
-                    ${Number(d.precio_compra).toLocaleString("es-CO")}
+                  <td className={`text-center ${formatNumber}`}>
+                    {d.cantidad}
                   </td>
-                  <td className="font-mono text-center">
-                    ${Number(d.subtotal).toLocaleString("es-CO")}
-                  </td>
-
-                  <td className="text-green-600 text-center font-mono">
-                    $
-                    {d.margen_potencial.ganancia_unitaria.toLocaleString(
-                      "es-CO",
-                    )}
+                  <td className={`text-center ${numberClass}`}>
+                    {formatCurrency(d.precio_compra)}
                   </td>
 
-                  <td className="text-green-600 font-semibold text-center font-mono">
-                    ${d.margen_potencial.ganancia_total.toLocaleString("es-CO")}
+                  <td className={`text-center ${numberClass}`}>
+                    {formatCurrency(d.subtotal)}
                   </td>
 
-                  <td className="text-center font-mono">
-                    {d.margen_potencial.margen_porcentaje}%
+                  <td className={`text-green-600 text-center ${numberClass}`}>
+                    {formatCurrency(d.margen_potencial.ganancia_unitaria)}
+                  </td>
+
+                  <td
+                    className={`text-green-600 font-semibold text-center ${numberClass}`}
+                  >
+                    {formatCurrency(d.margen_potencial.ganancia_total)}
+                  </td>
+
+                  <td className={`text-center ${numberClass}`}>
+                    {formatPercentage(d.margen_potencial.margen_porcentaje)}
                   </td>
                 </tr>
               ))}

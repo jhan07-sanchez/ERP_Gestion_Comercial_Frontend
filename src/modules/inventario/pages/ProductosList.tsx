@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Card, Button, Input, Table, Badge } from "@/components/ui";
 import { useProductos } from "../hooks/useProductos";
 import type { ProductoFilters } from "../types";
+import { formatCurrency } from "@/utils/formatters";
 
 export default function ProductosList() {
   const navigate = useNavigate();
@@ -159,7 +160,7 @@ export default function ProductosList() {
                     </td>
 
                     <td className="py-3 px-4 text-right text-gray-900">
-                      ${producto.precio_venta.toLocaleString("es-CO")}
+                      {formatCurrency(producto.precio_venta)}
                     </td>
                     <td className="py-3 px-4 text-center">
                       <span

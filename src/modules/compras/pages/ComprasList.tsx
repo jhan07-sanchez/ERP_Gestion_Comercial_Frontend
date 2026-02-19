@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { Card, Button, Input, Table, Badge } from "@/components/ui";
 import { useCompras } from "../hooks/useCompras";
 import type { CompraFilters, EstadoCompra } from "../types";
+import { formatCurrency, truncateProductos} from "@/utils/formatters";
+
 
 // Mapeo visual del estado (UI layer)
 const estadoVariantMap: Record<EstadoCompra, "success" | "warning" | "danger"> =
@@ -147,9 +149,6 @@ export default function ComprasList() {
               <thead>
                 <tr className="border-b">
                   <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Nº
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
                     Nº Compra
                   </th>
                   <th className="text-left py-3 px-4 font-semibold text-gray-900">
@@ -175,7 +174,6 @@ export default function ComprasList() {
               <tbody>
                 {compras.map((compra) => (
                   <tr key={compra.id} className="border-b hover:bg-gray-50">
-                    <td className="py-3 px-4 text-gray-700">{compra.id}</td>
                     <td className="py-3 px-4 text-gray-900 font-medium">
                       {compra.numero_compra || "----"}
                     </td>
@@ -186,11 +184,12 @@ export default function ComprasList() {
                       {new Date(compra.fecha).toLocaleDateString("es-CO")}
                     </td>
                     <td className="py-3 px-4 text-gray-600">
-                      {compra.productos_resumen || "----"}
+                      {compra.productos_resumen
+                        ? truncateProductos(compra.productos_resumen)
+                        : "----"}
                     </td>
-
                     <td className="py-3 px-4 text-right text-gray-900">
-                      ${compra.total.toLocaleString("es-CO")}
+                      {formatCurrency(compra.total)}
                     </td>
 
                     <td className="py-3 px-4 text-center">

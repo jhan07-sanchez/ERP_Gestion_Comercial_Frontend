@@ -14,6 +14,7 @@
 import { Card, Button, Input } from "@/components/ui";
 import type { Categoria } from "../types";
 
+
 /**
  * Tipo de datos para el formulario
  * Usado SOLO en la UI, no es el payload del backend

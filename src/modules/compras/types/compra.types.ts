@@ -44,8 +44,8 @@ export interface Compra {
     icono: string;
   };
   created_at: string;
-  total_productos?: number;
-  total_unidades?: number;
+  total_productos: number;
+  total_unidades: number;
 }
 
 // ===============================

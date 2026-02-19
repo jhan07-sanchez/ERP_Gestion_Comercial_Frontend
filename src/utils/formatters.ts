@@ -25,6 +25,8 @@ export function formatCurrency(amount: number, showDecimals = false): string {
   }).format(amount);
 }
 
+
+
 /**
  * Formatear fecha en formato corto (DD/MM/YYYY)
  *
@@ -108,12 +110,19 @@ export function formatRelativeDate(dateString: string | Date): string {
  * formatNumber(1500000) // "1.500.000"
  * formatNumber(1500.5, 2) // "1.500,50"
  */
-export function formatNumber(value: number, decimals = 0): string {
-  return new Intl.NumberFormat("es-CO", {
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
-  }).format(value);
+/**
+ * Formatea número normal con separadores
+ */
+export function formatNumber(value: number | string): string {
+  const number = Number(value) || 0;
+
+  return new Intl.NumberFormat("es-CO").format(number);
 }
+
+/**
+ * Clase estándar para números (consistencia visual)
+ */
+export const numberClass = "font-mono tabular-nums";
 
 /**
  * Formatear porcentaje
@@ -126,9 +135,19 @@ export function formatNumber(value: number, decimals = 0): string {
  * formatPercentage(12.5) // "12,5%"
  * formatPercentage(100, 0) // "100%"
  */
-export function formatPercentage(value: number, decimals = 1): string {
+export function formatPercentage(value?: number, decimals = 1): string {
+  if (value === undefined || value === null || isNaN(value)) {
+    return "0%";
+  }
+
+  // protección contra valores absurdos
+  if (value > 10000) {
+    console.warn("Valor de porcentaje sospechoso:", value);
+  }
+
   return `${value.toFixed(decimals).replace(".", ",")}%`;
 }
+
 
 /**
  * Formatear teléfono colombiano
@@ -210,6 +229,25 @@ export function truncateText(text: string, maxLength: number): string {
 }
 
 /**
+ * Formatea lista de productos a formato resumen
+ *
+ * Ejemplo:
+ * "Xiaomi, Motorola, arroz" → "Xiaomi y 2 más..."
+ */
+export function truncateProductos(text: string): string {
+  if (!text) return "----";
+
+  const productos = text.split(",").map(p => p.trim());
+
+  if (productos.length === 0) return "----";
+
+  if (productos.length === 1) return productos[0];
+
+  return `${productos[0]} y ${productos.length - 1} más...`;
+}
+
+
+/**
  * Capitalizar primera letra
  *
  * @param text - Texto a capitalizar
@@ -257,4 +295,29 @@ export function getInitials(name: string): string {
     .join("")
     .toUpperCase()
     .slice(0, 2);
+}
+
+
+
+/**
+ * Formateo de montos monetarios.
+ * Fuente única para locale y símbolo.
+ */
+
+const defaultLocale = 'es-AR';
+const defaultCurrency = 'ARS';
+
+/**
+ * Formatea un número como moneda.
+ */
+export function formatMoney(
+  value: number,
+  options?: { locale?: string; currency?: string }
+): string {
+  const locale = options?.locale ?? defaultLocale;
+  const currency = options?.currency ?? defaultCurrency;
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency,
+  }).format(value);
 }

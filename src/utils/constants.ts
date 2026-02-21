@@ -19,6 +19,7 @@ export const ROUTES = {
   PROVEEDORES_CREAR: '/proveedores/crear',
   COMPRAS: '/compras',
   COMPRAS_CREAR: '/compras/crear',
+  COMPRAS_EDITAR: '/compras/:id/editar',
   REPORTES: '/reportes',
   CONFIGURACION: '/configuracion',
 } as const;

@@ -117,7 +117,7 @@ export default function ProductoEdit() {
    */
   const handleCancel = () => {
     if (submitting) return;
-    navigate("/productos");
+    navigate("/productos/lista");
   };
 
   if (loading || !formData) {

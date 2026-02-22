@@ -93,7 +93,7 @@ export const sidebarConfig: SidebarItem[] = [
         section: "Transaciones",
         items: [
           { label: "Nuevo producto", path: "/productos/crear" },
-          { label: "Lista de productos", path: "/productos" },
+          { label: "Lista de productos", path: "/productos/lista" },
           { label: "Categorias", path: "/productos/categorias" },
           { label: "Marcas", path: "/productos/marcas" },
           { label: "Ajuste de inventario", path: "/productos/inventario" },

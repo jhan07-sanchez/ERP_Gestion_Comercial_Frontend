@@ -72,11 +72,16 @@ export function ProductoForm({
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ) => {
-    const { name, value: inputValue } = e.target;
+    const { name, type } = e.target;
+
+    const newValue =
+      type === "checkbox"
+        ? (e.target as HTMLInputElement).checked
+        : e.target.value;
 
     onChange({
       ...value,
-      [name]: inputValue,
+      [name]: newValue,
     });
   };
 

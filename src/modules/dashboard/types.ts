@@ -27,15 +27,16 @@ export interface KPIStats {
 export interface RecentActivity {
   id: number;
   type: 'sale' | 'order' | 'product' | 'customer';
-  description: string;
+  descripcion: string;
   timestamp: string;
-  status: 'success' | 'warning' | 'info';
+  fecha: string;
+  estado: 'success' | 'warning' | 'info';
 }
 
 // Alerta del sistema
 export interface SystemAlert {
   id: number;
-  type: 'warning' | 'error' | 'info';
+  severidad: "critica" | "media" | "baja";
   title: string;
   message: string;
   timestamp: string;

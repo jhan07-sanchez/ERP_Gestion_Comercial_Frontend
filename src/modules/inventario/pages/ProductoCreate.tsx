@@ -108,7 +108,7 @@ export default function ProductoCreate() {
       );
       if (!confirmar) return;
     }
-    navigate("/productos");
+    navigate("/productos/lista");
   };
 
   return (

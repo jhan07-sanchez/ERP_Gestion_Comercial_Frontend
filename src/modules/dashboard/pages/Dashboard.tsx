@@ -1,14 +1,15 @@
 // src/modules/dashboard/pages/Dashboard.tsx
 
-import { Card, Button } from '@/components/ui';
-import { KPICard } from '../components/KPICard';
-import { useDashboardData } from '../hooks/useDashboardData';
-import { IconBoxSeam, IconReportMoney } from "@tabler/icons-react";
+import { Card, Button } from "@/components/ui";
+import { KPICard } from "../components/KPICard";
+import { useDashboardData } from "../hooks/useDashboardData";
+import {
+  IconBoxSeam,
+  IconReportMoney,
+  IconUsers,
+  IconClipboardList,
+} from "@tabler/icons-react";
 
-/**
- * Página principal del Dashboard
- * Muestra KPIs, actividades recientes, alertas y acciones rápidas
- */
 export default function Dashboard() {
   const { data, isLoading, error, refresh } = useDashboardData();
 
@@ -16,7 +17,7 @@ export default function Dashboard() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto" />
           <p className="mt-4 text-gray-600">Cargando dashboard...</p>
         </div>
       </div>
@@ -40,122 +41,132 @@ export default function Dashboard() {
 
   if (!data) return null;
 
+  const { kpis } = data;
+
+  // 🎯 Configuración dinámica y tipada
+  const kpiConfig = [
+    {
+      title: "Ventas Totales",
+      value: `$${kpis.totalSales.toLocaleString()}`,
+      trend: kpis.salesTrend,
+      percentage: kpis.salesPercentage,
+      variant: "primary" as const,
+      icon: IconReportMoney,
+    },
+    {
+      title: "Nuevos Clientes",
+      value: kpis.newCustomers,
+      trend: kpis.customersTrend,
+      percentage: kpis.customersPercentage,
+      variant: "success" as const,
+      icon: IconUsers,
+    },
+    {
+      title: "Pedidos Pendientes",
+      value: kpis.pendingOrders,
+      trend: kpis.ordersTrend,
+      percentage: kpis.ordersPercentage,
+      variant: "warning" as const,
+      icon: IconClipboardList,
+    },
+    {
+      title: "Productos Bajo Stock",
+      value: kpis.lowStockProducts,
+      trend: kpis.stockTrend,
+      percentage: kpis.stockPercentage,
+      variant: "danger" as const,
+      icon: IconBoxSeam,
+    },
+  ];
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-1">Resumen general de tu negocio</p>
+          <p className="text-gray-600 mt-1">Resumen general del negocio</p>
         </div>
+
         <Button variant="secondary" onClick={refresh}>
           Actualizar
         </Button>
       </div>
 
-      {/* KPIs Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <KPICard
-          title="Productos en almacén"
-          value={data.kpis.totalProducts}
-          trend={data.kpis.productsTrend}
-          percentage={data.kpis.productsPercentage}
-          variant="primary"
-          icon={
-            <IconBoxSeam
-              size={24} // Tamaño en píxeles (equivalente a w-6 h-6)
-              className="text-blue-600" // Puedes seguir usando tus clases de Tailwind
-              stroke={2} // Grosor de la línea
-            />
-          }
-        />
+      {/* KPIs */}
+      <section>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {kpiConfig.map((kpi) => {
+            const Icon = kpi.icon;
 
-        <KPICard
-          title="Ventas del Mes"
-          value={`$${data.kpis.totalSales.toLocaleString()}`}
-          trend={data.kpis.salesTrend}
-          percentage={data.kpis.salesPercentage}
-          variant="primary"
-          icon={
-            <IconReportMoney
-              size={24}
-              className="text-blue-600"
-              stroke={2}
-            />
-          }
-        />
-
-        <KPICard
-          title="Pedidos Pendientes"
-          value={data.kpis.pendingOrders}
-          trend={data.kpis.ordersTrend}
-          percentage={data.kpis.ordersPercentage}
-          variant="warning"
-          icon={
-            <svg
-              className="w-6 h-6 text-yellow-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+            return (
+              <KPICard
+                key={kpi.title}
+                title={kpi.title}
+                value={kpi.value}
+                trend={kpi.trend}
+                percentage={kpi.percentage}
+                variant={kpi.variant}
+                icon={<Icon size={24} stroke={2} className="text-current" />}
               />
-            </svg>
-          }
-        />
+            );
+          })}
+        </div>
+      </section>
 
-        <KPICard
-          title="Stock Bajo"
-          value={data.kpis.lowStockProducts}
-          trend={data.kpis.stockTrend}
-          percentage={data.kpis.stockPercentage}
-          variant="danger"
-          icon={
-            <svg
-              className="w-6 h-6 text-red-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-              />
-            </svg>
-          }
-        />
+      {/* Actividades Recientes */}
+      <section>
+        <Card>
+          <Card.Content>
+            <h2 className="text-lg font-semibold mb-4">
+              Actividades Recientes
+            </h2>
 
-        <KPICard
-          title="Clientes Nuevos"
-          value={data.kpis.newCustomers}
-          trend={data.kpis.customersTrend}
-          percentage={data.kpis.customersPercentage}
-          variant="success"
-          icon={
-            <svg
-              className="w-6 h-6 text-green-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-              />
-            </svg>
-          }
-        />
-      </div>
+            <div className="space-y-3">
+              {data.recentActivities.map((activity) => (
+                <div
+                  key={activity.id}
+                  className="flex items-center justify-between border-b pb-2 last:border-none"
+                >
+                  <div>
+                    <p className="text-sm text-gray-800">
+                      {activity.descripcion}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {new Date(activity.timestamp).toLocaleString()}
+                    </p>
+                  </div>
 
-      {/* Resto del dashboard: actividades, alertas, etc. */}
+                  <span className="text-xs px-2 py-1 rounded bg-gray-100">
+                    {activity.estado}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </Card.Content>
+        </Card>
+      </section>
+
+      {/* Alertas del sistema */}
+      <section>
+        <Card>
+          <Card.Content>
+            <h2 className="text-lg font-semibold mb-4">Alertas del Sistema</h2>
+
+            <div className="space-y-3">
+              {data.systemAlerts.map((alert) => (
+                <div
+                  key={alert.id}
+                  className="p-3 rounded border border-yellow-200 bg-yellow-50"
+                >
+                  <p className="font-medium text-sm">{alert.title}</p>
+                  <p className="text-xs text-gray-600">{alert.message}</p>
+                </div>
+              ))}
+            </div>
+          </Card.Content>
+        </Card>
+      </section>
     </div>
   );
 }

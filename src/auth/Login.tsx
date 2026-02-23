@@ -48,8 +48,21 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
+    <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden">
+      {/* Imagen de fondo */}
+      <div className="absolute inset-0">
+        <img
+          src="/images/erp-bg.png"
+          alt="ERP Background"
+          className="w-full h-full object-cover animate-erp-bg"
+        />
+
+        {/* Overlay corporativo */}
+        <div className="absolute inset-0 bg-primary-900/70 backdrop-blur-[2px]"></div>
+      </div>
+
+      {/* Contenido */}
+      <div className="relative max-w-md w-full">
         {/* Card del login */}
         <div className="bg-white rounded-2xl shadow-xl p-8">
           {/* Logo y título */}
@@ -69,9 +82,7 @@ export default function Login() {
                 />
               </svg>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900">
-              Sistema ERP
-            </h2>
+            <h2 className="text-3xl font-bold text-gray-900">Sistema ERP</h2>
             <p className="text-gray-600 mt-2">
               Ingresa tus credenciales para continuar
             </p>
@@ -133,9 +144,7 @@ export default function Login() {
                   type="checkbox"
                   className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                 />
-                <span className="ml-2 text-sm text-gray-600">
-                  Recordarme
-                </span>
+                <span className="ml-2 text-sm text-gray-600">Recordarme</span>
               </label>
 
               <a
@@ -177,14 +186,14 @@ export default function Login() {
                   Iniciando sesión...
                 </span>
               ) : (
-                'Iniciar sesión'
+                "Iniciar sesión"
               )}
             </button>
           </form>
 
           {/* Registro */}
           <p className="mt-8 text-center text-sm text-gray-600">
-            ¿No tienes cuenta?{' '}
+            ¿No tienes cuenta?{" "}
             <a
               href="/register"
               className="text-blue-600 hover:text-blue-700 font-medium"

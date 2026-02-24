@@ -13,36 +13,53 @@ export interface RouteConfigItem {
 
 /** Claves de componentes para rutas protegidas */
 export type ProtectedRouteKey =
-  | 'Dashboard'
-  | 'Ventas'
-  | 'Reportes'
-  | 'Configuracion'
-  | 'ProductosList'
-  | 'ProductoCreate'
-  | 'ProductoEdit'
-  | 'ClientesList'
-  | 'ClienteCreate'
-  | 'ClienteEdit'
-  | 'ProveedorList'
-  | 'ProveedorCreate'
-  | 'ProveedorEdit'
-  | 'ComprasList'
-  | 'CompraCreate'
-  | 'CompraEdit'
-  | 'CompraDetalles';
+  | "Dashboard"
+
+  | "VentasList"
+  | "VentaCreate"
+  | "VentaEdit"
+  | "VentaDetalle"
+
+  | "Reportes"
+
+  | "Configuracion"
+
+  | "ProductosList"
+  | "ProductoCreate"
+  | "ProductoEdit"
+
+  | "ClientesList"
+  | "ClienteCreate"
+  | "ClienteEdit"
+
+  | "ProveedorList"
+  | "ProveedorCreate"
+  | "ProveedorEdit"
+  
+  | "ComprasList"
+  | "CompraCreate"
+  | "CompraEdit"
+  | "CompraDetalles";
 
 /**
  * Rutas protegidas (path relativo al layout).
  */
 export const protectedRoutesConfig: RouteConfigItem[] = [
   { path: 'dashboard', componentKey: 'Dashboard', placeholderProps: { title: 'Dashboard', description: 'Bienvenido al sistema ERP.' } },
-  { path: 'ventas', componentKey: 'Ventas', placeholderProps: { title: 'Ventas', description: 'Gestión de ventas.' } },
+
+  { path: 'ventas/lista', componentKey: 'VentasList', placeholderProps: { title: 'Ventas', description: 'Gestión de ventas.' } },
+  { path: 'ventas/crear',       componentKey: 'VentaCreate' },
+  { path: 'ventas/:id/editar',  componentKey: 'VentaEdit' },
+  { path: 'ventas/:id/detalle', componentKey: 'VentaDetalle' },
+
   { path: 'productos/lista', componentKey: 'ProductosList' },
   { path: 'productos/crear', componentKey: 'ProductoCreate' },
   { path: 'productos/:id/editar', componentKey: 'ProductoEdit' },
+
   { path: 'clientes/lista', componentKey: 'ClientesList' },
   { path: 'clientes/crear', componentKey: 'ClienteCreate' },
   { path: 'clientes/:id/editar', componentKey: 'ClienteEdit' },
+
   { path: 'proveedores/lista', componentKey: 'ProveedorList' },
   { path: 'proveedores/crear', componentKey: 'ProveedorCreate' },
   { path: 'proveedores/:id/editar', componentKey: 'ProveedorEdit' },
@@ -51,7 +68,9 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
   { path: 'compras/crear', componentKey: 'CompraCreate' },
   { path: 'compras/:id/editar', componentKey: 'CompraEdit' },
   { path: 'compras/:id/detalles', componentKey: 'CompraDetalles' },
+
   { path: 'reportes', componentKey: 'Reportes', placeholderProps: { title: 'Reportes', description: 'Reportes y estadísticas.' } },
+
   { path: 'configuracion', componentKey: 'Configuracion', placeholderProps: { title: 'Configuración', description: 'Configuración del sistema.' } },
 ];
 

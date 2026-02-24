@@ -11,7 +11,7 @@
  * Todas las páginas internas usan este layout.
  */
 import { useState, useEffect, useCallback } from "react";
-import { Outlet,useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/auth/auth.store";
 import { useUIStore } from "@/store/ui.store";
 import { ROUTES, APP_NAME } from "@/utils/constants";
@@ -32,7 +32,6 @@ export default function DashboardLayout() {
   };
 
   const [openMenus, setOpenMenus] = useState<string[]>([]);
-
 
   const isSectionActive = useCallback(
     (item: SidebarItem): boolean => {
@@ -171,9 +170,9 @@ export default function DashboardLayout() {
                     item.children?.map((section) => (
                       <div
                         key={section.section}
-                        className="ml-3 border-l border-gray-200 pl-3 py-1 space-y-1 transition-all duration-200"
+                        className="ml-3 border-l border-primary-200 pl-3 py-1 space-y-1 transition-all duration-200"
                       >
-                        <p className="px-4 text-xs font-semibold text-gray-500 uppercase mb-2">
+                        <p className="px-4 text-xs font-semibold text-primary-800 uppercase tracking-wider mb-2">
                           {section.section}
                         </p>
                         {section.items.map((sub) => (
@@ -181,14 +180,29 @@ export default function DashboardLayout() {
                             key={sub.label}
                             to={sub.path}
                             className={({ isActive }) =>
-                              `block px-6 py-2 text-sm transition-colors ${
+                              `flex items-center gap-3 px-6 py-2 rounded-lg text-sm transition-colors ${
                                 isActive
                                   ? "bg-gray-200 text-blue-600 font-semibold"
                                   : "text-gray-700 hover:bg-gray-100"
                               }`
                             }
                           >
-                            {sub.label}
+                            {({ isActive }) => (
+                              <>
+                                {sub.icon && (
+                                  <sub.icon
+                                    size={16}
+                                    stroke={1.5}
+                                    className={`${
+                                      isActive
+                                        ? "text-blue-600"
+                                        : "text-gray-500"
+                                    }`}
+                                  />
+                                )}
+                                {sub.label}
+                              </>
+                            )}
                           </NavLink>
                         ))}
                       </div>

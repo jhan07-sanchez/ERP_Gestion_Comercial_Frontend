@@ -7,6 +7,11 @@ import {
   IconReportAnalytics,
   IconSettings,
   IconBuildingWarehouse,
+  IconShoppingCartPlus,
+  IconFileText,
+  IconClipboardList,
+  IconList,
+  IconRotateClockwise,
 } from "@tabler/icons-react";
 import type { Icon } from "@tabler/icons-react";
 
@@ -22,6 +27,7 @@ export interface SidebarSection {
   items: {
     label: string;
     path: string;
+    icon?: Icon;
   }[];
 }
 
@@ -50,16 +56,32 @@ export const sidebarConfig: SidebarItem[] = [
       {
         section: "Transacciones",
         items: [
-          { label: "Nueva Venta", path: "/ventas/crear" },
-          { label: "Cotizaciones", path: "/ventas/cotizaciones" },
-          { label: "Pedidos", path: "/ventas/pedidos" },
+          {
+            label: "Nueva Venta",
+            path: "/ventas/crear",
+            icon: IconShoppingCartPlus,
+          },
+          {
+            label: "Cotizaciones",
+            path: "/ventas/cotizaciones",
+            icon: IconFileText,
+          },
+          {
+            label: "Pedidos",
+            path: "/ventas/pedidos",
+            icon: IconClipboardList,
+          },
         ],
       },
       {
         section: "Administración",
         items: [
-          { label: "Lista de Ventas", path: "/ventas" },
-          { label: "Devoluciones", path: "/ventas/devoluciones" },
+          { label: "Lista de Ventas", path: "/ventas/lista", icon: IconList },
+          {
+            label: "Devoluciones",
+            path: "/ventas/devoluciones",
+            icon: IconRotateClockwise,
+          },
         ],
       },
     ],
@@ -115,13 +137,13 @@ export const sidebarConfig: SidebarItem[] = [
       {
         section: "Transacciones",
         items: [
-          { label: "Nueva Cliente", path: "/cliente/crear" },
-          { label: "Cotizaciones", path: "/cliente/cotizaciones" },
+          { label: "Nuevo Cliente", path: "/clientes/crear" },
+          { label: "Cotizaciones", path: "/clientes/cotizaciones" },
         ],
       },
       {
         section: "Administración",
-        items: [{ label: "Lista de Clientes", path: "/cliente" }],
+        items: [{ label: "Lista de Clientes", path: "/clientes/lista" }],
       },
     ],
   },

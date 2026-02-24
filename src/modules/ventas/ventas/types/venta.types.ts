@@ -1,0 +1,211 @@
+/**
+ * Tipos para el módulo Ventas
+ * Mismo patrón que compras/types/compra.types.ts
+ */
+
+// ===============================
+// Estado de Venta
+// ===============================
+export type EstadoVenta = "PENDIENTE" | "COMPLETADA" | "CANCELADA";
+
+// ===============================
+// Badge de estado (viene del backend)
+// ===============================
+export interface EstadoBadge {
+  color: "success" | "warning" | "danger";
+  texto: string;
+  icono: string;
+}
+
+// ===============================
+// Cliente simple (para relaciones)
+// ===============================
+export interface ClienteSimple {
+  id: number;
+  nombre: string;
+  documento: string;
+  telefono?: string;
+  email?: string;
+}
+
+// ===============================
+// Venta base
+// ===============================
+export interface Venta {
+  id: number;
+  cliente: number;
+  usuario: number;
+  total: number;
+  estado: EstadoVenta;
+  fecha: string;
+  estado_badge: EstadoBadge;
+}
+
+// ===============================
+// Detalle de Venta (lectura)
+// ===============================
+export interface VentaDetalle {
+  id: number;
+  venta: number;
+  producto: number;
+  producto_codigo: string;
+  producto_nombre: string;
+  cantidad: number;
+  precio_unitario: number;
+  subtotal: number;
+}
+
+// ===============================
+// Venta para listar
+// ===============================
+export interface VentaList extends Venta {
+  cliente_nombre: string;
+  cliente_documento: string;
+  usuario_nombre: string;
+  total_productos: number;
+}
+
+// ===============================
+// Venta DETAIL (con detalles)
+// ===============================
+export interface VentaDetail extends Venta {
+  cliente_info: ClienteSimple;
+  cliente_nombre: string;
+  usuario_nombre: string;
+  usuario_email: string;
+  detalles: VentaDetalle[];
+  total_productos: number;
+  total_unidades: number;
+}
+
+// ===============================
+// Detalle para crear (payload backend)
+// ===============================
+export interface VentaDetalleCreateInput {
+  producto_id: number;
+  cantidad: number;
+  precio_unitario: number;
+}
+
+// ===============================
+// Venta para crear
+// ===============================
+export interface VentaCreateInput {
+  cliente_id: number;
+  detalles: VentaDetalleCreateInput[];
+}
+
+// ===============================
+// Venta para actualizar
+// ===============================
+export interface VentaUpdateInput {
+  cliente_id?: number;
+  estado?: EstadoVenta;
+  detalles?: VentaDetalleCreateInput[];
+}
+
+// ===============================
+// Filtros de ventas
+// ===============================
+export interface VentaFilters {
+  search?: string;
+  estado?: EstadoVenta | "";
+  cliente_id?: number;
+  cliente?: string;
+  usuario_id?: number;
+  total_min?: number;
+  total_max?: number;
+  fecha_inicio?: string;
+  fecha_fin?: string;
+}
+
+// ===============================
+// Respuesta paginada (reutilizable)
+// ===============================
+export interface PaginatedResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
+
+// ===============================
+// Respuesta de éxito genérica
+// ===============================
+export interface SuccessResponse<T> {
+  detail: string;
+  data: T;
+}
+
+// ===============================
+// Producto para seleccionar en formulario
+// ===============================
+export interface ProductoParaVenta {
+  id: number;
+  codigo: string;
+  nombre: string;
+  precio_venta: number;
+  stock_actual: number;
+}
+
+// ===============================
+// Cliente para seleccionar en formulario
+// ===============================
+export interface ClienteParaVenta {
+  id: number;
+  nombre: string;
+  documento?: string;
+  telefono?: string;
+  email?: string;
+}
+
+// ===============================
+// Tipo exclusivo para formulario UI (NO payload backend)
+// Mismo patrón que CompraFormValues
+// ===============================
+export interface VentaFormData {
+  cliente_id: number;
+  estado?: "PENDIENTE" | "COMPLETADA" | "CANCELADA";
+  detalles: {
+    producto_id: number;
+    producto_codigo: string;
+    producto_nombre: string;
+    stock_disponible: number;
+    cantidad: number;
+    precio_unitario: number;
+    subtotal: number;
+  }[];
+  total: number;
+}
+
+// ===============================
+// Paginación state
+// ===============================
+export interface PaginationState {
+  currentPage: number;
+  totalPages: number;
+  pageSize: number;
+  totalCount: number;
+}
+
+
+
+// ===============================
+// Estadísticas de una venta
+// ===============================
+export interface EstadisticasVenta {
+  total_productos: number;
+  total_unidades: number;
+  total_valor: number;
+}
+
+// ===============================
+// Resumen general
+// ===============================
+export interface ResumenVentas {
+  total_ventas: number;
+  total_ingresos: number;
+  ventas_pendientes: number;
+  ventas_completadas: number;
+  ventas_canceladas: number;
+}

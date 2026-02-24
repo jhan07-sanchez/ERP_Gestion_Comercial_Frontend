@@ -5,21 +5,31 @@
 
 import type { ComponentType } from 'react';
 import PlaceholderPage from '@/routes/PlaceholderPage';
-import ClientesList from '@/modules/clientes/pages/ClientesList';
-import ClienteCreate from '@/modules/clientes/pages/ClienteCreate';
-import ClienteEdit from '@/modules/clientes/pages/ClienteEdit';
+import ClientesList from '@/modules/clientes/clientes/pages/ClientesList';
+import ClienteCreate from '@/modules/clientes/clientes/pages/ClienteCreate';
+import ClienteEdit from '@/modules/clientes/clientes/pages/ClienteEdit';
+
 import ProductosList from '@/modules/inventario/pages/ProductosList';
 import ProductoCreate from '@/modules/inventario/pages/ProductoCreate';
 import ProductoEdit from '@/modules/inventario/pages/ProductoEdit';
+
 import ComprasList from '@/modules/compras/pages/ComprasList';
 import CompraCreate from '@/modules/compras/pages/CompraCreate';
 import CompraEdit from "@/modules/compras/pages/CompraEdit";
 import CompraDetalles from "@/modules/compras/pages/CompraDetalles";
+
 import ProveedorList from '@/modules/proveedores/pages/ProveedorList';
 import ProveedorCreate from '@/modules/proveedores/pages/ProveedorCreate';
+import ProveedorEdit from "../modules/proveedores/pages/ProveedorEdit";
+
 import { Dashboard } from '@/modules/dashboard'; //  Importar del módulo dashboard
+
 import type { ProtectedRouteKey } from '@/routes/routes.config';
-import ProveedorEdit from '../modules/proveedores/pages/ProveedorEdit';
+
+import VentasList   from '@/modules/ventas/ventas/pages/VentasList';    // ← NUEVO
+import VentaCreate  from '@/modules/ventas/ventas/pages/VentaCreate';   // ← NUEVO
+import VentaEdit    from '@/modules/ventas/ventas/pages/VentaEdit';     // ← NUEVO
+import VentaDetalle from '@/modules/ventas/ventas/pages/VentaDetalle';  // ← NUEVO
 
 type RouteComponentProps = Record<string, string | undefined>;
 
@@ -28,21 +38,30 @@ export const protectedRouteComponents: Record<
   ComponentType<RouteComponentProps>
 > = {
   Dashboard,
-  Ventas: PlaceholderPage,
+
+  VentasList,
+  VentaCreate, // ← NUEVO
+  VentaEdit, // ← NUEVO
+  VentaDetalle, // ← NUEVO
+
   Reportes: PlaceholderPage,
+
   Configuracion: PlaceholderPage,
+
   ProductosList,
   ProductoCreate,
   ProductoEdit,
+
   ClientesList,
   ClienteCreate,
   ClienteEdit,
+
   ProveedorList,
   ProveedorEdit,
   ProveedorCreate,
+  
   ComprasList,
   CompraCreate,
   CompraEdit,
   CompraDetalles,
-
 };

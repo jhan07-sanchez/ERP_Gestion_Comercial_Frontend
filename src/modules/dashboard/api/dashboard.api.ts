@@ -55,35 +55,42 @@ export const dashboardAPI = {
    * Obtiene KPIs desde endpoint de alertas (real)
    */
   getKPIStats: async (): Promise<KPIStats> => {
-    const response = await axiosInstance.get<DashboardAlertsResponse>(
-      `${API_BASE}/alertas/`,
-    );
+    // 🔥 Ejecutamos ambas APIs en paralelo
+    const [alertsResponse, clientsResponse] = await Promise.all([
+      axiosInstance.get<DashboardAlertsResponse>(`${API_BASE}/alertas/`),
+      axiosInstance.get(`${API_BASE}/clientes/`),
+    ]);
 
-    const raw = response.data.data;
+    const alerts = alertsResponse.data.data;
+    const clients = clientsResponse.data.data;
 
     return {
+      // PRODUCTOS
       totalProducts: 0,
       productsTrend: "stable",
       productsPercentage: 0,
 
+      // VENTAS
       totalSales: 0,
       salesTrend: "stable",
       salesPercentage: 0,
 
-      pendingOrders: raw.ventas_pendientes.length,
+      // PEDIDOS
+      pendingOrders: alerts.ventas_pendientes.length,
       ordersTrend: "stable",
       ordersPercentage: 0,
 
-      lowStockProducts: raw.sin_stock.length + raw.stock_bajo.length,
-      stockTrend: raw.sin_stock.length > 0 ? "down" : "stable",
+      // STOCK
+      lowStockProducts: alerts.sin_stock.length + alerts.stock_bajo.length,
+      stockTrend: alerts.sin_stock.length > 0 ? "down" : "stable",
       stockPercentage: 0,
 
-      newCustomers: 0,
-      customersTrend: "stable",
+      // CLIENTES 🔥 FIX REAL
+      newCustomers: clients.nuevos_este_mes,
+      customersTrend: clients.nuevos_este_mes > 0 ? "up" : "stable",
       customersPercentage: 0,
     };
   },
-
   /**
    * Obtiene alertas del sistema adaptadas al frontend
    */
@@ -135,7 +142,7 @@ export const dashboardAPI = {
       descripcion: item.descripcion,
       timestamp: item.fecha, // normalizamos la fecha
       fecha: item.fecha,
-      estado: item.estado
+      estado: item.estado,
     }));
     return RecentActivity;
   },

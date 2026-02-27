@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { productosAPI } from "../api";
+import { productosAPI } from "../api/productos.api";
 import type {
   Producto,
   ProductoCreateInput,
@@ -9,12 +9,17 @@ import type {
 export function useProductoActions(onRefresh?: () => Promise<void>) {
   const [error, setError] = useState<string | null>(null);
 
+  // helper seguro
+  const getErrorMessage = (err: unknown): string => {
+    if (err instanceof Error) return err.message;
+    return "Error inesperado";
+  };
+
   const getProducto = useCallback(async (id: number): Promise<Producto> => {
     try {
       return await productosAPI.getProducto(id);
-    } catch (err) {
-      const msg =
-        err instanceof Error ? err.message : "Error al obtener producto";
+    } catch (err: unknown) {
+      const msg = getErrorMessage(err);
       setError(msg);
       throw new Error(msg);
     }
@@ -24,27 +29,28 @@ export function useProductoActions(onRefresh?: () => Promise<void>) {
     async (data: ProductoCreateInput): Promise<Producto> => {
       try {
         const producto = await productosAPI.createProducto(data);
+
+        console.log("Producto creado correctamente:", producto);
+
         await onRefresh?.();
-        return producto;
-      } catch (err) {
-        const msg =
-          err instanceof Error ? err.message : "Error al crear producto";
+
+        return producto; // ✅ CORRECTO
+      } catch (err: unknown) {
+        const msg = getErrorMessage(err);
         setError(msg);
         throw new Error(msg);
       }
     },
     [onRefresh],
   );
-
   const updateProducto = useCallback(
     async (id: number, data: ProductoUpdateInput): Promise<Producto> => {
       try {
         const producto = await productosAPI.updateProducto(id, data);
         await onRefresh?.();
         return producto;
-      } catch (err) {
-        const msg =
-          err instanceof Error ? err.message : "Error al actualizar producto";
+      } catch (err: unknown) {
+        const msg = getErrorMessage(err);
         setError(msg);
         throw new Error(msg);
       }
@@ -57,9 +63,8 @@ export function useProductoActions(onRefresh?: () => Promise<void>) {
       try {
         await productosAPI.deleteProducto(id);
         await onRefresh?.();
-      } catch (err) {
-        const msg =
-          err instanceof Error ? err.message : "Error al eliminar producto";
+      } catch (err: unknown) {
+        const msg = getErrorMessage(err);
         setError(msg);
         throw new Error(msg);
       }
@@ -69,18 +74,28 @@ export function useProductoActions(onRefresh?: () => Promise<void>) {
 
   const activarProducto = useCallback(
     async (id: number) => {
-      const { producto } = await productosAPI.activarProducto(id);
-      await onRefresh?.();
-      return producto;
+      try {
+        await productosAPI.activarProducto(id);
+        await onRefresh?.();
+      } catch (err: unknown) {
+        const msg = getErrorMessage(err);
+        setError(msg);
+        throw new Error(msg);
+      }
     },
     [onRefresh],
   );
 
   const desactivarProducto = useCallback(
     async (id: number) => {
-      const { producto } = await productosAPI.desactivarProducto(id);
-      await onRefresh?.();
-      return producto;
+      try {
+        await productosAPI.desactivarProducto(id);
+        await onRefresh?.();
+      } catch (err: unknown) {
+        const msg = getErrorMessage(err);
+        setError(msg);
+        throw new Error(msg);
+      }
     },
     [onRefresh],
   );
@@ -89,16 +104,12 @@ export function useProductoActions(onRefresh?: () => Promise<void>) {
     try {
       const response = await productosAPI.getSiguienteCodigo();
       return response.codigo;
-    } catch (err) {
-      const msg =
-        err instanceof Error
-          ? err.message
-          : "Error al obtener siguiente código";
+    } catch (err: unknown) {
+      const msg = getErrorMessage(err);
       setError(msg);
       throw new Error(msg);
     }
   }, []);
-
 
   return {
     error,

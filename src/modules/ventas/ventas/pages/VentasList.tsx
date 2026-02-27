@@ -8,16 +8,16 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Button, Input, Table, Badge } from "@/components/ui";
 import { useVentas } from "../hooks/useVenta";
-import { formatCurrency } from "@/utils/formatters";
+import { formatCurrency, formatDate } from "@/utils/formatters";
 import type { EstadoVenta, VentaFilters } from "../types/venta.types";
 
-// Mapeo de estado → variante de Badge (mismo patrón que Compras)
 const estadoVariantMap: Record<EstadoVenta, "success" | "warning" | "danger"> =
-  {
-    COMPLETADA: "success",
-    PENDIENTE: "warning",
-    CANCELADA: "danger",
-  };
+{
+  COMPLETADA: "success",
+  PARCIAL: "warning",
+  PENDIENTE: "warning",
+  CANCELADA: "danger",
+};
 
 export default function VentasList() {
   const navigate = useNavigate();
@@ -28,9 +28,7 @@ export default function VentasList() {
     error,
     fetchVentas,
     applyFilters,
-    completarVenta,
     cancelarVenta,
-    loadingCompletar,
     loadingCancelar,
   } = useVentas();
 
@@ -62,15 +60,7 @@ export default function VentasList() {
     applyFilters(filters);
   };
 
-  // Completar venta
-  const handleCompletar = async (id: number) => {
-    const confirm = window.confirm(
-      "¿Confirmar esta venta? Se descontará el stock de los productos.",
-    );
-    if (!confirm) return;
-    await completarVenta(id);
-    fetchVentas();
-  };
+
 
   // Cancelar venta
   const handleCancelar = async (id: number) => {
@@ -156,6 +146,7 @@ export default function VentasList() {
             >
               <option value="">Todos los estados</option>
               <option value="PENDIENTE">Pendiente</option>
+              <option value="PARCIAL">Parcial</option>
               <option value="COMPLETADA">Completada</option>
               <option value="CANCELADA">Cancelada</option>
             </select>
@@ -197,6 +188,12 @@ export default function VentasList() {
                   <th className="text-right py-3 px-4 font-semibold text-gray-900">
                     Total
                   </th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                    Pagado
+                  </th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
+                    Saldo
+                  </th>
                   <th className="text-center py-3 px-4 font-semibold text-gray-900">
                     Estado
                   </th>
@@ -222,7 +219,7 @@ export default function VentasList() {
                     </td>
 
                     <td className="py-3 px-4 text-gray-600">
-                      {new Date(venta.fecha).toLocaleDateString("es-CO")}
+                      {formatDate(venta.fecha)}
                     </td>
 
                     <td className="py-3 px-4 text-center text-gray-600">
@@ -231,6 +228,14 @@ export default function VentasList() {
 
                     <td className="py-3 px-4 text-right font-medium text-gray-900">
                       {formatCurrency(venta.total)}
+                    </td>
+
+                    <td className="py-3 px-4 text-right text-gray-600">
+                      {formatCurrency(venta.total_pagado)}
+                    </td>
+
+                    <td className="py-3 px-4 text-right font-semibold text-orange-600">
+                      {formatCurrency(venta.saldo_pendiente)}
                     </td>
 
                     <td className="py-3 px-4 text-center">
@@ -268,15 +273,14 @@ export default function VentasList() {
                           </Button>
                         )}
 
-                        {/* Completar - solo PENDIENTE */}
-                        {venta.estado === "PENDIENTE" && (
+                        {/* Completar - Removido del listado rápido para forzar paso por Modal en detalle */}
+                        {(venta.estado === "PENDIENTE" || venta.estado === "PARCIAL") && (
                           <Button
                             size="sm"
                             variant="success"
-                            onClick={() => handleCompletar(venta.id)}
-                            isLoading={loadingCompletar}
+                            onClick={() => navigate(`../ventas/${venta.id}/detalle`, { relative: "route" })}
                           >
-                            Completar
+                            Registrar Pago
                           </Button>
                         )}
 

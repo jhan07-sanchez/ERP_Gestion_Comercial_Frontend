@@ -1,5 +1,2 @@
-// modules/inventario/api/index.ts
-export { productosAPI } from './productos.api';
-export { categoriasAPI } from './categorias.api';
-export { inventariosAPI } from './inventarios.api';
-export { movimientosAPI } from './movimientos.api';
+export * from './inventarios.api';
+export * from './movimientos.api';

@@ -112,20 +112,17 @@ export const sidebarConfig: SidebarItem[] = [
     icon: IconBox,
     children: [
       {
-        section: "Transaciones",
+        section: "Catálogo",
         items: [
-          { label: "Nuevo producto", path: "/productos/crear" },
           { label: "Lista de productos", path: "/productos/lista" },
-          { label: "Categorias", path: "/productos/categorias" },
-          { label: "Marcas", path: "/productos/marcas" },
-          { label: "Ajuste de inventario", path: "/productos/inventario" },
+          { label: "Nuevo producto", path: "/productos/crear" },
+          { label: "Categorías", path: "/categorias/lista" },
         ],
       },
       {
         section: "Administración",
         items: [
           { label: "Stock bajo", path: "/productos/stock_bajo" },
-          { label: "Gestion de precios", path: "/productos/precios" },
         ],
       },
     ],
@@ -152,26 +149,16 @@ export const sidebarConfig: SidebarItem[] = [
     icon: IconBuildingWarehouse,
     children: [
       {
-        section: "Transacciones",
+        section: "Movimientos",
         items: [
-          { label: "Entrada de mercancia", path: "/inventario" },
-          { label: "Salida de mercancia", path: "/inventario" },
-          { label: "Transferencias", path: "/inventario" },
-        ],
-      },
-      {
-        section: "Administración",
-        items: [
-          { label: "Almacenes", path: "/inventario" },
-          { label: "Ubicacion", path: "/inventario" },
+          { label: "Entradas/Salidas", path: "/inventario/movimientos" },
         ],
       },
       {
         section: "Reportes",
         items: [
-          { label: "Stock actual", path: "/inventario" },
-          { label: "Valoracion de inventario", path: "/inventario" },
-          { label: "Productos con Stock bajo", path: "/inventario" },
+          { label: "Stock actual", path: "/inventario/stock" },
+          { label: "Productos con Stock bajo", path: "/productos/stock_bajo" },
         ],
       },
     ],

@@ -16,6 +16,7 @@ import { Button } from "@/components/ui";
 import { VentaForm } from "../components/VentaForm";
 import { useVentas } from "../hooks/useVenta";
 import type { VentaFormData } from "../types/venta.types";
+import { getApiErrorMessage } from "@/utils/apiError";
 
 export default function VentaCreate() {
   const navigate = useNavigate();
@@ -31,17 +32,17 @@ export default function VentaCreate() {
   });
 
   // ─── Validaciones del cliente ──────────────────────────────────────────
-  const validateForm = (): { valid: boolean; message?: string } => {
-    if (!formData.cliente_id || formData.cliente_id === 0) {
+  const validateForm = (data = formData): { valid: boolean; message?: string } => {
+    if (!data.cliente_id || data.cliente_id === 0) {
       return { valid: false, message: "Debes seleccionar un cliente" };
     }
 
-    if (formData.detalles.length === 0) {
+    if (data.detalles.length === 0) {
       return { valid: false, message: "Debes agregar al menos un producto" };
     }
 
-    for (let i = 0; i < formData.detalles.length; i++) {
-      const d = formData.detalles[i];
+    for (let i = 0; i < data.detalles.length; i++) {
+      const d = data.detalles[i];
 
       if (d.cantidad <= 0) {
         return {
@@ -65,7 +66,7 @@ export default function VentaCreate() {
       }
     }
 
-    if (formData.total <= 0) {
+    if (data.total <= 0) {
       return { valid: false, message: "El total debe ser mayor a 0" };
     }
 
@@ -76,6 +77,9 @@ export default function VentaCreate() {
   const convertToAPIFormat = (data: VentaFormData) => ({
     cliente_id: data.cliente_id,
     estado: data.estado,
+    metodo_pago: data.metodo_pago,
+    monto_recibido: data.monto_recibido,
+    vuelto: data.vuelto,
     detalles: data.detalles.map((d) => ({
       producto_id: d.producto_id,
       cantidad: d.cantidad,
@@ -84,8 +88,9 @@ export default function VentaCreate() {
   });
 
   // ─── Submit ────────────────────────────────────────────────────────────
-  const handleSubmit = async () => {
-    const validation = validateForm();
+  const handleSubmit = async (updatedData?: VentaFormData) => {
+    const dataToSubmit = updatedData || formData;
+    const validation = validateForm(dataToSubmit);
     if (!validation.valid) {
       alert(validation.message);
       return;
@@ -94,7 +99,7 @@ export default function VentaCreate() {
     setSubmitting(true);
 
     try {
-      const apiData = convertToAPIFormat(formData);
+      const apiData = convertToAPIFormat(dataToSubmit);
       console.log("📡 Payload enviado al backend (Venta):", apiData);
 
       const nuevaVenta = await createVenta(apiData);
@@ -102,39 +107,14 @@ export default function VentaCreate() {
       if (nuevaVenta) {
         console.log("✅ Venta creada:", nuevaVenta);
         await fetchVentas();
-        alert("¡Venta registrada exitosamente!");
-        setTimeout(() => navigate("/ventas"), 500);
+        // Redirigir al detalle con el parámetro para abrir el modal de pago automáticamente
+        setTimeout(() => navigate(`/ventas/${nuevaVenta.id}/detalle?abrirPago=true`), 300);
       } else {
         throw new Error(error || "Error desconocido al crear venta");
       }
-    } catch (err) {
-      const e = err as {
-        response?: { status?: number; data?: unknown };
-        message?: string;
-      };
-
-      console.error("❌ ERROR DEL BACKEND:", {
-        status: e.response?.status,
-        data: e.response?.data,
-        message: e.message,
-      });
-
-      let errorMsg = "Error al crear la venta. Revisa los datos.";
-
-      if (e.response?.data && typeof e.response.data === "object") {
-        const backendError = e.response.data as Record<string, unknown>;
-        const fieldErrors = Object.entries(backendError)
-          .map(([field, messages]) => {
-            const msg = Array.isArray(messages)
-              ? messages.join(", ")
-              : String(messages);
-            return `${field}: ${msg}`;
-          })
-          .join("\n");
-
-        if (fieldErrors) errorMsg = `Errores:\n${fieldErrors}`;
-      }
-
+    } catch (errorObj) {
+      console.error("❌ ERROR DEL BACKEND:", errorObj);
+      const errorMsg = getApiErrorMessage(errorObj, "Error al crear la venta. Revisa los datos.");
       alert(errorMsg);
     } finally {
       setSubmitting(false);

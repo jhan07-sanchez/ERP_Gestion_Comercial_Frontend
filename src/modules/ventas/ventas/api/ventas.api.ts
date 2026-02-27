@@ -13,6 +13,7 @@ import type {
   PaginatedResponse,
   ProductoParaVenta,
   ClienteParaVenta,
+  PagoVentaCreateInput,
 } from "../types/venta.types";
 
 const API_BASE = "/ventas/ventas";
@@ -89,6 +90,14 @@ export const ventasAPI = {
     return response.data;
   },
 
+  registrarPago: async (
+    id: number,
+    data: PagoVentaCreateInput,
+  ): Promise<{ detail: string; venta: VentaDetail; pago_id: number }> => {
+    const response = await axiosInstance.post(`${API_BASE}/${id}/pagos/`, data);
+    return response.data;
+  },
+
   // ─────────────────────────────────
   // Estadísticas y resumen
   // ─────────────────────────────────
@@ -138,9 +147,13 @@ export const clientesVentaAPI = {
 // ─────────────────────────────────────────
 
 export const productosVentaAPI = {
+  // Devuelve un arreglo plano de productos, compatible con la búsqueda del formulario.
+  // Antes el tipo decía `PaginatedResponse` pero en realidad siempre devolvemos la lista
+  // transformada (no el objeto paginado completo), por eso el hook de la UI tenía que
+  // mirar `response.results` y terminaba recibiendo `undefined`.
   buscarProductos: async (search: string): Promise<ProductoParaVenta[]> => {
     const params = new URLSearchParams({ search });
-    const response = await axiosInstance.get("/inventario/productos/", {
+    const response = await axiosInstance.get("/productos/productos", {
       params,
     });
     const results = Array.isArray(response.data)

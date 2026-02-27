@@ -1,6 +1,6 @@
 import { useProductosList } from "./useProductosList";
 import { useProductoActions } from "./useProductoActions";
-import { useProductosStock } from "./useProductosStock";
+import { useProductosStock } from "../../inventario/hooks/useProductosStock";
 
 export function useProductos() {
   const list = useProductosList();

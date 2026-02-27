@@ -6,7 +6,12 @@
 // ===============================
 // Estado de Venta
 // ===============================
-export type EstadoVenta = "PENDIENTE" | "COMPLETADA" | "CANCELADA";
+export type EstadoVenta = "PENDIENTE" | "PARCIAL" | "COMPLETADA" | "CANCELADA";
+
+// ===============================
+// Método de Pago
+// ===============================
+export type MetodoPago = "EFECTIVO" | "TARJETA" | "TRANSFERENCIA" | "YAPE" | "PLIN" | "CREDITO";
 
 // ===============================
 // Badge de estado (viene del backend)
@@ -23,7 +28,7 @@ export interface EstadoBadge {
 export interface ClienteSimple {
   id: number;
   nombre: string;
-  documento: string;
+  numero_documento: string;
   telefono?: string;
   email?: string;
 }
@@ -36,6 +41,8 @@ export interface Venta {
   cliente: number;
   usuario: number;
   total: number;
+  total_pagado: number;
+  saldo_pendiente: number;
   estado: EstadoVenta;
   fecha: string;
   estado_badge: EstadoBadge;
@@ -66,6 +73,21 @@ export interface VentaList extends Venta {
 }
 
 // ===============================
+// Pago de Venta
+// ===============================
+export interface PagoVenta {
+  id: number;
+  monto: number;
+  metodo_pago: MetodoPago;
+  metodo_pago_display: string;
+  monto_recibido: number;
+  vuelto: number;
+  referencia: string | null;
+  fecha: string;
+  usuario_nombre: string;
+}
+
+// ===============================
 // Venta DETAIL (con detalles)
 // ===============================
 export interface VentaDetail extends Venta {
@@ -74,6 +96,7 @@ export interface VentaDetail extends Venta {
   usuario_nombre: string;
   usuario_email: string;
   detalles: VentaDetalle[];
+  pagos: PagoVenta[];
   total_productos: number;
   total_unidades: number;
 }
@@ -92,7 +115,16 @@ export interface VentaDetalleCreateInput {
 // ===============================
 export interface VentaCreateInput {
   cliente_id: number;
+  estado?: EstadoVenta;
   detalles: VentaDetalleCreateInput[];
+}
+
+export interface PagoVentaCreateInput {
+  monto: number;
+  metodo_pago: MetodoPago;
+  monto_recibido?: number;
+  vuelto?: number;
+  referencia?: string;
 }
 
 // ===============================
@@ -101,6 +133,9 @@ export interface VentaCreateInput {
 export interface VentaUpdateInput {
   cliente_id?: number;
   estado?: EstadoVenta;
+  metodo_pago?: MetodoPago;
+  monto_recibido?: number;
+  vuelto?: number;
   detalles?: VentaDetalleCreateInput[];
 }
 
@@ -165,7 +200,10 @@ export interface ClienteParaVenta {
 // ===============================
 export interface VentaFormData {
   cliente_id: number;
-  estado?: "PENDIENTE" | "COMPLETADA" | "CANCELADA";
+  estado?: EstadoVenta;
+  metodo_pago?: MetodoPago;
+  monto_recibido?: number;
+  vuelto?: number;
   detalles: {
     producto_id: number;
     producto_codigo: string;

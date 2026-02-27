@@ -9,9 +9,10 @@ import ClientesList from '@/modules/clientes/clientes/pages/ClientesList';
 import ClienteCreate from '@/modules/clientes/clientes/pages/ClienteCreate';
 import ClienteEdit from '@/modules/clientes/clientes/pages/ClienteEdit';
 
-import ProductosList from '@/modules/inventario/pages/ProductosList';
-import ProductoCreate from '@/modules/inventario/pages/ProductoCreate';
-import ProductoEdit from '@/modules/inventario/pages/ProductoEdit';
+import ProductosList from '@/modules/productos/pages/ProductosList';
+import ProductoCreate from '@/modules/productos/pages/ProductoCreate';
+import ProductoEdit from '@/modules/productos/pages/ProductoEdit';
+import CategoriasList from '@/modules/categorias/pages/CategoriasList'; // ← NUEVO
 
 import ComprasList from '@/modules/compras/pages/ComprasList';
 import CompraCreate from '@/modules/compras/pages/CompraCreate';
@@ -26,9 +27,9 @@ import { Dashboard } from '@/modules/dashboard'; //  Importar del módulo dashbo
 
 import type { ProtectedRouteKey } from '@/routes/routes.config';
 
-import VentasList   from '@/modules/ventas/ventas/pages/VentasList';    // ← NUEVO
-import VentaCreate  from '@/modules/ventas/ventas/pages/VentaCreate';   // ← NUEVO
-import VentaEdit    from '@/modules/ventas/ventas/pages/VentaEdit';     // ← NUEVO
+import VentasList from '@/modules/ventas/ventas/pages/VentasList';    // ← NUEVO
+import VentaCreate from '@/modules/ventas/ventas/pages/VentaCreate';   // ← NUEVO
+import VentaEdit from '@/modules/ventas/ventas/pages/VentaEdit';     // ← NUEVO
 import VentaDetalle from '@/modules/ventas/ventas/pages/VentaDetalle';  // ← NUEVO
 
 type RouteComponentProps = Record<string, string | undefined>;
@@ -51,6 +52,7 @@ export const protectedRouteComponents: Record<
   ProductosList,
   ProductoCreate,
   ProductoEdit,
+  CategoriasList, // ← NUEVO
 
   ClientesList,
   ClienteCreate,
@@ -59,7 +61,7 @@ export const protectedRouteComponents: Record<
   ProveedorList,
   ProveedorEdit,
   ProveedorCreate,
-  
+
   ComprasList,
   CompraCreate,
   CompraEdit,

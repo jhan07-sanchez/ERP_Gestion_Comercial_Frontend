@@ -1,34 +1,36 @@
-// modules/inventario/api/inventarios.api.ts
-import axiosInstance from '@/api/axios';
-import type { Inventario, ProductoList } from '../types';
+import axiosInstance from "@/api/axios";
+import type { Inventario, AjusteInventario } from "../types";
 
-const API_BASE = '/inventario/inventarios';
+const API_BASE = "/inventario/inventarios";
 
 export const inventariosAPI = {
-  getInventarios: async (filters?: {
-    stock_bajo?: boolean;
-    categoria?: string;
-    solo_activos?: boolean;
-  }): Promise<Inventario[]> => {
-    const params = new URLSearchParams();
-
-    if (filters?.stock_bajo) params.append('stock_bajo', 'true');
-    if (filters?.categoria) params.append('categoria', filters.categoria);
-    if (filters?.solo_activos) params.append('solo_activos', 'true');
-
-    const response = await axiosInstance.get(`${API_BASE}/`, { params });
-    return Array.isArray(response.data)
-      ? response.data
-      : response.data.results || [];
+  getInventarios: async (
+    params?: Record<string, unknown>,
+  ): Promise<Inventario[]> => {
+    const { data } = await axiosInstance.get<Inventario[]>(`${API_BASE}/`, {
+      params,
+    });
+    return data;
   },
 
-  getEstadisticasInventario: async () => {
-    const response = await axiosInstance.get(`${API_BASE}/estadisticas/`);
-    return response.data;
+  getInventarioByProducto: async (productoId: number): Promise<Inventario> => {
+    const { data } = await axiosInstance.get<Inventario>(
+      `${API_BASE}/por_producto/`,
+      {
+        params: { producto_id: productoId },
+      },
+    );
+    return data;
   },
 
-   getProductosStockBajo: async (): Promise<ProductoList[]> => {
-    const response = await axiosInstance.get(`${API_BASE}/stock_bajo/`);
-    return response.data.productos ?? response.data;
+  ajustarStock: async (
+    productoId: number,
+    ajuste: AjusteInventario,
+  ): Promise<Inventario> => {
+    const { data } = await axiosInstance.post<Inventario>(
+      `/productos/${productoId}/ajustar_stock/`, // La lógica de ajuste sigue en el endpoint de producto del backend
+      ajuste,
+    );
+    return data;
   },
 };

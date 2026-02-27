@@ -49,7 +49,7 @@ export default function VentaEdit() {
         setClienteInicial({
           id: venta.cliente_info.id,
           nombre: venta.cliente_info.nombre,
-          documento: venta.cliente_info.documento,
+          documento: venta.cliente_info.numero_documento,
           telefono: venta.cliente_info.telefono,
           email: venta.cliente_info.email,
         });
@@ -87,6 +87,9 @@ export default function VentaEdit() {
   const convertToAPIFormat = (data: VentaFormData): VentaUpdateInput => ({
     cliente_id: data.cliente_id,
     estado: data.estado,
+    metodo_pago: data.metodo_pago,
+    monto_recibido: data.monto_recibido,
+    vuelto: data.vuelto,
     detalles: data.detalles.map((d) => ({
       producto_id: d.producto_id,
       cantidad: d.cantidad,
@@ -95,13 +98,14 @@ export default function VentaEdit() {
   });
 
   // ─── Submit ────────────────────────────────────────────────────────────
-  const handleSubmit = async () => {
-    if (!id || !formData) return;
+  const handleSubmit = async (updatedData?: VentaFormData) => {
+    if (!id || (!formData && !updatedData)) return;
 
     setSubmitting(true);
 
     try {
-      const apiData = convertToAPIFormat(formData);
+      const dataToSubmit = updatedData || formData!;
+      const apiData = convertToAPIFormat(dataToSubmit);
       console.log("📡 Payload actualización venta:", apiData);
 
       const success = await updateVenta(Number(id), apiData);

@@ -125,6 +125,43 @@ export function formatNumber(value: number | string): string {
 export const numberClass = "font-mono tabular-nums";
 
 /**
+ * Formatea un string numérico para visualización en inputs con separadores de miles (punto)
+ * y decimales (coma), siguiendo el estándar es-CO.
+ */
+export function formatNumberInput(value: string): string {
+  if (!value) return "";
+
+  // 1. Quitar todos los puntos (separadores de miles en es-CO)
+  let cleanValue = value.replace(/\./g, "");
+
+  // 2. Separar parte entera y decimal por la primera coma encontrada
+  const parts = cleanValue.split(",");
+  let integerPart = parts[0].replace(/\D/g, ""); // Solo dígitos en la parte entera
+
+  // Si hay más de una coma, unimos el resto como parte decimal
+  let decimalPart = parts.length > 1 ? parts.slice(1).join("").replace(/\D/g, "") : null;
+
+  // 3. Formatear parte entera con puntos como separadores de miles
+  const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+  // 4. Reconstruir el string
+  if (parts.length > 1) {
+    return `${formattedInteger},${decimalPart ?? ""}`;
+  }
+  return formattedInteger;
+}
+
+/**
+ * Convierte un string formateado (es-CO) a un valor numérico real (JS string).
+ */
+export function parseNumberInput(value: string): string {
+  if (!value) return "0";
+  // Quitar puntos (miles) y cambiar coma por punto (decimal JS)
+  const normalized = value.replace(/\./g, "").replace(/,/g, ".");
+  return normalized || "0";
+}
+
+/**
  * Formatear porcentaje
  *
  * @param value - Valor del porcentaje (0-100)

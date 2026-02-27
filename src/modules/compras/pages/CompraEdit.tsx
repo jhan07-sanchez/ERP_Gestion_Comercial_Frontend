@@ -30,7 +30,7 @@ import { useCompras } from "../hooks/useCompras";
 import { CompraForm, type CompraFormData } from "../components/CompraForm";
 import type { CompraUpdateInput } from "../types";
 import { useProveedor } from "@/modules/proveedores/hooks/useProveedor";
-import { useProductos } from "@/modules/inventario/hooks/useProductos";
+import { useProductos } from "@/modules/productos/hooks/useProductos";
 
 export default function CompraEdit() {
   const { id } = useParams<{ id: string }>();

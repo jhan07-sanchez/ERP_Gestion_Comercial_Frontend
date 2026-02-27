@@ -27,6 +27,7 @@ export type ProtectedRouteKey =
   | "ProductosList"
   | "ProductoCreate"
   | "ProductoEdit"
+  | "CategoriasList" // ← NUEVO
 
   | "ClientesList"
   | "ClienteCreate"
@@ -35,7 +36,7 @@ export type ProtectedRouteKey =
   | "ProveedorList"
   | "ProveedorCreate"
   | "ProveedorEdit"
-  
+
   | "ComprasList"
   | "CompraCreate"
   | "CompraEdit"
@@ -48,13 +49,14 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
   { path: 'dashboard', componentKey: 'Dashboard', placeholderProps: { title: 'Dashboard', description: 'Bienvenido al sistema ERP.' } },
 
   { path: 'ventas/lista', componentKey: 'VentasList', placeholderProps: { title: 'Ventas', description: 'Gestión de ventas.' } },
-  { path: 'ventas/crear',       componentKey: 'VentaCreate' },
-  { path: 'ventas/:id/editar',  componentKey: 'VentaEdit' },
+  { path: 'ventas/crear', componentKey: 'VentaCreate' },
+  { path: 'ventas/:id/editar', componentKey: 'VentaEdit' },
   { path: 'ventas/:id/detalle', componentKey: 'VentaDetalle' },
 
   { path: 'productos/lista', componentKey: 'ProductosList' },
   { path: 'productos/crear', componentKey: 'ProductoCreate' },
   { path: 'productos/:id/editar', componentKey: 'ProductoEdit' },
+  { path: 'categorias/lista', componentKey: 'CategoriasList' }, // ← NUEVO
 
   { path: 'clientes/lista', componentKey: 'ClientesList' },
   { path: 'clientes/crear', componentKey: 'ClienteCreate' },

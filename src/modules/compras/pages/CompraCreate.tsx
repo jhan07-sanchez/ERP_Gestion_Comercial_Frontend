@@ -29,7 +29,7 @@ import { Button } from "@/components/ui";
 import { CompraForm, type CompraFormData } from "../components/CompraForm";
 import { useCompras } from "../hooks/useCompras";
 import { useProveedor } from "@/modules/proveedores/hooks/useProveedor";
-import { useProductos } from "@/modules/inventario/hooks/useProductos";
+import { useProductosList as useProductos } from "@/modules/productos/hooks/useProductosList";
 
 export default function CompraCreate() {
   const navigate = useNavigate();

@@ -5,17 +5,15 @@
 
 import { useState } from "react";
 import { ventasAPI } from "../api/ventas.api";
-import type { AxiosError } from "axios";
 import type {
   VentaList,
+  VentaDetail,
   VentaCreateInput,
   VentaUpdateInput,
+  PagoVentaCreateInput,
 } from "../types/venta.types";
+import { getApiErrorMessage } from "@/utils/apiError";
 
-interface ApiError {
-  detail?: string;
-  [key: string]: unknown;
-}
 
 export function useVentaActions(
   onSuccess?: (venta?: VentaList) => Promise<void> | void,
@@ -25,14 +23,10 @@ export function useVentaActions(
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [loadingCompletar, setLoadingCompletar] = useState(false);
   const [loadingCancelar, setLoadingCancelar] = useState(false);
+  const [loadingPago, setLoadingPago] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
 
-  // ─── Helper para extraer mensaje de error ────────────────────────────────
-  const extractError = (err: unknown, fallback: string): string => {
-    const axiosError = err as AxiosError<ApiError>;
-    return axiosError.response?.data?.detail ?? axiosError.message ?? fallback;
-  };
 
   // ─── Crear venta ─────────────────────────────────────────────────────────
   const createVenta = async (
@@ -48,7 +42,7 @@ export function useVentaActions(
 
       return response.venta; // ✅ FIX REAL
     } catch (err) {
-      setError(extractError(err, "Error al crear la venta"));
+      setError(getApiErrorMessage(err, "Error al crear la venta"));
       return null;
     } finally {
       setLoadingCreate(false);
@@ -68,7 +62,7 @@ export function useVentaActions(
       await onSuccess?.();
       return updated;
     } catch (err) {
-      setError(extractError(err, "Error al actualizar la venta"));
+      setError(getApiErrorMessage(err, "Error al actualizar la venta"));
       return null;
     } finally {
       setLoadingUpdate(false);
@@ -85,7 +79,7 @@ export function useVentaActions(
       await onSuccess?.();
       return true;
     } catch (err) {
-      setError(extractError(err, "Error al eliminar la venta"));
+      setError(getApiErrorMessage(err, "Error al eliminar la venta"));
       return false;
     } finally {
       setLoadingDelete(false);
@@ -102,7 +96,7 @@ export function useVentaActions(
       await onSuccess?.(response.venta ?? response);
       return response.venta ?? response;
     } catch (err) {
-      setError(extractError(err, "Error al completar la venta"));
+      setError(getApiErrorMessage(err, "Error al completar la venta"));
       return null;
     } finally {
       setLoadingCompletar(false);
@@ -122,10 +116,30 @@ export function useVentaActions(
       await onSuccess?.(response.venta ?? response);
       return response.venta ?? response;
     } catch (err) {
-      setError(extractError(err, "Error al cancelar la venta"));
+      setError(getApiErrorMessage(err, "Error al cancelar la venta"));
       return null;
     } finally {
       setLoadingCancelar(false);
+    }
+  };
+
+  // ─── Registrar Pago ───────────────────────────────────────────────────────
+  const registrarPago = async (
+    id: number,
+    data: PagoVentaCreateInput,
+  ): Promise<VentaDetail | null> => {
+    try {
+      setLoadingPago(true);
+      setError(null);
+
+      const response = await ventasAPI.registrarPago(id, data);
+      await onSuccess?.(response.venta as unknown as VentaList);
+      return response.venta;
+    } catch (err) {
+      setError(getApiErrorMessage(err, "Error al registrar el pago"));
+      return null;
+    } finally {
+      setLoadingPago(false);
     }
   };
 
@@ -135,7 +149,8 @@ export function useVentaActions(
     loadingUpdate ||
     loadingDelete ||
     loadingCompletar ||
-    loadingCancelar;
+    loadingCancelar ||
+    loadingPago;
 
   return {
     createVenta,
@@ -143,12 +158,14 @@ export function useVentaActions(
     deleteVenta,
     completarVenta,
     cancelarVenta,
+    registrarPago,
     loading,
     loadingCreate,
     loadingUpdate,
     loadingDelete,
     loadingCompletar,
     loadingCancelar,
+    loadingPago,
     error,
   };
 }

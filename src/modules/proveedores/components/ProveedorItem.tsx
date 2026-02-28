@@ -2,6 +2,7 @@
 
 import React from "react";
 import type { Proveedor } from "../types/proveedor.types";
+import { useAlert } from "@/components/alerts";
 
 interface ProveedorItemProps {
   proveedor: Proveedor;
@@ -18,6 +19,7 @@ export const ProveedorItem: React.FC<ProveedorItemProps> = ({
   onToggleestado,
   onViewDetail,
 }) => {
+  const { confirm } = useAlert();
   const formatFecha = (fecha: string) => {
     return new Date(fecha).toLocaleDateString("es-ES", {
       year: "numeric",
@@ -26,22 +28,27 @@ export const ProveedorItem: React.FC<ProveedorItemProps> = ({
     });
   };
 
-  const handleDelete = () => {
-    if (
-      window.confirm(
-        `¿Estás seguro de eliminar al proveedor "${proveedor.nombre}"?`,
-      )
-    ) {
+  const handleDelete = async () => {
+    const confirmed = await confirm(
+      "Eliminar Proveedor",
+      `¿Estás seguro de que deseas eliminar al proveedor "${proveedor.nombre}"? Esta acción no se puede deshacer.`,
+      "critical"
+    );
+
+    if (confirmed) {
       onDelete(proveedor.id);
     }
   };
 
-  const handleToggleEstado = () => {
-    const mensaje = proveedor.estado
-      ? `¿Desactivar al proveedor "${proveedor.nombre}"?`
-      : `¿Activar al proveedor "${proveedor.nombre}"?`;
+  const handleToggleEstado = async () => {
+    const actionText = proveedor.estado ? "desactivar" : "activar";
+    const confirmed = await confirm(
+      `${proveedor.estado ? "Desactivar" : "Activar"} Proveedor`,
+      `¿Deseas ${actionText} al proveedor "${proveedor.nombre}"?`,
+      proveedor.estado ? "warning" : "info"
+    );
 
-    if (window.confirm(mensaje)) {
+    if (confirmed) {
       onToggleestado(proveedor.id, !proveedor.estado);
     }
   };

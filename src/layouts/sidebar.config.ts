@@ -170,23 +170,24 @@ export const sidebarConfig: SidebarItem[] = [
       {
         section: "FINANCIEROS",
         items: [
-          { label: "Balance general", path: "/reportes" },
-          { label: "Estado de resultado", path: "/reportes" },
-          { label: "Flujo de caja", path: "/reportes" },
+          { label: "Balance general", path: "/reportes/balance_general" },
+          { label: "Estado de resultado", path: "/reportes/estado_resultado" },
+          { label: "Flujo de caja", path: "/reportes/flujos_caja" },
         ],
       },
       {
         section: "OPERATIVOS",
         items: [
-          { label: "Eficiencia operativa", path: "/reportes" },
-          { label: "Productividad", path: "/reportes" },
+          { label: "Eficiencia operativa", path: "/reportes/eficiencia_operativa" },
+          { label: "Productividad", path: "/reportes/productividad" },
         ],
       },
       {
         section: "ANALISIS",
         items: [
-          { label: "Tendencia de mercadeo", path: "/reportes" },
-          { label: "Proyecciones", path: "/reportes" },
+          { label: "Tendencia de mercadeo", path: "/reportes/tendencia_mercadeo" },
+          { label: "Proyecciones", path: "/reportes/proyecciones" },
+          { label: "Actividad reciente", path: "/reportes/lista" },
         ],
       },
     ],

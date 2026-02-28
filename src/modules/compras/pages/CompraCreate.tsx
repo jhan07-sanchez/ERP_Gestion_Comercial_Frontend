@@ -30,12 +30,14 @@ import { CompraForm, type CompraFormData } from "../components/CompraForm";
 import { useCompras } from "../hooks/useCompras";
 import { useProveedor } from "@/modules/proveedores/hooks/useProveedor";
 import { useProductosList as useProductos } from "@/modules/productos/hooks/useProductosList";
+import { useAlert } from "@/components/alerts";
 
 export default function CompraCreate() {
   const navigate = useNavigate();
 
   // Hooks de dominio
   const { createCompra, fetchCompras, error } = useCompras();
+  const { showAlert, confirm } = useAlert();
   const {
     proveedores,
     fetchProveedores,
@@ -175,7 +177,7 @@ export default function CompraCreate() {
     // Validar primero
     const validation = validateForm();
     if (!validation.valid) {
-      alert(validation.message);
+      showAlert("Validación", "warning", { description: validation.message });
       return;
     }
 
@@ -196,7 +198,7 @@ export default function CompraCreate() {
         console.log("🔄 Recargando lista de compras...");
         await fetchCompras();
 
-        alert("¡Compra registrada exitosamente!");
+        showAlert("¡Compra registrada!", "success", { description: "La compra se ha registrado exitosamente" });
 
         // Redirigir con un pequeño delay para que el usuario vea el mensaje
         setTimeout(() => {
@@ -237,7 +239,7 @@ export default function CompraCreate() {
         if (fieldErrors) errorMsg = `Errores:\n${fieldErrors}`;
       }
 
-      alert(errorMsg);
+      showAlert("Error", "error", { description: errorMsg });
     } finally {
       setSubmitting(false);
     }
@@ -246,7 +248,7 @@ export default function CompraCreate() {
   /**
    * ❌ Cancelar
    */
-  const handleCancel = () => {
+  const handleCancel = async () => {
     if (submitting) return;
 
     const hasData =
@@ -255,8 +257,10 @@ export default function CompraCreate() {
       (formData.observaciones?.trim() ?? "").length > 0;
 
     if (hasData) {
-      const confirmar = window.confirm(
+      const confirmar = await confirm(
+        "Confirmar Cancelación",
         "¿Seguro que deseas cancelar? Se perderán los datos ingresados.",
+        "warning"
       );
       if (!confirmar) return;
     }

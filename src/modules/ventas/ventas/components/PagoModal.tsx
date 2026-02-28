@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui";
 import { formatCurrency, formatNumberInput, parseNumberInput, formatNumber } from "@/utils/formatters";
 import type { MetodoPago } from "../types/venta.types";
@@ -31,24 +31,23 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
 
     const maxPagar = saldoPendiente !== undefined ? saldoPendiente : total;
 
-    // Resetear formulario cuando se cierra/abre (evitando setState in effect)
+    // Reseteamos formulario cuando se cierra/abre (evitando setState in effect)
     // Se recomienda usar la prop key={id} en el componente padre para resetear estado si es complejo,
     // pero para este modal simple reseteamos en el useEffect con cuidado o al cerrar.
 
-    // Para mitigar el error de ESLint: "Calling setState synchronously within an effect can trigger cascading renders"
-    // Movemos la lógica de inicialización a un efecto que solo corra cuando isOpen cambie a true
-    useEffect(() => {
-        if (!isOpen) return;
+    const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
 
+    // Resetear formulario cuando se abre (evitando useEffect síncrono para mejor rendimiento y cumplir con ESLint)
+    if (isOpen && !prevIsOpen) {
+        setPrevIsOpen(true);
         setMetodo("EFECTIVO");
         setMontoPagar(maxPagar);
-        // Usamos formatNumberInput sobre el número para que ya venga con el formato es-CO (separadores .)
-        // Pero como maxPagar es number, lo pasamos a string primero.
-        // O mejor, usamos formatNumber que ya tenemos en utils.
         setMontoPagarTexto(formatNumber(maxPagar));
         setMontoNumerico(0);
         setFormatoMonto("");
-    }, [isOpen, maxPagar]);
+    } else if (!isOpen && prevIsOpen) {
+        setPrevIsOpen(false);
+    }
 
     if (!isOpen) return null;
 

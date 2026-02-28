@@ -14,10 +14,19 @@ export default function ProductoEdit() {
     const navigate = useNavigate();
 
     const { getProducto, updateProducto, error } = useProductoActions();
-    const { categorias, isLoading: loadingCategorias } = useCategorias();
+    const {
+        categorias,
+        isLoading: loadingCategorias,
+        fetchCategorias
+    } = useCategorias();
 
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
+
+    // Cargar categorías al montar
+    useEffect(() => {
+        fetchCategorias();
+    }, [fetchCategorias]);
 
     // Estado del formulario (UI)
     const [formData, setFormData] = useState<ProductoFormData | null>(null);

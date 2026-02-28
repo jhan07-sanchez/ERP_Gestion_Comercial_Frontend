@@ -11,24 +11,39 @@ import type {
 
 const API_BASE = "/dashboard";
 
-interface DashboardProductAlert {
-  producto_id: number;
-  nombre: string;
-  codigo: string;
-  categoria: string;
+interface DashboardAlertItem {
+  producto_id?: number;
+  venta_id?: number;
+  nombre?: string;
+  codigo?: string;
+  categoria?: string;
   tipo: string;
-  severidad: "critica" | "media" | "baja";
+  severidad: SystemAlert['severidad'];
   mensaje: string;
+  timestamp?: string;
+  fecha?: string;
+  stock_actual?: number;
+  stock_minimo?: number;
 }
 
 interface DashboardAlertsResponse {
   success: boolean;
   data: {
     total: number;
-    sin_stock: DashboardProductAlert[];
-    stock_bajo: DashboardProductAlert[];
-    ventas_pendientes: DashboardProductAlert[];
+    sin_stock: DashboardAlertItem[];
+    stock_critico: DashboardAlertItem[];
+    stock_advertencia: DashboardAlertItem[];
+    ventas_pendientes: DashboardAlertItem[];
   };
+}
+
+interface RawActivity {
+  id: number;
+  tipo?: string;
+  type?: string;
+  descripcion: string;
+  fecha: string;
+  estado: RecentActivity['estado'];
 }
 
 export const dashboardAPI = {
@@ -51,11 +66,7 @@ export const dashboardAPI = {
     return response.data;
   },
 
-  /**
-   * Obtiene KPIs desde endpoint de alertas (real)
-   */
   getKPIStats: async (): Promise<KPIStats> => {
-    // 🔥 Ejecutamos ambas APIs en paralelo
     const [alertsResponse, clientsResponse] = await Promise.all([
       axiosInstance.get<DashboardAlertsResponse>(`${API_BASE}/alertas/`),
       axiosInstance.get(`${API_BASE}/clientes/`),
@@ -65,35 +76,24 @@ export const dashboardAPI = {
     const clients = clientsResponse.data.data;
 
     return {
-      // PRODUCTOS
       totalProducts: 0,
       productsTrend: "stable",
       productsPercentage: 0,
-
-      // VENTAS
       totalSales: 0,
       salesTrend: "stable",
       salesPercentage: 0,
-
-      // PEDIDOS
       pendingOrders: alerts.ventas_pendientes.length,
       ordersTrend: "stable",
       ordersPercentage: 0,
-
-      // STOCK
-      lowStockProducts: alerts.sin_stock.length + alerts.stock_bajo.length,
-      stockTrend: alerts.sin_stock.length > 0 ? "down" : "stable",
+      lowStockProducts: alerts.sin_stock.length + alerts.stock_critico.length + alerts.stock_advertencia.length,
+      stockTrend: (alerts.sin_stock.length + alerts.stock_critico.length) > 0 ? "down" : "stable",
       stockPercentage: 0,
-
-      // CLIENTES 🔥 FIX REAL
       newCustomers: clients.nuevos_este_mes,
       customersTrend: clients.nuevos_este_mes > 0 ? "up" : "stable",
       customersPercentage: 0,
     };
   },
-  /**
-   * Obtiene alertas del sistema adaptadas al frontend
-   */
+
   getSystemAlerts: async (): Promise<SystemAlert[]> => {
     const response = await axiosInstance.get<DashboardAlertsResponse>(
       `${API_BASE}/alertas/`,
@@ -102,20 +102,40 @@ export const dashboardAPI = {
     const raw = response.data.data;
 
     const alerts: SystemAlert[] = [
-      ...raw.sin_stock.map<SystemAlert>((item) => ({
-        id: item.producto_id,
+      ...raw.sin_stock.map<SystemAlert>((item: DashboardAlertItem) => ({
+        id: item.producto_id || 0,
         severidad: item.severidad,
-        title: item.nombre,
+        title: item.nombre || "Sin nombre",
         message: item.mensaje,
-        timestamp: new Date().toISOString(),
+        timestamp: item.timestamp || new Date().toISOString(),
+        type: 'product',
       })),
 
-      ...raw.stock_bajo.map<SystemAlert>((item) => ({
-        id: item.producto_id,
+      ...raw.stock_critico.map<SystemAlert>((item: DashboardAlertItem) => ({
+        id: item.producto_id || 0,
         severidad: item.severidad,
-        title: item.nombre,
+        title: item.nombre || "Sin nombre",
         message: item.mensaje,
-        timestamp: new Date().toISOString(),
+        timestamp: item.timestamp || new Date().toISOString(),
+        type: 'product',
+      })),
+
+      ...raw.stock_advertencia.map<SystemAlert>((item: DashboardAlertItem) => ({
+        id: item.producto_id || 0,
+        severidad: item.severidad,
+        title: item.nombre || "Sin nombre",
+        message: item.mensaje,
+        timestamp: item.timestamp || new Date().toISOString(),
+        type: 'product',
+      })),
+
+      ...raw.ventas_pendientes.map<SystemAlert>((item: DashboardAlertItem) => ({
+        id: item.venta_id || 0,
+        severidad: item.severidad,
+        title: `Venta #${item.venta_id}`,
+        message: item.mensaje,
+        timestamp: item.timestamp || item.fecha || new Date().toISOString(),
+        type: 'sale',
       })),
     ];
 
@@ -135,15 +155,26 @@ export const dashboardAPI = {
 
     // Normalizamos fecha -> timestamp
     const RecentActivity: RecentActivity[] = (
-      response.data.data as RecentActivity[]
-    ).map((item) => ({
-      id: item.id,
-      type: "order", // o usa lógica según item.tipo
-      descripcion: item.descripcion,
-      timestamp: item.fecha, // normalizamos la fecha
-      fecha: item.fecha,
-      estado: item.estado,
-    }));
+      response.data.data as RawActivity[]
+    ).map((item) => {
+      // Heurística para mapear tipos del backend al frontend
+      let type: RecentActivity['type'] = 'order';
+      const rawType = (item.type || item.tipo || '').toLowerCase();
+
+      if (rawType.includes('vent')) type = 'sale';
+      else if (rawType.includes('compr')) type = 'order';
+      else if (rawType.includes('client')) type = 'customer';
+      else if (rawType.includes('prod')) type = 'product';
+
+      return {
+        id: item.id,
+        type,
+        descripcion: item.descripcion,
+        timestamp: item.fecha, // normalizamos la fecha
+        fecha: item.fecha,
+        estado: item.estado,
+      };
+    });
     return RecentActivity;
   },
 

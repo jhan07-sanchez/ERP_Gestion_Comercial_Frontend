@@ -8,6 +8,7 @@ import { Card, Button, Input, Table, Badge } from "@/components/ui";
 import { useProductosList, useProductoActions } from "../hooks"; // ✅ Usando los nuevos hooks
 import type { ProductoFilters } from "../types";
 import { formatCurrency } from "@/utils/formatters";
+import { useAlert } from "@/components/alerts";
 
 export default function ProductosList() {
     const navigate = useNavigate();
@@ -18,6 +19,7 @@ export default function ProductosList() {
         fetchProductos,
         applyFilters,
     } = useProductosList();
+    const { showAlert, confirm } = useAlert();
 
     const { deleteProducto } = useProductoActions(async () => {
         await fetchProductos();
@@ -39,11 +41,19 @@ export default function ProductosList() {
 
     // Manejar eliminación
     const handleDelete = async (id: number) => {
-        if (window.confirm("¿Estás seguro de que deseas eliminar este producto?")) {
+        const confirmar = await confirm(
+            "Eliminar Producto",
+            "¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.",
+            "critical"
+        );
+
+        if (confirmar) {
             try {
                 await deleteProducto(id);
+                showAlert("Producto Eliminado", "success");
             } catch (err) {
                 console.error("Error al eliminar:", err);
+                showAlert("Error", "error", { description: "No se pudo eliminar el producto." });
             }
         }
     };
@@ -166,8 +176,8 @@ export default function ProductosList() {
                                         <td className="py-3 px-4 text-center">
                                             <span
                                                 className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${(producto.stock_actual || 0) <= producto.stock_minimo
-                                                        ? "bg-red-100 text-red-800"
-                                                        : "bg-green-100 text-green-800"
+                                                    ? "bg-red-100 text-red-800"
+                                                    : "bg-green-100 text-green-800"
                                                     }`}
                                             >
                                                 {producto.stock_actual || 0}

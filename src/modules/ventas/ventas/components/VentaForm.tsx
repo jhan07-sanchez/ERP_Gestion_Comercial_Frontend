@@ -30,6 +30,7 @@ import {
   IconReceipt
 } from "@tabler/icons-react";
 import { clientesVentaAPI, productosVentaAPI } from "../api/ventas.api";
+import { useAlert } from "@/components/alerts";
 import type {
   VentaFormData,
   ClienteParaVenta,
@@ -63,6 +64,7 @@ export function VentaForm({
   onSubmit,
   onCancel,
 }: VentaFormProps) {
+  const { showAlert } = useAlert();
   // ─── Estado búsqueda de cliente ────────────────────────────────────────
   const [clienteSeleccionado, setClienteSeleccionado] =
     useState<ClienteParaVenta | null>(clienteInicial);
@@ -175,9 +177,9 @@ export function VentaForm({
       const nuevaCantidad = detalle.cantidad + 1;
 
       if (nuevaCantidad > producto.stock_actual) {
-        alert(
-          `Stock insuficiente. Solo hay ${producto.stock_actual} unidades.`,
-        );
+        showAlert("Stock Insuficiente", "warning", {
+          description: `Solo hay ${producto.stock_actual} unidades de ${producto.nombre}.`
+        });
         return;
       }
 
@@ -188,7 +190,7 @@ export function VentaForm({
       };
     } else {
       if (producto.stock_actual <= 0) {
-        alert("Este producto no tiene stock disponible.");
+        showAlert("Sin Stock", "warning", { description: "Este producto no tiene stock disponible." });
         return;
       }
 
@@ -242,6 +244,7 @@ export function VentaForm({
     let numValue: number;
 
     if (field === "precio_unitario") {
+      // Si es string (del input), parsear. Si es número (de props/v-model), usar directo.
       const raw = typeof newValue === "string" ? parseNumberInput(newValue) : newValue.toString();
       numValue = parseFloat(raw) || 0;
     } else {
@@ -250,13 +253,19 @@ export function VentaForm({
 
     const detalle = { ...detalles[index], [field]: isNaN(numValue) ? 0 : numValue };
 
-    // Validar stock
+    // Validar stock solo si aumenta cantidad
     if (field === "cantidad" && (detalle.cantidad || 0) > (detalle.stock_disponible || 0)) {
-      alert(`Stock insuficiente. Solo hay ${detalle.stock_disponible} unidades.`);
+      showAlert("Stock Insuficiente", "warning", {
+        description: `Solo hay ${detalle.stock_disponible} unidades disponibles de este producto.`
+      });
       return;
     }
 
-    detalle.subtotal = (detalle.cantidad || 0) * (detalle.precio_unitario || 0);
+    // Forzar recalculo de subtotal siempre
+    const cantidad = Number(detalle.cantidad) || 0;
+    const precio = Number(detalle.precio_unitario) || 0;
+    detalle.subtotal = cantidad * precio;
+
     detalles[index] = detalle;
 
     onChange({
@@ -269,23 +278,23 @@ export function VentaForm({
   // ─── Validación ────────────────────────────────────────────────────────
   const validateForm = (): boolean => {
     if (!value.cliente_id || value.cliente_id === 0) {
-      alert("Debes seleccionar un cliente");
+      showAlert("Validación", "warning", { description: "Debes seleccionar un cliente" });
       return false;
     }
 
     if (value.detalles.length === 0) {
-      alert("Debes agregar al menos un producto");
+      showAlert("Validación", "warning", { description: "Debes agregar al menos un producto al carrito" });
       return false;
     }
 
     for (let i = 0; i < value.detalles.length; i++) {
       const d = value.detalles[i];
       if (d.cantidad <= 0) {
-        alert(`Producto #${i + 1}: La cantidad debe ser mayor a 0`);
+        showAlert("Validación", "warning", { description: `Producto #${i + 1}: La cantidad debe ser mayor a 0` });
         return false;
       }
       if (d.precio_unitario <= 0) {
-        alert(`Producto #${i + 1}: El precio debe ser mayor a 0`);
+        showAlert("Validación", "warning", { description: `Producto #${i + 1}: El precio debe ser mayor a 0` });
         return false;
       }
     }
@@ -516,8 +525,8 @@ export function VentaForm({
               {value.detalles.length > 0 ? (
                 <>
                   <div className="hidden md:grid grid-cols-12 gap-4 px-4 py-2 text-[11px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-50">
-                    <div className="col-span-5">Producto</div>
-                    <div className="col-span-2 text-center">Cantidad</div>
+                    <div className="col-span-4">Producto</div>
+                    <div className="col-span-3 text-center">Cantidad</div>
                     <div className="col-span-2 text-center">Precio Unit.</div>
                     <div className="col-span-2 text-right">Subtotal</div>
                     <div className="col-span-1"></div>
@@ -531,22 +540,22 @@ export function VentaForm({
                                  p-4 rounded-xl border border-gray-100 transition-all hover:shadow-md hover:ring-1 hover:ring-indigo-100 group"
                       >
                         {/* Producto */}
-                        <div className="col-span-1 md:col-span-5 flex items-center gap-3">
+                        <div className="col-span-1 md:col-span-4 flex items-center gap-3">
                           <div className="hidden sm:flex w-10 h-10 bg-white rounded-lg border border-gray-100 items-center justify-center text-gray-400">
                             <IconPackage size={20} />
                           </div>
-                          <div>
-                            <p className="text-sm font-bold text-gray-900">
+                          <div className="truncate">
+                            <p className="text-sm font-bold text-gray-900 truncate">
                               {detalle.producto_nombre}
                             </p>
-                            <p className="text-[10px] font-bold text-gray-400">
+                            <p className="text-[10px] font-bold text-gray-400 overflow-hidden text-ellipsis">
                               REF: {detalle.producto_codigo} · <span className="text-indigo-500">DISP: {detalle.stock_disponible}</span>
                             </p>
                           </div>
                         </div>
 
                         {/* Cantidad con botones +/- */}
-                        <div className="col-span-1 md:col-span-2 flex justify-center">
+                        <div className="col-span-1 md:col-span-3 flex justify-center">
                           <div className="flex items-center bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                             <button
                               type="button"
@@ -577,7 +586,7 @@ export function VentaForm({
                             <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-400">$</span>
                             <input
                               type="text"
-                              value={formatNumberInput(detalle.precio_unitario?.toString() || "")}
+                              value={formatNumberInput(detalle.precio_unitario?.toString() ?? "")}
                               onChange={(e) => updateDetalle(index, "precio_unitario", e.target.value)}
                               className={`w-full pl-5 pr-2 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-bold focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition-all ${numberClass}`}
                             />

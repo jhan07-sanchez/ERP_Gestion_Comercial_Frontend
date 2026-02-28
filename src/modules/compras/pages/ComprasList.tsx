@@ -8,16 +8,17 @@ import { useNavigate } from "react-router-dom";
 import { Card, Button, Input, Table, Badge } from "@/components/ui";
 import { useCompras } from "../hooks/useCompras";
 import type { CompraFilters, EstadoCompra } from "../types";
-import { formatCurrency, truncateProductos} from "@/utils/formatters";
+import { formatCurrency, truncateProductos } from "@/utils/formatters";
+import { useAlert } from "@/components/alerts";
 
 
 // Mapeo visual del estado (UI layer)
 const estadoVariantMap: Record<EstadoCompra, "success" | "warning" | "danger"> =
-  {
-    REALIZADA: "success",
-    PENDIENTE: "warning",
-    ANULADA: "danger",
-  };
+{
+  REALIZADA: "success",
+  PENDIENTE: "warning",
+  ANULADA: "danger",
+};
 
 export default function ComprasList() {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ export default function ComprasList() {
     loadingConfirm,
     loadingAnular,
   } = useCompras();
+  const { showAlert, confirm: alertConfirm, prompt: alertPrompt } = useAlert();
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -49,23 +51,33 @@ export default function ComprasList() {
   };
 
   const handleConfirmar = async (id: number) => {
-    const confirm = window.confirm(
-      "¿Confirmar esta compra? Esto actualizará el inventario.",
+    const confirmed = await alertConfirm(
+      "Confirmar Compra",
+      "¿Deseas confirmar esta compra? Esto actualizará el inventario.",
+      "info"
     );
-    if (!confirm) return;
+    if (!confirmed) return;
 
     await confirmarCompra(id);
+    showAlert("Compra Confirmada", "success");
   };
 
   const handleAnular = async (id: number) => {
-    const motivo = window.prompt("Motivo de la anulación:");
+    const motivo = await alertPrompt(
+      "Anular Compra",
+      "Por favor, ingresa el motivo de la anulación:",
+      ""
+    );
 
-    if (!motivo) {
-      alert("Debes ingresar un motivo.");
+    if (motivo === null) return; // Usuario canceló el prompt
+
+    if (!motivo.trim()) {
+      showAlert("Validación", "warning", { description: "Debes ingresar un motivo para anular la compra." });
       return;
     }
 
     await anularCompra(id, motivo);
+    showAlert("Compra Anulada", "info");
   };
 
   // Loading inicial

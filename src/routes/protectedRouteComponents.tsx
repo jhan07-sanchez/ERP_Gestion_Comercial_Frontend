@@ -32,6 +32,8 @@ import VentaCreate from '@/modules/ventas/ventas/pages/VentaCreate';   // ← NU
 import VentaEdit from '@/modules/ventas/ventas/pages/VentaEdit';     // ← NUEVO
 import VentaDetalle from '@/modules/ventas/ventas/pages/VentaDetalle';  // ← NUEVO
 
+ // ← NUEVO
+
 type RouteComponentProps = Record<string, string | undefined>;
 
 export const protectedRouteComponents: Record<

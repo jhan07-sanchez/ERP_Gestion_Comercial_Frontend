@@ -14,6 +14,7 @@
 
 import { Card, Button, Input } from "@/components/ui";
 import type { ClienteFormData, EstadoCliente } from "../types/cliente.types";
+import { useAlert } from "@/components/alerts";
 
 interface ClienteFormProps {
   value: ClienteFormData;
@@ -37,20 +38,21 @@ export function ClienteForm({
   onSubmit,
   onCancel,
 }: ClienteFormProps) {
+  const { showAlert } = useAlert();
   // ─── Validación ─────────────────────────────
   const validateForm = (): boolean => {
     if (!value.nombre?.trim()) {
-      alert("El nombre del cliente es obligatorio");
+      showAlert("Validación", "warning", { description: "El nombre del cliente es obligatorio" });
       return false;
     }
 
     if (value.numero_documento && value.numero_documento.length < 5) {
-      alert("El documento no es válido");
+      showAlert("Validación", "warning", { description: "El número de documento no parece válido (mínimo 5 caracteres)" });
       return false;
     }
 
     if (value.telefono && value.telefono.length < 7) {
-      alert("El teléfono no es válido");
+      showAlert("Validación", "warning", { description: "El número de teléfono no parece válido (mínimo 7 dígitos)" });
       return false;
     }
 

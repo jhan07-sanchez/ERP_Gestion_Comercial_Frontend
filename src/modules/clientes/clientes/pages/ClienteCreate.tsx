@@ -16,10 +16,12 @@ import { Button } from "@/components/ui";
 import { ClienteForm } from "../components/ClienteForm";
 import { useClientes } from "../hooks/useClientes";
 import type { ClienteFormData } from "../types";
+import { useAlert } from "@/components/alerts";
 
 export default function ClienteCreate() {
   const navigate = useNavigate();
   const { createCliente, fetchClientes, error } = useClientes();
+  const { showAlert, confirm } = useAlert();
   const [submitting, setSubmitting] = useState(false);
 
   // ─── Estado inicial del formulario (UI ONLY) ──────────────────────────
@@ -79,7 +81,7 @@ export default function ClienteCreate() {
     const validation = validateForm();
 
     if (!validation.valid) {
-      alert(validation.message);
+      showAlert("Validación", "warning", { description: validation.message });
       return;
     }
 
@@ -97,7 +99,7 @@ export default function ClienteCreate() {
 
         await fetchClientes();
 
-        alert("¡Cliente registrado exitosamente!");
+        showAlert("¡Cliente registrado!", "success", { description: "El cliente se ha registrado exitosamente" });
 
         setTimeout(() => navigate("/clientes"), 500);
       } else {
@@ -133,14 +135,14 @@ export default function ClienteCreate() {
         if (fieldErrors) errorMsg = `Errores:\n${fieldErrors}`;
       }
 
-      alert(errorMsg);
+      showAlert("Error", "error", { description: errorMsg });
     } finally {
       setSubmitting(false);
     }
   };
 
   // ─── Cancelar ──────────────────────────────────────────────────────────
-  const handleCancel = () => {
+  const handleCancel = async () => {
     if (submitting) return;
 
     const hasData =
@@ -150,8 +152,10 @@ export default function ClienteCreate() {
       formData.email !== "";
 
     if (hasData) {
-      const confirmar = window.confirm(
+      const confirmar = await confirm(
+        "Confirmar Cancelación",
         "¿Seguro que deseas cancelar? Se perderán los datos ingresados.",
+        "warning"
       );
 
       if (!confirmar) return;

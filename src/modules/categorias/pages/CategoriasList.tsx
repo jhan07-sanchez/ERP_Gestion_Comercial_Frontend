@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, Button, Input, Table, Badge } from "@/components/ui";
 import { useCategorias } from "../hooks/useCategorias";
+import { useAlert } from "@/components/alerts";
 
 export default function CategoriasList() {
     const {
@@ -10,6 +11,7 @@ export default function CategoriasList() {
         fetchCategorias,
         deleteCategoria,
     } = useCategorias();
+    const { showAlert, confirm } = useAlert();
 
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -23,11 +25,19 @@ export default function CategoriasList() {
     );
 
     const handleDelete = async (id: number) => {
-        if (window.confirm("¿Estás seguro de que deseas eliminar esta categoría?")) {
+        const confirmar = await confirm(
+            "Eliminar Categoría",
+            "¿Estás seguro de que deseas eliminar esta categoría? Esta acción no se puede deshacer.",
+            "critical"
+        );
+
+        if (confirmar) {
             try {
                 await deleteCategoria(id);
+                showAlert("Categoría Eliminada", "success");
             } catch (err) {
                 console.error("Error al eliminar categoría:", err);
+                showAlert("Error", "error", { description: "No se pudo eliminar la categoría." });
             }
         }
     };
@@ -50,7 +60,7 @@ export default function CategoriasList() {
                     <h1 className="text-3xl font-bold text-gray-900">Categorías</h1>
                     <p className="text-gray-600 mt-1"> Gestión de las categorías del catálogo</p>
                 </div>
-                <Button onClick={() => alert("Función de crear categoría en desarrollo...")}>
+                <Button onClick={() => showAlert("En Desarrollo", "info", { description: "La función de crear categoría estará disponible pronto." })}>
                     Nueva Categoría
                 </Button>
             </div>

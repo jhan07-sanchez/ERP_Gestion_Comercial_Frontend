@@ -1,15 +1,5 @@
-// src/api/axios.ts
-/**
- * 🔧 CONFIGURACIÓN DE AXIOS
- *
- * Este archivo configura axios para comunicarse con el backend Django.
- * Incluye:
- * - URL base del API
- * - Interceptores para agregar tokens JWT
- * - Manejo de errores automático
- */
-
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
+import { showGlobalAlert } from '@/components/alerts';
 
 /** URL base del API (desarrollo: .env VITE_API_URL, producción: variable de entorno) */
 const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000/api';
@@ -34,12 +24,12 @@ axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     // Obtener token del localStorage
     const token = localStorage.getItem('access_token');
-    
+
     if (token && config.headers) {
       // Agregar token al header Authorization
       config.headers.Authorization = `Bearer ${token}`;
     }
-    
+
     return config;
   },
   (error: AxiosError) => {
@@ -59,15 +49,44 @@ axiosInstance.interceptors.response.use(
   },
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+    const status = error.response?.status;
+    const data = error.response?.data as Record<string, string | Record<string, string>>;
+
+    // Manejo de errores globales (excepto 401 que tiene su propia lógica abajo)
+    if (status && status !== 401) {
+      let message = "Ha ocurrido un error inesperado";
+      let title = "Error del Sistema";
+
+      if (status === 400) {
+        title = "Datos Inválidos";
+        const raw = data?.message || data?.error || data?.detail;
+        message = typeof raw === 'string' ? raw : "Por favor, revisa la información enviada";
+      } else if (status === 403) {
+        title = "Acceso Denegado";
+        message = "No tienes permisos para realizar esta acción";
+      } else if (status === 404) {
+        title = "No Encontrado";
+        message = "El recurso solicitado no existe";
+      } else if (status >= 500) {
+        title = "Error del Servidor";
+        message = "El servidor encontró un error interno. Intenta más tarde";
+      }
+
+      showGlobalAlert(title, 'error', { description: message });
+    } else if (!status) {
+      showGlobalAlert("Error de Conexión", "critical", {
+        description: "No se pudo conectar con el servidor. Verifica tu internet."
+      });
+    }
 
     // Si el error es 401 (No autorizado) y no es un intento de retry
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
         // Intentar refrescar el token
         const refreshToken = localStorage.getItem('refresh_token');
-        
+
         if (refreshToken) {
           const response = await axios.post(`${BASE_URL}/token/refresh/`, {
             refresh: refreshToken,

@@ -131,20 +131,32 @@ export const numberClass = "font-mono tabular-nums";
 export function formatNumberInput(value: string): string {
   if (!value) return "";
 
-  // 1. Quitar todos los puntos (separadores de miles en es-CO)
-  let cleanValue = value.replace(/\./g, "");
+  // 1. Detectar si el string ya viene en formato JS (punto como decimal, sin miles)
+  // o si viene en formato es-CO (punto como miles, coma como decimal).
+  // Si tiene un punto y NO tiene comas, y el punto está cerca del final, 
+  // probablemente sea un decimal de JS.
+  let internalValue = value;
+  if (value.includes('.') && !value.includes(',') && value.indexOf('.') === value.lastIndexOf('.')) {
+    const parts = value.split('.');
+    if (parts[1].length <= 2) { // Máximo 2 decimales usualmente
+      internalValue = value.replace('.', ',');
+    }
+  }
 
-  // 2. Separar parte entera y decimal por la primera coma encontrada
+  // 2. Quitar todos los puntos (ahora estamos seguros que son separadores de miles es-CO)
+  const cleanValue = internalValue.replace(/\./g, "");
+
+  // 3. Separar parte entera y decimal por la primera coma encontrada
   const parts = cleanValue.split(",");
-  let integerPart = parts[0].replace(/\D/g, ""); // Solo dígitos en la parte entera
+  const integerPart = parts[0].replace(/\D/g, ""); // Solo dígitos en la parte entera
 
   // Si hay más de una coma, unimos el resto como parte decimal
-  let decimalPart = parts.length > 1 ? parts.slice(1).join("").replace(/\D/g, "") : null;
+  const decimalPart = parts.length > 1 ? parts.slice(1).join("").replace(/\D/g, "") : null;
 
-  // 3. Formatear parte entera con puntos como separadores de miles
+  // 4. Formatear parte entera con puntos como separadores de miles
   const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-  // 4. Reconstruir el string
+  // 5. Reconstruir el string
   if (parts.length > 1) {
     return `${formattedInteger},${decimalPart ?? ""}`;
   }

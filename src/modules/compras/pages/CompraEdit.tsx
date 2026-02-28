@@ -30,13 +30,15 @@ import { useCompras } from "../hooks/useCompras";
 import { CompraForm, type CompraFormData } from "../components/CompraForm";
 import type { CompraUpdateInput } from "../types";
 import { useProveedor } from "@/modules/proveedores/hooks/useProveedor";
-import { useProductos } from "@/modules/productos/hooks/useProductos";
+import { useProductos } from "@/modules/productos/hooks/useProductos"
+import { useAlert } from "@/components/alerts";
 
 export default function CompraEdit() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const { getCompra, updateCompra, fetchCompras, error } = useCompras();
+  const { showAlert } = useAlert();
 
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -119,9 +121,9 @@ export default function CompraEdit() {
         setFormData(mappedData);
       } catch (err) {
         console.error("❌ Error al cargar la compra:", err);
-        alert(
-          `Error al cargar la compra: ${err instanceof Error ? err.message : "Error desconocido"}`,
-        );
+        showAlert("Error", "error", {
+          description: `Error al cargar la compra: ${err instanceof Error ? err.message : "Error desconocido"}`
+        });
         navigate("/compras");
       } finally {
         setLoading(false);
@@ -129,7 +131,7 @@ export default function CompraEdit() {
     };
 
     loadCompra();
-  }, [id, getCompra, navigate, loadingProveedores, loadingProductos]);
+  }, [id, getCompra, navigate, loadingProveedores, loadingProductos, showAlert]);
 
   /**
    * ✅ Validaciones del lado del cliente
@@ -211,7 +213,7 @@ export default function CompraEdit() {
     // Validar primero
     const validation = validateForm();
     if (!validation.valid) {
-      alert(validation.message);
+      showAlert("Validación", "warning", { description: validation.message });
       return;
     }
 
@@ -230,16 +232,16 @@ export default function CompraEdit() {
         console.log("🔄 Recargando lista de compras...");
         await fetchCompras();
 
-        alert("Compra actualizada exitosamente");
+        showAlert("¡Compra Actualizada!", "success", { description: "Los datos de la compra se han actualizado correctamente." });
         navigate("/compras");
       } else {
         throw new Error(error || "Error desconocido al actualizar compra");
       }
     } catch (err) {
       console.error("❌ Error al actualizar compra:", err);
-      alert(
-        "Error al actualizar la compra. Revisa los datos e intenta nuevamente.",
-      );
+      showAlert("Error", "error", {
+        description: "Error al actualizar la compra. Revisa los datos e intenta nuevamente."
+      });
     } finally {
       setSubmitting(false);
     }

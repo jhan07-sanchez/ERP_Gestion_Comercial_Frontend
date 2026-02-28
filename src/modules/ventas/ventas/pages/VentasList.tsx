@@ -10,6 +10,7 @@ import { Card, Button, Input, Table, Badge } from "@/components/ui";
 import { useVentas } from "../hooks/useVenta";
 import { formatCurrency, formatDate } from "@/utils/formatters";
 import type { EstadoVenta, VentaFilters } from "../types/venta.types";
+import { useAlert } from "@/components/alerts";
 
 const estadoVariantMap: Record<EstadoVenta, "success" | "warning" | "danger"> =
 {
@@ -31,6 +32,7 @@ export default function VentasList() {
     cancelarVenta,
     loadingCancelar,
   } = useVentas();
+  const { showAlert, prompt } = useAlert();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filtroEstado, setFiltroEstado] = useState<EstadoVenta | "">("");
@@ -64,12 +66,17 @@ export default function VentasList() {
 
   // Cancelar venta
   const handleCancelar = async (id: number) => {
-    const motivo = window.prompt("Motivo de la cancelación:");
-    if (!motivo) {
-      alert("Debes ingresar un motivo.");
+    const motivo = await prompt("Cancelar Venta", "Por favor, ingresa el motivo de la cancelación:", "");
+
+    if (motivo === null) return; // Usuario canceló
+
+    if (!motivo.trim()) {
+      showAlert("Validación", "warning", { description: "Debes ingresar un motivo para cancelar la venta." });
       return;
     }
+
     await cancelarVenta(id, motivo);
+    showAlert("Venta Cancelada", "info");
     fetchVentas();
   };
 

@@ -17,10 +17,12 @@ import { Button } from "@/components/ui";
 import { ProveedorForm } from "../components/ProveedorForm";
 import { useProveedorActions } from "../hooks/useProveedorActions";
 import type { ProveedorFormData } from "../types/proveedor.types";
+import { useAlert } from "@/components/alerts";
 
 export default function ProveedorCreate() {
   const navigate = useNavigate();
   const { createProveedor, loading, error } = useProveedorActions();
+  const { showAlert, confirm } = useAlert();
 
   const [submitting, setSubmitting] = useState(false);
 
@@ -48,7 +50,7 @@ export default function ProveedorCreate() {
       const newProveedor = await createProveedor(formData);
 
       if (newProveedor) {
-        alert("¡Proveedor creado exitosamente!");
+        showAlert("¡Proveedor Creado!", "success", { description: "El proveedor se ha registrado exitosamente" });
         navigate("/proveedores");
       }
     } catch (err) {
@@ -80,7 +82,7 @@ export default function ProveedorCreate() {
         if (fieldErrors) errorMsg = `Errores:\n${fieldErrors}`;
       }
 
-      alert(errorMsg);
+      showAlert("Error", "error", { description: errorMsg });
     } finally {
       setSubmitting(false);
     }
@@ -89,7 +91,7 @@ export default function ProveedorCreate() {
   /**
    * ❌ Cancelar
    */
-  const handleCancel = () => {
+  const handleCancel = async () => {
     if (submitting) return;
 
     const hasData =
@@ -101,8 +103,10 @@ export default function ProveedorCreate() {
 
 
     if (hasData) {
-      const confirmar = window.confirm(
+      const confirmar = await confirm(
+        "Confirmar Cancelación",
         "¿Seguro que deseas cancelar? Se perderán los datos ingresados.",
+        "warning"
       );
       if (!confirmar) return;
     }

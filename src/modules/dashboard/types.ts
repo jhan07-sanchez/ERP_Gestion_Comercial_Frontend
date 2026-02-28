@@ -30,16 +30,17 @@ export interface RecentActivity {
   descripcion: string;
   timestamp: string;
   fecha: string;
-  estado: 'success' | 'warning' | 'info';
+  estado: 'success' | 'warning' | 'info' | 'error';
 }
 
 // Alerta del sistema
 export interface SystemAlert {
   id: number;
-  severidad: "critica" | "media" | "baja";
+  severidad: "critica" | "media" | "baja" | "advertencia" | "informacion";
   title: string;
   message: string;
   timestamp: string;
+  type: 'product' | 'sale';
 }
 
 // Datos completos del dashboard

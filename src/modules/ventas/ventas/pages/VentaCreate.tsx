@@ -17,10 +17,12 @@ import { VentaForm } from "../components/VentaForm";
 import { useVentas } from "../hooks/useVenta";
 import type { VentaFormData } from "../types/venta.types";
 import { getApiErrorMessage } from "@/utils/apiError";
+import { useAlert } from "@/components/alerts";
 
 export default function VentaCreate() {
   const navigate = useNavigate();
   const { createVenta, fetchVentas, error } = useVentas();
+  const { showAlert, confirm } = useAlert();
   const [submitting, setSubmitting] = useState(false);
 
   // Estado inicial del formulario (UI ONLY)
@@ -92,7 +94,7 @@ export default function VentaCreate() {
     const dataToSubmit = updatedData || formData;
     const validation = validateForm(dataToSubmit);
     if (!validation.valid) {
-      alert(validation.message);
+      showAlert("Validación", "warning", { description: validation.message });
       return;
     }
 
@@ -105,6 +107,7 @@ export default function VentaCreate() {
       const nuevaVenta = await createVenta(apiData);
 
       if (nuevaVenta) {
+        showAlert("¡Venta Creada!", "success", { description: "La venta se ha registrado exitosamente" });
         console.log("✅ Venta creada:", nuevaVenta);
         await fetchVentas();
         // Redirigir al detalle con el parámetro para abrir el modal de pago automáticamente
@@ -115,21 +118,23 @@ export default function VentaCreate() {
     } catch (errorObj) {
       console.error("❌ ERROR DEL BACKEND:", errorObj);
       const errorMsg = getApiErrorMessage(errorObj, "Error al crear la venta. Revisa los datos.");
-      alert(errorMsg);
+      showAlert("Error", "error", { description: errorMsg });
     } finally {
       setSubmitting(false);
     }
   };
 
   // ─── Cancelar ──────────────────────────────────────────────────────────
-  const handleCancel = () => {
+  const handleCancel = async () => {
     if (submitting) return;
 
     const hasData = formData.cliente_id !== 0 || formData.detalles.length > 0;
 
     if (hasData) {
-      const confirmar = window.confirm(
+      const confirmar = await confirm(
+        "Confirmar Cancelación",
         "¿Seguro que deseas cancelar? Se perderán los datos ingresados.",
+        "warning"
       );
       if (!confirmar) return;
     }

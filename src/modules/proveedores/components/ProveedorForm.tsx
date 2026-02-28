@@ -12,6 +12,7 @@
 
 import { Card, Button, Input } from "@/components/ui";
 import type { ProveedorFormData } from "../types/proveedor.types";
+import { useAlert } from "@/components/alerts";
 
 interface ProveedorFormProps {
   value: ProveedorFormData;
@@ -34,6 +35,7 @@ export function ProveedorForm({
   onSubmit,
   onCancel,
 }: ProveedorFormProps) {
+  const { showAlert } = useAlert();
   /**
    * 🔄 Cambios simples
    * (misma lógica que CompraForm)
@@ -60,12 +62,12 @@ export function ProveedorForm({
    */
   const validateForm = (): boolean => {
     if (!value.nombre.trim()) {
-      alert("El nombre del proveedor es obligatorio");
+      showAlert("Validación", "warning", { description: "El nombre del proveedor es obligatorio" });
       return false;
     }
 
     if (value.email && !value.email.includes("@")) {
-      alert("El email no es válido");
+      showAlert("Validación", "warning", { description: "El email ingresado no es válido" });
       return false;
     }
 

@@ -7,9 +7,14 @@
  */
 
 import AppRouter from '@/routes/AppRouter';
+import { AlertProvider } from '@/components/alerts';
 
 function App() {
-  return <AppRouter />;
+  return (
+    <AlertProvider>
+      <AppRouter />
+    </AlertProvider>
+  );
 }
 
 export default App;

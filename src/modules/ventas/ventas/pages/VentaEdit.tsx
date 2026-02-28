@@ -21,12 +21,14 @@ import type {
   VentaUpdateInput,
   ClienteParaVenta,
 } from "../types/venta.types";
+import { useAlert } from "@/components/alerts";
 
 export default function VentaEdit() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const { getVenta, updateVenta, fetchVentas, error } = useVentas();
+  const { showAlert } = useAlert();
 
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -73,7 +75,7 @@ export default function VentaEdit() {
         setFormData(mapped);
       } catch (err) {
         console.error("❌ Error cargando venta:", err);
-        alert("Error al cargar la venta. Volviendo al listado...");
+        showAlert("Error", "error", { description: "Error al cargar la venta. Volviendo al listado..." });
         navigate("/ventas");
       } finally {
         setLoading(false);
@@ -81,7 +83,7 @@ export default function VentaEdit() {
     };
 
     loadVenta();
-  }, [id, getVenta, navigate]);
+  }, [id, getVenta, navigate, showAlert]);
 
   // ─── Convertir UI → payload backend ───────────────────────────────────
   const convertToAPIFormat = (data: VentaFormData): VentaUpdateInput => ({
@@ -113,16 +115,16 @@ export default function VentaEdit() {
       if (success) {
         console.log("✅ Venta actualizada");
         await fetchVentas();
-        alert("Venta actualizada exitosamente");
+        showAlert("¡Venta Actualizada!", "success", { description: "La venta se ha actualizado correctamente" });
         navigate("/ventas");
       } else {
         throw new Error(error || "Error desconocido al actualizar");
       }
     } catch (err) {
       console.error("❌ Error actualizando venta:", err);
-      alert(
-        "Error al actualizar la venta. Revisa los datos e intenta de nuevo.",
-      );
+      showAlert("Error", "error", {
+        description: "Error al actualizar la venta. Revisa los datos e intenta de nuevo."
+      });
     } finally {
       setSubmitting(false);
     }
@@ -169,6 +171,7 @@ export default function VentaEdit() {
 
       {/* Formulario */}
       <VentaForm
+        key={`venta-edit-${id}-${formData.cliente_id}-${formData.detalles.length}`}
         mode="edit"
         value={formData}
         clienteInicial={clienteInicial}

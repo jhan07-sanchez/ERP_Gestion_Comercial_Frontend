@@ -7,11 +7,13 @@ import {
   ProductoForm,
   type ProductoFormData,
 } from "../components/ProductoForm";
+import { useAlert } from "@/components/alerts";
 
 export default function ProductoCreate() {
   const navigate = useNavigate();
 
   const { createProducto, error } = useProductoActions();
+  const { showAlert, confirm } = useAlert();
 
   // ✅ CORRECCIÓN: agregar fetchCategorias
   const {
@@ -60,19 +62,21 @@ export default function ProductoCreate() {
       const nuevoProducto = await createProducto(apiData);
       console.log("Respuesta backend:", nuevoProducto);
 
-      alert(`¡Producto creado exitosamente!\nCódigo: ${nuevoProducto.codigo}`);
+      showAlert("Producto Creado", "success", {
+        description: `¡Producto creado exitosamente! Código: ${nuevoProducto.codigo}`
+      });
 
       setTimeout(() => navigate("/productos"), 1500);
     } catch (err: unknown) {
       console.error("❌ ERROR AL CREAR PRODUCTO:", err);
-
-      alert(err instanceof Error ? err.message : "Error al crear el producto.");
+      const errorMsg = err instanceof Error ? err.message : "Error al crear el producto.";
+      showAlert("Error", "error", { description: errorMsg });
     } finally {
       setSubmitting(false);
     }
   };
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
     if (submitting) return;
 
     const hasData =
@@ -85,8 +89,10 @@ export default function ProductoCreate() {
       formData.codigo.trim().length > 0;
 
     if (hasData) {
-      const confirmar = window.confirm(
+      const confirmar = await confirm(
+        "Confirmar Cancelación",
         "¿Seguro que deseas cancelar? Se perderán los datos ingresados.",
+        "warning"
       );
 
       if (!confirmar) return;

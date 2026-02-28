@@ -16,6 +16,7 @@ import { Button } from "@/components/ui";
 import { ClienteForm } from "../components/ClienteForm";
 import { useClientes } from "../hooks/useClientes";
 import type { ClienteFormData, ClienteUpdateInput } from "../types";
+import { useAlert } from "@/components/alerts";
 
 export default function ClienteEdit() {
   const { id } = useParams<{ id: string }>();
@@ -23,6 +24,7 @@ export default function ClienteEdit() {
   const navigate = useNavigate();
 
   const { getCliente, updateCliente, fetchClientes, error } = useClientes();
+  const { showAlert } = useAlert();
 
   const [loading, setLoading] = useState(true);
 
@@ -60,9 +62,7 @@ export default function ClienteEdit() {
         setFormData(mapped);
       } catch (err) {
         console.error("❌ Error cargando cliente:", err);
-
-        alert("Error al cargar el cliente. Volviendo al listado...");
-
+        showAlert("Error", "error", { description: "Error al cargar el cliente. Volviendo al listado..." });
         navigate("/clientes");
       } finally {
         setLoading(false);
@@ -70,7 +70,7 @@ export default function ClienteEdit() {
     };
 
     loadCliente();
-  }, [id, getCliente, navigate]);
+  }, [id, getCliente, navigate, showAlert]);
 
   // ─── Convertir UI → payload backend ───────────────────────────────
   const convertToAPIFormat = (data: ClienteFormData): ClienteUpdateInput => ({
@@ -104,21 +104,17 @@ export default function ClienteEdit() {
 
       if (success) {
         console.log("✅ Cliente actualizado");
-
         await fetchClientes();
-
-        alert("Cliente actualizado exitosamente");
-
+        showAlert("¡Cliente Actualizado!", "success", { description: "Los datos del cliente se han actualizado correctamente." });
         navigate("/clientes");
       } else {
         throw new Error(error || "Error desconocido al actualizar");
       }
     } catch (err) {
       console.error("❌ Error actualizando cliente:", err);
-
-      alert(
-        "Error al actualizar el cliente. Revisa los datos e intenta de nuevo.",
-      );
+      showAlert("Error", "error", {
+        description: "Error al actualizar el cliente. Revisa los datos e intenta de nuevo."
+      });
     } finally {
       setSubmitting(false);
     }

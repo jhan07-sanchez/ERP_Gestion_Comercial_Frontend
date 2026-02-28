@@ -5,7 +5,8 @@
  */
 
 import { Card, Button, Input } from "@/components/ui";
-import type { Categoria } from "../../../modules/categorias/types"; // ✅ Importación de categorías del nuevo módulo
+import type { Categoria } from "../../../modules/categorias/types";
+import { useAlert } from "@/components/alerts";
 
 
 /**
@@ -56,6 +57,7 @@ export function ProductoForm({
     onSubmit,
     onCancel,
 }: ProductoFormProps) {
+    const { showAlert } = useAlert();
     /**
      * Maneja cambios en los inputs del formulario
      * Convierte tipos automáticamente según el campo
@@ -86,22 +88,22 @@ export function ProductoForm({
     const validateForm = (): boolean => {
         // Validaciones básicas
         if (!value.nombre?.trim()) {
-            alert("El nombre del producto es obligatorio");
+            showAlert("Validación", "warning", { description: "El nombre del producto es obligatorio" });
             return false;
         }
 
         if (!value.categoria || value.categoria === 0) {
-            alert("Debes seleccionar una categoría");
+            showAlert("Validación", "warning", { description: "Debes seleccionar una categoría para el producto" });
             return false;
         }
 
         if (value.precio_venta <= 0) {
-            alert("El precio de venta debe ser mayor a 0");
+            showAlert("Validación", "warning", { description: "El precio de venta debe ser mayor a 0" });
             return false;
         }
 
         return true;
-    };;
+    };
 
     /**
      * Maneja el envío del formulario

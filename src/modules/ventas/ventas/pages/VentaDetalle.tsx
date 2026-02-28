@@ -10,6 +10,7 @@ import { useVentas } from "../hooks/useVenta";
 import { formatCurrency, formatNumber, numberClass, formatDate, formatDateTime } from "@/utils/formatters";
 import type { VentaDetail, EstadoVenta, MetodoPago } from "../types/venta.types";
 import { PagoModal } from "../components/PagoModal";
+import { useAlert } from "@/components/alerts";
 
 const estadoVariantMap: Record<EstadoVenta, "success" | "warning" | "danger"> =
 {
@@ -30,6 +31,7 @@ export default function VentaDetalle() {
     loadingPago,
     loadingCancelar,
   } = useVentas();
+  const { showAlert, prompt } = useAlert();
 
   const [venta, setVenta] = useState<VentaDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -88,15 +90,20 @@ export default function VentaDetalle() {
   // ─── Cancelar ──────────────────────────────────────────────────────────
   const handleCancelar = async () => {
     if (!venta) return;
-    const motivo = window.prompt("Motivo de la cancelación:");
-    if (!motivo) {
-      alert("Debes ingresar un motivo.");
+    const motivo = await prompt("Cancelar Venta", "Por favor, ingresa el motivo de la cancelación:", "");
+
+    if (motivo === null) return; // Usuario canceló
+
+    if (!motivo.trim()) {
+      showAlert("Validación", "warning", { description: "Debes ingresar un motivo para cancelar la venta." });
       return;
     }
 
     const result = await cancelarVenta(venta.id, motivo);
-    if (result)
+    if (result) {
+      showAlert("Venta Cancelada", "info", { description: "La venta ha sido cancelada exitosamente." });
       setVenta((prev) => (prev ? { ...prev, estado: "CANCELADA" } : prev));
+    }
   };
 
   // ─── Loading ───────────────────────────────────────────────────────────

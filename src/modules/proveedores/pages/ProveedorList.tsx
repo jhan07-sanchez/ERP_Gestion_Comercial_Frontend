@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Card, Button, Input, Table, Badge } from "@/components/ui";
 import { useProveedor } from "../hooks/useProveedor";
 import type { ProveedorFilters } from "../types/proveedor.types";
+import { useAlert } from "@/components/alerts";
 
 export default function ProveedorList() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export default function ProveedorList() {
     deleteProveedor,
     applyFilters,
   } = useProveedor();
+  const { showAlert, confirm } = useAlert();
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -37,13 +39,19 @@ export default function ProveedorList() {
 
   // Eliminación
   const handleDelete = async (id: number) => {
-    if (
-      window.confirm("¿Estás seguro de que deseas eliminar este proveedor?")
-    ) {
+    const confirmar = await confirm(
+      "Eliminar Proveedor",
+      "¿Estás seguro de que deseas eliminar este proveedor? Esta acción no se puede deshacer.",
+      "critical"
+    );
+
+    if (confirmar) {
       try {
         await deleteProveedor(id);
+        showAlert("Proveedor Eliminado", "success");
       } catch (err) {
         console.error("Error al eliminar proveedor:", err);
+        showAlert("Error", "error", { description: "No se pudo eliminar el proveedor." });
       }
     }
   };

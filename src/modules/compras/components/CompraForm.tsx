@@ -14,6 +14,7 @@
 import { Card, Button, Input } from "@/components/ui";
 import type { EstadoCompra } from "../types";
 import { formatCurrency } from "@/utils/formatters";
+import { useAlert } from "@/components/alerts";
 
 
 /**
@@ -69,6 +70,7 @@ export function CompraForm({
   onSubmit,
   onCancel,
 }: CompraFormProps) {
+  const { showAlert } = useAlert();
   /**
    * 🔁 Recalcula total
    */
@@ -158,17 +160,17 @@ export function CompraForm({
    */
   const validateForm = (): boolean => {
     if (!value.proveedor_id) {
-      alert("Debes seleccionar un proveedor");
+      showAlert("Validación", "warning", { description: "Debes seleccionar un proveedor para la compra" });
       return false;
     }
 
     if (!value.fecha) {
-      alert("La fecha es obligatoria");
+      showAlert("Validación", "warning", { description: "La fecha de la compra es obligatoria" });
       return false;
     }
 
     if (value.detalles.length === 0) {
-      alert("Debes agregar al menos un producto");
+      showAlert("Validación", "warning", { description: "Debes agregar al menos un producto a la compra" });
       return false;
     }
 
@@ -177,7 +179,7 @@ export function CompraForm({
         (d) => !d.producto || d.cantidad <= 0 || d.precio_unitario <= 0,
       )
     ) {
-      alert("Revisa los productos, cantidades y precios");
+      showAlert("Validación", "warning", { description: "Revisa que todos los productos seleccionados tengan cantidad y precio válidos" });
       return false;
     }
 

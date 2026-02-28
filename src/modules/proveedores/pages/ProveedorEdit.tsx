@@ -7,6 +7,7 @@ import { useProveedor } from "../hooks/useProveedor";
 import { useProveedorActions } from "../hooks/useProveedorActions";
 import type { ProveedorFormData } from "../types/proveedor.types";
 import { Button } from "@/components/ui";
+import { useAlert } from "@/components/alerts";
 
 
 export default function ProveedorEdit() {
@@ -21,6 +22,7 @@ export default function ProveedorEdit() {
     loading: updateLoading,
     error: updateError,
   } = useProveedorActions();
+  const { showAlert } = useAlert();
 
   // ✅ Estado local del formulario (OBLIGATORIO)
   const [formData, setFormData] = useState<ProveedorFormData | null>(null);
@@ -41,12 +43,13 @@ export default function ProveedorEdit() {
         const data = await getProveedor(proveedorId);
         setFormData(data);
       } catch {
-        // error manejado por el hook
+        showAlert("Error", "error", { description: "No se pudo cargar la información del proveedor." });
+        navigate("/proveedores");
       }
     };
 
     fetchProveedor();
-  }, [proveedorId, getProveedor]);
+  }, [proveedorId, getProveedor, navigate, showAlert]);
 
   // ✅ Submit SIN parámetros (como pide ProveedorForm)
   const handleSubmit = async () => {
@@ -55,7 +58,7 @@ export default function ProveedorEdit() {
     const ok = await updateProveedor(proveedorId, formData);
 
     if (ok) {
-      alert("Proveedor actualizado exitosamente");
+      showAlert("¡Proveedor Actualizado!", "success", { description: "Los datos del proveedor se han actualizado correctamente." });
       navigate("/proveedores");
     }
   };

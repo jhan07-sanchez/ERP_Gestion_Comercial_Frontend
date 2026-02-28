@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button, Card, Badge } from "@/components/ui";
 import { useClientes } from "../hooks/useClientes";
 import type { ClienteDetail, EstadoCliente } from "../types";
+import { useAlert } from "@/components/alerts";
 
 const estadoVariantMap: Record<
   EstadoCliente,
@@ -29,6 +30,7 @@ export default function ClienteDetalle() {
     loadingActivar,
     loadingDesactivar,
   } = useClientes();
+  const { showAlert, confirm } = useAlert();
 
   const [cliente, setCliente] = useState<ClienteDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -56,28 +58,32 @@ export default function ClienteDetalle() {
   const handleActivar = async () => {
     if (!cliente) return;
 
-    const confirm = window.confirm("¿Deseas activar este cliente?");
+    const confirmed = await confirm("Activar Cliente", `¿Deseas activar al cliente "${cliente.nombre}"?`, "info");
 
-    if (!confirm) return;
+    if (!confirmed) return;
 
     const result = await activarCliente(cliente.id);
 
-    if (result)
+    if (result) {
+      showAlert("Cliente Activado", "success", { description: `El cliente "${cliente.nombre}" ha sido activado.` });
       setCliente((prev) => (prev ? { ...prev, estado: "ACTIVO" } : prev));
+    }
   };
 
   // ─── Desactivar cliente ───────────────────────────────────────────────
   const handleDesactivar = async () => {
     if (!cliente) return;
 
-    const confirm = window.confirm("¿Deseas desactivar este cliente?");
+    const confirmed = await confirm("Desactivar Cliente", `¿Deseas desactivar al cliente "${cliente.nombre}"? No podrá realizar nuevas ventas mientras esté inactivo.`, "warning");
 
-    if (!confirm) return;
+    if (!confirmed) return;
 
     const result = await desactivarCliente(cliente.id);
 
-    if (result)
+    if (result) {
+      showAlert("Cliente Desactivado", "warning", { description: `El cliente "${cliente.nombre}" ha sido desactivado.` });
       setCliente((prev) => (prev ? { ...prev, estado: "INACTIVO" } : prev));
+    }
   };
 
   // ─── Loading ──────────────────────────────────────────────────────────
@@ -195,8 +201,8 @@ export default function ClienteDetalle() {
             <strong>Última actualización:</strong>{" "}
             {cliente.fecha_actualizacion
               ? new Date(cliente.fecha_actualizacion).toLocaleDateString(
-                  "es-CO",
-                )
+                "es-CO",
+              )
               : "Sin fecha"}
           </p>
         </Card.Content>

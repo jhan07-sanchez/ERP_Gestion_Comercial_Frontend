@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button, Card, Badge } from "@/components/ui";
 import { useClientes } from "../hooks/useClientes";
 import type { ClienteDetail, EstadoCliente } from "../types";
+import { getTipoDocumentoLabel } from "../types";
 import { useAlert } from "@/components/alerts";
 
 const estadoVariantMap: Record<
@@ -158,7 +159,7 @@ export default function ClienteDetalle() {
           </p>
 
           <p>
-            <strong>Tipo documento:</strong> {cliente.tipo_documento}
+            <strong>Tipo documento:</strong> {getTipoDocumentoLabel(cliente.tipo_documento)}
           </p>
 
           <p>

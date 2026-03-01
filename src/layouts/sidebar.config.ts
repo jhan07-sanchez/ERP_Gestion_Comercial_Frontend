@@ -198,18 +198,19 @@ export const sidebarConfig: SidebarItem[] = [
     icon: IconReportAnalytics,
     children: [
       {
-        section: "FINANCIEROS",
-        items: [],
-      },
-      {
-        section: "OPERATIVOS",
+        section: "Logs",
         items: [
+          { label: "Historial de cambios", path: "/auditorias/historial_cambios", icon: IconReportAnalytics },
+          { label: "Actividad reciente", path: "/auditorias/actividad_reciente", icon: IconReportAnalytics },
         ],
       },
       {
-        section: "ANALISIS",
+        section: "Análisis",
         items: [
-          { label: "Actividad reciente", path: "/auditorias/actividad_reciente", icon: IconReportAnalytics },
+          { label: "Accesos", path: "/auditorias/accesos", icon: IconReportAnalytics },
+          { label: "Por usuarios", path: "/auditorias/usuarios", icon: IconReportAnalytics },
+          { label: "Por ventas", path: "/auditorias/ventas", icon: IconReportAnalytics },
+          { label: "Reportes", path: "/auditorias/reportes", icon: IconReportAnalytics },
         ],
       },
     ],

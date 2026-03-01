@@ -13,6 +13,7 @@ import { Card, Button, Input, Table, Badge } from "@/components/ui";
 import { useClientes } from "../hooks/useClientes";
 
 import type { ClienteFilters, EstadoCliente } from "../types";
+import { getTipoDocumentoLabel } from "../types";
 
 // Mapeo estado → variante Badge
 const estadoVariantMap: Record<
@@ -217,7 +218,7 @@ export default function ClienteList() {
                     </td>
 
                     <td className="py-3 px-4 text-gray-600">
-                      {cliente.tipo_documento}
+                      {getTipoDocumentoLabel(cliente.tipo_documento)}
                     </td>
 
                     <td className="py-3 px-4 text-gray-600">

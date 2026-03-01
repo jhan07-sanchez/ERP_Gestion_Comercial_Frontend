@@ -33,8 +33,11 @@ import VentaEdit from '@/modules/ventas/ventas/pages/VentaEdit';     // ← NUEV
 import VentaDetalle from '@/modules/ventas/ventas/pages/VentaDetalle';  // ← NUEVO
 
 import { ActivityPage } from '@/modules/auditorias/actividad_reciente';
-
-
+import { HistorialCambiosList } from '@/modules/auditorias/historial_cambios';
+import { AccesosPage } from '@/modules/auditorias/accesos';
+import { ReportesAuditoriaPage } from '@/modules/auditorias/reportes';
+import { UsuariosAuditoriaPage } from '@/modules/auditorias/usuarios';
+import { VentasAuditoriaPage } from '@/modules/auditorias/ventas';
 
 type RouteComponentProps = Record<string, string | undefined>;
 
@@ -52,6 +55,11 @@ export const protectedRouteComponents: Record<
   Reportes: PlaceholderPage,
 
   AuditoriaActividadReciente: ActivityPage,
+  HistorialCambiosList,
+  AccesosPage,
+  ReportesAuditoriaPage,
+  UsuariosAuditoriaPage,
+  VentasAuditoriaPage,
 
   Configuracion: PlaceholderPage,
 

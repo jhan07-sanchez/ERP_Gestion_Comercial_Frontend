@@ -16,6 +16,7 @@ import { Button } from "@/components/ui";
 import { ClienteForm } from "../components/ClienteForm";
 import { useClientes } from "../hooks/useClientes";
 import type { ClienteFormData, ClienteUpdateInput } from "../types";
+import { normalizeTipoDocumentoForAPI } from "../types";
 import { useAlert } from "@/components/alerts";
 
 export default function ClienteEdit() {
@@ -75,17 +76,11 @@ export default function ClienteEdit() {
   // ─── Convertir UI → payload backend ───────────────────────────────
   const convertToAPIFormat = (data: ClienteFormData): ClienteUpdateInput => ({
     nombre: data.nombre,
-
-    tipo_documento: data.tipo_documento,
-
+    tipo_documento: normalizeTipoDocumentoForAPI(data.tipo_documento),
     numero_documento: data.numero_documento,
-
     telefono: data.telefono || undefined,
-
     email: data.email || undefined,
-
     direccion: data.direccion || undefined,
-
     estado: data.estado,
   });
 

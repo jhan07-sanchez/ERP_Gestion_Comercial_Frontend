@@ -23,6 +23,11 @@ export type ProtectedRouteKey =
   | "Reportes"
 
   | "AuditoriaActividadReciente"
+  | "HistorialCambiosList"
+  | "AccesosPage"
+  | "ReportesAuditoriaPage"
+  | "UsuariosAuditoriaPage"
+  | "VentasAuditoriaPage"
 
   | "Configuracion"
 
@@ -214,6 +219,34 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
       title: "Actividad Reciente",
       description: "Historial completo de actividades del sistema.",
     },
+  },
+  {
+    path: "auditorias/historial_cambios",
+    componentKey: "HistorialCambiosList",
+    placeholderProps: {
+      title: "Historial de cambios",
+      description: "Registro de actividades y eventos del sistema.",
+    },
+  },
+  {
+    path: "auditorias/accesos",
+    componentKey: "AccesosPage",
+    placeholderProps: { title: "Accesos", description: "Auditoría de accesos al sistema." },
+  },
+  {
+    path: "auditorias/reportes",
+    componentKey: "ReportesAuditoriaPage",
+    placeholderProps: { title: "Reportes de auditoría", description: "Reportes del módulo de auditoría." },
+  },
+  {
+    path: "auditorias/usuarios",
+    componentKey: "UsuariosAuditoriaPage",
+    placeholderProps: { title: "Auditoría por usuarios", description: "Actividad por usuario." },
+  },
+  {
+    path: "auditorias/ventas",
+    componentKey: "VentasAuditoriaPage",
+    placeholderProps: { title: "Auditoría de ventas", description: "Historial de ventas." },
   },
 
   {

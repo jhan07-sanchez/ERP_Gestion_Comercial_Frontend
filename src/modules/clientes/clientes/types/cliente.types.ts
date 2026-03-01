@@ -4,6 +4,36 @@
  */
 
 // ===============================
+// Tipo de documento (debe coincidir con backend)
+// ===============================
+export type TipoDocumento = "CEDULA" | "NIT" | "CEDULA_EXTRANJERA";
+
+export const TIPO_DOCUMENTO_LABELS: Record<TipoDocumento, string> = {
+  CEDULA: "Cédula de ciudadanía",
+  NIT: "NIT",
+  CEDULA_EXTRANJERA: "Cédula extranjera",
+};
+
+export function getTipoDocumentoLabel(value: string): string {
+  return TIPO_DOCUMENTO_LABELS[value as TipoDocumento] ?? value;
+}
+
+/** Mapeo inverso: etiqueta → clave. Asegura enviar siempre la clave al backend. */
+const LABEL_TO_KEY: Record<string, TipoDocumento> = {
+  "Cédula de ciudadanía": "CEDULA",
+  "Cédula de ciudadania": "CEDULA",
+  "Cédula extranjera": "CEDULA_EXTRANJERA",
+  NIT: "NIT",
+};
+
+export function normalizeTipoDocumentoForAPI(value: string | undefined): TipoDocumento {
+  if (!value?.trim()) return "CEDULA";
+  const v = value.trim();
+  if (v === "CEDULA" || v === "NIT" || v === "CEDULA_EXTRANJERA") return v as TipoDocumento;
+  return LABEL_TO_KEY[v] ?? "CEDULA";
+}
+
+// ===============================
 // Estado de Cliente
 // ===============================
 export type EstadoCliente = "ACTIVO" | "INACTIVO" | "BLOQUEADO";
@@ -68,10 +98,12 @@ export interface ClienteDetail extends Cliente {
 // ===============================
 export interface ClienteCreateInput {
   nombre: string;
+  tipo_documento: TipoDocumento;
   numero_documento: string;
   telefono?: string | null;
   email?: string | null;
   direccion?: string | null;
+  estado?: boolean;
 }
 
 // ===============================

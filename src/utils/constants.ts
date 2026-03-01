@@ -22,6 +22,12 @@ export const ROUTES = {
   COMPRAS_EDITAR: '/compras/:id/editar',
   REPORTES: '/reportes',
   CONFIGURACION: '/configuracion',
+  AUDITORIAS: '/auditorias/historial_cambios',
+  AUDITORIAS_ACTIVIDAD: '/auditorias/actividad_reciente',
+  AUDITORIAS_ACCESOS: '/auditorias/accesos',
+  AUDITORIAS_REPORTES: '/auditorias/reportes',
+  AUDITORIAS_USUARIOS: '/auditorias/usuarios',
+  AUDITORIAS_VENTAS: '/auditorias/ventas',
 } as const;
 
 /** Nombre de la aplicación */

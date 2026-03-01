@@ -103,7 +103,7 @@ export function ClienteForm({
               </label>
 
               <select
-                value={value.tipo_documento || "CEDULA"} // Valor por defecto opcional
+                value={value.tipo_documento || "CEDULA"}
                 onChange={(e) =>
                   onChange({
                     ...value,
@@ -116,11 +116,9 @@ export function ClienteForm({
                   focus:outline-none focus:ring-2 focus:ring-blue-400
                 "
               >
-                <option value="Cédula de ciudadanía">
-                  Cédula de ciudadanía
-                </option>
+                <option value="CEDULA">Cédula de ciudadanía</option>
                 <option value="NIT">NIT</option>
-                <option value="Cédula extranjera">Cédula extranjera</option>
+                <option value="CEDULA_EXTRANJERA">Cédula extranjera</option>
               </select>
             </div>
 

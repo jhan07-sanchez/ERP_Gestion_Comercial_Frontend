@@ -13,14 +13,15 @@ import type { RecentActivity } from "../types";
 import { useNavigate } from "react-router-dom";
 
 interface ActivityFeedProps {
-    activities: RecentActivity[];
+  activities: RecentActivity[];
+  limit?: number;
 }
 
-export function ActivityFeed({ activities }: ActivityFeedProps) {
+export function ActivityFeed({ activities, limit }: ActivityFeedProps) {
     const navigate = useNavigate();
 
-    // Solo mostramos las 5 más recientes
-    const topActivities = activities.slice(0, 5);
+    // Solo mostramos las actividades según el límite
+    const topActivities = limit ? activities.slice(0, limit) : activities;
 
     const getActivityIcon = (type: RecentActivity['type']) => {
         const iconProps = { size: 18, stroke: 2 };

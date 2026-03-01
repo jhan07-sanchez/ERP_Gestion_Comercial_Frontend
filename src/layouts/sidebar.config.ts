@@ -121,9 +121,7 @@ export const sidebarConfig: SidebarItem[] = [
       },
       {
         section: "Administración",
-        items: [
-          { label: "Stock bajo", path: "/productos/stock_bajo" },
-        ],
+        items: [{ label: "Stock bajo", path: "/productos/stock_bajo" }],
       },
     ],
   },
@@ -150,9 +148,7 @@ export const sidebarConfig: SidebarItem[] = [
     children: [
       {
         section: "Movimientos",
-        items: [
-          { label: "Entradas/Salidas", path: "/inventario/movimientos" },
-        ],
+        items: [{ label: "Entradas/Salidas", path: "/inventario/movimientos" }],
       },
       {
         section: "Reportes",
@@ -178,16 +174,42 @@ export const sidebarConfig: SidebarItem[] = [
       {
         section: "OPERATIVOS",
         items: [
-          { label: "Eficiencia operativa", path: "/reportes/eficiencia_operativa" },
+          {
+            label: "Eficiencia operativa",
+            path: "/reportes/eficiencia_operativa",
+          },
           { label: "Productividad", path: "/reportes/productividad" },
         ],
       },
       {
         section: "ANALISIS",
         items: [
-          { label: "Tendencia de mercadeo", path: "/reportes/tendencia_mercadeo" },
+          {
+            label: "Tendencia de mercadeo",
+            path: "/reportes/tendencia_mercadeo",
+          },
           { label: "Proyecciones", path: "/reportes/proyecciones" },
-          { label: "Actividad reciente", path: "/reportes/lista" },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Auditoría",
+    icon: IconReportAnalytics,
+    children: [
+      {
+        section: "FINANCIEROS",
+        items: [],
+      },
+      {
+        section: "OPERATIVOS",
+        items: [
+        ],
+      },
+      {
+        section: "ANALISIS",
+        items: [
+          { label: "Actividad reciente", path: "/auditorias/actividad_reciente", icon: IconReportAnalytics },
         ],
       },
     ],

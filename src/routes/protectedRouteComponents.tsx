@@ -32,7 +32,9 @@ import VentaCreate from '@/modules/ventas/ventas/pages/VentaCreate';   // ← NU
 import VentaEdit from '@/modules/ventas/ventas/pages/VentaEdit';     // ← NUEVO
 import VentaDetalle from '@/modules/ventas/ventas/pages/VentaDetalle';  // ← NUEVO
 
- // ← NUEVO
+import { ActivityPage } from '@/modules/auditorias/actividad_reciente';
+
+
 
 type RouteComponentProps = Record<string, string | undefined>;
 
@@ -48,6 +50,8 @@ export const protectedRouteComponents: Record<
   VentaDetalle, // ← NUEVO
 
   Reportes: PlaceholderPage,
+
+  AuditoriaActividadReciente: ActivityPage,
 
   Configuracion: PlaceholderPage,
 

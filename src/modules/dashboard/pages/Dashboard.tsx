@@ -97,7 +97,7 @@ export default function Dashboard() {
   ];
 
   const handleSeeHistory = () => {
-    navigate('/reportes');
+    navigate("/auditorias/actividad_reciente");
   };
 
   return (
@@ -166,7 +166,7 @@ export default function Dashboard() {
 
           <Card className="border-none shadow-sm ring-1 ring-gray-100 overflow-hidden">
             <Card.Content className="p-8">
-              <ActivityFeed activities={data.recentActivities} />
+              <ActivityFeed activities={data.recentActivities} limit={5} />
             </Card.Content>
           </Card>
         </section>

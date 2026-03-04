@@ -10,9 +10,9 @@
  * - UI pura (sin lógica de negocio)
  */
 
-import { Card, Button, Input } from "@/components/ui";
+import { Card, Button, Input } from "@/shared/components/ui";
 import type { ProveedorFormData } from "../types/proveedor.types";
-import { useAlert } from "@/components/alerts";
+import { useAlert } from "@/shared/components/alerts";
 
 interface ProveedorFormProps {
   value: ProveedorFormData;

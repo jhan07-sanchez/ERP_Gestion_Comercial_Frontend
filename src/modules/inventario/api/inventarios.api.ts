@@ -1,4 +1,4 @@
-import axiosInstance from "@/api/axios";
+import axiosInstance from "@/shared/api/axios";
 import type { Inventario, AjusteInventario } from "../types";
 
 const API_BASE = "/inventario/inventarios";

@@ -6,8 +6,8 @@ import { ProveedorForm } from "../components/ProveedorForm";
 import { useProveedor } from "../hooks/useProveedor";
 import { useProveedorActions } from "../hooks/useProveedorActions";
 import type { ProveedorFormData } from "../types/proveedor.types";
-import { Button } from "@/components/ui";
-import { useAlert } from "@/components/alerts";
+import { Button } from "@/shared/components/ui";
+import { useAlert } from "@/shared/components/alerts";
 
 
 export default function ProveedorEdit() {

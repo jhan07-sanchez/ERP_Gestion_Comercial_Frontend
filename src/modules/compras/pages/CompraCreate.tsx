@@ -24,13 +24,13 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui";
+import { Button } from "@/shared/components/ui";
 
 import { CompraForm, type CompraFormData } from "../components/CompraForm";
 import { useCompras } from "../hooks/useCompras";
 import { useProveedor } from "@/modules/proveedores/hooks/useProveedor";
 import { useProductosList as useProductos } from "@/modules/productos/hooks/useProductosList";
-import { useAlert } from "@/components/alerts";
+import { useAlert } from "@/shared/components/alerts";
 
 export default function CompraCreate() {
   const navigate = useNavigate();

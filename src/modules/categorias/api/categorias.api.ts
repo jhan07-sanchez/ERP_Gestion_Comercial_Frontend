@@ -1,4 +1,4 @@
-import axiosInstance from "@/api/axios";
+import axiosInstance from "@/shared/api/axios";
 import type { Categoria } from "../types";
 
 const API_BASE = "/categorias/categorias";

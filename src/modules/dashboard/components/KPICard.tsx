@@ -1,5 +1,5 @@
 // src/modules/dashboard/components/KPICard.tsx
-import { Card, Badge } from '@/components/ui';
+import { Card, Badge } from '@/shared/components/ui';
 
 interface KPICardProps {
   title: string;

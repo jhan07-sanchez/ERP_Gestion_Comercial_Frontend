@@ -12,12 +12,12 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui";
+import { Button } from "@/shared/components/ui";
 
 import { ProveedorForm } from "../components/ProveedorForm";
 import { useProveedorActions } from "../hooks/useProveedorActions";
 import type { ProveedorFormData } from "../types/proveedor.types";
-import { useAlert } from "@/components/alerts";
+import { useAlert } from "@/shared/components/alerts";
 
 export default function ProveedorCreate() {
   const navigate = useNavigate();

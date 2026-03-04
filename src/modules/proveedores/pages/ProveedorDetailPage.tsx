@@ -6,7 +6,7 @@ import { useProveedorDetail } from "../hooks/useProveedorDetail";
 import { useProveedorActions } from "../hooks/useProveedorActions";
 import { ProveedorDetalleList } from "../components/ProveedorDetalleRow";
 import type { ProveedorDetail } from "../types/proveedor.types";
-import { useAlert } from "@/components/alerts";
+import { useAlert } from "@/shared/components/alerts";
 
 export default function ProveedorDetailPage() {
   const navigate = useNavigate();

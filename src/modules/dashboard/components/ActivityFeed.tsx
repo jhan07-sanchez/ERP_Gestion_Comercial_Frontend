@@ -13,8 +13,8 @@ import type { RecentActivity } from "../types";
 import { useNavigate } from "react-router-dom";
 
 interface ActivityFeedProps {
-  activities: RecentActivity[];
-  limit?: number;
+    activities: RecentActivity[];
+    limit?: number;
 }
 
 export function ActivityFeed({ activities, limit }: ActivityFeedProps) {
@@ -23,16 +23,17 @@ export function ActivityFeed({ activities, limit }: ActivityFeedProps) {
     // Solo mostramos las actividades según el límite
     const topActivities = limit ? activities.slice(0, limit) : activities;
 
-    const getActivityIcon = (type: RecentActivity['type']) => {
-        const iconProps = { size: 18, stroke: 2 };
+    const getActivityIcon = (type: string) => {
+        const iconProps = { size: 16, stroke: 2.5 };
+        const utype = type.toUpperCase();
 
-        switch (type) {
-            case 'sale': return <IconShoppingCart {...iconProps} className="text-blue-600" />;
-            case 'customer': return <IconUserPlus {...iconProps} className="text-emerald-600" />;
-            case 'order': return <IconClipboardList {...iconProps} className="text-amber-600" />;
-            case 'product': return <IconPackage {...iconProps} className="text-indigo-600" />;
-            default: return <IconInfoCircle {...iconProps} className="text-gray-600" />;
-        }
+        if (utype.includes('VENTA')) return <IconShoppingCart {...iconProps} className="text-blue-600" />;
+        if (utype.includes('CLIENTE')) return <IconUserPlus {...iconProps} className="text-emerald-600" />;
+        if (utype.includes('COMPRA') || utype.includes('ORDEN')) return <IconClipboardList {...iconProps} className="text-amber-600" />;
+        if (utype.includes('PRODUCTO') || utype.includes('INVENTARIO')) return <IconPackage {...iconProps} className="text-indigo-600" />;
+        if (utype.includes('USUARIO')) return <IconUserPlus {...iconProps} className="text-purple-600" />;
+
+        return <IconInfoCircle {...iconProps} className="text-slate-400" />;
     };
 
     const getStatusIcon = (estado: RecentActivity['estado']) => {

@@ -5,10 +5,10 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, Button, Input, Table, Badge } from "@/components/ui";
+import { Card, Button, Input, Table, Badge } from "@/shared/components/ui";
 import { useProveedor } from "../hooks/useProveedor";
 import type { ProveedorFilters } from "../types/proveedor.types";
-import { useAlert } from "@/components/alerts";
+import { useAlert } from "@/shared/components/alerts";
 
 export default function ProveedorList() {
   const navigate = useNavigate();

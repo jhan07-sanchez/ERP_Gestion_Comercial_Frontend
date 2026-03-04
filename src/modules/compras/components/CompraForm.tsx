@@ -11,10 +11,10 @@
  * - Validación clara
  */
 
-import { Card, Button, Input } from "@/components/ui";
+import { Card, Button, Input } from "@/shared/components/ui";
 import type { EstadoCompra } from "../types";
-import { formatCurrency } from "@/utils/formatters";
-import { useAlert } from "@/components/alerts";
+import { formatCurrency } from "@/shared/utils/formatters";
+import { useAlert } from "@/shared/components/alerts";
 
 
 /**

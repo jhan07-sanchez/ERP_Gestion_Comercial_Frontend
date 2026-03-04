@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui";
+import { Button } from "@/shared/components/ui";
 import { useProductoActions } from "../hooks";
 import { useCategorias } from "../../../modules/categorias/hooks/useCategorias";
 import {
   ProductoForm,
   type ProductoFormData,
 } from "../components/ProductoForm";
-import { useAlert } from "@/components/alerts";
+import { useAlert } from "@/shared/components/alerts";
 
 export default function ProductoCreate() {
   const navigate = useNavigate();

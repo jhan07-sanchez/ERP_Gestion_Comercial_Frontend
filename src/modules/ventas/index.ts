@@ -4,16 +4,16 @@
  */
 
 // Pages
-export { default as VentasList } from "./ventas/pages/VentasList";
-export { default as VentaCreate } from "./ventas/pages/VentaCreate";
-export { default as VentaEdit } from "./ventas/pages/VentaEdit";
-export { default as VentaDetalle } from "./ventas/pages/VentaDetalle";
+export { default as VentasList } from "./pages/VentasList";
+export { default as VentaCreate } from "./pages/VentaCreate";
+export { default as VentaEdit } from "./pages/VentaEdit";
+export { default as VentaDetalle } from "./pages/VentaDetalle";
 
 // Hooks
-export { useVentas } from "./ventas/hooks/useVenta";
+export { useVentas } from "./hooks/useVenta";
 
 // API
-export { ventasAPI } from "./ventas/api/ventas.api";
+export { ventasAPI } from "./api/ventas.api";
 
 // Types
 export type {
@@ -26,4 +26,4 @@ export type {
   EstadoVenta,
   VentaFilters,
   VentaFormData,
-} from "./ventas/types/venta.types";
+} from "./types/venta.types";

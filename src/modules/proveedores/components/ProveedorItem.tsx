@@ -2,7 +2,7 @@
 
 import React from "react";
 import type { Proveedor } from "../types/proveedor.types";
-import { useAlert } from "@/components/alerts";
+import { useAlert } from "@/shared/components/alerts";
 
 interface ProveedorItemProps {
   proveedor: Proveedor;

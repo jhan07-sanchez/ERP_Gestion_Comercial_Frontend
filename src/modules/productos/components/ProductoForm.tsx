@@ -4,9 +4,9 @@
  * Formulario reutilizable para crear y editar productos
  */
 
-import { Card, Button, Input } from "@/components/ui";
+import { Card, Button, Input } from "@/shared/components/ui";
 import type { Categoria } from "../../../modules/categorias/types";
-import { useAlert } from "@/components/alerts";
+import { useAlert } from "@/shared/components/alerts";
 
 
 /**

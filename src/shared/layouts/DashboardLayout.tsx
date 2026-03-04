@@ -1,0 +1,46 @@
+// src/layouts/DashboardLayout.tsx
+/**
+ * 🏗️ LAYOUT PRINCIPAL DEL DASHBOARD (VERSIÓN ERP PROFESIONAL)
+ *
+ * Este layout utiliza una arquitectura modular para la barra lateral (Sidebar)
+ * y el contenido principal, permitiendo estados persistentes y una UX premium.
+ */
+import { Outlet } from "react-router-dom";
+import { useUIStore } from "@/shared/store/ui.store";
+import { Sidebar } from "./components/Sidebar";
+
+export default function DashboardLayout() {
+  const { sidebarOpen } = useUIStore();
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex overflow-hidden">
+      {/* Sidebar Modular (Ancho fijo controlado por el store) */}
+      <Sidebar />
+
+      {/* Área de Contenido Principal */}
+      <div
+        className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ease-in-out
+          ${sidebarOpen ? "pl-72" : "pl-20"}`}
+      >
+        {/* Contenido de la Página con Scroll independiente */}
+        <main className="flex-1 overflow-y-auto custom-scrollbar bg-[#f8fafc]">
+          <div className="p-8 pb-16 max-w-[1600px] mx-auto animate-in fade-in slide-in-from-bottom-2 duration-700">
+            <Outlet />
+          </div>
+        </main>
+
+        {/* Footer Corporativo ERP */}
+        <footer className="py-4 px-8 text-center bg-white border-t border-gray-100 flex items-center justify-between">
+          <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+            &copy; {new Date().getFullYear()} ERP System · Gestión empresarial avanzada
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-[9px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase">
+              v1.0
+            </span>
+          </div>
+        </footer>
+      </div>
+    </div>
+  );
+}

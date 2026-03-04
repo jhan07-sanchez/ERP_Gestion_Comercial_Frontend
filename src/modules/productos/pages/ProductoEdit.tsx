@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "@/components/ui";
+import { Button } from "@/shared/components/ui";
 import { useProductoActions } from "../hooks";
 import { useCategorias } from "../../../modules/categorias/hooks/useCategorias";
 import {

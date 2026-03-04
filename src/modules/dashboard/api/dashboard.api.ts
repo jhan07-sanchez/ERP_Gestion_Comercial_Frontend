@@ -1,6 +1,6 @@
 // src/modules/dashboard/api/dashboard.api.ts
 
-import axiosInstance from "@/api/axios";
+import axiosInstance from "@/shared/api/axios";
 import type {
   DashboardData,
   DashboardFilters,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Card, Table} from "@/components/ui";
+import { Button, Card, Table} from "@/shared/components/ui";
 import { useCompras } from "../hooks/useCompras";
 import type { CompraDetail } from "../types";
 import {
@@ -8,7 +8,7 @@ import {
   formatNumber,
   numberClass,
   formatPercentage,
-} from "@/utils/formatters";
+} from "@/shared/utils/formatters";
 
 
 export default function CompraDetallePage() {

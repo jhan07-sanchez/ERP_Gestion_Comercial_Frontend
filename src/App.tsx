@@ -6,13 +6,16 @@
  * Solo renderiza el router principal.
  */
 
-import AppRouter from '@/routes/AppRouter';
-import { AlertProvider } from '@/components/alerts';
+import AppRouter from '@/core/routes/AppRouter';
+import { AlertProvider } from '@/shared/components/alerts';
+import { ConfigLoader } from '@/core/providers/ConfigLoader';
 
 function App() {
   return (
     <AlertProvider>
-      <AppRouter />
+      <ConfigLoader>
+        <AppRouter />
+      </ConfigLoader>
     </AlertProvider>
   );
 }

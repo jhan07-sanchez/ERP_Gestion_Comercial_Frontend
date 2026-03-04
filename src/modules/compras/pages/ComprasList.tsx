@@ -5,11 +5,11 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, Button, Input, Table, Badge } from "@/components/ui";
+import { Card, Button, Input, Table, Badge } from "@/shared/components/ui";
 import { useCompras } from "../hooks/useCompras";
 import type { CompraFilters, EstadoCompra } from "../types";
-import { formatCurrency, truncateProductos } from "@/utils/formatters";
-import { useAlert } from "@/components/alerts";
+import { formatCurrency, truncateProductos } from "@/shared/utils/formatters";
+import { useAlert } from "@/shared/components/alerts";
 
 
 // Mapeo visual del estado (UI layer)

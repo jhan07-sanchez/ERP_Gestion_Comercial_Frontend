@@ -1,5 +1,5 @@
 // src/modules/dashboard/pages/Dashboard.tsx
-import { Card, Button, Badge } from "@/components/ui";
+import { Card, Button, Badge } from "@/shared/components/ui";
 import { KPICard } from "../components/KPICard";
 import { ActivityFeed } from "../components/ActivityFeed";
 import { AlertList } from "../components/AlertList";
@@ -97,7 +97,7 @@ export default function Dashboard() {
   ];
 
   const handleSeeHistory = () => {
-    navigate("/auditorias/actividad_reciente");
+    navigate("/auditoria/lista");
   };
 
   return (

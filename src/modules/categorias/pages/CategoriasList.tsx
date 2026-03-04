@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Card, Button, Input, Table, Badge } from "@/components/ui";
+import { Card, Button, Input, Table, Badge } from "@/shared/components/ui";
 import { useCategorias } from "../hooks/useCategorias";
-import { useAlert } from "@/components/alerts";
+import { useAlert } from "@/shared/components/alerts";
 
 export default function CategoriasList() {
     const {

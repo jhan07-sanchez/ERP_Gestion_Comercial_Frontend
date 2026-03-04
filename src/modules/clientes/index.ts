@@ -4,16 +4,16 @@
  */
 
 // Pages
-export { default as ClientesList } from "./clientes/pages/ClientesList";
-export { default as ClienteCreate } from "./clientes/pages/ClienteCreate";
-export { default as ClienteEdit } from "./clientes/pages/ClienteEdit";
-export { default as ClienteDetalle } from "./clientes/pages/ClienteDetalle";
+export { default as ClientesList } from "./pages/ClientesList";
+export { default as ClienteCreate } from "./pages/ClienteCreate";
+export { default as ClienteEdit } from "./pages/ClienteEdit";
+export { default as ClienteDetalle } from "./pages/ClienteDetalle";
 
 // Hooks
-export { useClientes } from "./clientes/hooks/useClientes";
+export { useClientes } from "./hooks/useClientes";
 
 // API
-export { clientesAPI } from "./clientes/api/clientes.api";
+export { clientesAPI } from "./api/clientes.api";
 
 // Types
 export type {
@@ -24,4 +24,4 @@ export type {
   ClienteUpdateInput,
   ClienteFilters,
   ClienteFormData,
-} from "./clientes/types/cliente.types";
+} from "./types/cliente.types";

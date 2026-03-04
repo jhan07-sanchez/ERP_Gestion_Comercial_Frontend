@@ -1,4 +1,4 @@
-import axiosInstance from "@/api/axios";
+import axiosInstance from "@/shared/api/axios";
 import type {
   Compra,
   CompraList,

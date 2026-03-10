@@ -42,7 +42,10 @@ export type ProtectedRouteKey =
   | "ComprasList"
   | "CompraCreate"
   | "CompraEdit"
-  | "CompraDetalles";
+  | "CompraDetalles"
+
+  | "CajaCreate"
+  | "CajaList"
 
 
 /**
@@ -87,7 +90,22 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
       description: "Información detallada de la venta.",
     },
   },
-
+  {
+    path: "caja/crear",
+    componentKey: "CajaCreate",
+    placeholderProps: {
+      title: "Crear Caja",
+      description: "Registra una nueva caja.",
+    },
+  },
+  {
+    path: "caja/lista",
+    componentKey: "CajaList",
+    placeholderProps: {
+      title: "Lista de Cajas",
+      description: "Gestión de cajas.",
+    },
+  },
   {
     path: "productos/lista",
     componentKey: "ProductosList",

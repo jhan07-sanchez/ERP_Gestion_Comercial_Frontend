@@ -32,6 +32,10 @@ import VentaCreate from '@/modules/ventas/pages/VentaCreate';   // ← NUEVO
 import VentaEdit from '@/modules/ventas/pages/VentaEdit';     // ← NUEVO
 import VentaDetalle from '@/modules/ventas/pages/VentaDetalle';  // ← NUEVO
 
+import { CajaCreate } from '@/modules/caja/pages';
+import { CajaList } from '@/modules/caja/pages';
+
+
 import { AuditPage as AuditoriaLogs } from '@/modules/auditoria';
 import { ConfiguracionPage } from '@/modules/configuracion';
 
@@ -70,4 +74,8 @@ export const protectedRouteComponents: Record<
   CompraCreate,
   CompraEdit,
   CompraDetalles,
+
+  CajaCreate,
+  CajaList,
+
 };

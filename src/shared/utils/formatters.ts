@@ -12,7 +12,7 @@ export function formatCurrency(amount: number, showDecimals = false): string {
 
   if (config) {
     const convertedAmount = state.convertPrice(amount);
-    const decimals = showDecimals ? 2 : (config.decimales_precio || 0);
+    const decimals = showDecimals ? 2 : config.decimales_precio || 0;
     return new Intl.NumberFormat(undefined, {
       style: "currency",
       currency: config.moneda || "COP",
@@ -29,8 +29,6 @@ export function formatCurrency(amount: number, showDecimals = false): string {
   }).format(amount);
 }
 
-
-
 /**
  * Formatear fecha en formato corto (DD/MM/YYYY)
  *
@@ -40,9 +38,20 @@ export function formatCurrency(amount: number, showDecimals = false): string {
  * @example
  * formatDate('2024-01-15') // "15/01/2024"
  */
-export function formatDate(dateString: string | Date): string {
+export function formatDate(dateString: string | Date, includeTime = false): string {
   const date =
     typeof dateString === "string" ? new Date(dateString) : dateString;
+
+  if (includeTime) {
+    return new Intl.DateTimeFormat("es-CO", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).format(date);
+  }
 
   return new Intl.DateTimeFormat("es-CO", {
     day: "2-digit",
@@ -83,24 +92,36 @@ export function formatDateTime(dateString: string | Date): string {
  * @example
  * formatRelativeDate('2024-01-10') // "Hace 5 días"
  */
-export function formatRelativeDate(dateString: string | Date): string {
+export function formatRelativeDate(
+  dateString: string | Date,
+  includeTime: boolean = false,
+): string {
   const date =
     typeof dateString === "string" ? new Date(dateString) : dateString;
+
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
+
   const diffSecs = Math.floor(diffMs / 1000);
   const diffMins = Math.floor(diffSecs / 60);
   const diffHours = Math.floor(diffMins / 60);
   const diffDays = Math.floor(diffHours / 24);
 
   if (diffSecs < 60) return "Hace un momento";
-  if (diffMins < 60)
-    return `Hace ${diffMins} minuto${diffMins !== 1 ? "s" : ""}`;
-  if (diffHours < 24)
-    return `Hace ${diffHours} hora${diffHours !== 1 ? "s" : ""}`;
-  if (diffDays < 30) return `Hace ${diffDays} día${diffDays !== 1 ? "s" : ""}`;
 
-  return formatDate(date);
+  if (diffMins < 60) {
+    return `Hace ${diffMins} minuto${diffMins !== 1 ? "s" : ""}`;
+  }
+
+  if (diffHours < 24) {
+    return `Hace ${diffHours} hora${diffHours !== 1 ? "s" : ""}`;
+  }
+
+  if (diffDays < 30) {
+    return `Hace ${diffDays} día${diffDays !== 1 ? "s" : ""}`;
+  }
+
+  return formatDate(date, includeTime);
 }
 
 /**
@@ -137,13 +158,18 @@ export function formatNumberInput(value: string): string {
 
   // 1. Detectar si el string ya viene en formato JS (punto como decimal, sin miles)
   // o si viene en formato es-CO (punto como miles, coma como decimal).
-  // Si tiene un punto y NO tiene comas, y el punto está cerca del final, 
+  // Si tiene un punto y NO tiene comas, y el punto está cerca del final,
   // probablemente sea un decimal de JS.
   let internalValue = value;
-  if (value.includes('.') && !value.includes(',') && value.indexOf('.') === value.lastIndexOf('.')) {
-    const parts = value.split('.');
-    if (parts[1].length <= 2) { // Máximo 2 decimales usualmente
-      internalValue = value.replace('.', ',');
+  if (
+    value.includes(".") &&
+    !value.includes(",") &&
+    value.indexOf(".") === value.lastIndexOf(".")
+  ) {
+    const parts = value.split(".");
+    if (parts[1].length <= 2) {
+      // Máximo 2 decimales usualmente
+      internalValue = value.replace(".", ",");
     }
   }
 
@@ -155,7 +181,8 @@ export function formatNumberInput(value: string): string {
   const integerPart = parts[0].replace(/\D/g, ""); // Solo dígitos en la parte entera
 
   // Si hay más de una coma, unimos el resto como parte decimal
-  const decimalPart = parts.length > 1 ? parts.slice(1).join("").replace(/\D/g, "") : null;
+  const decimalPart =
+    parts.length > 1 ? parts.slice(1).join("").replace(/\D/g, "") : null;
 
   // 4. Formatear parte entera con puntos como separadores de miles
   const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -200,7 +227,6 @@ export function formatPercentage(value?: number, decimals = 1): string {
 
   return `${value.toFixed(decimals).replace(".", ",")}%`;
 }
-
 
 /**
  * Formatear teléfono colombiano
@@ -290,7 +316,7 @@ export function truncateText(text: string, maxLength: number): string {
 export function truncateProductos(text: string): string {
   if (!text) return "----";
 
-  const productos = text.split(",").map(p => p.trim());
+  const productos = text.split(",").map((p) => p.trim());
 
   if (productos.length === 0) return "----";
 
@@ -298,7 +324,6 @@ export function truncateProductos(text: string): string {
 
   return `${productos[0]} y ${productos.length - 1} más...`;
 }
-
 
 /**
  * Capitalizar primera letra
@@ -348,29 +373,4 @@ export function getInitials(name: string): string {
     .join("")
     .toUpperCase()
     .slice(0, 2);
-}
-
-
-
-/**
- * Formateo de montos monetarios.
- * Fuente única para locale y símbolo.
- */
-
-const defaultLocale = 'es-AR';
-const defaultCurrency = 'ARS';
-
-/**
- * Formatea un número como moneda.
- */
-export function formatMoney(
-  value: number,
-  options?: { locale?: string; currency?: string }
-): string {
-  const locale = options?.locale ?? defaultLocale;
-  const currency = options?.currency ?? defaultCurrency;
-  return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency,
-  }).format(value);
 }

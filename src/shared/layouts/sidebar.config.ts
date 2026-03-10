@@ -13,6 +13,7 @@ import {
   IconList,
   IconRotateClockwise,
   IconHistory,
+  IconCashRegister,
 } from "@tabler/icons-react";
 import type { Icon } from "@tabler/icons-react";
 
@@ -97,6 +98,26 @@ export const sidebarConfig: SidebarItem[] = [
           { label: "Nueva Compra", path: "/compras/crear" },
           { label: "Nueva requisicion", path: "/compras/requisicion" },
           { label: "Lista de Compras", path: "/compras/lista" },
+        ],
+      },
+      {
+        section: "Administración",
+        items: [
+          { label: "Lista de precios", path: "/compras/lista_precios" },
+          { label: "Proveedores", path: "/proveedores/lista" },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Caja",
+    icon: IconCashRegister,
+    children: [
+      {
+        section: "Transacciones",
+        items: [
+          { label: "Nueva Caja", path: "/caja/crear" },
+          { label: "Lista de Cajas", path: "/caja/lista" },
         ],
       },
       {
@@ -201,7 +222,11 @@ export const sidebarConfig: SidebarItem[] = [
       {
         section: "Control",
         items: [
-          { label: "Log de Auditoría", path: "/auditoria/lista", icon: IconList },
+          {
+            label: "Log de Auditoría",
+            path: "/auditoria/lista",
+            icon: IconList,
+          },
         ],
       },
     ],

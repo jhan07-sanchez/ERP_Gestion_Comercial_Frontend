@@ -1,73 +1,48 @@
-# React + TypeScript + Vite
+# 💻 ERP Gestión Comercial - Frontend (Vite + React)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend moderno y responsivo para el sistema ERP, construido con React 19, TailwindCSS y Zustand.
 
-Currently, two official plugins are available:
+## 🚀 Inicio Rápido
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1.  **Instalar dependencias:**
+    ```bash
+    npm install
+    ```
 
-## React Compiler
+2.  **Configurar entorno:**
+    El proyecto usa archivos `.env` según el modo:
+    - `.env.development`: Apunta a `http://localhost:8000/api`
+    - `.env.production`: Apunta a la URL de Render.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+3.  **Ejecutar en desarrollo:**
+    ```bash
+    npm run dev
+    ```
 
-## Expanding the ESLint configuration
+4.  **Construir para producción:**
+    ```bash
+    npm run build
+    ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📁 Estructura del Proyecto
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- `src/core`: Configuración global, axios, constantes y stores de Zustand.
+- `src/shared`: Componentes UI reutilizables (Botones, Inputs, Layouts).
+- `src/modules`: Lógica de negocio dividida por dominios (Ventas, Productos, etc.).
+- `src/assets`: Imágenes, iconos y estilos globales.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🛠️ Tecnologías Principales
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **Framework**: React 19 + TypeScript
+- **Estilos**: TailwindCSS
+- **Estado**: Zustand (Ligero y escalable)
+- **Rutas**: React Router Dom v7
+- **Gráficos**: Recharts
+- **Iconos**: Tabler Icons
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🌐 Configuración de API
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Asegúrate de que la variable `VITE_API_URL` en tu archivo `.env` apunte a la instancia correcta del backend.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **Local**: `http://localhost:8000/api`
+- **Producción**: `https://tu-backend.onrender.com/api`

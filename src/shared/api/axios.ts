@@ -2,7 +2,7 @@ import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import { showGlobalAlert } from '@/shared/components/alerts';
 
 /** URL base del API (desarrollo: .env VITE_API_URL, producción: variable de entorno) */
-const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000/api';
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://erp-gestion-comercial-backend.onrender.com/api';
 
 /**
  * Instancia principal de axios configurada

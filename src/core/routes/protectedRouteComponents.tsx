@@ -34,6 +34,8 @@ import VentaDetalle from '@/modules/ventas/pages/VentaDetalle';  // ← NUEVO
 
 import { CajaCreate } from '@/modules/caja/pages';
 import { CajaList } from '@/modules/caja/pages';
+import { CajaAbrir } from '@/modules/caja/pages';
+import { CajaDetail } from '@/modules/caja/pages';
 
 
 import { AuditPage as AuditoriaLogs } from '@/modules/auditoria';
@@ -77,5 +79,8 @@ export const protectedRouteComponents: Record<
 
   CajaCreate,
   CajaList,
+  CajaAbrir,
+  CajaDetail,
+
 
 };

@@ -31,6 +31,7 @@ import {
 } from "@tabler/icons-react";
 import { clientesVentaAPI, productosVentaAPI } from "../api/ventas.api";
 import { useAlert } from "@/shared/components/alerts";
+import { useConfiguracion } from "@/modules/configuracion/hooks/useConfiguracion";
 import { useConfigStore } from "@/shared/store/config.store";
 import type {
   VentaFormData,
@@ -66,6 +67,7 @@ export function VentaForm({
   onCancel,
 }: VentaFormProps) {
   const { showAlert } = useAlert();
+  const { config } = useConfiguracion();
   const { getImpuesto, getSimbolo, getMoneda, getPermitirVentaSinStock } = useConfigStore();
 
   const simbolo = getSimbolo();
@@ -326,12 +328,52 @@ export function VentaForm({
         {/* Sección: Cliente */}
         <Card className="overflow-visible border-none shadow-sm ring-1 ring-gray-200">
           <Card.Content className="p-6">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
-                <IconUser size={20} />
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
+                  <IconUser size={20} />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900">Selección de Cliente</h3>
               </div>
-              <h3 className="text-lg font-bold text-gray-900">Selección de Cliente</h3>
+
+              {/* Selector de Tipo de Documento */}
+              <div className="flex bg-gray-100 p-1 rounded-xl w-fit">
+                <button
+                  type="button"
+                  onClick={() => onChange({ ...value, tipo_documento: 'FACTURA' })}
+                  className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    value.tipo_documento === 'FACTURA'
+                      ? 'bg-white text-blue-600 shadow-sm'
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  FACTURA
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onChange({ ...value, tipo_documento: 'RECIBO' })}
+                  className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    value.tipo_documento === 'RECIBO'
+                      ? 'bg-white text-blue-600 shadow-sm'
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  RECIBO POS
+                </button>
+              </div>
             </div>
+
+            {/* Preview del Próximo Correlativo */}
+            {config && (
+              <div className="mb-4 flex items-center gap-2 text-sm text-gray-500 bg-gray-50 p-2 rounded-lg border border-dashed border-gray-200 w-fit">
+                <span className="font-medium">Próximo Correlativo:</span>
+                <Badge variant="info" className="font-mono">
+                  {value.tipo_documento === 'FACTURA' 
+                    ? config.numero_factura_preview 
+                    : config.numero_recibo_preview}
+                </Badge>
+              </div>
+            )}
 
             <div className="relative">
               <div className="relative group">
@@ -364,9 +406,9 @@ export function VentaForm({
                         <IconCheck size={14} className="text-blue-500" />
                       </p>
                       <div className="flex gap-3 mt-0.5">
-                        {clienteSeleccionado.documento && (
+                        {clienteSeleccionado.numero_documento && (
                           <span className="text-[11px] font-medium text-blue-600/70">
-                            DOC: {clienteSeleccionado.documento}
+                            DOC: {clienteSeleccionado.numero_documento}
                           </span>
                         )}
                         {clienteSeleccionado.telefono && (
@@ -424,7 +466,7 @@ export function VentaForm({
                                 {c.nombre}
                               </p>
                               <p className="text-xs text-gray-500">
-                                {c.documento || "Sin documento"}
+                                {c.numero_documento || "Sin documento"}
                               </p>
                             </div>
                           </div>

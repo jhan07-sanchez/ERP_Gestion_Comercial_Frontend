@@ -46,6 +46,9 @@ export type ProtectedRouteKey =
 
   | "CajaCreate"
   | "CajaList"
+  | "CajaAbrir"
+  | "CajaDetail"
+
 
 
 /**
@@ -104,6 +107,38 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
     placeholderProps: {
       title: "Lista de Cajas",
       description: "Gestión de cajas.",
+    },
+  },
+  {
+    path: "caja/sesiones/nueva",
+    componentKey: "CajaAbrir",
+    placeholderProps: {
+      title: "Abrir Sesión",
+      description: "Abre una sesión de caja.",
+    },
+  },
+  {
+    path: "caja/abrir/:id",
+    componentKey: "CajaAbrir",
+    placeholderProps: {
+      title: "Abrir Caja",
+      description: "Abre una sesión de una caja específica.",
+    },
+  },
+  {
+    path: "caja/sesion/:id",
+    componentKey: "CajaDetail",
+    placeholderProps: {
+      title: "Detalle de Sesión",
+      description: "Ver detalles y operaciones de la sesión de caja.",
+    },
+  },
+  {
+    path: "caja/sesiones/:id",
+    componentKey: "CajaDetail",
+    placeholderProps: {
+      title: "Gestionar Caja",
+      description: "Gestionar sesión activa de la caja.",
     },
   },
   {

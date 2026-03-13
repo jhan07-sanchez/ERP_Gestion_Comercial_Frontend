@@ -11,6 +11,7 @@ import { useVentas } from "../hooks/useVenta";
 import { formatCurrency, formatDate } from "@/shared/utils/formatters";
 import type { EstadoVenta, VentaFilters } from "../types/venta.types";
 import { useAlert } from "@/shared/components/alerts";
+import { useCajaStore } from "@/modules/caja/store/caja.store";
 
 const estadoVariantMap: Record<EstadoVenta, "success" | "warning" | "danger"> =
 {
@@ -32,6 +33,7 @@ export default function VentasList() {
     cancelarVenta,
     loadingCancelar,
   } = useVentas();
+  const { isCajaAbierta } = useCajaStore();
   const { showAlert, prompt } = useAlert();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -76,7 +78,7 @@ export default function VentasList() {
     }
 
     await cancelarVenta(id, motivo);
-    showAlert("Venta Cancelada", "info");
+    showAlert("Venta Cancelada", "success", { description: "La venta ha sido cancelada exitosamente." });
     fetchVentas();
   };
 
@@ -126,6 +128,8 @@ export default function VentasList() {
         </div>
         <Button
           onClick={() => navigate("../ventas/crear", { relative: "route" })}
+          disabled={!isCajaAbierta}
+          title={!isCajaAbierta ? "Debe abrir una caja para crear ventas" : ""}
         >
           Nueva Venta
         </Button>
@@ -172,6 +176,7 @@ export default function VentasList() {
                 onClick={() =>
                   navigate("../ventas/crear", { relative: "route" })
                 }
+                disabled={!isCajaAbierta}
               >
                 Registrar primera venta
               </Button>
@@ -212,8 +217,8 @@ export default function VentasList() {
               <tbody>
                 {ventas.map((venta) => (
                   <tr key={venta.id} className="border-b hover:bg-gray-50">
-                    <td className="py-3 px-4 text-gray-600 font-mono text-sm">
-                      #{venta.id}
+                    <td className="py-3 px-4 text-gray-900 font-medium">
+                      {venta.numero_documento || `Venta #${venta.id}`}
                     </td>
 
                     <td className="py-3 px-4">
@@ -286,6 +291,8 @@ export default function VentasList() {
                             size="sm"
                             variant="success"
                             onClick={() => navigate(`../ventas/${venta.id}/detalle`, { relative: "route" })}
+                            disabled={!isCajaAbierta}
+                            title={!isCajaAbierta ? "Abrir caja para registrar pago" : ""}
                           >
                             Registrar Pago
                           </Button>

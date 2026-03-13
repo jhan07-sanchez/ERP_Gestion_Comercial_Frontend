@@ -23,7 +23,18 @@ export interface ProveedorSimple {
   telefono?: string;
   email?: string;
 }
-export type EstadoCompra = "PENDIENTE" | "REALIZADA" | "ANULADA";
+export type EstadoCompra = "PENDIENTE" | "PARCIAL" | "COMPLETADA" | "ANULADA";
+export type MetodoPago = "EFECTIVO" | "TARJETA" | "TRANSFERENCIA" | "YAPE" | "PLIN" | "CREDITO";
+
+export interface PagoCompra {
+  id: number;
+  fecha: string;
+  monto: number;
+  metodo_pago: MetodoPago;
+  metodo_pago_display?: string;
+  referencia: string | null;
+  usuario_nombre: string;
+}
 
 // ===============================
 // Compra
@@ -96,6 +107,8 @@ export interface CompraDetail extends Compra {
   proveedor_info: ProveedorSimple;
   fecha: string;
   estado: EstadoCompra;
+  pagos: PagoCompra[];
+  saldo_pendiente: number;
   margen_potencial: {
     valor_compra: number;
     valor_venta_potencial: number;

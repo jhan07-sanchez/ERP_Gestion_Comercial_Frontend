@@ -11,6 +11,7 @@ import { formatCurrency, formatNumber, numberClass, formatDate, formatDateTime }
 import type { VentaDetail, EstadoVenta, MetodoPago } from "../types/venta.types";
 import { PagoModal } from "../components/PagoModal";
 import { useAlert } from "@/shared/components/alerts";
+import { useCajaStore } from "@/modules/caja/store/caja.store";
 
 const estadoVariantMap: Record<EstadoVenta, "success" | "warning" | "danger"> =
 {
@@ -31,6 +32,7 @@ export default function VentaDetalle() {
     loadingPago,
     loadingCancelar,
   } = useVentas();
+  const { isCajaAbierta } = useCajaStore();
   const { showAlert, prompt } = useAlert();
 
   const [venta, setVenta] = useState<VentaDetail | null>(null);
@@ -84,6 +86,7 @@ export default function VentaDetalle() {
     if (result) {
       setVenta(result);
       setIsPagoModalOpen(false);
+      showAlert("Pago Registrado", "success", { description: "El pago se ha procesado correctamente" });
     }
   };
 
@@ -101,7 +104,7 @@ export default function VentaDetalle() {
 
     const result = await cancelarVenta(venta.id, motivo);
     if (result) {
-      showAlert("Venta Cancelada", "info", { description: "La venta ha sido cancelada exitosamente." });
+      showAlert("Venta Cancelada", "success", { description: "La venta ha sido cancelada exitosamente." });
       setVenta((prev) => (prev ? { ...prev, estado: "CANCELADA" } : prev));
     }
   };
@@ -128,7 +131,7 @@ export default function VentaDetalle() {
           </Button>
           <div>
             <h1 className="text-3xl font-bold text-gray-900">
-              Venta #{venta.id}
+              {venta.numero_documento || `Venta #${venta.id}`}
             </h1>
             <p className="text-gray-600 mt-1">
               Información completa de la venta
@@ -393,6 +396,7 @@ export default function VentaDetalle() {
         total={venta.total}
         saldoPendiente={venta.saldo_pendiente}
         submitting={loadingPago}
+        isCajaAbierta={isCajaAbierta}
       />
     </div>
   );

@@ -32,6 +32,8 @@ import type { CompraUpdateInput } from "../types";
 import { useProveedor } from "@/modules/proveedores/hooks/useProveedor";
 import { useProductos } from "@/modules/productos/hooks/useProductos"
 import { useAlert } from "@/shared/components/alerts";
+import { useCajaStore } from "@/modules/caja/store/caja.store";
+import { Link } from "react-router-dom";
 
 export default function CompraEdit() {
   const { id } = useParams<{ id: string }>();
@@ -39,6 +41,7 @@ export default function CompraEdit() {
 
   const { getCompra, updateCompra, fetchCompras, error } = useCompras();
   const { showAlert } = useAlert();
+  const { isCajaAbierta } = useCajaStore();
 
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -342,37 +345,71 @@ export default function CompraEdit() {
         </div>
       </div>
 
-      {/* Formulario */}
-      <CompraForm
-        key={`compra-${formData.proveedor_id}-${formData.detalles.length}`}
-        mode="edit"
-        value={formData}
-        proveedores={proveedores}
-        productos={productos}
-        submitting={submitting}
-        error={error}
-        onChange={setFormData}
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
-      />
+      {/* Validar Caja Abierta Primero */}
+      {!isCajaAbierta && (
+        <div className="flex items-center justify-center p-12 bg-white rounded-lg shadow-sm border border-red-200">
+          <div className="text-center max-w-md">
+            <div className="text-red-500 text-5xl mb-4 text-center flex justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              Caja Cerrada
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Para poder editar compras es necesario tener una sesión de caja abierta. 
+              Esto es requerido para el control financiero.
+            </p>
+            <div className="space-y-3">
+              <Link to="/caja">
+                <Button className="w-full">
+                  Ir a Gestión de Caja
+                </Button>
+              </Link>
+              <Button variant="secondary" className="w-full" onClick={handleCancel}>
+                Volver al listado
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
-      {/* Advertencia */}
-      <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-        <h3 className="text-sm font-semibold text-yellow-900 mb-2">
-          ⚠️ Importante
-        </h3>
-        <ul className="text-sm text-yellow-800 space-y-1 list-disc list-inside">
-          <li>
-            Los cambios afectarán el inventario si está configurado en el
-            backend
-          </li>
-          <li>Asegúrate de verificar las cantidades antes de guardar</li>
-          <li>
-            Si cambias productos, el stock anterior no se revierte
-            automáticamente
-          </li>
-        </ul>
-      </div>
+      {/* Formulario */}
+      {isCajaAbierta && (
+        <>
+          <CompraForm
+            key={`compra-${formData.proveedor_id}-${formData.detalles.length}`}
+            mode="edit"
+            value={formData}
+            proveedores={proveedores}
+            productos={productos}
+            submitting={submitting}
+            error={error}
+            onChange={setFormData}
+            onSubmit={handleSubmit}
+            onCancel={handleCancel}
+          />
+
+          {/* Advertencia */}
+          <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <h3 className="text-sm font-semibold text-yellow-900 mb-2">
+              ⚠️ Importante
+            </h3>
+            <ul className="text-sm text-yellow-800 space-y-1 list-disc list-inside">
+              <li>
+                Los cambios afectarán el inventario si está configurado en el
+                backend
+              </li>
+              <li>Asegúrate de verificar las cantidades antes de guardar</li>
+              <li>
+                Si cambias productos, el stock anterior no se revierte
+                automáticamente
+              </li>
+            </ul>
+          </div>
+        </>
+      )}
     </div>
   );
 }

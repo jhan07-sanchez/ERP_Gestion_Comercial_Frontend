@@ -10,13 +10,15 @@ import { useCompras } from "../hooks/useCompras";
 import type { CompraFilters, EstadoCompra } from "../types";
 import { formatCurrency, truncateProductos } from "@/shared/utils/formatters";
 import { useAlert } from "@/shared/components/alerts";
+import { useCajaStore } from "@/modules/caja/store/caja.store";
 
 
 // Mapeo visual del estado (UI layer)
-const estadoVariantMap: Record<EstadoCompra, "success" | "warning" | "danger"> =
+const estadoVariantMap: Record<EstadoCompra, "success" | "warning" | "danger" | "gray"> =
 {
-  REALIZADA: "success",
-  PENDIENTE: "warning",
+  COMPLETADA: "success",
+  PARCIAL: "warning",
+  PENDIENTE: "gray",
   ANULADA: "danger",
 };
 
@@ -34,6 +36,7 @@ export default function ComprasList() {
     loadingConfirm,
     loadingAnular,
   } = useCompras();
+  const { isCajaAbierta } = useCajaStore();
   const { showAlert, confirm: alertConfirm, prompt: alertPrompt } = useAlert();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -53,13 +56,19 @@ export default function ComprasList() {
   const handleConfirmar = async (id: number) => {
     const confirmed = await alertConfirm(
       "Confirmar Compra",
-      "¿Deseas confirmar esta compra? Esto actualizará el inventario.",
+      "¿Deseas confirmar esta compra? Esto actualizará el inventario y te permitirá registrar el pago en caja.",
       "info"
     );
     if (!confirmed) return;
 
-    await confirmarCompra(id);
-    showAlert("Compra Confirmada", "success");
+    const result = await confirmarCompra(id);
+    if (result) {
+      showAlert("Compra Confirmada", "success", { description: "Registrando entrada al inventario..." });
+      // Redirigir al detalle para abrir el modal de pago automáticamente
+      setTimeout(() => {
+        navigate(`../compras/${id}/detalles?abrirPago=true`);
+      }, 800);
+    }
   };
 
   const handleAnular = async (id: number) => {
@@ -125,6 +134,8 @@ export default function ComprasList() {
         </div>
         <Button
           onClick={() => navigate("../compras/crear", { relative: "route" })}
+          disabled={!isCajaAbierta}
+          title={!isCajaAbierta ? "Debe abrir una caja para crear compras" : ""}
         >
           Nueva Compra
         </Button>
@@ -152,6 +163,7 @@ export default function ComprasList() {
                 onClick={() =>
                   navigate("../compras/crear", { relative: "route" })
                 }
+                disabled={!isCajaAbierta}
               >
                 Registrar primera compra
               </Button>
@@ -232,6 +244,8 @@ export default function ComprasList() {
                             size="sm"
                             variant="success"
                             onClick={() => handleConfirmar(compra.id)}
+                            disabled={!isCajaAbierta}
+                            title={!isCajaAbierta ? "Abrir caja para confirmar compra" : ""}
                           >
                             {loadingConfirm ? "Confirmando..." : "Confirmar"}
                           </Button>

@@ -8,6 +8,7 @@
 import { Outlet } from "react-router-dom";
 import { useUIStore } from "@/shared/store/ui.store";
 import { Sidebar } from "./components/Sidebar";
+import { CajaBanner } from "../components/CajaBanner";
 
 export default function DashboardLayout() {
   const { sidebarOpen } = useUIStore();
@@ -22,6 +23,9 @@ export default function DashboardLayout() {
         className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ease-in-out
           ${sidebarOpen ? "pl-72" : "pl-20"}`}
       >
+        {/* Banner Global de Estado de Caja */}
+        <CajaBanner />
+
         {/* Contenido de la Página con Scroll independiente */}
         <main className="flex-1 overflow-y-auto custom-scrollbar bg-[#f8fafc]">
           <div className="p-8 pb-16 max-w-[1600px] mx-auto animate-in fade-in slide-in-from-bottom-2 duration-700">

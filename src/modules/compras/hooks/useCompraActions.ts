@@ -30,6 +30,7 @@ export function useCompraActions(
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [loadingConfirm, setLoadingConfirm] = useState(false);
   const [loadingAnular, setLoadingAnular] = useState(false);
+  const [loadingPago, setLoadingPago] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
 
@@ -241,13 +242,49 @@ export function useCompraActions(
     }
   };
 
+  const registrarPago = async (
+    id: number,
+    data: { monto: number; metodo_pago: string; referencia?: string }
+  ): Promise<Compra | null> => {
+    try {
+      setLoadingPago(true);
+      setError(null);
+
+      const response = await comprasAPI.registrarPago(id, data);
+
+      if (onSuccess) {
+        await onSuccess(response.data ?? response);
+      }
+
+      return response.data ?? response;
+    } catch (err) {
+      const axiosError = err as AxiosError<ApiError>;
+
+      let errorMessage = "Error al registrar el pago";
+
+      if (axiosError.response?.data?.error) {
+         errorMessage = String(axiosError.response.data.error);
+      } else if (axiosError.response?.data?.detail) {
+        errorMessage = axiosError.response.data.detail;
+      } else if (axiosError.message) {
+        errorMessage = axiosError.message;
+      }
+
+      setError(errorMessage);
+      return null;
+    } finally {
+      setLoadingPago(false);
+    }
+  };
+
   // Estado de loading consolidado (cualquier operación en curso)
   const loading =
     loadingCreate ||
     loadingUpdate ||
     loadingDelete ||
     loadingConfirm ||
-    loadingAnular;
+    loadingAnular ||
+    loadingPago;
 
   return {
     createCompra,
@@ -255,12 +292,14 @@ export function useCompraActions(
     deleteCompra,
     confirmarCompra,
     anularCompra,
+    registrarPago,
     loading,
     loadingCreate,
     loadingUpdate,
     loadingDelete,
     loadingConfirm,
     loadingAnular,
+    loadingPago,
     error,
   };
 }

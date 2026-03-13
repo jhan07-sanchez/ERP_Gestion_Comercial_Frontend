@@ -71,4 +71,9 @@ export const comprasAPI = {
     });
     return response.data;
   },
+
+  registrarPago: async (id: number, data: { monto: number; metodo_pago: string; referencia?: string }) => {
+    const response = await axiosInstance.post(`${API_BASE}/${id}/registrar_pago/`, data);
+    return response.data;
+  },
 };

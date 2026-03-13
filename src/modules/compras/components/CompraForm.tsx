@@ -11,10 +11,11 @@
  * - Validación clara
  */
 
-import { Card, Button, Input } from "@/shared/components/ui";
+import { Card, Button, Input, Badge } from "@/shared/components/ui";
 import type { EstadoCompra } from "../types";
 import { formatCurrency } from "@/shared/utils/formatters";
 import { useAlert } from "@/shared/components/alerts";
+import { useConfiguracion } from "@/modules/configuracion/hooks/useConfiguracion";
 
 
 /**
@@ -71,6 +72,7 @@ export function CompraForm({
   onCancel,
 }: CompraFormProps) {
   const { showAlert } = useAlert();
+  const { config } = useConfiguracion();
   /**
    * 🔁 Recalcula total
    */
@@ -251,6 +253,16 @@ export function CompraForm({
                 disabled={submitting}
               />
             </div>
+
+            {/* Preview del Próximo Correlativo de Compra */}
+            {config && (
+              <div className="flex items-center gap-2 text-sm text-gray-500 bg-blue-50/50 p-3 rounded-xl border border-blue-100 w-full md:w-fit">
+                <span className="font-medium text-blue-700">N° de Compra (Siguiente):</span>
+                <Badge variant="success" className="font-mono scale-110">
+                  {config.numero_compra_preview}
+                </Badge>
+              </div>
+            )}
 
             {/* Observaciones */}
             <div className="space-y-2">

@@ -114,17 +114,16 @@ export const sidebarConfig: SidebarItem[] = [
     icon: IconCashRegister,
     children: [
       {
-        section: "Transacciones",
+        section: "Operaciones",
         items: [
-          { label: "Nueva Caja", path: "/caja/crear" },
-          { label: "Lista de Cajas", path: "/caja/lista" },
+          { label: "Abrir Sesión", path: "/caja/sesiones/nueva" },
         ],
       },
       {
         section: "Administración",
         items: [
-          { label: "Lista de precios", path: "/compras/lista_precios" },
-          { label: "Proveedores", path: "/proveedores/lista" },
+          { label: "Cajas Registradas", path: "/caja/lista" },
+          { label: "Crear Caja Fija", path: "/caja/crear" },
         ],
       },
     ],

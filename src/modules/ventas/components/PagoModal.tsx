@@ -20,9 +20,10 @@ interface PagoModalProps {
     total: number;
     saldoPendiente?: number; // Para pagos parciales
     submitting?: boolean;
+    isCajaAbierta?: boolean;
 }
 
-export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, submitting = false }: PagoModalProps) {
+export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, submitting = false, isCajaAbierta = true }: PagoModalProps) {
     const [metodo, setMetodo] = useState<MetodoPago>("EFECTIVO");
     const [montoPagarTexto, setMontoPagarTexto] = useState<string>("");
     const [montoPagar, setMontoPagar] = useState<number>(0);
@@ -117,6 +118,17 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                 </div>
 
                 <div className="p-6 space-y-8 overflow-y-auto flex-1 custom-scrollbar">
+                    {/* Alerta de Caja Cerrada */}
+                    {!isCajaAbierta && (
+                        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl relative flex items-center gap-3">
+                            <IconX className="w-6 h-6 shrink-0" />
+                            <div className="flex-1">
+                                <strong className="block font-bold">Caja Cerrada</strong>
+                                <span className="block sm:inline text-sm">Debe abrir una sesión de caja antes de registrar el pago.</span>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Saldo a Pagar Card */}
                     <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-6 shadow-lg shadow-blue-200">
                         <div className="absolute -right-4 -top-4 text-white/10 rotate-12">
@@ -275,9 +287,9 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                     <Button
                         type="button"
                         className={`flex-1 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs h-auto shadow-lg transition-all
-                            ${esValido ? 'bg-blue-600 hover:bg-blue-700 shadow-blue-200' : 'bg-gray-200'}`}
+                            ${(esValido && isCajaAbierta) ? 'bg-blue-600 hover:bg-blue-700 shadow-blue-200' : 'bg-gray-200'}`}
                         onClick={() => onConfirm(metodo, montoPagar, esEfectivo ? montoNumerico : montoPagar, esEfectivo ? vuelto : 0)}
-                        disabled={!esValido || submitting}
+                        disabled={!esValido || submitting || !isCajaAbierta}
                         isLoading={submitting}
                     >
                         <div className="flex items-center justify-center gap-2">

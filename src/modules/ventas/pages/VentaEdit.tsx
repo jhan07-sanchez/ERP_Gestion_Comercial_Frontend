@@ -22,13 +22,15 @@ import type {
   ClienteParaVenta,
 } from "../types/venta.types";
 import { useAlert } from "@/shared/components/alerts";
+import { useCajaStore } from "@/modules/caja/store/caja.store";
+import { Link } from "react-router-dom";
 
 export default function VentaEdit() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-
   const { getVenta, updateVenta, fetchVentas, error } = useVentas();
   const { showAlert } = useAlert();
+  const { isCajaAbierta } = useCajaStore();
 
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -51,15 +53,18 @@ export default function VentaEdit() {
         setClienteInicial({
           id: venta.cliente_info.id,
           nombre: venta.cliente_info.nombre,
-          documento: venta.cliente_info.numero_documento,
+          numero_documento: venta.cliente_info.numero_documento,
           telefono: venta.cliente_info.telefono,
           email: venta.cliente_info.email,
         });
 
         // Mapear a VentaFormData (UI ONLY)
         const mapped: VentaFormData = {
+          id: venta.id,
+          numero_documento: venta.numero_documento,
           cliente_id: venta.cliente,
           estado: venta.estado,
+          tipo_documento: venta.tipo_documento,
           total: Number(venta.total),
           detalles: venta.detalles.map((d) => ({
             producto_id: d.producto,
@@ -116,7 +121,7 @@ export default function VentaEdit() {
         console.log("✅ Venta actualizada");
         await fetchVentas();
         showAlert("¡Venta Actualizada!", "success", { description: "La venta se ha actualizado correctamente" });
-        navigate("/ventas");
+        setTimeout(() => navigate("/ventas"), 800);
       } else {
         throw new Error(error || "Error desconocido al actualizar");
       }
@@ -161,7 +166,7 @@ export default function VentaEdit() {
         </Button>
         <div>
           <h1 className="text-3xl font-bold text-gray-900">
-            Editar Venta #{id}
+            {formData?.numero_documento || `Editar Venta #${id}`}
           </h1>
           <p className="text-gray-600 mt-1">
             Modifica la información de la venta seleccionada
@@ -169,30 +174,64 @@ export default function VentaEdit() {
         </div>
       </div>
 
-      {/* Formulario */}
-      <VentaForm
-        key={`venta-edit-${id}-${formData.cliente_id}-${formData.detalles.length}`}
-        mode="edit"
-        value={formData}
-        clienteInicial={clienteInicial}
-        submitting={submitting}
-        error={error}
-        onChange={setFormData}
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
-      />
+      {/* Validar Caja Abierta Primero */}
+      {!isCajaAbierta && (
+        <div className="flex items-center justify-center p-12 bg-white rounded-lg shadow-sm border border-red-200">
+          <div className="text-center max-w-md">
+            <div className="text-red-500 text-5xl mb-4 text-center flex justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              Caja Cerrada
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Para poder editar ventas es necesario tener una sesión de caja abierta. 
+              Esto es requerido para el control financiero.
+            </p>
+            <div className="space-y-3">
+              <Link to="/caja">
+                <Button className="w-full">
+                  Ir a Gestión de Caja
+                </Button>
+              </Link>
+              <Button variant="secondary" className="w-full" onClick={handleCancel}>
+                Volver al listado
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
-      {/* Advertencia */}
-      <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-        <h3 className="text-sm font-semibold text-yellow-900 mb-2">
-          ⚠️ Importante
-        </h3>
-        <ul className="text-sm text-yellow-800 space-y-1 list-disc list-inside">
-          <li>Solo se pueden editar ventas en estado PENDIENTE</li>
-          <li>Los cambios en productos afectan el stock al completar</li>
-          <li>Verifica las cantidades antes de guardar</li>
-        </ul>
-      </div>
+      {/* Formulario */}
+      {isCajaAbierta && (
+        <>
+          <VentaForm
+            key={`venta-edit-${id}-${formData.cliente_id}-${formData.detalles.length}`}
+            mode="edit"
+            value={formData}
+            clienteInicial={clienteInicial}
+            submitting={submitting}
+            error={error}
+            onChange={setFormData}
+            onSubmit={handleSubmit}
+            onCancel={handleCancel}
+          />
+
+          {/* Advertencia */}
+          <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <h3 className="text-sm font-semibold text-yellow-900 mb-2">
+              ⚠️ Importante
+            </h3>
+            <ul className="text-sm text-yellow-800 space-y-1 list-disc list-inside">
+              <li>Solo se pueden editar ventas en estado PENDIENTE</li>
+              <li>Los cambios en productos afectan el stock al completar</li>
+              <li>Verifica las cantidades antes de guardar</li>
+            </ul>
+          </div>
+        </>
+      )}
     </div>
   );
 }

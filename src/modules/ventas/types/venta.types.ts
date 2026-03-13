@@ -38,6 +38,8 @@ export interface ClienteSimple {
 // ===============================
 export interface Venta {
   id: number;
+  numero_documento: string;
+  tipo_documento: "FACTURA" | "RECIBO";
   cliente: number;
   usuario: number;
   total: number;
@@ -116,6 +118,7 @@ export interface VentaDetalleCreateInput {
 export interface VentaCreateInput {
   cliente_id: number;
   estado?: EstadoVenta;
+  tipo_documento?: "FACTURA" | "RECIBO";
   detalles: VentaDetalleCreateInput[];
 }
 
@@ -189,7 +192,8 @@ export interface ProductoParaVenta {
 export interface ClienteParaVenta {
   id: number;
   nombre: string;
-  documento?: string;
+  numero_documento: string;
+  documento?: string; // Mantener por compatibilidad temporal
   telefono?: string;
   email?: string;
 }
@@ -199,8 +203,11 @@ export interface ClienteParaVenta {
 // Mismo patrón que CompraFormValues
 // ===============================
 export interface VentaFormData {
+  id?: number;
+  numero_documento?: string;
   cliente_id: number;
   estado?: EstadoVenta;
+  tipo_documento: "FACTURA" | "RECIBO";
   metodo_pago?: MetodoPago;
   monto_recibido?: number;
   vuelto?: number;

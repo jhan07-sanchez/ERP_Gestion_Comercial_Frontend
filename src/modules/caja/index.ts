@@ -8,6 +8,7 @@
  * - Types (tipos TypeScript)
  * - API (llamadas HTTP)
  * - Services (lógica de negocio)
+ * - Store (estado global Zustand)
  * - Hooks (lógica React)
  * - Utils (funciones puras)
  * - Components (componentes React)
@@ -70,6 +71,12 @@ export { cajaAPI, sesionCajaAPI, movimientosAPI, metodosPagoAPI } from "./api/Ca
 export { CajaService } from "./services/cajaService";
 
 // ═══════════════════════════════════════════════════════════════
+// STORE (Estado global de caja)
+// ═══════════════════════════════════════════════════════════════
+
+export { useCajaStore } from "./store/caja.store";
+
+// ═══════════════════════════════════════════════════════════════
 // HOOKS
 // ═══════════════════════════════════════════════════════════════
 
@@ -83,21 +90,11 @@ export { useCajaActions } from "./hooks/useCajaActions";
 export {
   convertirCajaFormDataAInput,
   convertirArqueoFormDataAInput,
-  formatearMoneda,
-  formatearFecha,
-  tiempoTranscurrido,
-  formatearDiferencia,
-  parsearDecimal,
-  esMontovalido,
-  esNombreValido,
   puedeRecibirMovimientos,
   puedeCerrarse,
   esSoloLectura,
-  puedeArquearse,
   getEstadoSesionEmoji,
   resumirSesion,
-  esFormulasioCajaValido,
-  prepararSesionParaTabla,
 } from "./utils/Caja.utils";
 
 // ═══════════════════════════════════════════════════════════════
@@ -113,3 +110,4 @@ export { CajaForm } from "./components/CajaForm";
 export { default as CajaListPage } from "./pages/CajaList";
 export { default as CajaCreatePage } from "./pages/CajaCreate";
 export { default as CajaDetailPage } from "./pages/CajaDetail";
+

@@ -16,6 +16,7 @@ import { create } from 'zustand';
 import { authAPI } from '@/modules/auth/api/auth.api';
 import { getApiErrorMessage } from '@/shared/utils/apiError';
 import type { AuthStore, LoginCredentials, RegisterData } from '../types';
+import { useCajaStore } from '@/modules/caja/store/caja.store';
 
 /**
  * Hook personalizado para usar el store de autenticación
@@ -55,16 +56,19 @@ export const useAuthStore = create<AuthStore>((set) => ({
         isLoading: false,
         error: null,
       });
+
+      // 📦 Hidratar estado de caja después de login exitoso
+      useCajaStore.getState().hydrateCaja();
     } catch (error: unknown) {
       const errorMessage = getApiErrorMessage(error, 'Error al iniciar sesión');
-      
+
       set({
         user: null,
         isAuthenticated: false,
         isLoading: false,
         error: errorMessage,
       });
-      
+
       throw error;
     }
   },
@@ -90,16 +94,19 @@ export const useAuthStore = create<AuthStore>((set) => ({
         isLoading: false,
         error: null,
       });
+
+      // 📦 Hidratar estado de caja después de registro/login exitoso
+      useCajaStore.getState().hydrateCaja();
     } catch (error: unknown) {
       const errorMessage = getApiErrorMessage(error, 'Error al registrarse');
-      
+
       set({
         user: null,
         isAuthenticated: false,
         isLoading: false,
         error: errorMessage,
       });
-      
+
       throw error;
     }
   },
@@ -109,13 +116,16 @@ export const useAuthStore = create<AuthStore>((set) => ({
    */
   logout: () => {
     authAPI.logout();
-    
+
     set({
       user: null,
       isAuthenticated: false,
       isLoading: false,
       error: null,
     });
+
+    // 📦 Limpiar estado de caja al cerrar sesión
+    useCajaStore.getState().clearSesion();
   },
 
   /**
@@ -135,7 +145,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
     try {
       const userData = await authAPI.getMe();
-      
+
       set({
         user: userData,
         isAuthenticated: true,
@@ -143,6 +153,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
         checkingSession: false,
         error: null,
       });
+
+      // 📦 Hidratar estado de caja si la sesión es válida
+      useCajaStore.getState().hydrateCaja();
     } catch {
       // Si falla, limpiar tokens
       localStorage.removeItem('access_token');

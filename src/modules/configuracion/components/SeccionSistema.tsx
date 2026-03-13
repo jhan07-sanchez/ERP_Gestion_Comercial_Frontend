@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { Card, Input, Select, Button } from '@/shared/components/ui';
-import { IconSettings, IconCurrencyDollar, IconPercentage, IconPackages, IconTruck } from '@tabler/icons-react';
+import { IconCurrencyDollar, IconPercentage, IconPackages, IconTruck } from '@tabler/icons-react';
 import type { Configuracion, ConfiguracionUpdateInput } from '../types/configuracion.types';
 
 interface Props {

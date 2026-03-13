@@ -29,31 +29,38 @@ export default function CajaDetailPage() {
   useEffect(() => {
     if (!sesionId) return;
 
+    let mounted = true;
+
     const loadDetalle = async () => {
       try {
         const data = await fetchDetalleCompleto(sesionId);
 
-        if (data) {
-          setCajaDetalle(data.cajaDetalle as unknown as SesionCaja);
+        if (data && mounted) {
+          setCajaDetalle(data);
           setMovimientos((data.movimientos || []).map(mov => ({
             id: mov.id,
-            es_ingreso: mov.es_ingreso ?? false,
+            es_ingreso: mov.tipo?.includes('INGRESO') ?? false,
             tipo: mov.tipo,
-            descripcion: mov.descripcion,
+            descripcion: mov.descripcion || '',
             monto: typeof mov.monto === 'string' ? parseFloat(mov.monto) : mov.monto,
             fecha: mov.fecha
           })));
         }
       } catch (err) {
         console.error(err);
-        navigate("/caja");
+        if (mounted) navigate("/caja");
       } finally {
-        setLoading(false);
+        if (mounted) setLoading(false);
       }
     };
 
     loadDetalle();
-  }, [sesionId, fetchDetalleCompleto, navigate]);
+
+    return () => {
+      mounted = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sesionId]);
 
   const handleCerrar = () => {
     navigate(`/caja/sesion/${sesionId}/cerrar`);

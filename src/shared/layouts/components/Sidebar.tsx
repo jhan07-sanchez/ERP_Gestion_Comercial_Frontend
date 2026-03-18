@@ -12,17 +12,26 @@ export function Sidebar() {
     const { user, logout } = useAuthStore();
 
     return (
-        <aside
-            className={`fixed top-0 left-0 z-50 h-screen flex flex-col bg-white border-r border-gray-100 transition-all duration-300 ease-in-out shadow-sm
-        ${sidebarOpen ? "w-72" : "w-20"}`}
-        >
+        <>
+            {/* Backdrop para Móviles */}
+            {sidebarOpen && (
+                <div
+                    className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-40 lg:hidden animate-in fade-in duration-300"
+                    onClick={toggleSidebar}
+                />
+            )}
+
+            <aside
+                className={`fixed top-0 left-0 z-50 h-screen flex flex-col bg-white border-r border-gray-100 transition-all duration-300 ease-in-out shadow-2xl lg:shadow-sm
+          ${sidebarOpen ? "translate-x-0 w-72" : "-translate-x-full lg:translate-x-0 lg:w-20"}`}
+            >
             {/* Brand Header */}
-            <div className={`flex items-center h-20 px-6 shrink-0 ${sidebarOpen ? "justify-between" : "justify-center"}`}>
+        <div className={`flex items-center h-20 px-6 shrink-0 ${sidebarOpen ? "justify-between" : "justify-center"}`}>
                 <div className="flex items-center gap-3 overflow-hidden">
                     <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200 shrink-0">
                         <IconBolt size={22} fill="white" className="text-white" />
                     </div>
-                    {sidebarOpen && (
+                    {(sidebarOpen) && (
                         <div className="flex flex-col animate-in fade-in duration-500">
                             <span className="text-lg font-black text-gray-900 tracking-tighter leading-none">
                                 {APP_NAME}
@@ -33,6 +42,16 @@ export function Sidebar() {
                         </div>
                     )}
                 </div>
+
+                {/* Botón de cerrar solo en móvil si el sidebar está abierto */}
+                {sidebarOpen && (
+                    <button
+                        onClick={toggleSidebar}
+                        className="lg:hidden w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-gray-900 border border-gray-100 hover:bg-gray-50 transition-all"
+                    >
+                        <IconChevronLeft size={18} />
+                    </button>
+                )}
             </div>
 
             {/* Main Navigation */}
@@ -101,5 +120,6 @@ export function Sidebar() {
                 </div>
             </div>
         </aside>
+        </>
     );
 }

@@ -23,7 +23,7 @@ export const CajaBanner = () => {
 
     if (isCajaAbierta) {
         return (
-            <div className="bg-emerald-50 border-b border-emerald-100 py-2 px-8 flex items-center justify-between animate-in slide-in-from-top duration-500">
+            <div className="bg-emerald-50 border-b border-emerald-100 py-2 px-4 md:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 animate-in slide-in-from-top duration-500">
                 <div className="flex items-center gap-3">
                     <div className="bg-emerald-500 p-1.5 rounded-lg shadow-sm shadow-emerald-200">
                         <IconCheck className="w-4 h-4 text-white" />
@@ -53,9 +53,9 @@ export const CajaBanner = () => {
     }
 
     return (
-        <div className="bg-amber-50 border-b border-amber-100 py-3 px-8 flex items-center justify-between animate-in slide-in-from-top duration-500">
-            <div className="flex items-center gap-4">
-                <div className="bg-amber-500 p-2 rounded-xl shadow-lg shadow-amber-200 animate-pulse">
+        <div className="bg-amber-50 border-b border-amber-100 py-3 px-4 md:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 animate-in slide-in-from-top duration-500">
+            <div className="flex items-center gap-3 md:gap-4">
+                <div className="bg-amber-500 p-2 rounded-xl shadow-lg shadow-amber-200 animate-pulse shrink-0">
                     <IconAlertCircle className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -71,7 +71,7 @@ export const CajaBanner = () => {
             <Button
                 variant="primary"
                 size="sm"
-                className="bg-amber-600 hover:bg-amber-700 border-none shadow-md shadow-amber-200 text-[11px] font-black h-9 px-5"
+                className="bg-amber-600 hover:bg-amber-700 border-none shadow-md shadow-amber-200 text-[11px] font-black h-9 px-5 w-full sm:w-auto"
                 onClick={() => navigate("/caja/sesiones/nueva")}
             >
                 <IconWallet className="w-4 h-4 mr-2" />

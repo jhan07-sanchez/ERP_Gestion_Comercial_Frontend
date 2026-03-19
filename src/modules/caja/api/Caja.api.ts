@@ -121,9 +121,13 @@ export const sesionCajaAPI = {
   },
 
   abrirSesion: async (input: AbrirSesionInput): Promise<SesionCaja> => {
+    const montoInicial = typeof input.monto_inicial === 'string'
+      ? parseFloat(input.monto_inicial)
+      : input.monto_inicial;
+
     const response = await axiosInstance.post(`${SESIONES_API}/abrir/`, {
       caja_id: input.caja_id,
-      monto_inicial: String(input.monto_inicial),
+      monto_inicial: montoInicial,
       observaciones: input.observaciones || "",
     });
 

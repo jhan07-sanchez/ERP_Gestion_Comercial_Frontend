@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { Card, Input, Button } from '@/shared/components/ui';
-import { IconShieldLock, IconClock, IconKey, IconDeviceFloppy, IconLockAccess, IconCheck } from '@tabler/icons-react';
+import { IconClock, IconDeviceFloppy, IconLockAccess, IconCheck } from '@tabler/icons-react';
 
 export const SeccionSeguridad: React.FC = () => {
     return (

@@ -34,8 +34,8 @@ export default function CajaList() {
   if (error) {
     return (
       <PageContainer>
-        <PageHeader 
-          title="Cajas" 
+        <PageHeader
+          title="Cajas"
           subtitle="Hubo un problema al cargar los datos"
           actions={
             <Button onClick={() => fetchCajas()}>Reintentar</Button>
@@ -57,7 +57,7 @@ export default function CajaList() {
         subtitle="Administra y supervisa el flujo de efectivo"
         icon={<IconCash size={24} />}
         actions={
-          <Button 
+          <Button
             onClick={() => navigate("/caja/crear")}
             className="w-full sm:w-auto shadow-md shadow-blue-200"
           >
@@ -89,9 +89,9 @@ export default function CajaList() {
                 <IconCash size={32} className="text-primary-300" />
               </div>
               <p className="text-primary-500 font-medium">No hay cajas registradas</p>
-              <Button 
+              <Button
                 variant="secondary"
-                className="mt-6" 
+                className="mt-6"
                 onClick={() => navigate("/caja/crear")}
               >
                 Crear primera caja
@@ -159,4 +159,5 @@ export default function CajaList() {
         </Card.Content>
       </Card>
     </PageContainer>
-
+  );
+}

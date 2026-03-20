@@ -1,5 +1,5 @@
 // src/modules/dashboard/pages/Dashboard.tsx
-import React from 'react';
+
 import { Card, Button, Badge, PageContainer, PageHeader } from "@/shared/components/ui";
 import { KPICard } from "../components/KPICard";
 import { ActivityFeed } from "../components/ActivityFeed";
@@ -70,32 +70,32 @@ export default function Dashboard() {
     {
       title: "Ventas Totales",
       value: `$${kpis.totalSales.toLocaleString()}`,
-      trend: kpis.salesTrend > 0 ? 'up' : 'down',
-      percentage: Math.abs(kpis.salesPercentage),
+      trend: (Number(kpis.salesTrend) > 0 ? 'up' : Number(kpis.salesTrend) < 0 ? 'down' : 'stable') as "up" | "down" | "stable",
+      percentage: Math.abs(Number(kpis.salesPercentage)),
       variant: "primary" as const,
       icon: <IconReportMoney size={24} stroke={2} />,
     },
     {
       title: "Nuevos Clientes",
       value: kpis.newCustomers.toString(),
-      trend: kpis.customersTrend > 0 ? 'up' : 'down',
-      percentage: Math.abs(kpis.customersPercentage),
+      trend: (Number(kpis.customersTrend) > 0 ? 'up' : Number(kpis.customersTrend) < 0 ? 'down' : 'stable') as "up" | "down" | "stable",
+      percentage: Math.abs(Number(kpis.customersPercentage)),
       variant: "success" as const,
       icon: <IconUsers size={24} stroke={2} />,
     },
     {
       title: "Pedidos Pendientes",
       value: kpis.pendingOrders.toString(),
-      trend: kpis.ordersTrend > 0 ? 'up' : 'down',
-      percentage: Math.abs(kpis.ordersPercentage),
+      trend: (Number(kpis.ordersTrend) > 0 ? 'up' : Number(kpis.ordersTrend) < 0 ? 'down' : 'stable') as "up" | "down" | "stable",
+      percentage: Math.abs(Number(kpis.ordersPercentage)),
       variant: "warning" as const,
       icon: <IconClipboardList size={24} stroke={2} />,
     },
     {
       title: "Stock Crítico",
       value: kpis.lowStockProducts.toString(),
-      trend: kpis.stockTrend > 0 ? 'up' : 'down',
-      percentage: Math.abs(kpis.stockPercentage),
+      trend: (Number(kpis.stockTrend) > 0 ? 'up' : Number(kpis.stockTrend) < 0 ? 'down' : 'stable') as "up" | "down" | "stable",
+      percentage: Math.abs(Number(kpis.stockPercentage)),
       variant: "danger" as const,
       icon: <IconBoxSeam size={24} stroke={2} />,
     },

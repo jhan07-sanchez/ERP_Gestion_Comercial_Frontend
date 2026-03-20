@@ -1,23 +1,18 @@
 /**
  * 📄 PÁGINA: ProveedorCreate
  *
- * Página para crear un nuevo proveedor
- *
- * FLUJO:
- * 1. Inicializa estado UI (ProveedorFormData)
- * 2. Usuario completa formulario
- * 3. Envía al backend
- * 4. Redirige a listado
+ * Página para crear un nuevo proveedor con diseño responsivo
  */
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/shared/components/ui";
+import { PageContainer, PageHeader, Card } from "@/shared/components/ui";
 
 import { ProveedorForm } from "../components/ProveedorForm";
 import { useProveedorActions } from "../hooks/useProveedorActions";
 import type { ProveedorFormData } from "../types/proveedor.types";
 import { useAlert } from "@/shared/components/alerts";
+import { IconBuildingStore, IconInfoCircle } from "@tabler/icons-react";
 
 export default function ProveedorCreate() {
   const navigate = useNavigate();
@@ -26,9 +21,6 @@ export default function ProveedorCreate() {
 
   const [submitting, setSubmitting] = useState(false);
 
-  /**
-   * 🧠 Estado inicial del formulario (UI ONLY)
-   */
   const [formData, setFormData] = useState<ProveedorFormData>({
     nombre: "",
     documento: "",
@@ -38,15 +30,10 @@ export default function ProveedorCreate() {
     estado: true,
   });
 
-  /**
-   * 🚀 Envío del formulario
-   */
   const handleSubmit = async () => {
     setSubmitting(true);
 
     try {
-      console.log("📡 Payload enviado al backend (Proveedor):", formData);
-
       const newProveedor = await createProveedor(formData);
 
       if (newProveedor) {
@@ -58,12 +45,6 @@ export default function ProveedorCreate() {
         response?: { status?: number; data?: unknown };
         message?: string;
       };
-
-      console.error("❌ ERROR DEL BACKEND:", {
-        status: error.response?.status,
-        data: error.response?.data,
-        message: error.message,
-      });
 
       let errorMsg = "Error al crear el proveedor. Revisa los datos.";
 
@@ -88,9 +69,6 @@ export default function ProveedorCreate() {
     }
   };
 
-  /**
-   * ❌ Cancelar
-   */
   const handleCancel = async () => {
     if (submitting) return;
 
@@ -115,44 +93,53 @@ export default function ProveedorCreate() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center gap-4">
-        <Button
-          variant="secondary"
-          onClick={handleCancel}
-          disabled={submitting}
-        >
-          ← Volver
-        </Button>
-
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Nuevo Proveedor</h1>
-          <p className="text-gray-600 mt-1">
-            Registra un proveedor para compras y abastecimiento
-          </p>
-        </div>
-      </div>
-
-      {/* Formulario */}
-      <ProveedorForm
-        value={formData}
-        submitting={submitting || loading}
-        error={error}
-        onChange={setFormData}
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
+    <PageContainer>
+      <PageHeader
+        title="Nuevo Proveedor"
+        subtitle="Registra un socio comercial para compras y abastecimiento"
+        icon={<IconBuildingStore size={24} />}
+        onBack={handleCancel}
       />
 
-      {/* Nota */}
-      <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-        <h3 className="text-sm font-semibold text-blue-900 mb-2">💡 Nota</h3>
-        <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
-          <li>El nombre del proveedor es obligatorio</li>
-          <li>El documento ayuda a evitar duplicados</li>
-          <li>Los proveedores activos pueden usarse en compras</li>
-        </ul>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-24 lg:pb-0">
+        <div className="lg:col-span-2 space-y-6">
+            <ProveedorForm
+                value={formData}
+                submitting={submitting || loading}
+                error={error}
+                onChange={setFormData}
+                onSubmit={handleSubmit}
+                onCancel={handleCancel}
+            />
+        </div>
+
+        <div className="space-y-6">
+            <Card className="border-blue-200 bg-blue-50/50 shadow-sm sticky top-6">
+                <Card.Content className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600">
+                            <IconInfoCircle size={24} stroke={2} />
+                        </div>
+                        <h3 className="text-sm font-black uppercase tracking-tight text-blue-900">Tips de Registro</h3>
+                    </div>
+                    <ul className="text-xs font-medium text-blue-800 space-y-3">
+                        <li className="flex gap-2 isolate">
+                            <span className="text-blue-500 font-bold shrink-0">•</span>
+                            <span className="leading-relaxed">El <strong>nombre comercial</strong> o razón social es obligatorio para facturación y documentos formales.</span>
+                        </li>
+                        <li className="flex gap-2 isolate">
+                            <span className="text-blue-500 font-bold shrink-0">•</span>
+                            <span className="leading-relaxed">Ingresar el <strong>NIT / RUT</strong> correcto evita que se generen registros duplicados en contabilidad.</span>
+                        </li>
+                        <li className="flex gap-2 isolate">
+                            <span className="text-blue-500 font-bold shrink-0">•</span>
+                            <span className="leading-relaxed">Solo los proveedores marcados como <strong>Activos</strong> aparecerán en el módulo de compras.</span>
+                        </li>
+                    </ul>
+                </Card.Content>
+            </Card>
+        </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

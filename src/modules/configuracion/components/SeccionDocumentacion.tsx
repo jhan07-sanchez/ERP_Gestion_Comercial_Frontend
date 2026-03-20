@@ -204,7 +204,7 @@ const ConsecutivoRow = ({ label, current, preview, onReset }: { label: string, c
         <div className="space-y-1">
             <p className="text-[11px] font-black text-slate-800 uppercase tracking-tight">{label}</p>
             <div className="flex items-center gap-2">
-                <Badge variant="ghost" className="bg-slate-100 text-slate-600 border-none font-black text-[10px]">INT: {current}</Badge>
+                <Badge variant="success" className="bg-slate-100 text-slate-600 border-none font-black text-[10px]">INT: {current}</Badge>
                 <IconChevronRight size={12} className="text-slate-300" />
                 <span className="text-xs font-black text-blue-600 tracking-widest">{preview}</span>
             </div>

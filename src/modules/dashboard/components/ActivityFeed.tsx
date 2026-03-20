@@ -117,7 +117,7 @@ export function ActivityFeed({ activities, limit }: ActivityFeedProps) {
 
                                 <button
                                     onClick={() => handleActivityClick(activity)}
-                                    className="shrink-0 text-blue-600 hover:text-blue-800 opacity-0 group-hover:opacity-100 transition-opacity"
+                                    className="shrink-0 text-blue-600 bg-blue-50/50 hover:bg-blue-100 p-1.5 rounded-lg transition-colors lg:opacity-0 lg:group-hover:opacity-100 opacity-100"
                                     title="Ver detalles"
                                 >
                                     <IconChevronRight size={18} />

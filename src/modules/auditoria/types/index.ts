@@ -36,8 +36,8 @@ export type AuditModule =
 export type AuditLevel = 'INFO' | 'WARNING' | 'ERROR' | 'CRITICAL';
 
 export interface AuditDiffValue {
-  antes: any;
-  despues: any;
+  antes: unknown;
+  despues: unknown;
 }
 
 export interface AuditDiff {
@@ -71,11 +71,11 @@ export interface AuditLog {
   user_agent: string;
   endpoint: string;
   metodo_http: string;
-  datos_antes: Record<string, any> | null;
-  datos_despues: Record<string, any> | null;
+  datos_antes: Record<string, unknown> | null;
+  datos_despues: Record<string, unknown> | null;
   extra: {
     diff?: AuditDiff;
-    [key: string]: any;
+    [key: string]: unknown;
   } | null;
   diff?: AuditDiff | null; // From SerializerMethodField
   exitoso: boolean;

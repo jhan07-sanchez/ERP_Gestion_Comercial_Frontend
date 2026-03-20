@@ -1,4 +1,8 @@
-// proveedores/pages/ProveedorEdit.tsx
+/**
+ * 📄 PÁGINA: ProveedorEdit
+ *
+ * Página para editar un proveedor existente con diseño responsivo
+ */
 
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,9 +10,9 @@ import { ProveedorForm } from "../components/ProveedorForm";
 import { useProveedor } from "../hooks/useProveedor";
 import { useProveedorActions } from "../hooks/useProveedorActions";
 import type { ProveedorFormData } from "../types/proveedor.types";
-import { Button } from "@/shared/components/ui";
+import { Button, PageContainer, PageHeader } from "@/shared/components/ui";
 import { useAlert } from "@/shared/components/alerts";
-
+import { IconBuildingStore, IconLoader2, IconAlertCircle } from "@tabler/icons-react";
 
 export default function ProveedorEdit() {
   const navigate = useNavigate();
@@ -24,17 +28,14 @@ export default function ProveedorEdit() {
   } = useProveedorActions();
   const { showAlert } = useAlert();
 
-  // ✅ Estado local del formulario (OBLIGATORIO)
   const [formData, setFormData] = useState<ProveedorFormData | null>(null);
 
-  // ✅ Validar ID
   useEffect(() => {
     if (id && isNaN(Number(id))) {
       navigate("/proveedores");
     }
   }, [id, navigate]);
 
-  // ✅ Cargar proveedor
   useEffect(() => {
     if (!proveedorId) return;
 
@@ -51,15 +52,14 @@ export default function ProveedorEdit() {
     fetchProveedor();
   }, [proveedorId, getProveedor, navigate, showAlert]);
 
-  // ✅ Submit SIN parámetros (como pide ProveedorForm)
   const handleSubmit = async () => {
     if (!proveedorId || !formData) return;
 
     const ok = await updateProveedor(proveedorId, formData);
 
     if (ok) {
-      showAlert("¡Proveedor Actualizado!", "success", { description: "Los datos del proveedor se han actualizado correctamente." });
-      navigate("/proveedores");
+        showAlert("¡Proveedor Actualizado!", "success", { description: "Los datos del proveedor se han actualizado correctamente." });
+        navigate("/proveedores");
     }
   };
 
@@ -69,52 +69,49 @@ export default function ProveedorEdit() {
 
   if (loading || !formData) {
     return (
-      <div className="loading-container">
-        <div className="spinner"></div>
-        <p>Cargando proveedor...</p>
-      </div>
+      <PageContainer>
+        <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
+            <IconLoader2 className="animate-spin text-blue-600" size={48} stroke={1.5} />
+            <p className="text-slate-600 font-black uppercase tracking-widest text-[10px] animate-pulse">Cargando información del proveedor...</p>
+        </div>
+      </PageContainer>
     );
   }
 
   if (error) {
     return (
-      <div className="error-container">
-        <div className="alert alert-error">
-          <h3>Error al cargar proveedor</h3>
-          <p>{error}</p>
-          <button
-            onClick={() => navigate("/proveedores")}
-            className="btn btn-primary"
-          >
-            Volver a la lista
-          </button>
+      <PageContainer>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="max-w-md w-full text-center space-y-6 bg-rose-50/50 p-10 rounded-3xl border border-rose-100 shadow-sm backdrop-blur-sm">
+            <div className="w-20 h-20 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-rose-200/50">
+              <IconAlertCircle size={40} stroke={1.5} />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-xl font-black text-rose-900 uppercase tracking-tight">Error al cargar proveedor</h3>
+              <p className="text-sm text-rose-700 font-medium leading-relaxed">{error}</p>
+            </div>
+            <Button 
+                onClick={() => navigate("/proveedores")} 
+                className="w-full h-12 bg-rose-600 hover:bg-rose-700 text-white border-none shadow-xl shadow-rose-200 font-black uppercase tracking-widest text-[10px]"
+            >
+              Volver al Directorio
+            </Button>
+          </div>
         </div>
-      </div>
+      </PageContainer>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="page-header">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="secondary"
-            onClick={handleCancel}
-            disabled={updateLoading}
-          >
-            ← Volver
-          </Button>
+    <PageContainer>
+      <PageHeader
+        title="Editar Proveedor"
+        subtitle={`Modificando información de: ${formData.nombre}`}
+        icon={<IconBuildingStore size={24} />}
+        onBack={handleCancel}
+      />
 
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              Editar Proveedor
-            </h1>
-            <p className="text-gray-600 mt-1">Modificando: {formData.nombre}</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="form-container">
+      <div className="max-w-4xl mx-auto w-full pb-24 lg:pb-0">
         <ProveedorForm
           value={formData}
           onChange={setFormData}
@@ -124,6 +121,6 @@ export default function ProveedorEdit() {
           error={updateError}
         />
       </div>
-    </div>
+    </PageContainer>
   );
 }

@@ -1,0 +1,34 @@
+
+> frontend@0.0.0 build
+> tsc -b && vite build
+
+src/modules/caja/components/CajaBanner.tsx(3,57): error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.
+src/modules/caja/components/CajaBanner.tsx(6,11): error TS2339: Property 'isCajaOpen' does not exist on type 'CajaState'.
+src/modules/clientes/pages/ClienteCreate.tsx(8,10): error TS6133: 'Button' is declared but its value is never read.
+src/modules/clientes/pages/ClienteCreate.tsx(132,9): error TS2322: Type '{ title: string; subtitle: string; icon: Element; onBack: () => Promise<void>; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'onBack' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+src/modules/clientes/pages/ClienteDetalle.tsx(14,5): error TS2724: '"@tabler/icons-react"' has no exported member named 'IconUserFilter'. Did you mean 'IconFilter'?
+src/modules/clientes/pages/ClienteDetalle.tsx(129,9): error TS2322: Type '{ title: string; subtitle: string; icon: Element; onBack: () => void | Promise<void>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'onBack' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+src/modules/clientes/pages/ClienteEdit.tsx(8,10): error TS6133: 'Button' is declared but its value is never read.
+src/modules/clientes/pages/ClienteEdit.tsx(8,45): error TS6133: 'Card' is declared but its value is never read.
+src/modules/clientes/pages/ClienteEdit.tsx(14,37): error TS6133: 'IconAlertCircle' is declared but its value is never read.
+src/modules/clientes/pages/ClienteEdit.tsx(112,9): error TS2322: Type '{ title: string; subtitle: string; icon: Element; onBack: () => void; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'onBack' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+src/modules/configuracion/components/SeccionDocumentacion.tsx(207,24): error TS2322: Type '"ghost"' is not assignable to type 'BadgeVariant | undefined'.
+src/modules/configuracion/components/SeccionSeguridad.tsx(9,10): error TS6133: 'IconShieldLock' is declared but its value is never read.
+src/modules/configuracion/components/SeccionSeguridad.tsx(9,37): error TS6133: 'IconKey' is declared but its value is never read.
+src/modules/configuracion/pages/ConfiguracionPage.tsx(13,37): error TS6133: 'Card' is declared but its value is never read.
+src/modules/dashboard/pages/Dashboard.tsx(2,1): error TS6133: 'React' is declared but its value is never read.
+src/modules/dashboard/pages/Dashboard.tsx(73,14): error TS2365: Operator '>' cannot be applied to types 'string' and 'number'.
+src/modules/dashboard/pages/Dashboard.tsx(81,14): error TS2365: Operator '>' cannot be applied to types 'string' and 'number'.
+src/modules/dashboard/pages/Dashboard.tsx(89,14): error TS2365: Operator '>' cannot be applied to types 'string' and 'number'.
+src/modules/dashboard/pages/Dashboard.tsx(97,14): error TS2365: Operator '>' cannot be applied to types 'string' and 'number'.
+src/modules/dashboard/pages/Dashboard.tsx(141,17): error TS2322: Type 'string' is not assignable to type '"up" | "down" | "stable" | undefined'.
+src/modules/proveedores/pages/ProveedorCreate.tsx(9,10): error TS6133: 'Button' is declared but its value is never read.
+src/modules/proveedores/pages/ProveedorCreate.tsx(101,9): error TS2322: Type '{ title: string; subtitle: string; icon: Element; onBack: () => Promise<void>; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'onBack' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+src/modules/proveedores/pages/ProveedorDetailPage.tsx(152,9): error TS2322: Type '{ title: string; subtitle: string; icon: Element; onBack: () => void | Promise<void>; actions: Element; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'onBack' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.
+src/modules/proveedores/pages/ProveedorEdit.tsx(111,9): error TS2322: Type '{ title: string; subtitle: string; icon: Element; onBack: () => void; }' is not assignable to type 'IntrinsicAttributes & PageHeaderProps'.
+  Property 'onBack' does not exist on type 'IntrinsicAttributes & PageHeaderProps'.

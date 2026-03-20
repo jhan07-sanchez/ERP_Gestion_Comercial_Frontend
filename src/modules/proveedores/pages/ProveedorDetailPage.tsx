@@ -1,4 +1,9 @@
-// proveedores/pages/ProveedorDetailPage.tsx
+/**
+ * 📄 PÁGINA: ProveedorDetailPage
+ *
+ * Página para ver los detalles de un proveedor.
+ * Migrada a diseño responsivo Tailwind + PageContainer + PageHeader.
+ */
 
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,6 +12,17 @@ import { useProveedorActions } from "../hooks/useProveedorActions";
 import { ProveedorDetalleList } from "../components/ProveedorDetalleRow";
 import type { ProveedorDetail } from "../types/proveedor.types";
 import { useAlert } from "@/shared/components/alerts";
+import { PageContainer, PageHeader, Button, Card, Badge } from "@/shared/components/ui";
+import { 
+    IconBuildingStore, 
+    IconEdit, 
+    IconTrash, 
+    IconPower, 
+    IconLoader2, 
+    IconAlertCircle,
+    IconHistory,
+    IconChartBar
+} from "@tabler/icons-react";
 
 export default function ProveedorDetailPage() {
   const navigate = useNavigate();
@@ -35,7 +51,7 @@ export default function ProveedorDetailPage() {
   const handleBack = () => navigate("/proveedores");
 
   const handleEdit = () => {
-    if (proveedorId) navigate(`/proveedores/edit/${proveedorId}`);
+    if (proveedorId) navigate(`/proveedores/${proveedorId}/editar`);
   };
 
   const handleDelete = async () => {
@@ -82,86 +98,148 @@ export default function ProveedorDetailPage() {
   };
 
   // ⏳ Loading
-  if (loading) {
-    return <p>Cargando proveedor...</p>;
+  if (loading || (!proveedor && !error)) {
+    return (
+      <PageContainer>
+        <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
+            <IconLoader2 className="animate-spin text-blue-600" size={48} stroke={1.5} />
+            <p className="text-slate-600 font-black uppercase tracking-widest text-[10px] animate-pulse">Cargando información del proveedor...</p>
+        </div>
+      </PageContainer>
+    );
   }
 
   // ❌ Error
   if (error || !proveedor) {
     return (
-      <div>
-        <p>{error || "Proveedor no encontrado"}</p>
-        <button onClick={handleBack}>Volver</button>
-      </div>
+      <PageContainer>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="max-w-md w-full text-center space-y-6 bg-rose-50/50 p-10 rounded-3xl border border-rose-100 shadow-sm backdrop-blur-sm">
+            <div className="w-20 h-20 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-rose-200/50">
+              <IconAlertCircle size={40} stroke={1.5} />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-xl font-black text-rose-900 uppercase tracking-tight">Proveedor no encontrado</h3>
+              <p className="text-sm text-rose-700 font-medium leading-relaxed">{error || "No se pudo localizar este registro."}</p>
+            </div>
+            <Button 
+                onClick={handleBack} 
+                className="w-full h-12 bg-rose-600 hover:bg-rose-700 text-white border-none shadow-xl shadow-rose-200 font-black uppercase tracking-widest text-[10px]"
+            >
+              Volver al Directorio
+            </Button>
+          </div>
+        </div>
+      </PageContainer>
     );
   }
 
-  // ✅ Render principal
   return (
-    <div className="proveedor-detail-page">
-      <div className="page-header">
-        <div className="header-content">
-          <button onClick={handleBack} className="btn-back" title="Volver">
-            ← Volver
-          </button>
+    <PageContainer>
+        {actionLoading && (
+            <div className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-50 flex items-center justify-center">
+                <div className="bg-white p-6 rounded-2xl shadow-xl flex items-center gap-4">
+                    <IconLoader2 className="animate-spin text-blue-600" size={24} />
+                    <span className="text-sm font-black text-slate-700 uppercase tracking-widest">Procesando...</span>
+                </div>
+            </div>
+        )}
 
-          <div className="header-info">
-            <h1>{proveedor.nombre}</h1>
-            <span
-              className={`status-badge ${proveedor.estado ? "active" : "inactive"
-                }`}
-            >
-              {proveedor.estado ? "✓ Activo" : "✕ Inactivo"}
-            </span>
-          </div>
+      <PageHeader
+        title={proveedor.nombre}
+        subtitle="Detalles completos y operaciones del proveedor"
+        icon={<IconBuildingStore size={24} />}
+        onBack={handleBack}
+        actions={
+            <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+                <Badge variant={proveedor.estado ? "success" : "gray"} className="mb-2 sm:mb-0 sm:mr-4 self-start sm:self-auto py-1 px-3">
+                    {proveedor.estado ? "Activo" : "Inactivo"}
+                </Badge>
+                <div className="flex bg-slate-100 p-1 rounded-xl shadow-inner border border-slate-200/60 w-full sm:w-auto">
+                    <Button 
+                        variant="ghost" 
+                        onClick={handleEdit}
+                        className="flex-1 sm:flex-none text-slate-600 hover:bg-white hover:text-blue-600 hover:shadow-sm"
+                        leftIcon={<IconEdit size={16} />}
+                        size="sm"
+                    >
+                        Editar
+                    </Button>
+                    <div className="w-px bg-slate-200 my-2 mx-1 hidden sm:block"></div>
+                    <Button 
+                        variant="ghost" 
+                        onClick={handleToggleEstado}
+                        className={`flex-1 sm:flex-none hover:bg-white hover:shadow-sm ${proveedor.estado ? 'text-amber-600 hover:text-amber-700' : 'text-emerald-600 hover:text-emerald-700'}`}
+                        leftIcon={<IconPower size={16} />}
+                        size="sm"
+                    >
+                        {proveedor.estado ? "Desactivar" : "Activar"}
+                    </Button>
+                    <div className="w-px bg-slate-200 my-2 mx-1 hidden sm:block"></div>
+                    <Button 
+                        variant="ghost" 
+                        onClick={handleDelete}
+                        className="flex-1 sm:flex-none text-rose-600 hover:bg-white hover:text-rose-700 hover:shadow-sm"
+                        leftIcon={<IconTrash size={16} />}
+                        size="sm"
+                    >
+                        Eliminar
+                    </Button>
+                </div>
+            </div>
+        }
+      />
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-24 lg:pb-0">
+        <div className="lg:col-span-2 space-y-6">
+            <Card className="border-slate-200 shadow-sm overflow-hidden">
+                <Card.Header className="bg-slate-50/50 border-b border-slate-100 py-4 px-6 flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                        <IconBuildingStore size={18} />
+                    </div>
+                    <h2 className="text-sm font-black text-slate-800 uppercase tracking-tight">Información Principal</h2>
+                </Card.Header>
+                <Card.Content className="p-0">
+                    <ProveedorDetalleList proveedor={proveedor} />
+                </Card.Content>
+            </Card>
         </div>
 
-        <div className="header-actions">
-          <button onClick={handleEdit} className="btn btn-primary">
-            ✏️ Editar
-          </button>
+        <div className="space-y-6">
+            <Card className="border-slate-200 shadow-sm overflow-hidden">
+                <Card.Header className="bg-slate-50/50 border-b border-slate-100 py-4 px-6 flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                        <IconChartBar size={18} />
+                    </div>
+                    <h2 className="text-sm font-black text-slate-800 uppercase tracking-tight">Estadísticas</h2>
+                </Card.Header>
+                <Card.Content className="p-6">
+                    <div className="text-center py-6 px-4 bg-slate-50 border border-slate-100 border-dashed rounded-2xl">
+                        <p className="text-xs font-bold text-slate-500 tracking-wide leading-relaxed">
+                            Métricas se integrarán al habilitar el módulo de compras y cuentas por pagar.
+                        </p>
+                    </div>
+                </Card.Content>
+            </Card>
 
-          <button
-            onClick={handleToggleEstado}
-            className={`btn ${proveedor.estado ? "btn-warning" : "btn-success"
-              }`}
-          >
-            {proveedor.estado ? "🚫 Desactivar" : "✅ Activar"}
-          </button>
-
-          <button onClick={handleDelete} className="btn btn-danger">
-            🗑️ Eliminar
-          </button>
+            <Card className="border-slate-200 shadow-sm overflow-hidden">
+                <Card.Header className="bg-slate-50/50 border-b border-slate-100 py-4 px-6 flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center">
+                        <IconHistory size={18} />
+                    </div>
+                    <h2 className="text-sm font-black text-slate-800 uppercase tracking-tight">Historial</h2>
+                </Card.Header>
+                <Card.Content className="p-6">
+                    <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Fecha de Creación</span>
+                        <span className="text-xs font-bold text-slate-700">
+                            {new Date(proveedor.fecha_creacion ?? "").toLocaleString("es-ES")}
+                        </span>
+                    </div>
+                </Card.Content>
+            </Card>
         </div>
       </div>
-
-      <div className="detail-content">
-        <div className="detail-card">
-          <h2 className="card-title">Información del Proveedor</h2>
-          <ProveedorDetalleList proveedor={proveedor} />
-        </div>
-
-        <div className="detail-card">
-          <h2 className="card-title">Estadísticas</h2>
-          <p className="text-muted">
-            * Se integrarán cuando esté listo el módulo de compras
-          </p>
-        </div>
-
-        <div className="detail-card">
-          <h2 className="card-title">Historial</h2>
-          <p>
-            Creado el{" "}
-            {new Date(proveedor.fecha_creacion ?? "").toLocaleString("es-ES")}
-          </p>
-        </div>
-      </div>
-
-      {actionLoading && (
-        <div className="loading-overlay">
-          <p>Procesando...</p>
-        </div>
-      )}
-    </div>
+    </PageContainer>
   );
 }

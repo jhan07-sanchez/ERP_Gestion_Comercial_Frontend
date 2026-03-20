@@ -1,11 +1,14 @@
 import React from 'react';
+import { Button } from './Button';
+import { IconArrowLeft } from '@tabler/icons-react';
 
-interface PageHeaderProps {
+export interface PageHeaderProps {
   title: string;
   subtitle?: string;
   actions?: React.ReactNode;
   icon?: React.ReactNode;
   backButton?: React.ReactNode;
+  onBack?: () => void | Promise<void>;
 }
 
 /**
@@ -20,13 +23,20 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
   subtitle,
   actions,
   icon,
-  backButton
+  backButton,
+  onBack
 }) => {
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-3">
           {backButton}
+          {onBack && !backButton && (
+            <Button variant="secondary" onClick={onBack} size="sm" className="mr-2 px-3 bg-white hover:bg-slate-50 border border-slate-200">
+               <IconArrowLeft size={16} />
+               <span className="hidden sm:inline-block ml-1 font-bold">Volver</span>
+            </Button>
+          )}
           {icon && (
             <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 shadow-sm border border-blue-100">
               {icon}

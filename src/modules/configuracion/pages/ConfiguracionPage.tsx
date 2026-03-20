@@ -10,7 +10,7 @@ import { SeccionEmpresa } from '../components/SeccionEmpresa';
 import { SeccionSistema } from '../components/SeccionSistema';
 import { SeccionDocumentacion } from '../components/SeccionDocumentacion';
 import { SeccionSeguridad } from '../components/SeccionSeguridad';
-import { PageContainer, PageHeader, Card } from '@/shared/components/ui';
+import { PageContainer, PageHeader } from '@/shared/components/ui';
 import {
     IconBuilding,
     IconSettings,

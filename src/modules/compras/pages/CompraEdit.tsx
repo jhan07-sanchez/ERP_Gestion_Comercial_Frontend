@@ -61,7 +61,7 @@ export default function CompraEdit() {
           })),
         };
         setFormData(mappedData);
-      } catch (_err) {
+      } catch {
         showAlert("Error", "error", {
           description: "No se pudo cargar la información de la compra."
         });
@@ -117,7 +117,7 @@ export default function CompraEdit() {
         showAlert("¡Compra Actualizada!", "success", { description: "Los datos se han guardado correctamente." });
         navigate("/compras");
       }
-    } catch (err) {
+    } catch {
       showAlert("Error", "error", { description: "Error al actualizar la compra." });
     } finally {
       setSubmitting(false);

@@ -117,10 +117,10 @@ export function AlertList({ alerts }: AlertListProps) {
 
                                 <button
                                     onClick={() => handleDetailClick(alert)}
-                                    className="text-[10px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-0.5 transition-colors opacity-0 group-hover:opacity-100"
+                                    className="text-[10px] font-black text-blue-600 bg-blue-50/80 hover:bg-blue-100 px-3 py-1 rounded-lg flex items-center gap-1 transition-colors lg:opacity-0 lg:group-hover:opacity-100 opacity-100"
                                 >
                                     VER DETALLE
-                                    <IconChevronRight size={12} />
+                                    <IconChevronRight size={12} stroke={2.5} />
                                 </button>
                             </div>
                         </div>

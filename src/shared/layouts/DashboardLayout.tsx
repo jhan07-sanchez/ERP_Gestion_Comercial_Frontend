@@ -32,9 +32,7 @@ export default function DashboardLayout() {
 
         {/* Contenido de la Página con Scroll independiente */}
         <main className="flex-1 overflow-y-auto custom-scrollbar bg-[#f8fafc]">
-          <div className="p-4 md:p-8 pb-16 max-w-[1600px] mx-auto animate-in fade-in slide-in-from-bottom-2 duration-700">
-            <Outlet />
-          </div>
+          <Outlet />
         </main>
 
         {/* Footer Corporativo ERP */}

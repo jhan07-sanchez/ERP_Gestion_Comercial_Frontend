@@ -1,19 +1,6 @@
-/**
- * 📄 PÁGINA: VentaEdit
- * Editar venta existente. Mismo patrón que CompraEdit.tsx
- *
- * FLUJO:
- * 1. Carga venta por ID
- * 2. Mapea datos → VentaFormData (UI)
- * 3. Usuario edita
- * 4. Valida del lado del cliente
- * 5. Convierte UI → payload backend
- * 6. Actualiza → recarga → redirige
- */
-
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "@/shared/components/ui";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import { Button, PageContainer, PageHeader, Card } from "@/shared/components/ui";
 import { VentaForm } from "../components/VentaForm";
 import { useVentas } from "../hooks/useVenta";
 import type {
@@ -23,7 +10,7 @@ import type {
 } from "../types/venta.types";
 import { useAlert } from "@/shared/components/alerts";
 import { useCajaStore } from "@/modules/caja/store/caja.store";
-import { Link } from "react-router-dom";
+import { IconEdit, IconLock, IconAlertTriangle, IconArrowLeft } from "@tabler/icons-react";
 
 export default function VentaEdit() {
   const { id } = useParams<{ id: string }>();
@@ -35,21 +22,13 @@ export default function VentaEdit() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState<VentaFormData | null>(null);
-  const [clienteInicial, setClienteInicial] = useState<ClienteParaVenta | null>(
-    null,
-  );
+  const [clienteInicial, setClienteInicial] = useState<ClienteParaVenta | null>(null);
 
-  // ─── Cargar venta ──────────────────────────────────────────────────────
   useEffect(() => {
     if (!id) return;
-
     const loadVenta = async () => {
       try {
         const venta = await getVenta(Number(id));
-
-        console.log("📦 Venta recibida para editar:", venta);
-
-        // Mapear cliente inicial para el formulario
         setClienteInicial({
           id: venta.cliente_info.id,
           nombre: venta.cliente_info.nombre,
@@ -58,7 +37,6 @@ export default function VentaEdit() {
           email: venta.cliente_info.email,
         });
 
-        // Mapear a VentaFormData (UI ONLY)
         const mapped: VentaFormData = {
           id: venta.id,
           numero_documento: venta.numero_documento,
@@ -70,27 +48,23 @@ export default function VentaEdit() {
             producto_id: d.producto,
             producto_codigo: d.producto_codigo,
             producto_nombre: d.producto_nombre,
-            stock_disponible: d.cantidad, // mínimo lo que ya tiene comprado
+            stock_disponible: d.cantidad,
             cantidad: d.cantidad,
             precio_unitario: d.precio_unitario,
             subtotal: d.subtotal,
           })),
         };
-
         setFormData(mapped);
-      } catch (err) {
-        console.error("❌ Error cargando venta:", err);
+      } catch {
         showAlert("Error", "error", { description: "Error al cargar la venta. Volviendo al listado..." });
         navigate("/ventas");
       } finally {
         setLoading(false);
       }
     };
-
     loadVenta();
   }, [id, getVenta, navigate, showAlert]);
 
-  // ─── Convertir UI → payload backend ───────────────────────────────────
   const convertToAPIFormat = (data: VentaFormData): VentaUpdateInput => ({
     cliente_id: data.cliente_id,
     estado: data.estado,
@@ -104,109 +78,89 @@ export default function VentaEdit() {
     })),
   });
 
-  // ─── Submit ────────────────────────────────────────────────────────────
   const handleSubmit = async (updatedData?: VentaFormData) => {
     if (!id || (!formData && !updatedData)) return;
-
     setSubmitting(true);
-
     try {
       const dataToSubmit = updatedData || formData!;
       const apiData = convertToAPIFormat(dataToSubmit);
-      console.log("📡 Payload actualización venta:", apiData);
-
       const success = await updateVenta(Number(id), apiData);
-
       if (success) {
-        console.log("✅ Venta actualizada");
         await fetchVentas();
         showAlert("¡Venta Actualizada!", "success", { description: "La venta se ha actualizado correctamente" });
         setTimeout(() => navigate("/ventas"), 800);
       } else {
         throw new Error(error || "Error desconocido al actualizar");
       }
-    } catch (err) {
-      console.error("❌ Error actualizando venta:", err);
-      showAlert("Error", "error", {
-        description: "Error al actualizar la venta. Revisa los datos e intenta de nuevo."
-      });
+    } catch {
+      showAlert("Error", "error", { description: "Error al actualizar la venta. Revisa los datos e intenta de nuevo." });
     } finally {
       setSubmitting(false);
     }
   };
 
-  // ─── Cancelar ──────────────────────────────────────────────────────────
   const handleCancel = () => {
     if (submitting) return;
     navigate("/ventas");
   };
 
-  // ─── Loading ───────────────────────────────────────────────────────────
   if (loading || !formData) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto" />
-          <p className="mt-4 text-gray-600">Cargando venta...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto" />
+          <p className="mt-4 text-primary-600 font-medium">Cargando venta...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center gap-4">
-        <Button
-          variant="secondary"
-          onClick={handleCancel}
-          disabled={submitting}
-        >
-          ← Volver
-        </Button>
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">
-            {formData?.numero_documento || `Editar Venta #${id}`}
-          </h1>
-          <p className="text-gray-600 mt-1">
-            Modifica la información de la venta seleccionada
-          </p>
-        </div>
-      </div>
+    <PageContainer>
+      <PageHeader
+        title={formData?.numero_documento || `Editar Venta #${id}`}
+        subtitle="Modifica la información de la venta seleccionada"
+        icon={<IconEdit size={24} />}
+        backButton={
+          <Button 
+            variant="secondary" 
+            size="sm" 
+            onClick={handleCancel}
+            className="p-2 h-10 w-10 flex items-center justify-center rounded-xl"
+            disabled={submitting}
+          >
+            <IconArrowLeft size={20} />
+          </Button>
+        }
+      />
 
-      {/* Validar Caja Abierta Primero */}
       {!isCajaAbierta && (
-        <div className="flex items-center justify-center p-12 bg-white rounded-lg shadow-sm border border-red-200">
-          <div className="text-center max-w-md">
-            <div className="text-red-500 text-5xl mb-4 text-center flex justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
+        <Card className="border-rose-100 bg-rose-50/30 overflow-hidden animate-in fade-in zoom-in-95 duration-500 mb-6">
+          <Card.Content className="flex flex-col items-center justify-center p-12 text-center">
+            <div className="w-20 h-20 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 mb-6 shadow-sm border border-rose-200">
+              <IconLock size={40} />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Caja Cerrada
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Para poder editar ventas es necesario tener una sesión de caja abierta. 
+            <h2 className="text-2xl font-black text-rose-900 mb-3 tracking-tight">Caja Cerrada</h2>
+            <p className="text-rose-800/80 mb-8 max-w-md font-medium">
+              Para editar ventas es necesario tener una sesión de caja abierta. 
               Esto es requerido para el control financiero.
             </p>
-            <div className="space-y-3">
-              <Link to="/caja">
-                <Button className="w-full">
-                  Ir a Gestión de Caja
+            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
+              <Link to="/caja" className="flex-1">
+                <Button className="w-full shadow-lg shadow-rose-200" variant="danger">
+                  Ir a Caja
                 </Button>
               </Link>
-              <Button variant="secondary" className="w-full" onClick={handleCancel}>
-                Volver al listado
+              <Button variant="secondary" className="flex-1" onClick={handleCancel}>
+                Volver
               </Button>
             </div>
-          </div>
-        </div>
+          </Card.Content>
+        </Card>
       )}
 
-      {/* Formulario */}
       {isCajaAbierta && (
-        <>
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
           <VentaForm
             key={`venta-edit-${id}-${formData.cliente_id}-${formData.detalles.length}`}
             mode="edit"
@@ -219,19 +173,21 @@ export default function VentaEdit() {
             onCancel={handleCancel}
           />
 
-          {/* Advertencia */}
-          <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <h3 className="text-sm font-semibold text-yellow-900 mb-2">
-              ⚠️ Importante
-            </h3>
-            <ul className="text-sm text-yellow-800 space-y-1 list-disc list-inside">
-              <li>Solo se pueden editar ventas en estado PENDIENTE</li>
-              <li>Los cambios en productos afectan el stock al completar</li>
-              <li>Verifica las cantidades antes de guardar</li>
-            </ul>
+          <div className="p-5 bg-amber-50/50 border border-amber-100 rounded-2xl flex gap-4">
+            <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shrink-0 shadow-sm border border-amber-200">
+              <IconAlertTriangle size={20} />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-amber-900 mb-1 uppercase tracking-wider">⚠️ Importante</h3>
+              <ul className="text-xs text-amber-800 space-y-1.5 list-disc list-inside font-medium opacity-90">
+                <li>Solo se pueden editar ventas en estado PENDIENTE.</li>
+                <li>Los cambios en productos afectan el stock disponible al completar la transacción.</li>
+              </ul>
+            </div>
           </div>
-        </>
+        </div>
       )}
-    </div>
+    </PageContainer>
   );
 }
+

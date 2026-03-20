@@ -10,20 +10,17 @@ interface AuditDetailModalProps {
 }
 
 const getActionBadgeColor = (action: string) => {
-    switch (action) {
-        case 'CREAR':
-            return 'bg-emerald-50 text-emerald-600 border border-emerald-100';
-        case 'ACTUALIZAR':
-            return 'bg-indigo-50 text-indigo-600 border border-indigo-100';
-        case 'ELIMINAR':
-            return 'bg-rose-50 text-rose-600 border border-rose-100';
-        case 'LOGIN':
-            return 'bg-blue-50 text-blue-600 border border-blue-100';
-        case 'LOGOUT':
-            return 'bg-slate-50 text-slate-500 border border-slate-200';
-        default:
-            return 'bg-slate-50 text-slate-500 border border-slate-200';
-    }
+    const colors: Record<string, string> = {
+        'CREAR': 'bg-emerald-50 text-emerald-600 border border-emerald-100',
+        'ACTUALIZAR': 'bg-blue-50 text-blue-600 border border-blue-100',
+        'ELIMINAR': 'bg-rose-50 text-rose-600 border border-rose-100',
+        'LOGIN': 'bg-violet-50 text-violet-600 border border-violet-100',
+        'LOGOUT': 'bg-slate-50 text-slate-500 border border-slate-200',
+        'ERROR': 'bg-rose-100 text-rose-700 border border-rose-200',
+        'ACCESO_DENEGADO': 'bg-amber-100 text-amber-700 border border-amber-200',
+        'AJUSTAR_STOCK': 'bg-amber-50 text-amber-600 border border-amber-100',
+    };
+    return colors[action] || 'bg-slate-50 text-slate-500 border border-slate-200';
 };
 
 const InfoCard = ({ label, value, icon, subValue }: { label: string, value: string, icon: string, subValue?: string }) => (

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import { Card, Button, Input } from "@/shared/components/ui";
+import { Card, Button, Input, PageContainer, PageHeader } from "@/shared/components/ui";
 import { useCajaActions } from "../hooks/useCajaActions";
 import { useCaja } from "../hooks/Usecaja";
 import { useCajaStore } from "../store/caja.store";
 import { useAlert } from "@/shared/components/alerts";
+import { IconDoor, IconArrowLeft } from "@tabler/icons-react";
 
 interface FormData {
   caja_id: string;
@@ -23,7 +24,6 @@ export default function CajaAbrirPage() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  // Cargamos las cajas disponibles (por si viene de /sesiones/nueva)
   useEffect(() => {
     if (!id) {
       fetchCajas();
@@ -79,94 +79,123 @@ export default function CajaAbrirPage() {
   const cajasDisponibles = cajas.filter((c) => !c.esta_abierta);
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <div className="flex items-center gap-4">
-        <Button variant="secondary" onClick={() => navigate(-1)}>
-          ← Volver
-        </Button>
-        <h1 className="text-3xl font-bold">Abrir Sesión de Caja</h1>
-      </div>
+    <PageContainer maxWidth="md">
+      <PageHeader
+        title="Abrir Sesión de Caja"
+        subtitle="Inicia una nueva jornada de movimientos"
+        icon={<IconDoor size={24} />}
+        backButton={
+          <Button 
+            variant="secondary" 
+            size="sm" 
+            onClick={() => navigate(-1)}
+            className="p-2 h-10 w-10 flex items-center justify-center rounded-xl"
+          >
+            <IconArrowLeft size={20} />
+          </Button>
+        }
+      />
 
-      <Card>
+      <Card className="shadow-lg border-primary-100">
         <Card.Header>
-          <h2 className="text-lg font-semibold">Detalles de Apertura</h2>
+          <Card.Title>Detalles de Apertura</Card.Title>
         </Card.Header>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Card.Content className="space-y-4">
+          <Card.Content className="space-y-6">
             {!id && (
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Seleccionar Caja <span className="text-red-500">*</span>
+              <div className="space-y-1">
+                <label className="block text-sm font-bold text-primary-700">
+                  Seleccionar Caja <span className="text-danger-500">*</span>
                 </label>
-                <select
-                  {...register("caja_id", { required: "Este campo es requerido" })}
-                  className="w-full rounded-md border border-gray-300 p-2 sm:text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                >
-                  <option value="">-- Seleccione una caja --</option>
-                  {cajasDisponibles.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.nombre}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    {...register("caja_id", { required: "Este campo es requerido" })}
+                    className={`
+                      block w-full px-4 py-2.5 
+                      border rounded-button text-sm bg-white
+                      focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all
+                      ${errors.caja_id ? 'border-danger-300' : 'border-primary-300'}
+                    `}
+                  >
+                    <option value="">-- Seleccione una caja --</option>
+                    {cajasDisponibles.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.nombre}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 {errors.caja_id && (
-                  <p className="mt-1 text-sm text-red-600">{errors.caja_id.message}</p>
+                  <p className="text-xs text-danger-600 font-medium">{errors.caja_id.message}</p>
                 )}
               </div>
             )}
 
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Monto Inicial <span className="text-red-500">*</span>
-              </label>
-              <Controller
-                name="monto_inicial"
-                control={control}
-                rules={{
-                  required: "Este campo es requerido",
-                  min: { value: 0, message: "El monto no puede ser negativo" }
-                }}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    placeholder="0.00"
-                    error={errors.monto_inicial?.message}
-                  />
-                )}
-              />
-            </div>
+            <div className="grid grid-cols-1 gap-6">
+              <div className="space-y-1">
+                <label className="block text-sm font-bold text-primary-700">
+                  Monto Inicial <span className="text-danger-500">*</span>
+                </label>
+                <Controller
+                  name="monto_inicial"
+                  control={control}
+                  rules={{
+                    required: "Este campo es requerido",
+                    min: { value: 0, message: "El monto no puede ser negativo" }
+                  }}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      placeholder="0.00"
+                      error={errors.monto_inicial?.message}
+                      className="bg-primary-50/30"
+                    />
+                  )}
+                />
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Observaciones (Opcional)
-              </label>
-              <textarea
-                {...register("observaciones")}
-                className="w-full rounded-md border border-gray-300 p-2 sm:text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                rows={3}
-                placeholder="Indique si hay algún billete falso o detalle a tener en cuenta..."
-              />
+              <div className="space-y-1">
+                <label className="block text-sm font-bold text-primary-700">
+                  Observaciones (Opcional)
+                </label>
+                <textarea
+                  {...register("observaciones")}
+                  rows={4}
+                  placeholder="Indique si hay algún billete falso o detalle a tener en cuenta..."
+                  className="
+                    block w-full px-4 py-2.5 
+                    border border-primary-300 rounded-button 
+                    text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all
+                  "
+                />
+              </div>
             </div>
           </Card.Content>
 
-          <Card.Footer className="flex justify-end gap-3 p-4 border-t">
+          <Card.Footer className="flex flex-col sm:flex-row justify-end gap-3 p-6 bg-primary-50/50">
             <Button
               type="button"
               variant="secondary"
+              className="w-full sm:w-auto order-2 sm:order-1"
               onClick={() => navigate(-1)}
               disabled={loadingAbrir || isLoading}
             >
               Cancelar
             </Button>
-            <Button type="submit" disabled={loadingAbrir || isLoading}>
+            <Button 
+              type="submit" 
+              className="w-full sm:w-auto order-1 sm:order-2 shadow-lg shadow-blue-200"
+              disabled={loadingAbrir || isLoading}
+            >
               {loadingAbrir || isLoading ? "Abriendo..." : "Abrir Caja"}
             </Button>
           </Card.Footer>
         </form>
       </Card>
-    </div>
+    </PageContainer>
   );
 }
+

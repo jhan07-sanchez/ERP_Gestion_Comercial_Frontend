@@ -1,43 +1,16 @@
-/**
- * 📄 PÁGINA: CompraCreate (VERSIÓN CORREGIDA Y ROBUSTA)
- *
- * Página para crear una nueva compra
- *
- * MEJORAS IMPLEMENTADAS:
- * ✅ Carga de catálogos al montar (proveedores y productos)
- * ✅ Loading states consistentes
- * ✅ Manejo robusto de errores tipado
- * ✅ Validaciones del lado del cliente
- * ✅ Recarga automática de lista después de crear
- * ✅ Feedback claro al usuario
- *
- * FLUJO:
- * 1. Carga proveedores y productos al montar
- * 2. Inicializa estado UI (CompraFormData)
- * 3. Usuario completa formulario
- * 4. Valida datos del lado del cliente
- * 5. Convierte UI → payload backend
- * 6. Envía al backend
- * 7. Recarga lista de compras
- * 8. Redirige al listado
- */
-
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/shared/components/ui";
-
+import { useNavigate, Link } from "react-router-dom";
+import { Button, PageContainer, PageHeader, Card } from "@/shared/components/ui";
 import { CompraForm, type CompraFormData } from "../components/CompraForm";
 import { useCompras } from "../hooks/useCompras";
 import { useProveedor } from "@/modules/proveedores/hooks/useProveedor";
 import { useProductosList as useProductos } from "@/modules/productos/hooks/useProductosList";
 import { useAlert } from "@/shared/components/alerts";
 import { useCajaStore } from "@/modules/caja/store/caja.store";
-import { Link } from "react-router-dom";
+import { IconShoppingCart, IconLock, IconBulb, IconArrowLeft, IconAlertCircle } from "@tabler/icons-react";
 
 export default function CompraCreate() {
   const navigate = useNavigate();
-
-  // Hooks de dominio
   const { createCompra, fetchCompras, error } = useCompras();
   const { isCajaAbierta } = useCajaStore();
   const { showAlert, confirm } = useAlert();
@@ -57,9 +30,6 @@ export default function CompraCreate() {
 
   const [submitting, setSubmitting] = useState(false);
 
-  /**
-   * 🧠 Estado inicial del formulario (UI ONLY)
-   */
   const [formData, setFormData] = useState<CompraFormData>({
     proveedor_id: 0,
     fecha: new Date().toISOString().split("T")[0],
@@ -68,96 +38,45 @@ export default function CompraCreate() {
     total: 0,
   });
 
-  /**
-   * ✅ CARGA DE CATÁLOGOS AL MONTAR
-   * CRÍTICO: Sin esto, los dropdowns estarán vacíos
-   */
   useEffect(() => {
-    console.log("🔄 [CompraCreate] Cargando catálogos...");
-
-    // Cargar proveedores
-    fetchProveedores().catch((err) => {
-      console.error("❌ Error cargando proveedores:", err);
-    });
-
-    // Cargar productos
-    fetchProductos().catch((err) => {
-      console.error("❌ Error cargando productos:", err);
-    });
+    fetchProveedores().catch(() => {});
+    fetchProductos().catch(() => {});
   }, [fetchProveedores, fetchProductos]);
 
-  /**
-   * 📊 Log para debug - puedes quitarlo en producción
-   */
-  useEffect(() => {
-    console.log("📦 Proveedores disponibles:", proveedores.length);
-    console.log("📦 Productos disponibles:", productos.length);
-  }, [proveedores, productos]);
-
-  /**
-   * ✅ Validaciones del lado del cliente
-   */
   const validateForm = (): { valid: boolean; message?: string } => {
-    // Validar proveedor
     if (!formData.proveedor_id || formData.proveedor_id === 0) {
       return { valid: false, message: "Debes seleccionar un proveedor" };
     }
-
-    // Validar fecha
     if (!formData.fecha) {
       return { valid: false, message: "La fecha es obligatoria" };
     }
-
-    // Validar que no sea fecha futura
     const fechaCompra = new Date(formData.fecha);
     const hoy = new Date();
     hoy.setHours(23, 59, 59, 999);
     if (fechaCompra > hoy) {
       return { valid: false, message: "La fecha no puede ser futura" };
     }
-
-    // Validar que tenga al menos un producto
     if (formData.detalles.length === 0) {
       return { valid: false, message: "Debes agregar al menos un producto" };
     }
-
-    // Validar cada detalle
     for (let i = 0; i < formData.detalles.length; i++) {
       const detalle = formData.detalles[i];
-
       if (!detalle.producto || detalle.producto === 0) {
-        return {
-          valid: false,
-          message: `Producto #${i + 1}: Debes seleccionar un producto`,
-        };
+        return { valid: false, message: `Producto #${i + 1}: Debes seleccionar un producto` };
       }
-
       if (!detalle.cantidad || detalle.cantidad <= 0) {
-        return {
-          valid: false,
-          message: `Producto #${i + 1}: La cantidad debe ser mayor a 0`,
-        };
+        return { valid: false, message: `Producto #${i + 1}: La cantidad debe ser mayor a 0` };
       }
-
       if (!detalle.precio_unitario || detalle.precio_unitario <= 0) {
-        return {
-          valid: false,
-          message: `Producto #${i + 1}: El precio debe ser mayor a 0`,
-        };
+        return { valid: false, message: `Producto #${i + 1}: El precio debe ser mayor a 0` };
       }
     }
-
-    // Validar que el total sea mayor a 0
     if (formData.total <= 0) {
       return { valid: false, message: "El total debe ser mayor a 0" };
     }
-
     return { valid: true };
   };
 
-  /**
-   * 🔁 Convierte datos UI → formato backend
-   */
   const convertToAPIFormat = (data: CompraFormData) => {
     return {
       proveedor_id: data.proveedor_id,
@@ -171,13 +90,7 @@ export default function CompraCreate() {
     };
   };
 
-  /**
-   * 🚀 Envío del formulario
-   */
   const handleSubmit = async () => {
-    console.log("📋 [CompraCreate] Iniciando envío...");
-
-    // Validar primero
     const validation = validateForm();
     if (!validation.valid) {
       showAlert("Validación", "warning", { description: validation.message });
@@ -185,234 +98,141 @@ export default function CompraCreate() {
     }
 
     setSubmitting(true);
-
     try {
       const apiData = convertToAPIFormat(formData);
-
-      console.log("📡 Payload enviado al backend:", apiData);
-
-      // Crear compra
       const success = await createCompra(apiData);
-
       if (success) {
-        console.log("✅ Compra creada exitosamente");
-
-        // CRÍTICO: Recargar la lista de compras
-        console.log("🔄 Recargando lista de compras...");
         await fetchCompras();
-
         showAlert("¡Compra registrada!", "success", { description: "La compra se ha registrado exitosamente" });
-
-        // Redirigir al detalle con el parámetro para abrir el modal de pago automáticamente
         setTimeout(() => {
           navigate(`/compras/${success.id}/detalles?abrirPago=true`);
         }, 800);
       } else {
         throw new Error(error || "Error desconocido al crear compra");
       }
-    } catch (err) {
-      console.error("❌ ERROR:", err);
-
-      const error = err as {
-        response?: { status?: number; data?: unknown };
-        message?: string;
-      };
-
-      console.error("❌ ERROR DEL BACKEND:", {
-        status: error.response?.status,
-        data: error.response?.data,
-        message: error.message,
-      });
-
-      // Construir mensaje de error amigable
+    } catch (err: unknown) {
       let errorMsg = "Error al crear la compra. Revisa los datos.";
-
+      const error = err as { response?: { data?: unknown } };
       if (error.response?.data && typeof error.response.data === "object") {
         const backendError = error.response.data as Record<string, unknown>;
-
         const fieldErrors = Object.entries(backendError)
           .map(([field, messages]) => {
-            const msg = Array.isArray(messages)
-              ? messages.join(", ")
-              : String(messages);
+            const msg = Array.isArray(messages) ? messages.join(", ") : String(messages);
             return `${field}: ${msg}`;
           })
           .join("\n");
-
         if (fieldErrors) errorMsg = `Errores:\n${fieldErrors}`;
       }
-
       showAlert("Error", "error", { description: errorMsg });
     } finally {
       setSubmitting(false);
     }
   };
 
-  /**
-   * ❌ Cancelar
-   */
   const handleCancel = async () => {
     if (submitting) return;
-
-    const hasData =
-      formData.proveedor_id !== 0 ||
-      formData.detalles.length > 0 ||
-      (formData.observaciones?.trim() ?? "").length > 0;
-
+    const hasData = formData.proveedor_id !== 0 || formData.detalles.length > 0 || (formData.observaciones?.trim() ?? "").length > 0;
     if (hasData) {
-      const confirmar = await confirm(
-        "Confirmar Cancelación",
-        "¿Seguro que deseas cancelar? Se perderán los datos ingresados.",
-        "warning"
-      );
+      const confirmar = await confirm("Confirmar Cancelación", "¿Seguro que deseas cancelar? Se perderán los datos ingresados.", "warning");
       if (!confirmar) return;
     }
-
     navigate("/compras");
   };
 
-  /**
-   * 🔄 Mostrar loading mientras se cargan los catálogos
-   */
   if (loadingProveedores || loadingProductos) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Cargando datos...</p>
-          <p className="text-sm text-gray-500 mt-2">
-            {loadingProveedores && "Cargando proveedores... "}
-            {loadingProductos && "Cargando productos..."}
-          </p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto" />
+          <p className="mt-4 text-primary-600 font-medium">Cargando catálogos...</p>
         </div>
       </div>
     );
   }
 
-  /**
-   * ❌ Mostrar error si no se pudieron cargar los catálogos
-   */
   if (errorProveedores || errorProductos) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
-          <div className="text-center">
-            <div className="text-red-600 text-5xl mb-4">⚠️</div>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">
-              Error al cargar datos
-            </h2>
-            <p className="text-gray-600 mb-4">
-              {errorProveedores || errorProductos}
-            </p>
-            <div className="space-y-2">
-              <Button
-                onClick={() => {
-                  fetchProveedores();
-                  fetchProductos();
-                }}
-              >
-                Reintentar
-              </Button>
-              <Button variant="secondary" onClick={() => navigate("/compras")}>
-                Volver al listado
-              </Button>
-            </div>
+      <PageContainer>
+        <div className="flex flex-col items-center justify-center p-12 text-center bg-white rounded-2xl border border-danger-100 shadow-sm">
+          <IconAlertCircle size={48} className="text-danger-500 mb-4" />
+          <h2 className="text-xl font-bold text-gray-900 mb-2">Error al cargar datos</h2>
+          <p className="text-gray-600 mb-6">{errorProveedores || errorProductos}</p>
+          <div className="flex gap-3">
+            <Button onClick={() => { fetchProveedores(); fetchProductos(); }}>Reintentar</Button>
+            <Button variant="secondary" onClick={() => navigate("/compras")}>Volver</Button>
           </div>
         </div>
-      </div>
+      </PageContainer>
     );
   }
 
-  /**
-   * ⚠️ Advertencia si no hay proveedores o productos
-   */
   if (proveedores.length === 0 || productos.length === 0) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
-          <div className="text-center">
-            <div className="text-yellow-600 text-5xl mb-4">⚠️</div>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">
-              Datos incompletos
-            </h2>
-            <p className="text-gray-600 mb-4">
-              {proveedores.length === 0 && "No hay proveedores registrados. "}
-              {productos.length === 0 && "No hay productos registrados. "}
-              Debes crear al menos un proveedor y un producto antes de registrar
-              compras.
-            </p>
-            <div className="space-y-2">
-              {proveedores.length === 0 && (
-                <Button onClick={() => navigate("/proveedores/crear")}>
-                  Crear Proveedor
-                </Button>
-              )}
-              {productos.length === 0 && (
-                <Button onClick={() => navigate("/productos/crear")}>
-                  Crear Producto
-                </Button>
-              )}
-              <Button variant="secondary" onClick={() => navigate("/compras")}>
-                Volver
-              </Button>
-            </div>
+      <PageContainer>
+        <div className="flex flex-col items-center justify-center p-12 text-center bg-white rounded-2xl border border-amber-100 shadow-sm">
+          <IconBulb size={48} className="text-amber-500 mb-4" />
+          <h2 className="text-xl font-bold text-gray-900 mb-2">Datos incompletos</h2>
+          <p className="text-gray-600 mb-8 max-w-sm">
+            {proveedores.length === 0 && "No hay proveedores registrados. "}
+            {productos.length === 0 && "No hay productos registrados. "}
+            Debes tener al menos un proveedor y un producto creados.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
+            {proveedores.length === 0 && <Button className="flex-1" onClick={() => navigate("/proveedores/crear")}>Crear Proveedor</Button>}
+            {productos.length === 0 && <Button className="flex-1" onClick={() => navigate("/productos/crear")}>Crear Producto</Button>}
+            <Button variant="secondary" onClick={() => navigate("/compras")} className="flex-1">Volver</Button>
           </div>
         </div>
-      </div>
+      </PageContainer>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center gap-4">
-        <Button
-          variant="secondary"
-          onClick={handleCancel}
-          disabled={submitting}
-        >
-          ← Volver
-        </Button>
+    <PageContainer>
+      <PageHeader
+        title="Nueva Compra"
+        subtitle="Registra una compra de proveedor"
+        icon={<IconShoppingCart size={24} />}
+        backButton={
+          <Button 
+            variant="secondary" 
+            size="sm" 
+            onClick={handleCancel}
+            className="p-2 h-10 w-10 flex items-center justify-center rounded-xl"
+            disabled={submitting}
+          >
+            <IconArrowLeft size={20} />
+          </Button>
+        }
+      />
 
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Nueva Compra</h1>
-          <p className="text-gray-600 mt-1">Registra una compra de proveedor</p>
-        </div>
-      </div>
-
-      {/* Validar Caja Abierta Primero */}
       {!isCajaAbierta && (
-        <div className="flex items-center justify-center p-12 bg-white rounded-lg shadow-sm border border-red-200">
-          <div className="text-center max-w-md">
-            <div className="text-red-500 text-5xl mb-4 text-center flex justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
+        <Card className="border-rose-100 bg-rose-50/30 overflow-hidden animate-in fade-in zoom-in-95 duration-500 mb-6">
+          <Card.Content className="flex flex-col items-center justify-center p-12 text-center">
+            <div className="w-20 h-20 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 mb-6 shadow-sm border border-rose-200">
+              <IconLock size={40} />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Caja Cerrada
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Para poder registrar nuevas compras es necesario tener una sesión de caja abierta. 
-              Esto es requerido para el control financiero de egresos.
+            <h2 className="text-2xl font-black text-rose-900 mb-3 tracking-tight">Caja Cerrada</h2>
+            <p className="text-rose-800/80 mb-8 max-w-md font-medium">
+              Para registrar nuevas compras es necesario tener una sesión de caja abierta. 
+              Esto es requerido para el control financiero.
             </p>
-            <div className="space-y-3">
-              <Link to="/caja">
-                <Button className="w-full">
-                  Ir a Gestión de Caja
+            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
+              <Link to="/caja" className="flex-1">
+                <Button className="w-full shadow-lg shadow-rose-200" variant="danger">
+                  Ir a Caja
                 </Button>
               </Link>
-              <Button variant="secondary" className="w-full" onClick={handleCancel}>
-                Volver al listado
+              <Button variant="secondary" className="flex-1" onClick={handleCancel}>
+                Volver
               </Button>
             </div>
-          </div>
-        </div>
+          </Card.Content>
+        </Card>
       )}
 
-      {/* Formulario */}
       {isCajaAbierta && (
-        <>
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
           <CompraForm
             mode="create"
             value={formData}
@@ -424,22 +244,22 @@ export default function CompraCreate() {
             onCancel={handleCancel}
           />
 
-          {/* Nota informativa */}
-          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <h3 className="text-sm font-semibold text-blue-900 mb-2">💡 Nota</h3>
-            <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
-              <li>Debes seleccionar un proveedor</li>
-              <li>Agrega al menos un producto</li>
-              <li>El total se calcula automáticamente</li>
-              <li>
-                La compra impactará el inventario (si está configurado en el
-                backend)
-              </li>
-              <li>La fecha no puede ser futura</li>
-            </ul>
+          <div className="p-5 bg-primary-50/50 border border-primary-100 rounded-2xl flex gap-4">
+            <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 shrink-0 shadow-sm border border-primary-200">
+              <IconBulb size={20} />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-primary-900 mb-1 uppercase tracking-wider">💡 Sugerencias</h3>
+              <ul className="text-xs text-primary-800 space-y-1.5 list-disc list-inside font-medium opacity-90">
+                <li>Selecciona primero el proveedor para habilitar la búsqueda de productos.</li>
+                <li>El total se recalcula al modificar cantidades o precios.</li>
+                <li>La fecha de registro no puede ser posterior al día de hoy.</li>
+              </ul>
+            </div>
           </div>
-        </>
+        </div>
       )}
-    </div>
+    </PageContainer>
   );
 }
+

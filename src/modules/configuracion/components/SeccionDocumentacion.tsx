@@ -1,11 +1,11 @@
 /**
  * 📄 SECCIÓN: DOCUMENTACIÓN Y NUMERACIÓN
- * Control de prefijos y consecutivos de facturas, compras y recibos.
+ * Control de prefijos y consecutivos con diseño responsivo y UX de seguridad.
  */
 
 import React, { useState } from 'react';
 import { Card, Input, Button, Badge } from '@/shared/components/ui';
-import { IconFileInvoice, IconAlertTriangle, IconRefresh, IconHash } from '@tabler/icons-react';
+import { IconFileInvoice, IconAlertTriangle, IconRefresh, IconHash, IconDeviceFloppy, IconChevronRight } from '@tabler/icons-react';
 import { useAlert } from '@/shared/components/alerts';
 import type { Configuracion, ConfiguracionUpdateInput, ResetConsecutivoInput } from '../types/configuracion.types';
 
@@ -46,7 +46,7 @@ export const SeccionDocumentacion: React.FC<Props> = ({ config, onSave, onReset,
         if (isConfirmed) {
             onReset({
                 tipo,
-                nuevo_consecutivo: 1, // Por defecto a 1, o podríamos pedir el número
+                nuevo_consecutivo: 1,
                 confirmar: true
             });
         }
@@ -58,140 +58,163 @@ export const SeccionDocumentacion: React.FC<Props> = ({ config, onSave, onReset,
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
-            <Card>
-                <Card.Header className="flex items-center gap-2">
-                    <IconFileInvoice size={20} className="text-blue-600" />
-                    <Card.Title>Prefijos y Formato</Card.Title>
+        <form onSubmit={handleSubmit} className="space-y-6 pb-24 lg:pb-0">
+            {/* Prefijos Card */}
+            <Card className="border-slate-200 shadow-sm overflow-hidden">
+                <Card.Header className="bg-slate-50/50 border-b border-slate-100 flex items-center gap-2 py-4">
+                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+                        <IconFileInvoice size={18} />
+                    </div>
+                    <Card.Title className="text-sm font-black uppercase tracking-tight text-slate-700">Prefijos y Formato</Card.Title>
                 </Card.Header>
-                <Card.Content>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <Input
-                            label="Prefijo Factura"
-                            name="prefijo_factura"
-                            value={formData.prefijo_factura}
-                            onChange={handleChange}
-                            placeholder="FAC"
-                            helperText={`Próxima: ${config.numero_factura_preview}`}
-                        />
-                        <Input
-                            label="Prefijo Compra"
-                            name="prefijo_compra"
-                            value={formData.prefijo_compra}
-                            onChange={handleChange}
-                            placeholder="COM"
-                            helperText={`Próxima: ${config.numero_compra_preview}`}
-                        />
-                        <Input
-                            label="Prefijo Recibo POS"
-                            name="prefijo_recibo"
-                            value={formData.prefijo_recibo}
-                            onChange={handleChange}
-                            placeholder="REC"
-                            helperText={`Próxima: ${config.numero_recibo_preview}`}
-                        />
-                        <Input
-                            label="Dígitos Consecutivo"
-                            name="digitos_consecutivo"
-                            type="number"
-                            value={formData.digitos_consecutivo}
-                            onChange={handleChange}
-                            min={3}
-                            max={8}
-                            leftIcon={<IconHash size={18} />}
-                        />
+                <Card.Content className="p-4 sm:p-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Prefijo Factura</label>
+                            <Input
+                                name="prefijo_factura"
+                                value={formData.prefijo_factura}
+                                onChange={handleChange}
+                                placeholder="FAC"
+                                className="bg-slate-50/50 uppercase font-bold"
+                            />
+                            <p className="text-[9px] font-bold text-blue-500 uppercase px-1">Próxima: {config.numero_factura_preview}</p>
+                        </div>
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Prefijo Compra</label>
+                            <Input
+                                name="prefijo_compra"
+                                value={formData.prefijo_compra}
+                                onChange={handleChange}
+                                placeholder="COM"
+                                className="bg-slate-50/50 uppercase font-bold"
+                            />
+                            <p className="text-[9px] font-bold text-blue-500 uppercase px-1">Próxima: {config.numero_compra_preview}</p>
+                        </div>
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Prefijo Recibo POS</label>
+                            <Input
+                                name="prefijo_recibo"
+                                value={formData.prefijo_recibo}
+                                onChange={handleChange}
+                                placeholder="REC"
+                                className="bg-slate-50/50 uppercase font-bold"
+                            />
+                            <p className="text-[9px] font-bold text-blue-500 uppercase px-1">Próxima: {config.numero_recibo_preview}</p>
+                        </div>
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Dígitos de Relleno</label>
+                            <Input
+                                name="digitos_consecutivo"
+                                type="number"
+                                value={formData.digitos_consecutivo}
+                                onChange={handleChange}
+                                min={3}
+                                max={8}
+                                leftIcon={<IconHash size={16} className="text-slate-400" />}
+                                className="bg-slate-50/50"
+                            />
+                             <p className="text-[9px] font-bold text-slate-400 uppercase px-1 tracking-tighter">Longitud del número (ej: 0001 = 4)</p>
+                        </div>
                     </div>
                 </Card.Content>
             </Card>
 
-            <Card>
-                <Card.Header className="flex items-center gap-2">
-                    <IconRefresh size={20} className="text-blue-600" />
-                    <Card.Title>Control de Consecutivos</Card.Title>
+            {/* Consecutivos Card */}
+            <Card className="border-slate-200 shadow-sm overflow-hidden">
+                <Card.Header className="bg-slate-50/50 border-b border-slate-100 flex items-center gap-2 py-4">
+                    <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center text-amber-600">
+                        <IconRefresh size={18} />
+                    </div>
+                    <Card.Title className="text-sm font-black uppercase tracking-tight text-slate-700">Reinicio de Consecutivos</Card.Title>
                 </Card.Header>
-                <Card.Content>
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 flex gap-3">
-                        <IconAlertTriangle className="text-amber-500 shrink-0" size={24} />
-                        <div>
-                            <p className="text-sm font-semibold text-amber-900">Zona de Cuidado</p>
-                            <p className="text-xs text-amber-800">
-                                Reiniciar los consecutivos volverá el contador a 1. Úsalo solo al inicio de un nuevo año fiscal o si hubo un error crítico en la numeración.
+                <Card.Content className="p-4 sm:p-6 space-y-6">
+                    <div className="bg-amber-50/50 border border-amber-100 rounded-2xl p-4 flex gap-4 items-start">
+                        <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 shrink-0">
+                            <IconAlertTriangle size={24} />
+                        </div>
+                        <div className="space-y-1">
+                            <p className="text-xs font-black text-amber-900 uppercase tracking-tight leading-none">Zona de Cuidado</p>
+                            <p className="text-[11px] text-amber-700 leading-relaxed font-medium">
+                                El reinicio volverá el contador a <span className="font-black">0001</span>. Hazlo solo al cambio de año fiscal para evitar conflictos legales o duplicidades.
                             </p>
                         </div>
                     </div>
 
-                    <div className="space-y-4">
-                        <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-primary-50 transition-colors">
-                            <div>
-                                <p className="text-sm font-medium">Consecutivo Facturación</p>
-                                <div className="flex items-center gap-2 mt-1">
-                                    <Badge variant="info">Actual: {config.consecutivo_factura}</Badge>
-                                    <span className="text-xs text-primary-500">→</span>
-                                    <span className="text-xs font-mono font-bold text-blue-600">{config.numero_factura_preview}</span>
-                                </div>
-                            </div>
-                            <Button type="button" variant="ghost" size="sm" onClick={() => handleReset('factura')}>
-                                Reiniciar
-                            </Button>
-                        </div>
-
-                        <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-primary-50 transition-colors">
-                            <div>
-                                <p className="text-sm font-medium">Consecutivo Compras</p>
-                                <div className="flex items-center gap-2 mt-1">
-                                    <Badge variant="info">Actual: {config.consecutivo_compra}</Badge>
-                                    <span className="text-xs text-primary-500">→</span>
-                                    <span className="text-xs font-mono font-bold text-blue-600">{config.numero_compra_preview}</span>
-                                </div>
-                            </div>
-                            <Button type="button" variant="ghost" size="sm" onClick={() => handleReset('compra')}>
-                                Reiniciar
-                            </Button>
-                        </div>
-
-                        <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-primary-50 transition-colors">
-                            <div>
-                                <p className="text-sm font-medium">Consecutivo Recibos POS</p>
-                                <div className="flex items-center gap-2 mt-1">
-                                    <Badge variant="info">Actual: {config.consecutivo_recibo}</Badge>
-                                    <span className="text-xs text-primary-500">→</span>
-                                    <span className="text-xs font-mono font-bold text-blue-600">{config.numero_recibo_preview}</span>
-                                </div>
-                            </div>
-                            <Button type="button" variant="ghost" size="sm" onClick={() => handleReset('recibo')}>
-                                Reiniciar
-                            </Button>
-                        </div>
+                    <div className="grid grid-cols-1 gap-3">
+                        <ConsecutivoRow 
+                            label="Facturación" 
+                            current={config.consecutivo_factura} 
+                            preview={config.numero_factura_preview} 
+                            onReset={() => handleReset('factura')}
+                        />
+                        <ConsecutivoRow 
+                            label="Compras" 
+                            current={config.consecutivo_compra} 
+                            preview={config.numero_compra_preview} 
+                            onReset={() => handleReset('compra')}
+                        />
+                        <ConsecutivoRow 
+                            label="Recibos POS" 
+                            current={config.consecutivo_recibo} 
+                            preview={config.numero_recibo_preview} 
+                            onReset={() => handleReset('recibo')}
+                        />
                     </div>
                 </Card.Content>
             </Card>
 
-            <Card>
-                <Card.Header className="flex items-center gap-2">
-                    <IconFileInvoice size={20} className="text-blue-600" />
-                    <Card.Title>Términos y Condiciones (Pie de Factura)</Card.Title>
+            {/* Términos Card */}
+            <Card className="border-slate-200 shadow-sm overflow-hidden">
+                <Card.Header className="bg-slate-50/50 border-b border-slate-100 flex items-center gap-2 py-4">
+                    <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600">
+                        <IconFileInvoice size={18} />
+                    </div>
+                    <Card.Title className="text-sm font-black uppercase tracking-tight text-slate-700">Cláusulas de Factura</Card.Title>
                 </Card.Header>
-                <Card.Content>
+                <Card.Content className="p-4 sm:p-6 font-mono">
                     <textarea
                         name="terminos_condiciones"
                         value={formData.terminos_condiciones}
                         onChange={handleChange}
-                        className="w-full h-32 p-3 border border-primary-300 rounded-button text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Escribe aquí los términos que aparecerán en tus facturas..."
+                        className="w-full h-40 p-4 bg-slate-50/50 border border-slate-200 rounded-2xl text-[11px] font-bold text-slate-600 focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-500 transition-all placeholder:text-slate-300 resize-none leading-relaxed"
+                        placeholder="Escribe aquí los términos que aparecerán en el pie de tus facturas..."
                     />
                 </Card.Content>
             </Card>
 
-            <div className="flex justify-end p-4 bg-white border-t sticky bottom-0 z-10">
+            {/* Actions */}
+            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-slate-200 z-[40] lg:relative lg:bg-transparent lg:border-none lg:p-0 lg:z-0 lg:flex lg:justify-end">
                 <Button
                     type="submit"
                     variant="primary"
                     isLoading={isSaving}
-                    className="px-8"
+                    className="w-full lg:w-auto px-10 h-12 shadow-xl shadow-blue-200 lg:shadow-none"
+                    leftIcon={<IconDeviceFloppy size={20} />}
                 >
-                    Guardar Cambios
+                    Guardar Configuración
                 </Button>
             </div>
         </form>
     );
 };
+
+const ConsecutivoRow = ({ label, current, preview, onReset }: { label: string, current: number, preview: string, onReset: () => void }) => (
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white border border-slate-100 rounded-2xl hover:border-blue-200 hover:bg-blue-50/10 transition-all group gap-4">
+        <div className="space-y-1">
+            <p className="text-[11px] font-black text-slate-800 uppercase tracking-tight">{label}</p>
+            <div className="flex items-center gap-2">
+                <Badge variant="ghost" className="bg-slate-100 text-slate-600 border-none font-black text-[10px]">INT: {current}</Badge>
+                <IconChevronRight size={12} className="text-slate-300" />
+                <span className="text-xs font-black text-blue-600 tracking-widest">{preview}</span>
+            </div>
+        </div>
+        <button 
+            type="button" 
+            onClick={onReset}
+            className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-4 py-2 hover:bg-rose-50 hover:text-rose-600 rounded-xl transition-all border border-transparent hover:border-rose-100"
+        >
+            Reiniciar a 1
+        </button>
+    </div>
+);

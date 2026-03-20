@@ -1,167 +1,147 @@
-/**
- * Listado de Cajas
- * Permite ver cajas, abrir sesión y ver detalles
- */
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, Button, Input, Table, Badge } from "@/shared/components/ui";
+import { Card, Button, Input, Table, Badge, PageContainer, PageHeader } from "@/shared/components/ui";
 import { useCaja } from "../hooks/Usecaja";
 import { formatDate } from "../../../shared/utils/formatters";
+import { IconCash } from "@tabler/icons-react";
 
 export default function CajaList() {
   const navigate = useNavigate();
-
   const { cajas, isLoading, error, fetchCajas, applyFilters } = useCaja();
-
   const [searchTerm, setSearchTerm] = useState("");
 
-  // cargar cajas
   useEffect(() => {
     fetchCajas();
   }, [fetchCajas]);
 
-  // búsqueda
   const handleSearch = (value: string) => {
     setSearchTerm(value);
     const filters = value ? { search: value } : {};
     applyFilters(filters);
   };
 
-  // loading inicial
   if (isLoading && cajas.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Cargando cajas...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+          <p className="mt-4 text-primary-600 font-medium">Cargando cajas...</p>
         </div>
       </div>
     );
   }
 
-  // error
   if (error) {
     return (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-gray-900">Cajas</h1>
-          <Button onClick={() => navigate("/caja/crear")}>Abrir Caja</Button>
-        </div>
-
+      <PageContainer>
+        <PageHeader 
+          title="Cajas" 
+          subtitle="Hubo un problema al cargar los datos"
+          actions={
+            <Button onClick={() => fetchCajas()}>Reintentar</Button>
+          }
+        />
         <Card>
           <Card.Content>
-            <p className="text-red-600 mb-4">{error}</p>
-            <Button onClick={() => fetchCajas()}>Reintentar</Button>
+            <p className="text-danger-600 font-medium">{error}</p>
           </Card.Content>
         </Card>
-      </div>
+      </PageContainer>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Cajas</h1>
-          <p className="text-gray-600 mt-1">Gestión de cajas del sistema</p>
-        </div>
-
-        <Button onClick={() => navigate("/caja/crear")}>Abrir Caja</Button>
-      </div>
+    <PageContainer>
+      <PageHeader
+        title="Gestión de Cajas"
+        subtitle="Administra y supervisa el flujo de efectivo"
+        icon={<IconCash size={24} />}
+        actions={
+          <Button 
+            onClick={() => navigate("/caja/crear")}
+            className="w-full sm:w-auto shadow-md shadow-blue-200"
+          >
+            Nueva Caja
+          </Button>
+        }
+      />
 
       {/* Busqueda */}
-
-      <Card>
-        <Card.Content>
-          <Input
-            placeholder="Buscar por nombre de caja..."
-            value={searchTerm}
-            onChange={(e) => handleSearch(e.target.value)}
-          />
+      <Card className="shadow-sm border-primary-100">
+        <Card.Content className="p-4">
+          <div className="max-w-md">
+            <Input
+              placeholder="Buscar por nombre de caja..."
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="bg-primary-50/50"
+            />
+          </div>
         </Card.Content>
       </Card>
 
       {/* Tabla */}
-
-      <Card>
-        <Card.Content className="overflow-x-auto">
+      <Card className="overflow-hidden border-primary-100 shadow-sm">
+        <Card.Content className="p-0">
           {cajas.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-gray-600">No hay cajas registradas</p>
-
-              <Button className="mt-4" onClick={() => navigate("/caja/crear")}>
+            <div className="text-center py-16">
+              <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <IconCash size={32} className="text-primary-300" />
+              </div>
+              <p className="text-primary-500 font-medium">No hay cajas registradas</p>
+              <Button 
+                variant="secondary"
+                className="mt-6" 
+                onClick={() => navigate("/caja/crear")}
+              >
                 Crear primera caja
               </Button>
             </div>
           ) : (
             <Table>
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Caja
-                  </th>
-
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Descripción
-                  </th>
-
-                  <th className="text-center py-3 px-4 font-semibold text-gray-900">
-                    Estado
-                  </th>
-
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Última apertura
-                  </th>
-
-                  <th className="text-center py-3 px-4 font-semibold text-gray-900">
-                    Acciones
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>
+              <Table.Header>
+                <Table.Row>
+                  <Table.Head>Caja</Table.Head>
+                  <Table.Head className="hidden md:table-cell">Descripción</Table.Head>
+                  <Table.Head className="text-center">Estado</Table.Head>
+                  <Table.Head className="hidden lg:table-cell">Última apertura</Table.Head>
+                  <Table.Head className="text-center">Acciones</Table.Head>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
                 {cajas.map((caja) => (
-                  <tr key={caja.id} className="border-b hover:bg-gray-50">
-                    <td className="py-3 px-4 text-gray-900 font-medium">
-                      {caja.nombre}
-                    </td>
-
-                    <td className="py-3 px-4 text-gray-600">
+                  <Table.Row key={caja.id} hover>
+                    <Table.Cell>
+                      <div className="flex flex-col">
+                        <span className="font-bold text-primary-900">{caja.nombre}</span>
+                        <span className="md:hidden text-xs text-primary-500 truncate max-w-[150px]">
+                          {caja.descripcion || "Sin descripción"}
+                        </span>
+                      </div>
+                    </Table.Cell>
+                    <Table.Cell className="hidden md:table-cell text-primary-600">
                       {caja.descripcion || "—"}
-                    </td>
-
-                    <td className="py-3 px-4 text-center">
-                      <Badge
-                        variant={caja.esta_abierta ? "success" : "gray"}
-                      >
+                    </Table.Cell>
+                    <Table.Cell className="text-center">
+                      <Badge variant={caja.esta_abierta ? "success" : "gray"}>
                         {caja.esta_abierta ? "Abierta" : "Cerrada"}
                       </Badge>
-                    </td>
-
-                    <td className="py-3 px-4 text-gray-600">
-                      {caja.fecha_creacion
-                        ? formatDate(caja.fecha_creacion)
-                        : "—"}
-                    </td>
-
-                    <td className="py-3 px-4 text-center">
+                    </Table.Cell>
+                    <Table.Cell className="hidden lg:table-cell text-primary-500">
+                      {caja.fecha_creacion ? formatDate(caja.fecha_creacion) : "—"}
+                    </Table.Cell>
+                    <Table.Cell className="text-center">
                       <div className="flex items-center justify-center gap-2">
-                        {caja.sesion_activa_id && (
+                        {caja.sesion_activa_id ? (
                           <Button
                             size="sm"
                             variant="secondary"
-                            onClick={() =>
-                              navigate(`/caja/sesion/${caja.sesion_activa_id}`)
-                            }
+                            className="bg-blue-50 text-blue-700 border-blue-100 hover:bg-blue-100"
+                            onClick={() => navigate(`/caja/sesion/${caja.sesion_activa_id}`)}
                           >
                             Ver Sesión
                           </Button>
-                        )}
-
-                        {!caja.esta_abierta && (
+                        ) : (
                           <Button
                             size="sm"
                             onClick={() => navigate(`/caja/abrir/${caja.id}`)}
@@ -170,14 +150,13 @@ export default function CajaList() {
                           </Button>
                         )}
                       </div>
-                    </td>
-                  </tr>
+                    </Table.Cell>
+                  </Table.Row>
                 ))}
-              </tbody>
+              </Table.Body>
             </Table>
           )}
         </Card.Content>
       </Card>
-    </div>
-  );
-}
+    </PageContainer>
+

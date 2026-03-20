@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button } from "@/shared/components/ui";
+import { Button, PageContainer, PageHeader, Card } from "@/shared/components/ui";
 import { useProductoActions } from "../hooks";
 import { useCategorias } from "../../../modules/categorias/hooks/useCategorias";
 import {
@@ -8,10 +8,13 @@ import {
     type ProductoFormData,
 } from "../components/ProductoForm";
 import type { ProductoUpdateInput } from "../types";
+import { IconArrowLeft, IconEdit, IconAlertCircle } from "@tabler/icons-react";
+import { useAlert } from "@/shared/components/alerts";
 
 export default function ProductoEdit() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const { showAlert } = useAlert();
 
     const { getProducto, updateProducto, error } = useProductoActions();
     const {
@@ -23,17 +26,12 @@ export default function ProductoEdit() {
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
 
-    // Cargar categorías al montar
     useEffect(() => {
         fetchCategorias();
     }, [fetchCategorias]);
 
-    // Estado del formulario (UI)
     const [formData, setFormData] = useState<ProductoFormData | null>(null);
 
-    /**
-     * Carga el producto y lo mapea a formato del formulario
-     */
     useEffect(() => {
         const loadProducto = async () => {
             if (!id) return;
@@ -56,17 +54,17 @@ export default function ProductoEdit() {
                 };
 
                 setFormData(mappedData);
+            } catch {
+                showAlert("Error", "error", { description: "No se pudo cargar el producto." });
+                navigate("/productos");
             } finally {
                 setLoading(false);
             }
         };
 
         loadProducto();
-    }, [id, getProducto]);
+    }, [id, getProducto, navigate, showAlert]);
 
-    /**
-     * Convierte datos del formulario a formato del backend
-     */
     const convertToAPIFormat = (data: ProductoFormData): ProductoUpdateInput => {
         return {
             nombre: data.nombre,
@@ -79,69 +77,82 @@ export default function ProductoEdit() {
         };
     };
 
-    /**
-     * Maneja el envío del formulario
-     */
     const handleSubmit = async () => {
         if (!id || !formData) return;
 
         setSubmitting(true);
-
         try {
             const apiData = convertToAPIFormat(formData);
             await updateProducto(Number(id), apiData);
+            showAlert("Producto Actualizado", "success");
             navigate("/productos");
-        } catch (err) {
-            console.error("❌ Error al actualizar producto:", err);
+        } catch {
+            showAlert("Error", "error", { description: "Error al actualizar el producto." });
         } finally {
             setSubmitting(false);
         }
     };
 
-    /**
-     * Maneja cancelación
-     */
     const handleCancel = () => {
         if (submitting) return;
         navigate("/productos");
     };
 
     if (loading || !formData) {
-        return <p>Cargando producto...</p>;
+        return (
+            <PageContainer>
+                <div className="flex flex-col items-center justify-center min-h-[400px]">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto" />
+                    <p className="mt-4 text-primary-600 font-medium">Cargando producto...</p>
+                </div>
+            </PageContainer>
+        );
     }
 
     return (
-        <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-center gap-4">
-                <Button
-                    variant="secondary"
-                    onClick={handleCancel}
-                    disabled={submitting}
-                >
-                    ← Volver
-                </Button>
-
-                <div>
-                    <h1 className="text-3xl font-bold text-gray-900">Editar Producto</h1>
-                    <p className="text-gray-600 mt-1">
-                        Modifica la información del producto seleccionado
-                    </p>
-                </div>
-            </div>
-
-            {/* Formulario */}
-            <ProductoForm
-                mode="edit"
-                value={formData}
-                categorias={categorias}
-                loadingCategorias={loadingCategorias}
-                submitting={submitting}
-                error={error}
-                onChange={setFormData}
-                onSubmit={handleSubmit}
-                onCancel={handleCancel}
+        <PageContainer>
+            <PageHeader
+                title="Editar Producto"
+                subtitle={`Modificando: ${formData.nombre}`}
+                icon={<IconEdit size={24} />}
+                backButton={
+                    <Button 
+                        variant="secondary" 
+                        size="sm" 
+                        onClick={handleCancel}
+                        className="p-2 h-10 w-10 flex items-center justify-center rounded-xl"
+                    >
+                        <IconArrowLeft size={20} />
+                    </Button>
+                }
             />
-        </div>
+
+            <div className="space-y-6">
+                <ProductoForm
+                    mode="edit"
+                    value={formData}
+                    categorias={categorias}
+                    loadingCategorias={loadingCategorias}
+                    submitting={submitting}
+                    error={error}
+                    onChange={setFormData}
+                    onSubmit={handleSubmit}
+                    onCancel={handleCancel}
+                />
+
+                <Card className="bg-amber-50 border-amber-100">
+                    <Card.Content className="p-4 flex gap-3">
+                        <IconAlertCircle className="text-amber-500 shrink-0" size={20} />
+                        <div className="space-y-1">
+                            <h3 className="text-sm font-bold text-amber-900">Advertencia</h3>
+                            <p className="text-xs text-amber-800 opacity-90">
+                                Los cambios realizados afectarán a todas las ventas y compras futuras que utilicen este producto. 
+                                El código de barras/SKU es único y debe mantenerse coherente.
+                            </p>
+                        </div>
+                    </Card.Content>
+                </Card>
+            </div>
+        </PageContainer>
     );
 }

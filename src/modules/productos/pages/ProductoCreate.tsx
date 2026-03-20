@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/shared/components/ui";
+import { Button, PageContainer, PageHeader, Card } from "@/shared/components/ui";
 import { useProductoActions } from "../hooks";
 import { useCategorias } from "../../../modules/categorias/hooks/useCategorias";
 import {
@@ -8,6 +8,7 @@ import {
   type ProductoFormData,
 } from "../components/ProductoForm";
 import { useAlert } from "@/shared/components/alerts";
+import { IconPackage, IconArrowLeft, IconInfoCircle } from "@tabler/icons-react";
 
 export default function ProductoCreate() {
   const navigate = useNavigate();
@@ -15,7 +16,6 @@ export default function ProductoCreate() {
   const { createProducto, error } = useProductoActions();
   const { showAlert, confirm } = useAlert();
 
-  // ✅ CORRECCIÓN: agregar fetchCategorias
   const {
     categorias,
     isLoading: loadingCategorias,
@@ -35,7 +35,6 @@ export default function ProductoCreate() {
     fecha_ingreso: new Date().toISOString().split("T")[0],
   });
 
-  // ✅ CORRECCIÓN CRÍTICA: cargar categorías al montar el componente
   useEffect(() => {
     fetchCategorias();
   }, [fetchCategorias]);
@@ -44,7 +43,7 @@ export default function ProductoCreate() {
     return {
       nombre: data.nombre.trim(),
       descripcion: data.descripcion?.trim() || undefined,
-      categoria: Number(data.categoria), // ✅ asegurar number
+      categoria: Number(data.categoria),
       precio_venta: Number(data.precio_venta),
       precio_compra: Number(data.precio_compra),
       stock_minimo: Number(data.stock_minimo),
@@ -58,9 +57,7 @@ export default function ProductoCreate() {
 
     try {
       const apiData = convertToAPIFormat(formData);
-
       const nuevoProducto = await createProducto(apiData);
-      console.log("Respuesta backend:", nuevoProducto);
 
       showAlert("Producto Creado", "success", {
         description: `¡Producto creado exitosamente! Código: ${nuevoProducto.codigo}`
@@ -102,36 +99,49 @@ export default function ProductoCreate() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Button
-          variant="secondary"
-          onClick={handleCancel}
-          disabled={submitting}
-        >
-          ← Volver
-        </Button>
-
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Nuevo Producto</h1>
-
-          <p className="text-gray-600 mt-1">
-            Crea un nuevo producto en el catálogo
-          </p>
-        </div>
-      </div>
-
-      <ProductoForm
-        mode="create"
-        value={formData}
-        categorias={categorias}
-        loadingCategorias={loadingCategorias}
-        submitting={submitting}
-        error={error}
-        onChange={setFormData}
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
+    <PageContainer>
+      <PageHeader
+        title="Nuevo Producto"
+        subtitle="Crea un nuevo producto en el catálogo"
+        icon={<IconPackage size={24} />}
+        backButton={
+          <Button 
+            variant="secondary" 
+            size="sm" 
+            onClick={handleCancel}
+            className="p-2 h-10 w-10 flex items-center justify-center rounded-xl"
+          >
+            <IconArrowLeft size={20} />
+          </Button>
+        }
       />
-    </div>
+
+      <div className="space-y-6">
+        <ProductoForm
+          mode="create"
+          value={formData}
+          categorias={categorias}
+          loadingCategorias={loadingCategorias}
+          submitting={submitting}
+          error={error}
+          onChange={setFormData}
+          onSubmit={handleSubmit}
+          onCancel={handleCancel}
+        />
+
+        <Card className="bg-blue-50 border-blue-100">
+          <Card.Content className="p-4 flex gap-3">
+            <IconInfoCircle className="text-blue-500 shrink-0" size={20} />
+            <div className="space-y-1">
+              <h3 className="text-sm font-bold text-blue-900">Información</h3>
+              <p className="text-xs text-blue-800 opacity-90">
+                Los productos creados aparecerán inmediatamente en el catálogo de ventas y compras. 
+                Asegúrate de asignar la categoría correcta para reportes precisos.
+              </p>
+            </div>
+          </Card.Content>
+        </Card>
+      </div>
+    </PageContainer>
   );
 }

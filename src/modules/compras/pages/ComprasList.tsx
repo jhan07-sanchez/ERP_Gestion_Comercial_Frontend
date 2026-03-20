@@ -1,21 +1,14 @@
-/**
- * Listado de compras.
- * Muestra tabla con todas las compras y acciones para crear, editar, eliminar
- */
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, Button, Input, Table, Badge } from "@/shared/components/ui";
+import { Card, Button, Input, Table, Badge, PageContainer, PageHeader } from "@/shared/components/ui";
 import { useCompras } from "../hooks/useCompras";
 import type { CompraFilters, EstadoCompra } from "../types";
-import { formatCurrency, truncateProductos } from "@/shared/utils/formatters";
+import { formatCurrency, truncateProductos, formatDate } from "@/shared/utils/formatters";
 import { useAlert } from "@/shared/components/alerts";
 import { useCajaStore } from "@/modules/caja/store/caja.store";
+import { IconShoppingCart, IconPlus, IconSearch, IconCheck, IconX, IconEye } from "@tabler/icons-react";
 
-
-// Mapeo visual del estado (UI layer)
-const estadoVariantMap: Record<EstadoCompra, "success" | "warning" | "danger" | "gray"> =
-{
+const estadoVariantMap: Record<EstadoCompra, "success" | "warning" | "danger" | "gray"> = {
   COMPLETADA: "success",
   PARCIAL: "warning",
   PENDIENTE: "gray",
@@ -24,7 +17,6 @@ const estadoVariantMap: Record<EstadoCompra, "success" | "warning" | "danger" | 
 
 export default function ComprasList() {
   const navigate = useNavigate();
-
   const {
     compras,
     isLoading,
@@ -38,15 +30,12 @@ export default function ComprasList() {
   } = useCompras();
   const { isCajaAbierta } = useCajaStore();
   const { showAlert, confirm: alertConfirm, prompt: alertPrompt } = useAlert();
-
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Cargar compras al montar
   useEffect(() => {
     fetchCompras();
   }, [fetchCompras]);
 
-  // Búsqueda
   const handleSearch = (value: string) => {
     setSearchTerm(value);
     const filters: CompraFilters = value ? { search: value } : {};
@@ -64,7 +53,6 @@ export default function ComprasList() {
     const result = await confirmarCompra(id);
     if (result) {
       showAlert("Compra Confirmada", "success", { description: "Registrando entrada al inventario..." });
-      // Redirigir al detalle para abrir el modal de pago automáticamente
       setTimeout(() => {
         navigate(`../compras/${id}/detalles?abrirPago=true`);
       }, 800);
@@ -72,215 +60,173 @@ export default function ComprasList() {
   };
 
   const handleAnular = async (id: number) => {
-    const motivo = await alertPrompt(
-      "Anular Compra",
-      "Por favor, ingresa el motivo de la anulación:",
-      ""
-    );
-
-    if (motivo === null) return; // Usuario canceló el prompt
-
+    const motivo = await alertPrompt("Anular Compra", "Por favor, ingresa el motivo de la anulación:", "");
+    if (motivo === null) return;
     if (!motivo.trim()) {
       showAlert("Validación", "warning", { description: "Debes ingresar un motivo para anular la compra." });
       return;
     }
-
     await anularCompra(id, motivo);
     showAlert("Compra Anulada", "info");
   };
 
-  // Loading inicial
-  if (isLoading && compras.length === 0) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Cargando compras...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Error
   if (error) {
     return (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-gray-900">Compras</h1>
-          <Button onClick={() => navigate("/compras/crear")}>
-            Nueva Compra
-          </Button>
-        </div>
-
-        <Card>
-          <Card.Content>
-            <p className="text-red-600 mb-4">{error}</p>
-            <Button onClick={() => fetchCompras()}>Reintentar</Button>
+      <PageContainer>
+        <PageHeader title="Compras" subtitle="Error al cargar datos" />
+        <Card className="border-danger-100 bg-danger-50/30">
+          <Card.Content className="py-8 text-center">
+            <p className="text-danger-600 mb-6 font-medium">{error}</p>
+            <Button onClick={() => fetchCompras()} variant="danger">Reintentar</Button>
           </Card.Content>
         </Card>
-      </div>
+      </PageContainer>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Compras</h1>
-          <p className="text-gray-600 mt-1">
-            Gestiona las compras realizadas a proveedores
-          </p>
-        </div>
-        <Button
-          onClick={() => navigate("../compras/crear", { relative: "route" })}
-          disabled={!isCajaAbierta}
-          title={!isCajaAbierta ? "Debe abrir una caja para crear compras" : ""}
-        >
-          Nueva Compra
-        </Button>
-      </div>
+    <PageContainer>
+      <PageHeader
+        title="Compras"
+        subtitle="Gestiona las compras realizadas a proveedores"
+        icon={<IconShoppingCart size={24} />}
+        actions={
+          <Button
+            onClick={() => navigate("../compras/crear", { relative: "route" })}
+            disabled={!isCajaAbierta}
+            className="w-full sm:w-auto shadow-lg shadow-primary-100"
+          >
+            <IconPlus size={18} />
+            <span className="ml-2">Nueva Compra</span>
+          </Button>
+        }
+      />
 
-      {/* Búsqueda */}
-      <Card>
-        <Card.Content>
-          <Input
-            placeholder="Buscar por proveedor, fecha o número de compra..."
-            value={searchTerm}
-            onChange={(e) => handleSearch(e.target.value)}
-          />
+      <Card className="shadow-sm border-primary-100/50">
+        <Card.Content className="p-4">
+          <div className="relative">
+            <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-400" size={18} />
+            <Input
+              placeholder="Buscar por proveedor, fecha o número..."
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="pl-10 bg-primary-50/30 border-primary-100 focus:bg-white transition-all"
+            />
+          </div>
         </Card.Content>
       </Card>
 
-      {/* Tabla */}
-      <Card>
-        <Card.Content className="overflow-x-auto">
-          {compras.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-gray-600">No hay compras registradas</p>
+      <Card className="shadow-sm border-primary-100 overflow-hidden">
+        <Card.Content className="p-0">
+          {isLoading && compras.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-600 mb-4" />
+              <p className="text-primary-600 font-medium">Cargando compras...</p>
+            </div>
+          ) : compras.length === 0 ? (
+            <div className="text-center py-16 px-4">
+              <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-4 text-primary-300">
+                <IconShoppingCart size={32} />
+              </div>
+              <h3 className="text-lg font-bold text-primary-900 mb-1">Sin compras</h3>
+              <p className="text-primary-600/60 mb-6 max-w-xs mx-auto text-sm">No se encontraron compras registradas en el sistema.</p>
               <Button
-                className="mt-4"
-                onClick={() =>
-                  navigate("../compras/crear", { relative: "route" })
-                }
+                onClick={() => navigate("../compras/crear", { relative: "route" })}
                 disabled={!isCajaAbierta}
+                size="sm"
               >
                 Registrar primera compra
               </Button>
             </div>
           ) : (
-            <Table>
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Nº Compra
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Proveedor
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Fecha
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Producto
-                  </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Total compra
-                  </th>
-                  <th className="text-center py-3 px-4 font-semibold text-gray-900">
-                    Estado
-                  </th>
-                  <th className="text-center py-3 px-4 font-semibold text-gray-900">
-                    Acciones
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {compras.map((compra) => (
-                  <tr key={compra.id} className="border-b hover:bg-gray-50">
-                    <td className="py-3 px-4 text-gray-900 font-medium">
-                      {compra.numero_compra || "----"}
-                    </td>
-                    <td className="py-3 px-4 text-gray-900 font-medium">
-                      {compra.proveedor_info?.nombre || "----"}
-                    </td>
-                    <td className="py-3 px-4 text-gray-600">
-                      {new Date(compra.fecha).toLocaleDateString("es-CO")}
-                    </td>
-                    <td className="py-3 px-4 text-gray-600">
-                      {compra.productos_resumen
-                        ? truncateProductos(compra.productos_resumen)
-                        : "----"}
-                    </td>
-                    <td className="py-3 px-4 text-right text-gray-900">
-                      {formatCurrency(compra.total)}
-                    </td>
-
-                    <td className="py-3 px-4 text-center">
-                      <Badge variant={estadoVariantMap[compra.estado]}>
-                        {compra.estado}
-                      </Badge>
-                    </td>
-
-                    <td className="py-3 px-4 text-center">
-                      <div className="flex items-center justify-center gap-2">
-                        {/* Solo se puede editar si está pendiente */}
-                        {compra.estado === "PENDIENTE" && (
+            <div className="overflow-x-auto">
+              <Table>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.Head className="w-[100px]">Nº</Table.Head>
+                    <Table.Head>Proveedor</Table.Head>
+                    <Table.Head className="hidden lg:table-cell">Fecha</Table.Head>
+                    <Table.Head className="hidden md:table-cell">Productos</Table.Head>
+                    <Table.Head className="text-right">Total</Table.Head>
+                    <Table.Head className="text-center">Estado</Table.Head>
+                    <Table.Head className="text-center w-[80px]">Acciones</Table.Head>
+                  </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                  {compras.map((compra) => (
+                    <Table.Row key={compra.id} className="group hover:bg-primary-50/30 transition-colors">
+                      <Table.Cell className="font-mono text-xs text-primary-500">
+                        {compra.numero_compra || "----"}
+                      </Table.Cell>
+                      <Table.Cell>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-primary-900">{compra.proveedor_info?.nombre || "----"}</span>
+                          <span className="text-[10px] text-primary-400 font-medium lg:hidden">
+                            {formatDate(compra.fecha)}
+                          </span>
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell className="hidden lg:table-cell text-sm text-primary-600">
+                        {formatDate(compra.fecha)}
+                      </Table.Cell>
+                      <Table.Cell className="hidden md:table-cell text-xs text-primary-500 italic max-w-[200px] truncate">
+                        {compra.productos_resumen ? truncateProductos(compra.productos_resumen) : "----"}
+                      </Table.Cell>
+                      <Table.Cell className="text-right font-black text-primary-900">
+                        {formatCurrency(compra.total)}
+                      </Table.Cell>
+                      <Table.Cell className="text-center">
+                        <Badge variant={estadoVariantMap[compra.estado]} className="text-[10px] uppercase font-bold tracking-tighter">
+                          {compra.estado}
+                        </Badge>
+                      </Table.Cell>
+                      <Table.Cell className="text-center">
+                        <div className="flex items-center justify-center gap-1">
                           <Button
+                            variant="secondary"
                             size="sm"
-                            onClick={() =>
-                              navigate(`../compras/${compra.id}/editar`, {
-                                relative: "route",
-                              })
-                            }
+                            className="h-8 w-8 p-0 flex items-center justify-center rounded-lg hover:bg-white shadow-sm border-transparent hover:border-primary-100"
+                            onClick={() => navigate(`../compras/${compra.id}/detalles`)}
+                            title="Ver detalle"
                           >
-                            Editar
+                            <IconEye size={16} className="text-primary-600" />
                           </Button>
-                        )}
-
-                        {/* Confirmar solo si está pendiente */}
-                        {compra.estado === "PENDIENTE" && (
-                          <Button
-                            size="sm"
-                            variant="success"
-                            onClick={() => handleConfirmar(compra.id)}
-                            disabled={!isCajaAbierta}
-                            title={!isCajaAbierta ? "Abrir caja para confirmar compra" : ""}
-                          >
-                            {loadingConfirm ? "Confirmando..." : "Confirmar"}
-                          </Button>
-                        )}
-
-                        {/* Anular si no está anulada */}
-                        {compra.estado !== "ANULADA" && (
-                          <Button
-                            size="sm"
-                            variant="danger"
-                            onClick={() => handleAnular(compra.id)}
-                          >
-                            {loadingAnular ? "Anulando..." : "Anular"}
-                          </Button>
-                        )}
-
-                        {/*Detalles de la compra*/}
-                        <Button
-                          size="sm"
-                          variant="secondary"
-                          onClick={() =>
-                            navigate(`../compras/${compra.id}/detalles`)
-                          }
-                        >
-                          Ver detalle
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+                          
+                          {compra.estado === "PENDIENTE" && (
+                            <>
+                              <Button
+                                variant="secondary"
+                                size="sm"
+                                className="h-8 w-8 p-0 flex items-center justify-center rounded-lg hover:bg-green-50 shadow-sm border-transparent hover:border-green-100"
+                                onClick={() => handleConfirmar(compra.id)}
+                                disabled={!isCajaAbierta || loadingConfirm}
+                                title="Confirmar compra"
+                              >
+                                <IconCheck size={16} className="text-green-600" />
+                              </Button>
+                              <Button
+                                variant="secondary"
+                                size="sm"
+                                className="h-8 w-8 p-0 flex items-center justify-center rounded-lg hover:bg-rose-50 shadow-sm border-transparent hover:border-rose-100"
+                                onClick={() => handleAnular(compra.id)}
+                                disabled={loadingAnular}
+                                title="Anular compra"
+                              >
+                                <IconX size={16} className="text-rose-600" />
+                              </Button>
+                            </>
+                          )}
+                        </div>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+            </div>
           )}
         </Card.Content>
       </Card>
-    </div>
+    </PageContainer>
   );
 }
+

@@ -1,20 +1,14 @@
-/**
- * 📄 PÁGINA: VentasList
- * Lista de ventas con búsqueda, filtros y acciones
- * Mismo patrón que ComprasList.tsx
- */
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, Button, Input, Table, Badge } from "@/shared/components/ui";
+import { Card, Button, Input, Badge, PageContainer, PageHeader, Table } from "@/shared/components/ui";
 import { useVentas } from "../hooks/useVenta";
 import { formatCurrency, formatDate } from "@/shared/utils/formatters";
 import type { EstadoVenta, VentaFilters } from "../types/venta.types";
 import { useAlert } from "@/shared/components/alerts";
 import { useCajaStore } from "@/modules/caja/store/caja.store";
+import { IconReceipt, IconPlus, IconSearch, IconFilter } from "@tabler/icons-react";
 
-const estadoVariantMap: Record<EstadoVenta, "success" | "warning" | "danger"> =
-{
+const estadoVariantMap: Record<EstadoVenta, "success" | "warning" | "danger"> = {
   COMPLETADA: "success",
   PARCIAL: "warning",
   PENDIENTE: "warning",
@@ -23,28 +17,17 @@ const estadoVariantMap: Record<EstadoVenta, "success" | "warning" | "danger"> =
 
 export default function VentasList() {
   const navigate = useNavigate();
-
-  const {
-    ventas,
-    isLoading,
-    error,
-    fetchVentas,
-    applyFilters,
-    cancelarVenta,
-    loadingCancelar,
-  } = useVentas();
+  const { ventas, isLoading, error, fetchVentas, applyFilters, cancelarVenta, loadingCancelar } = useVentas();
   const { isCajaAbierta } = useCajaStore();
   const { showAlert, prompt } = useAlert();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filtroEstado, setFiltroEstado] = useState<EstadoVenta | "">("");
 
-  // Cargar ventas al montar
   useEffect(() => {
     fetchVentas();
   }, [fetchVentas]);
 
-  // Búsqueda por texto
   const handleSearch = (value: string) => {
     setSearchTerm(value);
     const filters: VentaFilters = {
@@ -54,7 +37,6 @@ export default function VentasList() {
     applyFilters(filters);
   };
 
-  // Filtro por estado
   const handleFiltroEstado = (estado: EstadoVenta | "") => {
     setFiltroEstado(estado);
     const filters: VentaFilters = {
@@ -64,96 +46,80 @@ export default function VentasList() {
     applyFilters(filters);
   };
 
-
-
-  // Cancelar venta
   const handleCancelar = async (id: number) => {
     const motivo = await prompt("Cancelar Venta", "Por favor, ingresa el motivo de la cancelación:", "");
-
-    if (motivo === null) return; // Usuario canceló
-
+    if (motivo === null) return;
     if (!motivo.trim()) {
       showAlert("Validación", "warning", { description: "Debes ingresar un motivo para cancelar la venta." });
       return;
     }
-
     await cancelarVenta(id, motivo);
     showAlert("Venta Cancelada", "success", { description: "La venta ha sido cancelada exitosamente." });
     fetchVentas();
   };
 
-  // ─── Loading inicial ──────────────────────────────────────────────────
   if (isLoading && ventas.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto" />
-          <p className="mt-4 text-gray-600">Cargando ventas...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto" />
+          <p className="mt-4 text-primary-600 font-medium">Cargando ventas...</p>
         </div>
       </div>
     );
   }
 
-  // ─── Error ─────────────────────────────────────────────────────────────
   if (error) {
     return (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-gray-900">Ventas</h1>
-          <Button
-            onClick={() => navigate("../ventas/crear", { relative: "route" })}
-          >
-            Nueva Venta
-          </Button>
-        </div>
-        <Card>
-          <Card.Content>
-            <p className="text-red-600 mb-4">{error}</p>
-            <Button onClick={() => fetchVentas()}>Reintentar</Button>
+      <PageContainer>
+        <PageHeader title="Ventas" icon={<IconReceipt size={24} />} />
+        <Card className="border-danger-100 bg-danger-50/30">
+          <Card.Content className="py-12 text-center">
+            <p className="text-danger-600 font-medium mb-4">{error}</p>
+            <Button onClick={() => fetchVentas()} variant="danger">Reintentar</Button>
           </Card.Content>
         </Card>
-      </div>
+      </PageContainer>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* ── Header ─────────────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Ventas</h1>
-          <p className="text-gray-600 mt-1">
-            Gestiona las ventas realizadas a clientes
-          </p>
-        </div>
-        <Button
-          onClick={() => navigate("../ventas/crear", { relative: "route" })}
-          disabled={!isCajaAbierta}
-          title={!isCajaAbierta ? "Debe abrir una caja para crear ventas" : ""}
-        >
-          Nueva Venta
-        </Button>
-      </div>
+    <PageContainer>
+      <PageHeader
+        title="Ventas"
+        subtitle="Gestiona las ventas realizadas a clientes"
+        icon={<IconReceipt size={24} />}
+        actions={
+          <Button
+            onClick={() => navigate("../ventas/crear", { relative: "route" })}
+            disabled={!isCajaAbierta}
+            className="w-full sm:w-auto shadow-lg shadow-primary-100"
+          >
+            <IconPlus size={18} />
+            <span className="ml-2">Nueva Venta</span>
+          </Button>
+        }
+      />
 
-      {/* ── Filtros ─────────────────────────────────────────────────────── */}
-      <Card>
-        <Card.Content className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1">
+      {/* Filtros */}
+      <Card className="shadow-sm border-primary-100">
+        <Card.Content className="p-4 flex flex-col sm:flex-row gap-4">
+          <div className="flex-1 relative group">
+            <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-400 group-focus-within:text-primary-600 transition-colors" size={18} />
             <Input
-              placeholder="Buscar por cliente, número de venta..."
+              placeholder="Buscar por cliente, documento..."
               value={searchTerm}
               onChange={(e) => handleSearch(e.target.value)}
+              className="pl-10"
             />
           </div>
 
-          <div className="md:w-48">
+          <div className="sm:w-64 relative group">
+            <IconFilter className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-400 group-focus-within:text-primary-600 transition-colors" size={18} />
             <select
               value={filtroEstado}
-              onChange={(e) =>
-                handleFiltroEstado(e.target.value as EstadoVenta | "")
-              }
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg
-                       focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white text-sm"
+              onChange={(e) => handleFiltroEstado(e.target.value as EstadoVenta | "")}
+              className="w-full pl-10 pr-4 py-2.5 border border-primary-300 rounded-button text-sm bg-white focus:ring-2 focus:ring-primary-100 focus:border-primary-500 transition-all appearance-none"
             >
               <option value="">Todos los estados</option>
               <option value="PENDIENTE">Pendiente</option>
@@ -165,159 +131,92 @@ export default function VentasList() {
         </Card.Content>
       </Card>
 
-      {/* ── Tabla ──────────────────────────────────────────────────────── */}
-      <Card>
-        <Card.Content className="overflow-x-auto">
+      {/* Tabla */}
+      <Card className="shadow-sm border-primary-100 overflow-hidden">
+        <Card.Content className="p-0">
           {ventas.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-gray-600">No hay ventas registradas</p>
+            <div className="text-center py-16 bg-primary-50/20">
+              <IconReceipt size={48} className="mx-auto text-primary-200 mb-4" />
+              <p className="text-primary-600 font-medium">No se encontraron ventas</p>
+              <p className="text-primary-400 text-sm mb-6">Prueba ajustando los filtros o registra una nueva venta.</p>
               <Button
-                className="mt-4"
-                onClick={() =>
-                  navigate("../ventas/crear", { relative: "route" })
-                }
+                onClick={() => navigate("../ventas/crear", { relative: "route" })}
                 disabled={!isCajaAbierta}
+                variant="secondary"
               >
                 Registrar primera venta
               </Button>
             </div>
           ) : (
             <Table>
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    ID
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Cliente
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Fecha
-                  </th>
-                  <th className="text-center py-3 px-4 font-semibold text-gray-900">
-                    Productos
-                  </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Total
-                  </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Pagado
-                  </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Saldo
-                  </th>
-                  <th className="text-center py-3 px-4 font-semibold text-gray-900">
-                    Estado
-                  </th>
-                  <th className="text-center py-3 px-4 font-semibold text-gray-900">
-                    Acciones
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
+              <Table.Header>
+                <Table.Row>
+                  <Table.Head className="hidden lg:table-cell">ID</Table.Head>
+                  <Table.Head>Cliente</Table.Head>
+                  <Table.Head className="hidden md:table-cell">Fecha</Table.Head>
+                  <Table.Head className="text-right">Total</Table.Head>
+                  <Table.Head className="hidden sm:table-cell text-right text-orange-600">Saldo</Table.Head>
+                  <Table.Head className="text-center">Estado</Table.Head>
+                  <Table.Head className="text-right">Acciones</Table.Head>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
                 {ventas.map((venta) => (
-                  <tr key={venta.id} className="border-b hover:bg-gray-50">
-                    <td className="py-3 px-4 text-gray-900 font-medium">
-                      {venta.numero_documento || `Venta #${venta.id}`}
-                    </td>
-
-                    <td className="py-3 px-4">
-                      <p className="font-medium text-gray-900">
-                        {venta.cliente_nombre}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {venta.cliente_documento}
-                      </p>
-                    </td>
-
-                    <td className="py-3 px-4 text-gray-600">
+                  <Table.Row key={venta.id} hover>
+                    <Table.Cell className="hidden lg:table-cell font-mono text-xs text-primary-400">
+                      {venta.numero_documento || `#${venta.id}`}
+                    </Table.Cell>
+                    <Table.Cell>
+                      <div className="flex flex-col">
+                        <span className="font-bold text-primary-900 truncate max-w-[150px] sm:max-w-[200px]">
+                          {venta.cliente_nombre}
+                        </span>
+                        <span className="text-[10px] text-primary-400 font-medium">{venta.cliente_documento}</span>
+                      </div>
+                    </Table.Cell>
+                    <Table.Cell className="hidden md:table-cell text-sm text-primary-600">
                       {formatDate(venta.fecha)}
-                    </td>
-
-                    <td className="py-3 px-4 text-center text-gray-600">
-                      {venta.total_productos}
-                    </td>
-
-                    <td className="py-3 px-4 text-right font-medium text-gray-900">
+                    </Table.Cell>
+                    <Table.Cell className="text-right font-black text-primary-900">
                       {formatCurrency(venta.total)}
-                    </td>
-
-                    <td className="py-3 px-4 text-right text-gray-600">
-                      {formatCurrency(venta.total_pagado)}
-                    </td>
-
-                    <td className="py-3 px-4 text-right font-semibold text-orange-600">
+                    </Table.Cell>
+                    <Table.Cell className="hidden sm:table-cell text-right font-bold text-orange-600">
                       {formatCurrency(venta.saldo_pendiente)}
-                    </td>
-
-                    <td className="py-3 px-4 text-center">
-                      <Badge variant={estadoVariantMap[venta.estado]}>
+                    </Table.Cell>
+                    <Table.Cell className="text-center">
+                      <Badge variant={estadoVariantMap[venta.estado]} className="text-[10px] sm:text-xs">
                         {venta.estado}
                       </Badge>
-                    </td>
-
-                    <td className="py-3 px-4 text-center">
-                      <div className="flex items-center justify-center gap-2 flex-wrap">
-                        {/* Ver detalle - siempre */}
+                    </Table.Cell>
+                    <Table.Cell className="text-right">
+                      <div className="flex justify-end gap-1">
                         <Button
                           size="sm"
                           variant="secondary"
-                          onClick={() =>
-                            navigate(`../ventas/${venta.id}/detalle`, {
-                              relative: "route",
-                            })
-                          }
+                          className="px-2 h-8"
+                          onClick={() => navigate(`../ventas/${venta.id}/detalle`, { relative: "route" })}
                         >
-                          Ver detalle
+                          Ver
                         </Button>
-
-                        {/* Editar - solo PENDIENTE */}
-                        {venta.estado === "PENDIENTE" && (
-                          <Button
-                            size="sm"
-                            onClick={() =>
-                              navigate(`../ventas/${venta.id}/editar`, {
-                                relative: "route",
-                              })
-                            }
-                          >
-                            Editar
-                          </Button>
-                        )}
-
-                        {/* Completar - Removido del listado rápido para forzar paso por Modal en detalle */}
-                        {(venta.estado === "PENDIENTE" || venta.estado === "PARCIAL") && (
-                          <Button
-                            size="sm"
-                            variant="success"
-                            onClick={() => navigate(`../ventas/${venta.id}/detalle`, { relative: "route" })}
-                            disabled={!isCajaAbierta}
-                            title={!isCajaAbierta ? "Abrir caja para registrar pago" : ""}
-                          >
-                            Registrar Pago
-                          </Button>
-                        )}
-
-                        {/* Cancelar - solo si no está cancelada */}
-                        {venta.estado !== "CANCELADA" && (
-                          <Button
-                            size="sm"
-                            variant="danger"
-                            onClick={() => handleCancelar(venta.id)}
-                            isLoading={loadingCancelar}
-                          >
-                            Cancelar
-                          </Button>
-                        )}
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          className="px-2 h-8 hidden sm:flex"
+                          disabled={venta.estado === "CANCELADA" || loadingCancelar}
+                          onClick={() => handleCancelar(venta.id)}
+                        >
+                          Anular
+                        </Button>
                       </div>
-                    </td>
-                  </tr>
+                    </Table.Cell>
+                  </Table.Row>
                 ))}
-              </tbody>
+              </Table.Body>
             </Table>
           )}
         </Card.Content>
       </Card>
-    </div>
+    </PageContainer>
   );
 }
+

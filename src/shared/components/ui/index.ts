@@ -10,6 +10,8 @@ import { Card } from './Card';
 import { Input } from './Input';
 import { Select } from './Select';
 import { Table } from './Table';
+import { PageContainer } from './PageContainer';
+import { PageHeader } from './PageHeader';
 
 export { Badge } from './Badge';
 export { Button } from './Button';
@@ -17,6 +19,8 @@ export { Card } from './Card';
 export { Input } from './Input';
 export { Select } from './Select';
 export { Table } from './Table';
+export { PageContainer } from './PageContainer';
+export { PageHeader } from './PageHeader';
 
 export default {
   Badge,
@@ -25,4 +29,6 @@ export default {
   Input,
   Select,
   Table,
-};
+  PageContainer,
+  PageHeader,
+};

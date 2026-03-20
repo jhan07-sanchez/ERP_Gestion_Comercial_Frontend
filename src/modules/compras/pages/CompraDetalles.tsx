@@ -1,20 +1,30 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { Button, Card, Table} from "@/shared/components/ui";
+import { Button, Card, Table, Badge, PageContainer, PageHeader } from "@/shared/components/ui";
 import { useCompras } from "../hooks/useCompras";
-import type { CompraDetail } from "../types";
+import type { CompraDetail, MetodoPago, EstadoCompra } from "../types";
 import {
   formatCurrency,
   formatNumber,
-  numberClass,
   formatPercentage,
   formatDateTime,
+  formatDate,
 } from "@/shared/utils/formatters";
-import { Badge } from "@/shared/components/ui/Badge";
 import { useCajaStore } from "@/modules/caja/store/caja.store";
 import { useAlert } from "@/shared/components/alerts";
 import { PagoCompraModal } from "../components/PagoCompraModal";
-import type { MetodoPago, EstadoCompra } from "../types";
+import { 
+  IconShoppingCart, 
+  IconArrowLeft, 
+  IconCash, 
+  IconCheck, 
+  IconPackage, 
+  IconUser, 
+  IconInfoCircle,
+  IconTrendingUp,
+  IconHistory,
+  IconAlertCircle
+} from "@tabler/icons-react";
 
 const estadoVariantMap: Record<EstadoCompra, "success" | "warning" | "danger" | "gray"> = {
   COMPLETADA: "success",
@@ -22,7 +32,6 @@ const estadoVariantMap: Record<EstadoCompra, "success" | "warning" | "danger" | 
   PENDIENTE: "gray",
   ANULADA: "danger",
 };
-
 
 export default function CompraDetallePage() {
   const { id } = useParams<{ id: string }>();
@@ -38,36 +47,30 @@ export default function CompraDetallePage() {
 
   useEffect(() => {
     if (!id) return;
-
     const loadCompra = async () => {
       try {
         const data = await getCompra(Number(id));
         setCompra(data);
-      } catch (err) {
-        console.error(err);
+      } catch {
         navigate("/compras");
       } finally {
         setLoading(false);
       }
     };
-
     loadCompra();
   }, [id, getCompra, navigate]);
 
-  // ─── Auto-abrir modal si viene de creación ─────────────────────────────
   useEffect(() => {
     if (compra && searchParams.get("abrirPago") === "true") {
       if (compra.estado !== "COMPLETADA" && (compra.saldo_pendiente ?? compra.total) > 0) {
         setIsPagoModalOpen(true);
       }
-      // Limpiar el parámetro de la URL
       navigate(window.location.pathname, { replace: true });
     }
   }, [compra, searchParams, navigate]);
 
   const handlePagoSubmit = async (metodo: MetodoPago, montoPagar: number, referencia: string) => {
     if (!compra) return;
-
     const result = await registrarPago(compra.id, {
       metodo_pago: metodo,
       monto: montoPagar,
@@ -75,7 +78,6 @@ export default function CompraDetallePage() {
     });
 
     if (result) {
-      // Recargar la compra para obtener los detalles actualizados del backend
       const updatedCompra = await getCompra(compra.id);
       setCompra(updatedCompra);
       setIsPagoModalOpen(false);
@@ -85,296 +87,284 @@ export default function CompraDetallePage() {
 
   if (loading || !compra) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p>Cargando compra...</p>
-      </div>
+      <PageContainer>
+        <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto" />
+          <p className="mt-4 text-primary-600 font-medium">Cargando detalles de compra...</p>
+        </div>
+      </PageContainer>
     );
   }
 
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <div className="flex items-center gap-4">
-          <Button variant="secondary" onClick={() => navigate("/compras")}>
-            ← Volver
-          </Button>
+  const montoPagado = compra.total - (compra.saldo_pendiente ?? compra.total);
+  const saldoPendiente = compra.saldo_pendiente ?? (compra.estado === "COMPLETADA" ? 0 : compra.total);
 
-          <div>
-            <h1 className="text-3xl font-bold font-mono">Compra #{compra.numero_compra}</h1>
-            <p className="text-gray-600">Información completa de la compra</p>
-          </div>
-        </div>
-        
-        {/* Acciones contextuales */}
-        <div className="flex gap-2">
-          {(compra.estado === "PENDIENTE" || compra.estado === "PARCIAL") && (
+  return (
+    <PageContainer>
+      <PageHeader
+        title={`Compra #${compra.numero_compra}`}
+        subtitle="Información completa de la compra al proveedor"
+        icon={<IconShoppingCart size={24} />}
+        backButton={
+          <Button 
+            variant="secondary" 
+            size="sm" 
+            onClick={() => navigate("/compras")}
+            className="p-2 h-10 w-10 flex items-center justify-center rounded-xl"
+          >
+            <IconArrowLeft size={20} />
+          </Button>
+        }
+        actions={
+          (compra.estado === "PENDIENTE" || compra.estado === "PARCIAL") && (
             <Button
               variant="success"
               onClick={() => setIsPagoModalOpen(true)}
+              className="w-full sm:w-auto shadow-lg shadow-green-100"
             >
+              <IconCash size={18} className="mr-2" />
               Registrar Pago
             </Button>
-          )}
+          )
+        }
+      />
+
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <KPIItem 
+          label="Total Compra" 
+          value={formatCurrency(compra.total)} 
+          variant="primary"
+          icon={<IconShoppingCart size={20} />}
+          badge="Monto Final"
+        />
+        <KPIItem 
+          label="Monto Pagado" 
+          value={formatCurrency(montoPagado)} 
+          variant="success"
+          icon={<IconCheck size={20} />}
+          badge="Abonado"
+        />
+        <KPIItem 
+          label="Saldo Pendiente" 
+          value={formatCurrency(saldoPendiente)} 
+          variant={saldoPendiente > 0 ? "warning" : "success"}
+          icon={<IconAlertCircle size={20} />}
+          badge={saldoPendiente > 0 ? "Por Pagar" : "Completado"}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Detalles Principales */}
+        <div className="lg:col-span-2 space-y-6">
+          <Card className="shadow-sm border-primary-100 divide-y divide-primary-50">
+            <Card.Header className="bg-primary-50/30 py-3">
+              <Card.Title className="text-sm font-bold flex items-center gap-2 text-primary-900">
+                <IconPackage size={18} className="text-primary-500" />
+                PRODUCTOS ADQUIRIDOS
+              </Card.Title>
+            </Card.Header>
+            <Card.Content className="p-0 overflow-x-auto">
+              <Table>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.Head>Producto</Table.Head>
+                    <Table.Head className="text-center">Cant.</Table.Head>
+                    <Table.Head className="text-right">Precio</Table.Head>
+                    <Table.Head className="text-right hidden md:table-cell">Subtotal</Table.Head>
+                    <Table.Head className="text-right hidden sm:table-cell">Margen %</Table.Head>
+                  </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                  {compra.detalles.map((d) => (
+                    <Table.Row key={d.id} className="hover:bg-primary-50/20">
+                      <Table.Cell>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-primary-900">{d.producto_nombre}</span>
+                          <span className="text-[10px] font-mono text-primary-400">Cod: {d.producto}</span>
+                        </div>
+                      </Table.Cell>
+                      <Table.Cell className="text-center font-bold text-primary-700">{d.cantidad}</Table.Cell>
+                      <Table.Cell className="text-right font-medium">{formatCurrency(d.precio_compra)}</Table.Cell>
+                      <Table.Cell className="text-right font-bold hidden md:table-cell text-primary-900">
+                        {formatCurrency(d.subtotal)}
+                      </Table.Cell>
+                      <Table.Cell className="text-right hidden sm:table-cell">
+                        <Badge variant="info" className="text-[10px]">
+                          {formatPercentage(d.margen_potencial.margen_porcentaje)}
+                        </Badge>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+            </Card.Content>
+          </Card>
+
+          {/* Historial de Pagos */}
+          <Card className="shadow-sm border-primary-100 divide-y divide-primary-50">
+            <Card.Header className="bg-primary-50/30 py-3">
+              <Card.Title className="text-sm font-bold flex items-center gap-2 text-primary-900">
+                <IconHistory size={18} className="text-primary-500" />
+                HISTORIAL DE PAGOS
+              </Card.Title>
+            </Card.Header>
+            <Card.Content className="p-0">
+              {compra.pagos && compra.pagos.length > 0 ? (
+                <div className="overflow-x-auto">
+                  <Table>
+                    <Table.Header>
+                      <Table.Row>
+                        <Table.Head>Fecha</Table.Head>
+                        <Table.Head className="hidden sm:table-cell">Método</Table.Head>
+                        <Table.Head className="text-right">Monto</Table.Head>
+                      </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                      {compra.pagos.map((p) => (
+                        <Table.Row key={p.id}>
+                          <Table.Cell>
+                            <div className="flex flex-col">
+                              <span className="text-xs font-bold text-primary-900">{formatDateTime(p.fecha)}</span>
+                              <span className="text-[10px] text-primary-400 sm:hidden">{p.metodo_pago_display || p.metodo_pago}</span>
+                            </div>
+                          </Table.Cell>
+                          <Table.Cell className="hidden sm:table-cell text-xs text-primary-600 font-medium">
+                            {p.metodo_pago_display || p.metodo_pago}
+                          </Table.Cell>
+                          <Table.Cell className="text-right font-black text-green-600">
+                            {formatCurrency(p.monto)}
+                          </Table.Cell>
+                        </Table.Row>
+                      ))}
+                    </Table.Body>
+                  </Table>
+                </div>
+              ) : (
+                <div className="p-8 text-center text-primary-400 text-sm font-medium">
+                  No se han registrado pagos para esta compra.
+                </div>
+              )}
+            </Card.Content>
+          </Card>
+        </div>
+
+        {/* Sidebar info */}
+        <div className="space-y-6">
+          <Card className="shadow-sm border-primary-100 overflow-hidden">
+            <Card.Header className="bg-primary-900 py-3">
+              <Card.Title className="text-xs font-bold text-white flex items-center gap-2 uppercase tracking-widest">
+                <IconUser size={16} />
+                Proveedor
+              </Card.Title>
+            </Card.Header>
+            <Card.Content className="p-4 space-y-4">
+              <DetailItem label="Nombre" value={compra.proveedor_info.nombre ?? "—"} />
+              <DetailItem label="Documento" value={compra.proveedor_info.documento ?? "—"} />
+              <DetailItem label="Teléfono" value={compra.proveedor_info.telefono ?? "—"} />
+              <DetailItem label="Email" value={compra.proveedor_info.email ?? "—"} border={false} />
+            </Card.Content>
+          </Card>
+
+          <Card className="shadow-sm border-primary-100 overflow-hidden">
+            <Card.Header className="bg-primary-50 py-3 border-b border-primary-100">
+              <Card.Title className="text-xs font-bold text-primary-900 flex items-center gap-2 uppercase tracking-widest">
+                <IconInfoCircle size={16} />
+                Detalles Compra
+              </Card.Title>
+            </Card.Header>
+            <Card.Content className="p-4 space-y-4">
+              <DetailItem label="Fecha Registro" value={formatDate(compra.fecha)} />
+              <div className="py-2 flex justify-between items-center border-b border-primary-50">
+                <span className="text-[10px] font-bold text-primary-400 uppercase tracking-tighter">Estado</span>
+                <Badge variant={estadoVariantMap[compra.estado] || "gray"} className="text-[10px] uppercase font-bold tracking-tighter">
+                  {compra.estado}
+                </Badge>
+              </div>
+              <DetailItem label="Unidades Totales" value={formatNumber(compra.total_unidades)} />
+              <DetailItem label="Registrado por" value={compra.usuario_nombre ?? "—"} border={false} />
+            </Card.Content>
+          </Card>
+
+          <Card className="shadow-sm border-primary-100 overflow-hidden bg-primary-50/30">
+            <Card.Header className="bg-white py-3 border-b border-primary-100">
+              <Card.Title className="text-xs font-bold text-primary-900 flex items-center gap-2 uppercase tracking-widest">
+                <IconTrendingUp size={16} className="text-green-500" />
+                Margen Estimado
+              </Card.Title>
+            </Card.Header>
+            <Card.Content className="p-4 space-y-4">
+              <DetailItem label="Costo Total" value={formatCurrency(compra.margen_potencial.valor_compra)} />
+              <DetailItem label="Venta Potencial" value={formatCurrency(compra.margen_potencial.valor_venta_potencial)} />
+              <div className="py-2 flex justify-between items-center bg-green-50 px-2 rounded-lg">
+                <span className="text-[10px] font-bold text-green-600 uppercase">Ganancia Est.</span>
+                <span className="font-black text-green-700">{formatCurrency(compra.margen_potencial.ganancia_potencial)}</span>
+              </div>
+            </Card.Content>
+          </Card>
         </div>
       </div>
 
-      {/* ── Info Financiera (Grandes Tarjetas) ────────────────────────── */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="bg-white border-2 border-purple-100 shadow-lg transform transition hover:scale-[1.02]">
-          <Card.Content className="pt-6">
-            <div className="flex flex-col items-center text-center space-y-2">
-              <span className="text-purple-600 text-xs font-bold uppercase tracking-wider">Total de la Compra</span>
-              <span className="text-3xl font-black text-purple-700">{formatCurrency(compra.total)}</span>
-              <Badge variant="info" className="mt-2 text-[10px] uppercase font-bold tracking-tighter">Monto Total</Badge>
-            </div>
-          </Card.Content>
-        </Card>
-
-        <Card className="bg-white border-2 border-green-100 shadow-lg transform transition hover:scale-[1.02]">
-          <Card.Content className="pt-6">
-            <div className="flex flex-col items-center text-center space-y-2">
-              <span className="text-green-600 text-xs font-bold uppercase tracking-wider">Monto Pagado</span>
-              <span className="text-3xl font-black text-green-700">{formatCurrency(compra.total - (compra.saldo_pendiente ?? compra.total))}</span>
-              <Badge variant="success" className="mt-2">Abonado</Badge>
-            </div>
-          </Card.Content>
-        </Card>
-
-        <Card className={`bg-white border-2 shadow-lg transform transition hover:scale-[1.02] ${(compra.saldo_pendiente ?? compra.total) > 0 ? 'border-orange-100' : 'border-purple-100'}`}>
-          <Card.Content className="pt-6">
-            <div className="flex flex-col items-center text-center space-y-2">
-              <span className={`${(compra.saldo_pendiente ?? compra.total) > 0 ? 'text-orange-600' : 'text-purple-600'} text-xs font-bold uppercase tracking-wider`}>Saldo Pendiente</span>
-              <span className={`text-3xl font-black ${(compra.saldo_pendiente ?? compra.total) > 0 ? 'text-orange-700' : 'text-purple-700'}`}>
-                {formatCurrency(compra.saldo_pendiente ?? compra.total)}
-              </span>
-              <Badge variant={(compra.saldo_pendiente ?? compra.total) > 0 ? "warning" : "success"} className="mt-2">
-                {(compra.saldo_pendiente ?? compra.total) > 0 ? "Por Pagar" : "Completado"}
-              </Badge>
-            </div>
-          </Card.Content>
-        </Card>
-      </div>
-
-      {/* Información general */}
-      <Card>
-        <Card.Content className="grid grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <h3 className="font-semibold text-lg">Proveedor</h3>
-            <p>
-              <strong>Nombre:</strong> {compra.proveedor_info.nombre}
-            </p>
-            <p>
-              <strong>Documento:</strong> {compra.proveedor_info.documento}
-            </p>
-            <p>
-              <strong>Teléfono:</strong> {compra.proveedor_info.telefono}
-            </p>
-            <p>
-              <strong>Email:</strong> {compra.proveedor_info.email}
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <h3 className="font-semibold text-lg">Información Compra</h3>
-            <p>
-              <strong>Fecha:</strong> {compra.fecha}
-            </p>
-            <p>
-              <strong>Estado Actual:</strong> <Badge variant={estadoVariantMap[compra.estado] || "gray"}>{compra.estado}</Badge>
-            </p>
-            <p>
-              <strong>Total: </strong>
-              {""}
-              <span className={numberClass}>
-                {formatCurrency(compra.total)}
-              </span>
-            </p>
-            <p>
-              <strong>Total productos: </strong> {""}
-              <span className={numberClass}>
-                {formatNumber(compra.total_productos)}
-              </span>
-            </p>
-            <p>
-              <strong>Total unidades: </strong>
-              {""}
-              <span className={numberClass}>
-                {formatNumber(compra.total_unidades)}
-              </span>
-            </p>
-            <p>
-              <strong>Registrado por:</strong> {compra.usuario_nombre}
-            </p>
-            <p>
-              <strong>Email usuario:</strong> {compra.usuario_email}
-            </p>
-          </div>
-        </Card.Content>
-      </Card>
-
-      <Card>
-        <Card.Content className="space-y-2">
-          <h3 className="font-semibold text-lg">Margen Potencial</h3>
-
-          <p>
-            <strong>Valor compra: </strong>
-            <span className={numberClass}>
-              {formatCurrency(compra.margen_potencial.valor_compra)}
-            </span>
-          </p>
-
-          <p>
-            <strong>Valor venta potencial: </strong>
-            <span className={numberClass}>
-              {formatCurrency(compra.margen_potencial.valor_venta_potencial)}
-            </span>
-          </p>
-
-          <p className="text-green-600 font-semibold">
-            <strong>Ganancia potencial: </strong>
-            <span className={numberClass}>
-              {formatCurrency(compra.margen_potencial.ganancia_potencial)}
-            </span>
-          </p>
-
-          <p>
-            <strong>Margen %: </strong>{" "}
-            <span className={numberClass}>
-              {formatPercentage(compra.margen_potencial.margen_porcentaje)}
-            </span>
-          </p>
-        </Card.Content>
-      </Card>
-
-      {/* Productos */}
-      <Card>
-        <Card.Content>
-          <h2 className="text-xl font-semibold mb-4">Productos</h2>
-
-          <Table>
-            <thead>
-              <tr>
-                <th className="text-center">Código</th>
-                <th>Producto</th>
-                <th className="text-center">Cantidad</th>
-                <th className="text-center">Precio compra</th>
-                <th className="text-center">Subtotal</th>
-                <th className="text-center">Ganancia unitaria</th>
-                <th className="text-center">Ganancia total</th>
-                <th className="text-center">Margen %</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {compra.detalles.map((d) => (
-                <tr key={d.id}>
-                  <td className="font-mono text-center">{d.producto}</td>
-                  <td className="text-center">{d.producto_nombre}</td>
-                  <td className={`text-center ${formatNumber}`}>
-                    {d.cantidad}
-                  </td>
-                  <td className={`text-center ${numberClass}`}>
-                    {formatCurrency(d.precio_compra)}
-                  </td>
-
-                  <td className={`text-center ${numberClass}`}>
-                    {formatCurrency(d.subtotal)}
-                  </td>
-
-                  <td className={`text-green-600 text-center ${numberClass}`}>
-                    {formatCurrency(d.margen_potencial.ganancia_unitaria)}
-                  </td>
-
-                  <td
-                    className={`text-green-600 font-semibold text-center ${numberClass}`}
-                  >
-                    {formatCurrency(d.margen_potencial.ganancia_total)}
-                  </td>
-
-                  <td className={`text-center ${numberClass}`}>
-                    {formatPercentage(d.margen_potencial.margen_porcentaje)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Card.Content>
-      </Card>
-
-      {/* ── Pagos ─────────────────────────────────────────────────────── */}
-      <Card>
-        <Card.Header>
-          <Card.Title>Historial de Pagos</Card.Title>
-        </Card.Header>
-        <Card.Content>
-          {compra.pagos && compra.pagos.length > 0 ? (
-            <Table>
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    ID Pago
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Fecha
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Método
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Referencia
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Registrado Por
-                  </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Monto
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {compra.pagos.map((p) => (
-                  <tr key={p.id} className="border-b hover:bg-gray-50">
-                    <td className="py-3 px-4 font-mono text-sm text-gray-600">
-                      #{p.id}
-                    </td>
-                    <td className="py-3 px-4 font-medium text-gray-900">
-                      {formatDateTime(p.fecha)}
-                    </td>
-                    <td className="py-3 px-4 text-gray-600">
-                      {p.metodo_pago_display || p.metodo_pago}
-                    </td>
-                    <td className="py-3 px-4 text-gray-600">
-                      {p.referencia || "-"}
-                    </td>
-                    <td className="py-3 px-4 text-gray-600">
-                      {p.usuario_nombre}
-                    </td>
-                    <td
-                      className={`py-3 px-4 text-right font-semibold text-green-600 ${numberClass}`}
-                    >
-                      {formatCurrency(p.monto)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          ) : (
-            <p className="text-center text-gray-500 py-4">No se han registrado pagos para esta compra.</p>
-          )}
-        </Card.Content>
-      </Card>
-
-      {/* ── Modal de Pago ─────────────────────────────────────────────── */}
       <PagoCompraModal
         isOpen={isPagoModalOpen}
         onClose={() => setIsPagoModalOpen(false)}
         onConfirm={handlePagoSubmit}
         total={compra.total}
-        saldoPendiente={compra.saldo_pendiente ?? compra.total}
+        saldoPendiente={compra.saldo_pendiente ?? (compra.estado === "COMPLETADA" ? 0 : compra.total)}
         submitting={loadingPago}
         isCajaAbierta={isCajaAbierta}
       />
+    </PageContainer>
+  );
+}
+
+function KPIItem({ label, value, variant = "primary", icon, badge }: { 
+  label: string; 
+  value: string; 
+  variant?: "primary" | "success" | "warning" | "danger";
+  icon: React.ReactNode;
+  badge?: string;
+}) {
+  const colors = {
+    primary: "border-primary-100 text-primary-600 bg-primary-50/20",
+    success: "border-green-100 text-green-600 bg-green-50/20",
+    warning: "border-amber-100 text-amber-600 bg-amber-50/20",
+    danger: "border-rose-100 text-rose-600 bg-rose-50/20",
+  }[variant];
+
+  const textColors = {
+    primary: "text-primary-700",
+    success: "text-green-700",
+    warning: "text-amber-700",
+    danger: "text-rose-700",
+  }[variant];
+
+  return (
+    <Card className={`overflow-hidden border-2 cursor-default transition-all duration-300 hover:shadow-md ${colors}`}>
+      <Card.Content className="p-5">
+        <div className="flex justify-between items-start mb-2">
+          <div className="p-2 rounded-lg bg-white shadow-sm border border-inherit">
+            {icon}
+          </div>
+          {badge && (
+            <span className={`text-[10px] font-black uppercase tracking-widest opacity-70`}>{badge}</span>
+          )}
+        </div>
+        <div className="space-y-1">
+          <p className="text-[10px] font-bold uppercase tracking-wider opacity-60 truncate">{label}</p>
+          <p className={`text-2xl font-black tracking-tight ${textColors}`}>{value}</p>
+        </div>
+      </Card.Content>
+    </Card>
+  );
+}
+
+function DetailItem({ label, value, border = true }: { label: string; value: string | number; border?: boolean }) {
+  return (
+    <div className={`py-2 flex justify-between items-start gap-4 ${border ? 'border-b border-primary-50' : ''}`}>
+      <span className="text-[10px] font-bold text-primary-400 uppercase tracking-tighter shrink-0 pt-0.5">{label}</span>
+      <span className="text-xs font-bold text-primary-900 text-right leading-tight">{value || "—"}</span>
     </div>
   );
 }
+

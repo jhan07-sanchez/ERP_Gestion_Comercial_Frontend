@@ -21,7 +21,7 @@ export default function DashboardLayout() {
 
       {/* Área de Contenido Principal */}
       <div
-        className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ease-in-out
+        className={`flex-1 flex flex-col min-h-screen min-w-0 overflow-x-hidden transition-all duration-300 ease-in-out
           ${sidebarOpen ? "lg:pl-72" : "lg:pl-20"} pl-0`}
       >
         {/* Header para Móviles */}
@@ -31,7 +31,7 @@ export default function DashboardLayout() {
         <CajaBanner />
 
         {/* Contenido de la Página con Scroll independiente */}
-        <main className="flex-1 overflow-y-auto custom-scrollbar bg-[#f8fafc]">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto custom-scrollbar bg-[#f8fafc]">
           <Outlet />
         </main>
 

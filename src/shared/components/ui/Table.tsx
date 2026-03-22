@@ -69,7 +69,7 @@ interface TableCellProps {
 // Componente principal Table
 export function Table({ children, className = '' }: TableProps) {
   return (
-    <div className="w-full overflow-x-auto rounded-xl border border-primary-200 bg-white shadow-sm overflow-hidden scrollbar-thin scrollbar-thumb-primary-200 scrollbar-track-transparent">
+    <div className="w-full overflow-x-auto rounded-xl border border-primary-200 bg-white shadow-sm scrollbar-thin scrollbar-thumb-primary-200 scrollbar-track-transparent">
       <table className={`min-w-full divide-y divide-primary-200 border-collapse ${className}`}>
         {children}
       </table>

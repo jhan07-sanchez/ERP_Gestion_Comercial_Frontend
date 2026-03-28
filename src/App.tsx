@@ -9,11 +9,13 @@
 import AppRouter from '@/core/routes/AppRouter';
 import { AlertProvider } from '@/shared/components/alerts';
 import { ConfigLoader } from '@/core/providers/ConfigLoader';
+import { SessionTimeoutManager } from '@/shared/components/session/SessionTimeoutManager';
 
 function App() {
   return (
     <AlertProvider>
       <ConfigLoader>
+        <SessionTimeoutManager />
         <AppRouter />
       </ConfigLoader>
     </AlertProvider>

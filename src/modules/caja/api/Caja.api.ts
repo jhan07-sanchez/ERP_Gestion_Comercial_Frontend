@@ -27,6 +27,14 @@ const SESIONES_API = "/caja/sesiones";
 const MOVIMIENTOS_API = "/caja/movimientos";
 const METODOS_PAGO_API = "/caja/metodos-pago";
 
+/** Helper para Idempotency Keys sin dependencias extra */
+const generateIdempotencyKey = () => {
+  if (typeof crypto !== "undefined" && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return "idemp-" + Date.now() + "-" + Math.random().toString(36).substring(2, 9);
+};
+
 // ═══════════════════════════════════════════════════════════════
 // CAJAS
 // ═══════════════════════════════════════════════════════════════
@@ -138,11 +146,15 @@ export const sesionCajaAPI = {
     id: number,
     input: CerrarSesionInput,
   ): Promise<SesionCaja> => {
-    const response = await axiosInstance.post(`${SESIONES_API}/${id}/cerrar/`, {
-      monto_contado: String(input.monto_contado),
-      detalle_billetes: input.detalle_billetes || {},
-      observaciones: input.observaciones || "",
-    });
+    const response = await axiosInstance.post(
+      `${SESIONES_API}/${id}/cerrar/`,
+      {
+        monto_contado: String(input.monto_contado),
+        detalle_billetes: input.detalle_billetes || {},
+        observaciones: input.observaciones || "",
+      },
+      { headers: { "Idempotency-Key": generateIdempotencyKey() } }
+    );
 
     return response.data;
   },
@@ -165,6 +177,7 @@ export const sesionCajaAPI = {
         descripcion: input.descripcion,
         metodo_pago_id: input.metodo_pago_id,
       },
+      { headers: { "Idempotency-Key": generateIdempotencyKey() } }
     );
 
     return response.data;
@@ -181,6 +194,7 @@ export const sesionCajaAPI = {
         detalle_billetes: input.detalle_billetes || {},
         observaciones: input.observaciones || "",
       },
+      { headers: { "Idempotency-Key": generateIdempotencyKey() } }
     );
 
     return response.data;

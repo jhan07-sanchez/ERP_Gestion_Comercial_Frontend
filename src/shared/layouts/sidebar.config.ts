@@ -116,6 +116,7 @@ export const sidebarConfig: SidebarItem[] = [
       {
         section: "Operaciones",
         items: [
+          { label: "Dashboard Caja", path: "/caja/dashboard" },
           { label: "Abrir Sesión", path: "/caja/sesiones/nueva" },
         ],
       },

@@ -159,6 +159,16 @@ export default function CajaDetailPage() {
 
       {/* Footer Actions */}
       <div className="flex flex-col sm:flex-row gap-3 justify-end pt-4 border-t border-primary-100">
+        {permisos.puedeRegistrarMovimiento && (
+          <Button 
+            onClick={() => navigate(`/caja/sesion/${sesionId}/movimientos`)}
+            variant="secondary"
+            className="w-full sm:w-auto shadow-lg shadow-primary-100"
+          >
+            <IconCash size={18} />
+            Movimientos
+          </Button>
+        )}
         {permisos.puedeCerrar && (
           <Button 
             onClick={() => navigate(`/caja/sesion/${sesionId}/cerrar`)}

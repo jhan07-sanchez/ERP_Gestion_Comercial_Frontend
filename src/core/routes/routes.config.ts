@@ -48,6 +48,10 @@ export type ProtectedRouteKey =
   | "CajaList"
   | "CajaAbrir"
   | "CajaDetail"
+  | "CajaCierre"
+  | "CajaMovimientos"
+  | "CajaArqueo"
+  | "CajaDashboard"
 
 
 
@@ -139,6 +143,38 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
     placeholderProps: {
       title: "Gestionar Caja",
       description: "Gestionar sesión activa de la caja.",
+    },
+  },
+  {
+    path: "caja/sesion/:id/cerrar",
+    componentKey: "CajaCierre",
+    placeholderProps: {
+      title: "Cerrar Caja",
+      description: "Cierre de sesión de caja con arqueo.",
+    },
+  },
+  {
+    path: "caja/sesion/:id/movimientos",
+    componentKey: "CajaMovimientos",
+    placeholderProps: {
+      title: "Movimientos de Caja",
+      description: "Registrar y consultar movimientos de caja.",
+    },
+  },
+  {
+    path: "caja/sesion/:id/arqueo",
+    componentKey: "CajaArqueo",
+    placeholderProps: {
+      title: "Arqueo de Caja",
+      description: "Conteo físico vs sistema.",
+    },
+  },
+  {
+    path: "caja/dashboard",
+    componentKey: "CajaDashboard",
+    placeholderProps: {
+      title: "Dashboard de Caja",
+      description: "Resumen rápido de la sesión activa.",
     },
   },
   {

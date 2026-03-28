@@ -36,6 +36,10 @@ import { CajaCreate } from '@/modules/caja/pages';
 import { CajaList } from '@/modules/caja/pages';
 import { CajaAbrir } from '@/modules/caja/pages';
 import { CajaDetail } from '@/modules/caja/pages';
+import { CajaCierre } from '@/modules/caja/pages';
+import { CajaMovimientos } from '@/modules/caja/pages';
+import { CajaArqueo } from '@/modules/caja/pages';
+import { CajaDashboard } from '@/modules/caja/pages';
 
 
 import { AuditPage as AuditoriaLogs } from '@/modules/auditoria';
@@ -81,6 +85,10 @@ export const protectedRouteComponents: Record<
   CajaList,
   CajaAbrir,
   CajaDetail,
+  CajaCierre,
+  CajaMovimientos,
+  CajaArqueo,
+  CajaDashboard,
 
 
 };

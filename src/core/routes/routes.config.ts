@@ -29,7 +29,8 @@ export type ProtectedRouteKey =
   | "ProductosList"
   | "ProductoCreate"
   | "ProductoEdit"
-  | "CategoriasList" // ← NUEVO
+  | "CategoriasList"
+  | "CategoriasCreate" // ← NUEVO
 
   | "ClientesList"
   | "ClienteCreate"
@@ -207,6 +208,14 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
     placeholderProps: {
       title: "Categorías",
       description: "Lista de categorías de productos.",
+    },
+  },
+  {
+    path: "categorias/crear",
+    componentKey: "CategoriasCreate",
+    placeholderProps: {
+      title: "Crear Categoría",
+      description: "Agrega una nueva categoría de productos.",
     },
   }, // ← NUEVO
 

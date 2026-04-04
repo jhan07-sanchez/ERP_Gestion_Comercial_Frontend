@@ -13,6 +13,7 @@ import ProductosList from '@/modules/productos/pages/ProductosList';
 import ProductoCreate from '@/modules/productos/pages/ProductoCreate';
 import ProductoEdit from '@/modules/productos/pages/ProductoEdit';
 import CategoriasList from '@/modules/categorias/pages/CategoriasList'; // ← NUEVO
+import CategoriasCreate from '@/modules/categorias/pages/CategoriasCreate'; // ← NUEVO
 
 import ComprasList from '@/modules/compras/pages/ComprasList';
 import CompraCreate from '@/modules/compras/pages/CompraCreate';
@@ -67,6 +68,7 @@ export const protectedRouteComponents: Record<
   ProductoCreate,
   ProductoEdit,
   CategoriasList, // ← NUEVO
+  CategoriasCreate, // ← NUEVO
 
   ClientesList,
   ClienteCreate,

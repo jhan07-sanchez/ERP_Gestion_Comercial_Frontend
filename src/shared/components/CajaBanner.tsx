@@ -23,32 +23,36 @@ export const CajaBanner = () => {
 
     if (isCajaAbierta) {
         return (
-            <div className="bg-emerald-50 border-b border-emerald-100 py-2 px-4 md:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 animate-in slide-in-from-top duration-500">
-                <div className="flex items-center gap-3">
-                    <div className="bg-emerald-500 p-1.5 rounded-lg shadow-sm shadow-emerald-200">
-                        <IconCheck className="w-4 h-4 text-white" />
-                    </div>
-                    <div>
-                        <p className="text-xs font-bold text-emerald-900 leading-tight">
-                            SISTEMA OPERATIVO · CAJA ABIERTA
-                        </p>
-                        <p className="text-[10px] text-emerald-600 font-medium">
-                            Sesión activa: <span className="font-bold">{sesionActiva?.caja_nombre}</span> ·
-                            Usuario: <span className="font-bold">{sesionActiva?.usuario_nombre}</span>
-                        </p>
-                    </div>
-                </div>
-
-                <Button
-                    variant="secondary"
-                    size="sm"
-                    className="h-8 text-[10px] font-bold bg-white hover:bg-emerald-100 border-emerald-200 text-emerald-700"
-                    onClick={() => navigate(`/caja/sesiones/${sesionActiva?.id}`)}
-                >
-                    <IconWallet className="w-3 h-3 mr-2" />
-                    Gestionar Caja
-                </Button>
+          <div className="bg-emerald-50 border-b border-emerald-100 py-2 px-4 md:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 animate-in slide-in-from-top duration-500">
+            <div className="flex items-center gap-3">
+              <div className="bg-emerald-500 p-1.5 rounded-lg shadow-sm shadow-emerald-200">
+                <IconCheck className="w-4 h-4 text-white" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-emerald-900 leading-tight">
+                  SISTEMA OPERATIVO · CAJA ABIERTA
+                </p>
+                <p className="text-[10px] text-emerald-600 font-medium">
+                  Sesión activa:{" "}
+                  <span className="font-bold">{sesionActiva?.caja_nombre}</span>{" "}
+                  · Usuario:{" "}
+                  <span className="font-bold">
+                    {sesionActiva?.usuario_nombre}
+                  </span>
+                </p>
+              </div>
             </div>
+
+            <Button
+              variant="secondary"
+              size="sm"
+              className="h-8 text-[10px] font-bold bg-white hover:bg-emerald-100 border-emerald-200 text-emerald-700"
+              onClick={() => navigate("/caja/dashboard")}
+            >
+              <IconWallet className="w-3 h-3 mr-2" />
+              Gestionar Caja
+            </Button>
+          </div>
         );
     }
 

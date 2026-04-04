@@ -149,7 +149,7 @@ export const sesionCajaAPI = {
     const response = await axiosInstance.post(
       `${SESIONES_API}/${id}/cerrar/`,
       {
-        monto_contado: String(input.monto_contado),
+        monto_contado: Number(input.monto_contado),
         detalle_billetes: input.detalle_billetes || {},
         observaciones: input.observaciones || "",
       },
@@ -235,22 +235,46 @@ export const movimientosAPI = {
   },
 };
 
-// ═══════════════════════════════════════════════════════════════
-// MÉTODOS DE PAGO
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// MÉTODOS DE PAGO (CRUD COMPLETO)
+// ═══════════════════════════════════════════════
 
 export const metodosPagoAPI = {
+  // Obtener lista
   getMetodosPago: async (): Promise<MetodoPago[]> => {
     const response = await axiosInstance.get(`${METODOS_PAGO_API}/`, {
       params: { activo: true },
     });
 
+    return response.data.results ?? response.data;
+  },
+
+  // Obtener uno
+  getMetodoPago: async (id: number): Promise<MetodoPago> => {
+    const response = await axiosInstance.get(`${METODOS_PAGO_API}/${id}/`);
     return response.data;
   },
 
-  getMetodoPago: async (id: number): Promise<MetodoPago> => {
-    const response = await axiosInstance.get(`${METODOS_PAGO_API}/${id}/`);
-
+  // 🔥 CREAR
+  crearMetodoPago: async (data: { nombre: string }): Promise<MetodoPago> => {
+    const response = await axiosInstance.post(`${METODOS_PAGO_API}/`, data);
     return response.data;
+  },
+
+  // ✏️ ACTUALIZAR
+  actualizarMetodoPago: async (
+    id: number,
+    data: Partial<MetodoPago>
+  ): Promise<MetodoPago> => {
+    const response = await axiosInstance.patch(
+      `${METODOS_PAGO_API}/${id}/`,
+      data
+    );
+    return response.data;
+  },
+
+  // ❌ ELIMINAR (o desactivar)
+  eliminarMetodoPago: async (id: number): Promise<void> => {
+    await axiosInstance.delete(`${METODOS_PAGO_API}/${id}/`);
   },
 };

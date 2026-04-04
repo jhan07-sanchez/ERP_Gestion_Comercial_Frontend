@@ -11,7 +11,13 @@ export interface Categoria {
 export interface CategoriaCreateInput {
   nombre: string;
   descripcion?: string;
-  estado: boolean;
+  estado?: boolean;
+}
+
+export interface CategoriaUpdateInput {
+  nombre?: string;
+  descripcion?: string;
+  estado?: boolean;
 }
 
 export interface CategoriaSimple {

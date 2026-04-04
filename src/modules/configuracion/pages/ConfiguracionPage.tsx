@@ -10,6 +10,7 @@ import { SeccionEmpresa } from '../components/SeccionEmpresa';
 import { SeccionSistema } from '../components/SeccionSistema';
 import { SeccionDocumentacion } from '../components/SeccionDocumentacion';
 import { SeccionSeguridad } from '../components/SeccionSeguridad';
+import { SeccionMetodosPago } from "../components/SeccionMetodosPago";
 import { PageContainer, PageHeader } from '@/shared/components/ui';
 import {
     IconBuilding,
@@ -22,7 +23,7 @@ import {
     IconCategory
 } from '@tabler/icons-react';
 
-type TabType = 'empresa' | 'sistema' | 'documentacion' | 'seguridad';
+type TabType = 'empresa' | 'sistema' | 'documentacion' | 'seguridad' | 'metodos-pago';
 
 const ConfiguracionPage: React.FC = () => {
     const { config, isLoading, isSaving, error, updateConfig, resetConsecutivo } = useConfiguracion();
@@ -60,6 +61,7 @@ const ConfiguracionPage: React.FC = () => {
         { id: 'sistema', label: 'Sistema', icon: <IconSettings size={18} />, desc: 'Parámetros fiscales' },
         { id: 'documentacion', label: 'Documentación', icon: <IconFileText size={18} />, desc: 'Numeración y folios' },
         { id: 'seguridad', label: 'Seguridad', icon: <IconShieldLock size={18} />, desc: 'Accesos y auditoría' },
+        { id: 'metodos-pago', label: 'Métodos de Pago', icon: <IconFileText size={18} />, desc: 'Configura métodos de pago' },
     ];
 
     return (
@@ -166,6 +168,8 @@ const ConfiguracionPage: React.FC = () => {
                             />
                         )}
                         {activeTab === 'seguridad' && <SeccionSeguridad />}
+
+                        {activeTab === 'metodos-pago' && <SeccionMetodosPago />}
                     </div>
                 </main>
             </div>

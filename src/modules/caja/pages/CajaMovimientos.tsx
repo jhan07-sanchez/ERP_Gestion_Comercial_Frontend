@@ -86,7 +86,7 @@ export default function CajaMovimientosPage() {
       ]);
       if (mounted) {
         if (data) setSesion(data);
-        setMetodosPago(metodos ?? []);
+        setMetodosPago(metodos);
         if (metodos?.length > 0) {
           setFormMetodoPago(String(metodos[0].id));
         }

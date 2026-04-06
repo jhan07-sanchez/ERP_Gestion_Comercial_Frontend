@@ -190,8 +190,8 @@ export default function ProductosList() {
                               <Button
                                 size="sm"
                                 variant="secondary"
+                                iconOnly
                                 onClick={() => navigate(`/productos/${producto.id}/editar`)}
-                                className="h-8 w-8 p-0"
                                 title="Editar"
                               >
                                 <IconEdit size={14} />
@@ -199,8 +199,9 @@ export default function ProductosList() {
                               <Button
                                 size="sm"
                                 variant="danger"
+                                iconOnly
                                 onClick={() => handleDelete(producto.id)}
-                                className="h-8 w-8 p-0 bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white border-none"
+                                className="bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white border-none"
                                 title="Eliminar"
                               >
                                 <IconTrash size={14} />

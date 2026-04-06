@@ -132,15 +132,26 @@ export default function CajaList() {
                     </Table.Cell>
                     <Table.Cell className="text-center">
                       <div className="flex items-center justify-center gap-2">
-                        {caja.sesion_activa_id ? (
-                          <Button
-                            size="sm"
-                            variant="secondary"
-                            className="bg-blue-50 text-blue-700 border-blue-100 hover:bg-blue-100"
-                            onClick={() => navigate(`/caja/sesion/${caja.sesion_activa_id}`)}
-                          >
-                            Ver Sesión
-                          </Button>
+                        {caja.esta_abierta ? (
+                          caja.sesion_activa_id ? (
+                            <Button
+                              size="sm"
+                              variant="secondary"
+                              className="bg-blue-50 text-blue-700 border-blue-100 hover:bg-blue-100"
+                              onClick={() => navigate(`/caja/sesion/${caja.sesion_activa_id}`)}
+                            >
+                              Ver Sesión
+                            </Button>
+                          ) : (
+                            <Button
+                              size="sm"
+                              variant="secondary"
+                              className="bg-emerald-50 text-emerald-700 border-emerald-100 hover:bg-emerald-100"
+                              onClick={() => navigate(`/caja/dashboard`)}
+                            >
+                              Gestionar
+                            </Button>
+                          )
                         ) : (
                           <Button
                             size="sm"

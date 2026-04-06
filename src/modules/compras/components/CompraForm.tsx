@@ -10,7 +10,7 @@
  * - Cálculo automático de subtotales y total
  * - Validación clara
  */
-
+import React, { useState } from "react";
 import { Card, Button, Input, Badge } from "@/shared/components/ui";
 import type { EstadoCompra } from "../types";
 import { formatCurrency } from "@/shared/utils/formatters";
@@ -198,7 +198,7 @@ export function CompraForm({
 
     onSubmit();
   };
-
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   return (
     <Card>
       <Card.Content>
@@ -257,7 +257,9 @@ export function CompraForm({
             {/* Preview del Próximo Correlativo de Compra */}
             {config && (
               <div className="flex items-center gap-2 text-sm text-gray-500 bg-blue-50/50 p-3 rounded-xl border border-blue-100 w-full md:w-fit">
-                <span className="font-medium text-blue-700">N° de Compra (Siguiente):</span>
+                <span className="font-medium text-blue-700">
+                  N° de Compra (Siguiente):
+                </span>
                 <Badge variant="success" className="font-mono scale-110">
                   {config.numero_compra_preview}
                 </Badge>
@@ -332,14 +334,16 @@ export function CompraForm({
                 <Input
                   type="text"
                   label=""
-                  value={formatCurrency(detalle.precio_unitario)}
+                  value={
+                    focusedIndex === index
+                      ? detalle.precio_unitario.toString()
+                      : formatCurrency(detalle.precio_unitario)
+                  }
+                  onFocus={() => setFocusedIndex(index)}
+                  onBlur={() => setFocusedIndex(null)}
                   onChange={(e) => {
-                    // quitar todo lo que no sea número
-                    const rawValue = e.target.value.replace(/\D/g, "");
-
-                    const numberValue = Number(rawValue) || 0;
-
-                    updateDetalle(index, "precio_unitario", numberValue);
+                    const clean = e.target.value.replace(/[^0-9]/g, "");
+                    updateDetalle(index, "precio_unitario", Number(clean || 0));
                   }}
                 />
 

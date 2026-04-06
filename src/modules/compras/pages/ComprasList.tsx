@@ -6,7 +6,7 @@ import type { CompraFilters, EstadoCompra } from "../types";
 import { formatCurrency, truncateProductos, formatDate } from "@/shared/utils/formatters";
 import { useAlert } from "@/shared/components/alerts";
 import { useCajaStore } from "@/modules/caja/store/caja.store";
-import { IconShoppingCart, IconPlus, IconSearch, IconCheck, IconX, IconEye } from "@tabler/icons-react";
+import { IconShoppingCart, IconPlus, IconSearch, IconX, IconEye } from "@tabler/icons-react";
 
 const estadoVariantMap: Record<EstadoCompra, "success" | "warning" | "danger" | "gray"> = {
   COMPLETADA: "success",
@@ -23,13 +23,11 @@ export default function ComprasList() {
     error,
     fetchCompras,
     applyFilters,
-    confirmarCompra,
     anularCompra,
-    loadingConfirm,
     loadingAnular,
   } = useCompras();
   const { isCajaAbierta } = useCajaStore();
-  const { showAlert, confirm: alertConfirm, prompt: alertPrompt } = useAlert();
+  const { showAlert, prompt: alertPrompt } = useAlert();
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -42,22 +40,7 @@ export default function ComprasList() {
     applyFilters(filters);
   };
 
-  const handleConfirmar = async (id: number) => {
-    const confirmed = await alertConfirm(
-      "Confirmar Compra",
-      "¿Deseas confirmar esta compra? Esto actualizará el inventario y te permitirá registrar el pago en caja.",
-      "info"
-    );
-    if (!confirmed) return;
 
-    const result = await confirmarCompra(id);
-    if (result) {
-      showAlert("Compra Confirmada", "success", { description: "Registrando entrada al inventario..." });
-      setTimeout(() => {
-        navigate(`../compras/${id}/detalles?abrirPago=true`);
-      }, 800);
-    }
-  };
 
   const handleAnular = async (id: number) => {
     const motivo = await alertPrompt("Anular Compra", "Por favor, ingresa el motivo de la anulación:", "");
@@ -185,7 +168,8 @@ export default function ComprasList() {
                           <Button
                             variant="secondary"
                             size="sm"
-                            className="h-8 w-8 p-0 flex items-center justify-center rounded-lg hover:bg-white shadow-sm border-transparent hover:border-primary-100"
+                            iconOnly
+                            className="hover:bg-white shadow-sm border-transparent hover:border-primary-100"
                             onClick={() => navigate(`../compras/${compra.id}/detalles`)}
                             title="Ver detalle"
                           >
@@ -197,17 +181,8 @@ export default function ComprasList() {
                               <Button
                                 variant="secondary"
                                 size="sm"
-                                className="h-8 w-8 p-0 flex items-center justify-center rounded-lg hover:bg-green-50 shadow-sm border-transparent hover:border-green-100"
-                                onClick={() => handleConfirmar(compra.id)}
-                                disabled={!isCajaAbierta || loadingConfirm}
-                                title="Confirmar compra"
-                              >
-                                <IconCheck size={16} className="text-green-600" />
-                              </Button>
-                              <Button
-                                variant="secondary"
-                                size="sm"
-                                className="h-8 w-8 p-0 flex items-center justify-center rounded-lg hover:bg-rose-50 shadow-sm border-transparent hover:border-rose-100"
+                                iconOnly
+                                className="hover:bg-rose-50 shadow-sm border-transparent hover:border-rose-100"
                                 onClick={() => handleAnular(compra.id)}
                                 disabled={loadingAnular}
                                 title="Anular compra"

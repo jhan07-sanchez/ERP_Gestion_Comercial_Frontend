@@ -41,6 +41,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   rightIcon?: ReactNode;
   isLoading?: boolean;
   fullWidth?: boolean;
+  iconOnly?: boolean;
 }
 
 export function Button({
@@ -51,6 +52,7 @@ export function Button({
   rightIcon,
   isLoading = false,
   fullWidth = false,
+  iconOnly = false,
   className = '',
   disabled,
   ...props
@@ -105,11 +107,17 @@ export function Button({
   };
 
   // Estilos por tamaño
-  const sizeStyles = {
-    sm: 'px-3 py-1.5 text-sm gap-1.5',
-    md: 'px-4 py-2 text-sm gap-2',
-    lg: 'px-6 py-3 text-base gap-2',
-  };
+  const sizeStyles = iconOnly
+    ? {
+        sm: 'h-8 w-8 p-0 text-sm',
+        md: 'h-9 w-9 p-0 text-sm',
+        lg: 'h-11 w-11 p-0 text-base',
+      }
+    : {
+        sm: 'px-3 py-1.5 text-sm gap-1.5',
+        md: 'px-4 py-2 text-sm gap-2',
+        lg: 'px-6 py-3 text-base gap-2',
+      };
 
   return (
     <button

@@ -10,7 +10,6 @@ import {
   formatDateTime,
   formatDate,
 } from "@/shared/utils/formatters";
-import { useCajaStore } from "@/modules/caja/store/caja.store";
 import { useAlert } from "@/shared/components/alerts";
 import { PagoCompraModal } from "../components/PagoCompraModal";
 import { 
@@ -38,7 +37,6 @@ export default function CompraDetallePage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { getCompra, registrarPago, loadingPago } = useCompras();
-  const { isCajaAbierta } = useCajaStore();
   const { showAlert } = useAlert();
 
   const [compra, setCompra] = useState<CompraDetail | null>(null);
@@ -69,20 +67,26 @@ export default function CompraDetallePage() {
     }
   }, [compra, searchParams, navigate]);
 
-  const handlePagoSubmit = async (metodo: MetodoPago, montoPagar: number, referencia: string) => {
-    if (!compra) return;
-    const result = await registrarPago(compra.id, {
-      metodo_pago: metodo,
-      monto: montoPagar,
-      referencia,
-    });
+  const handlePagoSubmit = async (
+      metodoPagoNombre: string,  // 🆕 recibe el NOMBRE (string)
+      montoPagar: number,
+      referencia: string
+  ) => {
+      if (!compra) return;
+      const result = await registrarPago(compra.id, {
+          metodo_pago: metodoPagoNombre as MetodoPago,  // el backend espera el nombre
+          monto: montoPagar,
+          referencia,
+      });
 
-    if (result) {
-      const updatedCompra = await getCompra(compra.id);
-      setCompra(updatedCompra);
-      setIsPagoModalOpen(false);
-      showAlert("Pago Registrado", "success", { description: "El pago de la compra se ha procesado correctamente" });
-    }
+      if (result) {
+          const updatedCompra = await getCompra(compra.id);
+          setCompra(updatedCompra);
+          setIsPagoModalOpen(false);
+          showAlert("Pago Registrado", "success", {
+              description: "El pago ha sido procesado correctamente.",
+          });
+      }
   };
 
   if (loading || !compra) {
@@ -312,7 +316,7 @@ export default function CompraDetallePage() {
         total={compra.total}
         saldoPendiente={compra.saldo_pendiente ?? (compra.estado === "COMPLETADA" ? 0 : compra.total)}
         submitting={loadingPago}
-        isCajaAbierta={isCajaAbierta}
+        // 🗑️ isCajaAbierta eliminado — el modal lo lee del store directamente
       />
     </PageContainer>
   );

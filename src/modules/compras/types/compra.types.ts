@@ -206,3 +206,18 @@ export interface PaginationState {
   pageSize: number;
   totalCount: number;
 }
+
+// 🆕 Cuenta por Pagar (generada por pagos a crédito)
+export interface CuentaPorPagar {
+  id: number;
+  compra: number;
+  proveedor: number;
+  proveedor_nombre?: string;
+  monto_total: number;
+  saldo_pendiente: number;
+  estado: 'PENDIENTE' | 'PARCIAL' | 'PAGADO';
+  porcentaje_pagado?: number;
+  fecha_vencimiento?: string | null;
+  notas?: string | null;
+  fecha_creacion: string;
+}

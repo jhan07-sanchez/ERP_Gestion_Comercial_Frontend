@@ -84,13 +84,21 @@ export interface SesionCaja {
 }
 
 /**
- * 💵 MetodoPago - Métodos de pago disponibles
+ * 💵 MetodoPago — Métodos de pago disponibles
+ *
+ * tipo = 'CONTADO' → afecta caja inmediatamente (egreso)
+ * tipo = 'CREDITO' → genera Cuenta por Pagar, no afecta caja
  */
 export interface MetodoPago {
   id: number;
-  nombre: string; // Ej: "Efectivo", "Tarjeta Débito"
+  nombre: string;
   activo: boolean;
-  es_efectivo: boolean; // ¿Dinero físico en caja?
+  es_efectivo: boolean;
+  // 🆕 Campos para validación financiera
+  tipo: 'CONTADO' | 'CREDITO';
+  tipo_display?: string;       // "Contado" o "Crédito"
+  es_contado?: boolean;        // shorthand del backend
+  es_credito?: boolean;        // shorthand del backend
   fecha_creacion?: string;
 }
 

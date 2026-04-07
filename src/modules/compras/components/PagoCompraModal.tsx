@@ -1,196 +1,328 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Button } from "@/shared/components/ui";
 import { formatCurrency, formatNumberInput, parseNumberInput, formatNumber } from "@/shared/utils/formatters";
-import type { MetodoPago } from "../types/compra.types";
+import type { MetodoPago } from "@/modules/caja/types/Caja.types";
+import { metodosPagoAPI } from "@/modules/caja/api/Caja.api";
+import { useCajaStore } from "@/modules/caja/store/caja.store";
 import {
-    IconCash,
-    IconCreditCard,
-    IconBuildingBank,
-    IconDeviceMobile,
-    IconBook,
-    IconX,
-    IconCurrencyDollar,
-    IconCheck
+    IconCash, IconCreditCard, IconBuildingBank,
+    IconDeviceMobile, IconBook, IconX,
+    IconCurrencyDollar, IconCheck, IconAlertTriangle,
+    IconInfoCircle, IconLoader2,
 } from '@tabler/icons-react';
 
 interface PagoCompraModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onConfirm: (metodo: MetodoPago, monto: number, referencia: string) => void;
+    /** onConfirm recibe el NOMBRE del método (para el backend) */
+    onConfirm: (metodoPagoNombre: string, monto: number, referencia: string) => void;
     total: number;
-    saldoPendiente?: number; 
+    saldoPendiente?: number;
     submitting?: boolean;
-    isCajaAbierta?: boolean;
 }
 
-export function PagoCompraModal({ isOpen, onClose, onConfirm, total, saldoPendiente, submitting = false, isCajaAbierta = true }: PagoCompraModalProps) {
-    const [metodo, setMetodo] = useState<MetodoPago>("EFECTIVO");
-    const [montoPagarTexto, setMontoPagarTexto] = useState<string>("");
-    const [montoPagar, setMontoPagar] = useState<number>(0);
-    const [referencia, setReferencia] = useState<string>("");
+// Mapa de iconos por nombre de método
+const ICONO_METODO: Record<string, React.ReactNode> = {
+    EFECTIVO:      <IconCash size={22} />,
+    TARJETA:       <IconCreditCard size={22} />,
+    TRANSFERENCIA: <IconBuildingBank size={22} />,
+    YAPE:          <IconDeviceMobile size={22} />,
+    PLIN:          <IconDeviceMobile size={22} />,
+    'CRÉDITO':     <IconBook size={22} />,
+};
+
+export function PagoCompraModal({
+    isOpen,
+    onClose,
+    onConfirm,
+    total,
+    saldoPendiente,
+    submitting = false,
+}: PagoCompraModalProps) {
+    const { sesionActiva } = useCajaStore();
+
+    // Estado del modal
+    const [metodos, setMetodos]           = useState<MetodoPago[]>([]);
+    const [loadingMetodos, setLoadingMetodos] = useState(false);
+    const [metodoSeleccionado, setMetodoSeleccionado] = useState<MetodoPago | null>(null);
+    const [montoPagarTexto, setMontoPagarTexto] = useState('');
+    const [montoPagar, setMontoPagar]     = useState(0);
+    const [referencia, setReferencia]     = useState('');
 
     const maxPagar = saldoPendiente !== undefined ? saldoPendiente : total;
 
-    const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+    // Cargar métodos de pago cuando se abre el modal
+    useEffect(() => {
+        if (!isOpen) return;
 
-    if (isOpen && !prevIsOpen) {
-        setPrevIsOpen(true);
-        setMetodo("EFECTIVO");
-        setMontoPagar(maxPagar);
-        setMontoPagarTexto(formatNumber(maxPagar));
-        setReferencia("");
-    } else if (!isOpen && prevIsOpen) {
-        setPrevIsOpen(false);
-    }
+        let active = true;
+
+        // Utilizamos setTimeout para diferir la actualización de estado a la macro-tarea (macro-task)
+        // en lugar de hacerlo síncronamente en el effect, evitando rendered en cascada. (Fix react-hooks/set-state-in-effect)
+        const init = setTimeout(() => {
+            if (!active) return;
+            
+            setLoadingMetodos(true);
+            setMontoPagarTexto(formatNumber(maxPagar));
+            setMontoPagar(maxPagar);
+            setReferencia('');
+
+            metodosPagoAPI.getMetodosPago()
+                .then((lista) => {
+                    if (!active) return;
+                    setMetodos(lista);
+                    const defaultMetodo =
+                        lista.find(m => m.nombre === 'EFECTIVO') ||
+                        lista.find(m => m.tipo === 'CONTADO') ||
+                        lista[0];
+                    if (defaultMetodo) setMetodoSeleccionado(defaultMetodo);
+                })
+                .catch(() => {
+                    if (active) setMetodos([]);
+                })
+                .finally(() => {
+                    if (active) setLoadingMetodos(false);
+                });
+        }, 0);
+
+        return () => {
+            active = false;
+            clearTimeout(init);
+        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpen]); 
+
+    // ── Derivados ────────────────────────────────────────────
+    const esCredito = metodoSeleccionado?.tipo === 'CREDITO';
+    const esContado = metodoSeleccionado?.tipo === 'CONTADO';
+    const isCajaAbierta = !!sesionActiva;
+
+    // Saldo de caja del store (actualizado en la última hidratación)
+    const saldoCaja = sesionActiva?.saldo_esperado
+        ? parseFloat(String(sesionActiva.saldo_esperado))
+        : 0;
+
+    // Validaciones
+    const montoPagarValido = montoPagar > 0 && montoPagar <= maxPagar;
+    const fondosInsuficientes = esContado && montoPagar > saldoCaja;
+    const requiereCajaAbierta = esContado && !isCajaAbierta;
+
+    const puedeConfirmar =
+        montoPagarValido &&
+        !!metodoSeleccionado &&
+        !fondosInsuficientes &&
+        !requiereCajaAbierta;
+
+    // Mensaje informativo según tipo
+    const mensajeTipo = useMemo(() => {
+        if (!metodoSeleccionado) return null;
+        if (esCredito) return {
+            tipo: 'info' as const,
+            texto: 'Esta compra se registrará como crédito. Se creará una Cuenta por Pagar al proveedor. No afecta la caja.',
+        };
+        if (esContado && isCajaAbierta) return {
+            tipo: 'success' as const,
+            texto: `Se descontará ${formatCurrency(montoPagar)} de la caja. Saldo disponible: ${formatCurrency(saldoCaja)}.`,
+        };
+        return null;
+    }, [metodoSeleccionado, esCredito, esContado, isCajaAbierta, montoPagar, saldoCaja]);
+
+    // ── Handlers ─────────────────────────────────────────────
+    const handleMontoPagarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const formatted = formatNumberInput(e.target.value);
+        setMontoPagarTexto(formatted);
+        const raw = parseNumberInput(formatted);
+        setMontoPagar(isNaN(parseFloat(raw)) ? 0 : parseFloat(raw));
+    };
+
+    const handleConfirmar = () => {
+        if (!puedeConfirmar || !metodoSeleccionado) return;
+        onConfirm(metodoSeleccionado.nombre, montoPagar, referencia);
+    };
+
+    // Agrupar métodos por tipo para mostrar separados
+    const metodosContado = metodos.filter(m => m.tipo === 'CONTADO');
+    const metodosCredito = metodos.filter(m => m.tipo === 'CREDITO');
 
     if (!isOpen) return null;
 
-    const montoPagarValido = montoPagar > 0 && montoPagar <= maxPagar;
-    const esValido = montoPagarValido;
-
-    const handleMontoPagarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const val = e.target.value;
-        const formatted = formatNumberInput(val);
-        setMontoPagarTexto(formatted);
-
-        const raw = parseNumberInput(formatted);
-        const numeric = parseFloat(raw);
-        setMontoPagar(isNaN(numeric) ? 0 : numeric);
-    };
-
-    const metodosDisponibles: { value: MetodoPago; label: string; icon: React.ReactNode }[] = [
-        { value: "EFECTIVO", label: "Efectivo", icon: <IconCash size={24} /> },
-        { value: "TARJETA", label: "Tarjeta", icon: <IconCreditCard size={24} /> },
-        { value: "TRANSFERENCIA", label: "Transfer.", icon: <IconBuildingBank size={24} /> },
-        { value: "YAPE", label: "Yape", icon: <IconDeviceMobile size={24} /> },
-        { value: "PLIN", label: "Plin", icon: <IconDeviceMobile size={24} /> },
-        { value: "CREDITO", label: "Crédito", icon: <IconBook size={24} /> },
-    ];
-
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col max-h-[90vh]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[92vh]">
 
-                {/* Header */}
-                <div className="px-6 py-5 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100 flex justify-between items-center shrink-0">
+                {/* ── Header ── */}
+                <div className="px-6 py-4 bg-gradient-to-r from-gray-50 to-white border-b flex justify-between items-center">
                     <div>
-                        <h2 className="text-2xl font-black text-gray-800 tracking-tight">Registrar Pago a Proveedor</h2>
-                        <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Módulo de Compras</p>
+                        <h2 className="text-xl font-black text-gray-800">Registrar Pago</h2>
+                        <p className="text-xs text-gray-400 font-medium mt-0.5">Compra al proveedor</p>
                     </div>
                     <button
                         onClick={onClose}
                         disabled={submitting}
-                        className="p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-all"
+                        className="p-2 rounded-full hover:bg-gray-100 text-gray-400 transition-colors"
                     >
-                        <IconX size={20} />
+                        <IconX size={18} />
                     </button>
                 </div>
 
-                <div className="p-6 space-y-8 overflow-y-auto flex-1 custom-scrollbar">
-                    {/* Alerta de Caja Cerrada */}
-                    {!isCajaAbierta && (
-                        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl relative flex items-center gap-3">
-                            <IconX className="w-6 h-6 shrink-0" />
-                            <div className="flex-1">
-                                <strong className="block font-bold">Caja Cerrada</strong>
-                                <span className="block sm:inline text-sm">Debe abrir una sesión de caja antes de registrar un pago.</span>
+                <div className="p-6 space-y-6 overflow-y-auto flex-1">
+
+                    {/* ── Alerta: caja cerrada (solo para CONTADO) ── */}
+                    {requiereCajaAbierta && (
+                        <div className="bg-red-50 border border-red-200 rounded-xl p-3 flex items-start gap-3">
+                            <IconAlertTriangle size={18} className="text-red-500 shrink-0 mt-0.5" />
+                            <p className="text-sm text-red-700 font-medium">
+                                Caja cerrada. Para pagos en efectivo/tarjeta debes abrir una sesión de caja.
+                                O selecciona <strong>Crédito</strong> para diferir el pago.
+                            </p>
+                        </div>
+                    )}
+
+                    {/* ── Fondos insuficientes ── */}
+                    {fondosInsuficientes && !requiereCajaAbierta && (
+                        <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start gap-3">
+                            <IconAlertTriangle size={18} className="text-amber-500 shrink-0 mt-0.5" />
+                            <div className="text-sm text-amber-700">
+                                <p className="font-bold">Fondos insuficientes en caja</p>
+                                <p>Saldo disponible: <strong>{formatCurrency(saldoCaja)}</strong></p>
+                                <p className="mt-1 opacity-80">
+                                    Reduce el monto o usa <strong>Crédito</strong> para diferir el pago.
+                                </p>
                             </div>
                         </div>
                     )}
 
-                    {/* Saldo a Pagar Card */}
-                    <div className="relative overflow-hidden bg-gradient-to-br from-purple-600 to-indigo-700 rounded-2xl p-6 shadow-lg shadow-purple-200">
-                        <div className="absolute -right-4 -top-4 text-white/10 rotate-12">
-                            <IconCash size={120} />
-                        </div>
-                        <div className="relative z-10">
-                            <p className="text-xs font-bold text-purple-100 uppercase tracking-widest mb-1 opacity-80">
-                                Total Deuda
-                            </p>
-                            <p className="text-4xl font-black text-white">
-                                {formatCurrency(maxPagar)}
-                            </p>
-                        </div>
+                    {/* ── Card total deuda ── */}
+                    <div className="bg-gradient-to-br from-slate-700 to-slate-900 rounded-2xl p-5 text-white">
+                        <p className="text-xs font-bold uppercase tracking-widest opacity-60 mb-1">
+                            Saldo Pendiente
+                        </p>
+                        <p className="text-3xl font-black tabular-nums">
+                            {formatCurrency(maxPagar)}
+                        </p>
                     </div>
 
-                    {/* Selector de Método de Pago */}
-                    <div className="space-y-4">
-                        <div className="flex items-center gap-2">
-                            <div className="h-6 w-1 bg-purple-500 rounded-full"></div>
-                            <label className="text-sm font-bold text-gray-700 uppercase tracking-wider">Método de Pago</label>
+                    {/* ── Selector de método ── */}
+                    {loadingMetodos ? (
+                        <div className="flex items-center justify-center py-6 gap-2 text-gray-400">
+                            <IconLoader2 size={20} className="animate-spin" />
+                            <span className="text-sm">Cargando métodos de pago...</span>
                         </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                            {metodosDisponibles.map((m) => (
-                                <button
-                                    key={m.value}
-                                    type="button"
-                                    onClick={() => setMetodo(m.value)}
-                                    disabled={submitting}
-                                    className={`group flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all duration-200
-                                        ${metodo === m.value
-                                            ? 'border-purple-500 bg-purple-50 text-purple-700 shadow-md transform scale-102'
-                                            : 'border-gray-100 bg-white text-gray-400 hover:border-purple-200 hover:bg-gray-50 hover:text-gray-600'
-                                        }`}
-                                >
-                                    <div className={`mb-2 p-2 rounded-xl transition-colors ${metodo === m.value ? 'bg-purple-100' : 'bg-gray-50 group-hover:bg-purple-50'}`}>
-                                        {m.icon}
+                    ) : (
+                        <div className="space-y-4">
+                            {/* CONTADO */}
+                            {metodosContado.length > 0 && (
+                                <div>
+                                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block"></span>
+                                        Pago inmediato (Contado)
+                                    </p>
+                                    <div className="grid grid-cols-3 gap-2">
+                                        {metodosContado.map((m) => (
+                                            <MetodoBtn
+                                                key={m.id}
+                                                metodo={m}
+                                                seleccionado={metodoSeleccionado?.id === m.id}
+                                                onSelect={setMetodoSeleccionado}
+                                                icon={ICONO_METODO[m.nombre] ?? <IconCash size={22} />}
+                                                disabled={submitting}
+                                            />
+                                        ))}
                                     </div>
-                                    <span className="text-xs font-bold uppercase tracking-tight">{m.label}</span>
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-6">
-                        {/* Monto a Pagar AHORA */}
-                        <div className="space-y-3">
-                            <label className="text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2">
-                                <IconCurrencyDollar size={16} />
-                                Monto a abonar
-                            </label>
-                            <div className="relative group">
-                                <input
-                                    type="text"
-                                    value={montoPagarTexto}
-                                    onChange={handleMontoPagarChange}
-                                    placeholder="0.00"
-                                    disabled={submitting}
-                                    className={`w-full px-5 py-4 text-2xl font-bold text-right border-2 rounded-2xl focus:ring-0 transition-all outline-none
-                                        ${montoPagar > maxPagar || montoPagar <= 0
-                                            ? 'border-red-400 bg-red-50 text-red-700'
-                                            : 'border-gray-100 bg-gray-50 focus:border-purple-500 focus:bg-white text-gray-800'
-                                        }`}
-                                />
-                                <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-lg">
-                                    $
                                 </div>
-                            </div>
-                            {montoPagar > maxPagar && (
-                                <p className="text-xs text-red-500 font-bold ml-1">Excede el saldo pendiente ({formatCurrency(maxPagar)})</p>
+                            )}
+
+                            {/* CRÉDITO */}
+                            {metodosCredito.length > 0 && (
+                                <div>
+                                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-400 inline-block"></span>
+                                        Pago diferido (Crédito)
+                                    </p>
+                                    <div className="grid grid-cols-3 gap-2">
+                                        {metodosCredito.map((m) => (
+                                            <MetodoBtn
+                                                key={m.id}
+                                                metodo={m}
+                                                seleccionado={metodoSeleccionado?.id === m.id}
+                                                onSelect={setMetodoSeleccionado}
+                                                icon={ICONO_METODO[m.nombre] ?? <IconBook size={22} />}
+                                                disabled={submitting}
+                                                variant="blue"
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
                             )}
                         </div>
+                    )}
 
-                        {/* Referencia */}
-                        <div className="space-y-3">
-                            <label className="text-sm font-bold text-gray-700 uppercase tracking-wider">Referencia (Opcional)</label>
+                    {/* ── Mensaje informativo por tipo ── */}
+                    {mensajeTipo && (
+                        <div className={`rounded-xl p-3 flex items-start gap-2.5 text-sm font-medium
+                            ${mensajeTipo.tipo === 'info'
+                                ? 'bg-blue-50 border border-blue-100 text-blue-700'
+                                : 'bg-emerald-50 border border-emerald-100 text-emerald-700'
+                            }`}
+                        >
+                            <IconInfoCircle size={16} className="shrink-0 mt-0.5" />
+                            <p>{mensajeTipo.texto}</p>
+                        </div>
+                    )}
+
+                    {/* ── Monto ── */}
+                    <div className="space-y-2">
+                        <label className="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                            <IconCurrencyDollar size={16} />
+                            Monto a {esCredito ? 'registrar como crédito' : 'abonar'}
+                        </label>
+                        <div className="relative">
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-lg pointer-events-none">
+                                $
+                            </span>
                             <input
                                 type="text"
-                                value={referencia}
-                                onChange={(e) => setReferencia(e.target.value)}
-                                placeholder="Ej: Factura 001-232, Transferencia 987654"
+                                value={montoPagarTexto}
+                                onChange={handleMontoPagarChange}
                                 disabled={submitting}
-                                className="w-full px-4 py-3 border-2 border-gray-100 bg-gray-50 rounded-xl focus:border-purple-500 focus:bg-white transition-all outline-none text-gray-800"
+                                className={`w-full pl-8 pr-4 py-4 text-2xl font-bold text-right border-2 rounded-2xl outline-none transition-colors
+                                    ${(montoPagar > maxPagar || montoPagar <= 0)
+                                        ? 'border-red-300 bg-red-50 text-red-700'
+                                        : fondosInsuficientes
+                                            ? 'border-amber-300 bg-amber-50 text-amber-700'
+                                            : 'border-gray-100 bg-gray-50 focus:border-slate-400 text-gray-800'
+                                    }`}
                             />
                         </div>
+                        {montoPagar > maxPagar && (
+                            <p className="text-xs text-red-500 font-bold">
+                                Excede el saldo pendiente ({formatCurrency(maxPagar)})
+                            </p>
+                        )}
+                    </div>
+
+                    {/* ── Referencia ── */}
+                    <div className="space-y-2">
+                        <label className="text-sm font-bold text-gray-700">
+                            Referencia <span className="text-gray-400 font-normal">(opcional)</span>
+                        </label>
+                        <input
+                            type="text"
+                            value={referencia}
+                            onChange={(e) => setReferencia(e.target.value)}
+                            placeholder="Ej: Factura 001-232, Transferencia #987654"
+                            disabled={submitting}
+                            className="w-full px-4 py-3 border-2 border-gray-100 bg-gray-50 rounded-xl focus:border-slate-300 transition-colors outline-none text-gray-800 text-sm"
+                        />
                     </div>
                 </div>
 
-                {/* Footer Actions */}
-                <div className="p-6 bg-white border-t border-gray-100 flex flex-col sm:flex-row gap-3 shrink-0">
+                {/* ── Footer ── */}
+                <div className="p-5 border-t bg-gray-50 flex gap-3">
                     <Button
                         type="button"
                         variant="secondary"
-                        className="flex-1 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs h-auto"
+                        className="flex-1 rounded-2xl"
                         onClick={onClose}
                         disabled={submitting}
                     >
@@ -198,20 +330,56 @@ export function PagoCompraModal({ isOpen, onClose, onConfirm, total, saldoPendie
                     </Button>
                     <Button
                         type="button"
-                        className={`flex-1 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs h-auto shadow-lg transition-all
-                            ${(esValido && isCajaAbierta) ? 'bg-purple-600 hover:bg-purple-700 shadow-purple-200' : 'bg-gray-200'}`}
-                        onClick={() => onConfirm(metodo, montoPagar, referencia)}
-                        disabled={!esValido || submitting || !isCajaAbierta}
+                        className={`flex-1 rounded-2xl font-bold transition-all
+                            ${esCredito
+                                ? 'bg-blue-600 hover:bg-blue-700 shadow-blue-100'
+                                : 'bg-slate-800 hover:bg-slate-900 shadow-slate-100'
+                            } shadow-lg`}
+                        onClick={handleConfirmar}
+                        disabled={!puedeConfirmar || submitting}
                         isLoading={submitting}
                     >
-                        <div className="flex items-center justify-center gap-2">
-                            {esValido && !submitting && <IconCheck size={18} />}
-                            Registrar Pago
-                        </div>
+                        {!submitting && <IconCheck size={16} className="mr-1" />}
+                        {esCredito ? 'Registrar como Crédito' : 'Confirmar Pago'}
                     </Button>
                 </div>
-
             </div>
         </div>
+    );
+}
+
+// ── Sub-componente: Botón de método ─────────────────────────
+interface MetodoBtnProps {
+    metodo: MetodoPago;
+    seleccionado: boolean;
+    onSelect: (m: MetodoPago) => void;
+    icon: React.ReactNode;
+    disabled: boolean;
+    variant?: 'green' | 'blue';
+}
+
+function MetodoBtn({ metodo, seleccionado, onSelect, icon, disabled, variant = 'green' }: MetodoBtnProps) {
+    const selectedCls = variant === 'blue'
+        ? 'border-blue-500 bg-blue-50 text-blue-700'
+        : 'border-slate-700 bg-slate-50 text-slate-800';
+    const hoverCls = variant === 'blue'
+        ? 'hover:border-blue-200 hover:bg-blue-50/50'
+        : 'hover:border-slate-300 hover:bg-gray-50';
+
+    return (
+        <button
+            type="button"
+            onClick={() => onSelect(metodo)}
+            disabled={disabled}
+            className={`flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border-2 transition-all text-center
+                ${seleccionado ? selectedCls : `border-gray-100 bg-white text-gray-400 ${hoverCls}`}`}
+        >
+            <div className={`p-1.5 rounded-lg ${seleccionado ? 'bg-white shadow-sm' : 'bg-gray-50'}`}>
+                {icon}
+            </div>
+            <span className="text-[10px] font-bold uppercase tracking-tight leading-tight">
+                {metodo.nombre}
+            </span>
+        </button>
     );
 }

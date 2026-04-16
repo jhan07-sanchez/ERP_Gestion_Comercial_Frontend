@@ -182,6 +182,18 @@ export const sidebarConfig: SidebarItem[] = [
     ],
   },
   {
+    label: "Documentos",
+    icon: IconFileText,
+    children: [
+      {
+        section: "Consultas",
+        items: [
+          { label: "Todos los documentos", path: "/documentos", icon: IconList },
+        ],
+      },
+    ],
+  },
+  {
     label: "Reportes",
     icon: IconReportAnalytics,
     children: [

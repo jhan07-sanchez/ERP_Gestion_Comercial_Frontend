@@ -26,6 +26,22 @@ export interface ProveedorSimple {
 export type EstadoCompra = "PENDIENTE" | "PARCIAL" | "COMPLETADA" | "ANULADA";
 export type MetodoPago = "EFECTIVO" | "TARJETA" | "TRANSFERENCIA" | "YAPE" | "PLIN" | "CREDITO";
 
+/** Documento ERP generado al confirmar / completar compra (opcional en API). */
+export interface DocumentoEmitidoResumen {
+  id: number;
+  tipo: "FACTURA_VENTA" | "TICKET_POS" | "FACTURA_COMPRA";
+  tipo_display: string;
+  estado: string;
+  numero_interno: string;
+  referencia_operacion: string;
+  subtotal: string;
+  impuestos: string;
+  total: string;
+  fecha_emision: string | null;
+  numero_fiscal: string | null;
+  prefijo_fiscal: string | null;
+}
+
 export interface PagoCompra {
   id: number;
   fecha: string;
@@ -115,6 +131,7 @@ export interface CompraDetail extends Compra {
     ganancia_potencial: number;
     margen_porcentaje: number;
   };
+  documento?: DocumentoEmitidoResumen | null;
 }
 
 // ===============================

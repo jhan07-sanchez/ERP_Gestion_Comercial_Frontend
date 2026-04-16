@@ -23,7 +23,7 @@ export type ProtectedRouteKey =
   | "Reportes"
 
   | "AuditoriaLogs"
-
+  | "DocumentosList"
   | "Configuracion"
 
   | "ProductosList"
@@ -313,7 +313,14 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
       description: "Historial completo de acciones y cambios en el ERP.",
     },
   },
-
+  {
+    path: "documentos",
+    componentKey: "DocumentosList",
+    placeholderProps: {
+      title: "Documentos",
+      description: "Listado de documentos emitidos.",
+    },
+  },
   {
     path: "configuracion",
     componentKey: "Configuracion",

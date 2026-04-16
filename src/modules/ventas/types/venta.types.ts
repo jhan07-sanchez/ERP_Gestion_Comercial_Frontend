@@ -90,6 +90,24 @@ export interface PagoVenta {
 }
 
 // ===============================
+// Documento ERP (emitido al completar venta; opcional en API)
+// ===============================
+export interface DocumentoEmitidoResumen {
+  id: number;
+  tipo: "FACTURA_VENTA" | "TICKET_POS" | "FACTURA_COMPRA";
+  tipo_display: string;
+  estado: string;
+  numero_interno: string;
+  referencia_operacion: string;
+  subtotal: string;
+  impuestos: string;
+  total: string;
+  fecha_emision: string | null;
+  numero_fiscal: string | null;
+  prefijo_fiscal: string | null;
+}
+
+// ===============================
 // Venta DETAIL (con detalles)
 // ===============================
 export interface VentaDetail extends Venta {
@@ -101,6 +119,7 @@ export interface VentaDetail extends Venta {
   pagos: PagoVenta[];
   total_productos: number;
   total_unidades: number;
+  documento?: DocumentoEmitidoResumen | null;
 }
 
 // ===============================

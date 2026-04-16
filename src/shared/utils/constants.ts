@@ -23,6 +23,7 @@ export const ROUTES = {
   REPORTES: '/reportes',
   CONFIGURACION: '/configuracion',
   AUDITORIA_LOGS: '/auditoria/lista',
+  DOCUMENTOS: '/documentos',
 } as const;
 
 /** Nombre de la aplicación */

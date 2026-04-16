@@ -45,6 +45,7 @@ import { CajaDashboard } from '@/modules/caja/pages';
 
 import { AuditPage as AuditoriaLogs } from '@/modules/auditoria';
 import { ConfiguracionPage } from '@/modules/configuracion';
+import DocumentosList from '@/modules/documentos/pages/DocumentosList';
 
 type RouteComponentProps = Record<string, string | undefined>;
 
@@ -62,6 +63,7 @@ export const protectedRouteComponents: Record<
   Reportes: PlaceholderPage,
 
   AuditoriaLogs,
+  DocumentosList,
   Configuracion: ConfiguracionPage,
 
   ProductosList,

@@ -12,18 +12,20 @@ import {
 } from "@/shared/utils/formatters";
 import { useAlert } from "@/shared/components/alerts";
 import { PagoCompraModal } from "../components/PagoCompraModal";
-import { 
-  IconShoppingCart, 
-  IconArrowLeft, 
-  IconCash, 
-  IconCheck, 
-  IconPackage, 
-  IconUser, 
+import {
+  IconShoppingCart,
+  IconArrowLeft,
+  IconCash,
+  IconCheck,
+  IconPackage,
+  IconUser,
   IconInfoCircle,
   IconTrendingUp,
   IconHistory,
-  IconAlertCircle
+  IconAlertCircle,
+  IconFileText,
 } from "@tabler/icons-react";
+import { openCompraDocumentoPdf } from "@/shared/api/documentos";
 
 const estadoVariantMap: Record<EstadoCompra, "success" | "warning" | "danger" | "gray"> = {
   COMPLETADA: "success",
@@ -68,25 +70,25 @@ export default function CompraDetallePage() {
   }, [compra, searchParams, navigate]);
 
   const handlePagoSubmit = async (
-      metodoPagoNombre: string,  // 🆕 recibe el NOMBRE (string)
-      montoPagar: number,
-      referencia: string
+    metodoPagoNombre: string,  // 🆕 recibe el NOMBRE (string)
+    montoPagar: number,
+    referencia: string
   ) => {
-      if (!compra) return;
-      const result = await registrarPago(compra.id, {
-          metodo_pago: metodoPagoNombre as MetodoPago,  // el backend espera el nombre
-          monto: montoPagar,
-          referencia,
-      });
+    if (!compra) return;
+    const result = await registrarPago(compra.id, {
+      metodo_pago: metodoPagoNombre as MetodoPago,  // el backend espera el nombre
+      monto: montoPagar,
+      referencia,
+    });
 
-      if (result) {
-          const updatedCompra = await getCompra(compra.id);
-          setCompra(updatedCompra);
-          setIsPagoModalOpen(false);
-          showAlert("Pago Registrado", "success", {
-              description: "El pago ha sido procesado correctamente.",
-          });
-      }
+    if (result) {
+      const updatedCompra = await getCompra(compra.id);
+      setCompra(updatedCompra);
+      setIsPagoModalOpen(false);
+      showAlert("Pago Registrado", "success", {
+        description: "El pago ha sido procesado correctamente.",
+      });
+    }
   };
 
   if (loading || !compra) {
@@ -110,9 +112,9 @@ export default function CompraDetallePage() {
         subtitle="Información completa de la compra al proveedor"
         icon={<IconShoppingCart size={24} />}
         backButton={
-          <Button 
-            variant="secondary" 
-            size="sm" 
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={() => navigate("/compras")}
             className="p-2 h-10 w-10 flex items-center justify-center rounded-xl"
           >
@@ -135,28 +137,64 @@ export default function CompraDetallePage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <KPIItem 
-          label="Total Compra" 
-          value={formatCurrency(compra.total)} 
+        <KPIItem
+          label="Total Compra"
+          value={formatCurrency(compra.total)}
           variant="primary"
           icon={<IconShoppingCart size={20} />}
           badge="Monto Final"
         />
-        <KPIItem 
-          label="Monto Pagado" 
-          value={formatCurrency(montoPagado)} 
+        <KPIItem
+          label="Monto Pagado"
+          value={formatCurrency(montoPagado)}
           variant="success"
           icon={<IconCheck size={20} />}
           badge="Abonado"
         />
-        <KPIItem 
-          label="Saldo Pendiente" 
-          value={formatCurrency(saldoPendiente)} 
+        <KPIItem
+          label="Saldo Pendiente"
+          value={formatCurrency(saldoPendiente)}
           variant={saldoPendiente > 0 ? "warning" : "success"}
           icon={<IconAlertCircle size={20} />}
           badge={saldoPendiente > 0 ? "Por Pagar" : "Completado"}
         />
       </div>
+
+      {compra.documento && (
+        <Card className="border-emerald-200 bg-emerald-50/40 shadow-sm">
+          <Card.Content className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex items-start gap-3">
+              <div className="p-2 rounded-lg bg-emerald-100 text-emerald-800">
+                <IconFileText size={22} />
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                  Documento de compra
+                </p>
+                <p className="text-sm font-semibold text-emerald-950">
+                  {compra.documento.tipo_display} — {compra.documento.numero_interno}
+                </p>
+                <p className="text-xs text-emerald-700/80 mt-0.5">
+                  Ref. operación: {compra.documento.referencia_operacion || "—"}
+                </p>
+              </div>
+            </div>
+            <Button
+              type="button"
+              variant="secondary"
+              className="shrink-0 border-emerald-300 bg-white hover:bg-emerald-50"
+              onClick={() =>
+                openCompraDocumentoPdf(compra.id).catch(() =>
+                  showAlert("Error", "error", { description: "No se pudo abrir el PDF del documento." }),
+                )
+              }
+            >
+              <IconFileText size={18} className="mr-2" />
+              Ver documento PDF
+            </Button>
+          </Card.Content>
+        </Card>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Detalles Principales */}
@@ -316,15 +354,15 @@ export default function CompraDetallePage() {
         total={compra.total}
         saldoPendiente={compra.saldo_pendiente ?? (compra.estado === "COMPLETADA" ? 0 : compra.total)}
         submitting={loadingPago}
-        // 🗑️ isCajaAbierta eliminado — el modal lo lee del store directamente
+      // 🗑️ isCajaAbierta eliminado — el modal lo lee del store directamente
       />
     </PageContainer>
   );
 }
 
-function KPIItem({ label, value, variant = "primary", icon, badge }: { 
-  label: string; 
-  value: string; 
+function KPIItem({ label, value, variant = "primary", icon, badge }: {
+  label: string;
+  value: string;
   variant?: "primary" | "success" | "warning" | "danger";
   icon: React.ReactNode;
   badge?: string;

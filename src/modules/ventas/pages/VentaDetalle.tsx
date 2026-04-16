@@ -7,7 +7,8 @@ import type { VentaDetail, EstadoVenta, MetodoPago } from "../types/venta.types"
 import { PagoModal } from "../components/PagoModal";
 import { useAlert } from "@/shared/components/alerts";
 import { useCajaStore } from "@/modules/caja/store/caja.store";
-import { IconReceipt, IconCash, IconArrowLeft, IconUser, IconInfoCircle, IconHistory, IconPackage } from "@tabler/icons-react";
+import { IconReceipt, IconCash, IconArrowLeft, IconUser, IconInfoCircle, IconHistory, IconPackage, IconFileText } from "@tabler/icons-react";
+import { openVentaDocumentoPdf } from "@/shared/api/documentos";
 
 const estadoVariantMap: Record<EstadoVenta, "success" | "warning" | "danger"> = {
   COMPLETADA: "success",
@@ -65,7 +66,12 @@ export default function VentaDetalle() {
     if (result) {
       setVenta(result);
       setIsPagoModalOpen(false);
-      showAlert("Pago Registrado", "success", { description: "El pago se ha procesado correctamente" });
+      const docMsg = result.documento
+        ? ` Documento ${result.documento.numero_interno} (${result.documento.tipo_display}) generado.`
+        : "";
+      showAlert("Pago Registrado", "success", {
+        description: `El pago se ha procesado correctamente.${docMsg}`,
+      });
     }
   };
 
@@ -137,6 +143,42 @@ export default function VentaDetalle() {
           </div>
         }
       />
+
+      {venta.estado === "COMPLETADA" && venta.documento && (
+        <Card className="border-emerald-200 bg-emerald-50/40 shadow-sm">
+          <Card.Content className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex items-start gap-3">
+              <div className="p-2 rounded-lg bg-emerald-100 text-emerald-800">
+                <IconFileText size={22} />
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                  Documento generado
+                </p>
+                <p className="text-sm font-semibold text-emerald-950">
+                  {venta.documento.tipo_display} — {venta.documento.numero_interno}
+                </p>
+                <p className="text-xs text-emerald-700/80 mt-0.5">
+                  Ref. operación: {venta.documento.referencia_operacion || "—"}
+                </p>
+              </div>
+            </div>
+            <Button
+              type="button"
+              variant="secondary"
+              className="shrink-0 border-emerald-300 bg-white hover:bg-emerald-50"
+              onClick={() =>
+                openVentaDocumentoPdf(venta.id, venta.tipo_documento).catch(() =>
+                  showAlert("Error", "error", { description: "No se pudo abrir el PDF del documento." }),
+                )
+              }
+            >
+              <IconFileText size={18} className="mr-2" />
+              Ver factura / ticket
+            </Button>
+          </Card.Content>
+        </Card>
+      )}
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

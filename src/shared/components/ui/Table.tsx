@@ -64,6 +64,7 @@ interface TableHeadProps {
 interface TableCellProps {
   children: ReactNode;
   className?: string;
+  colSpan?: number;
 }
 
 // Componente principal Table
@@ -157,9 +158,9 @@ Table.Head = function TableHead({
 };
 
 // Sub-componente: Cell
-Table.Cell = function TableCell({ children, className = '' }: TableCellProps) {
+Table.Cell = function TableCell({ children, className = '', colSpan }: TableCellProps) {
   return (
-    <td className={`px-6 py-4 text-sm text-primary-900 ${className}`}>
+    <td className={`px-6 py-4 text-sm text-primary-900 ${className}`} colSpan={colSpan}>
       {children}
     </td>
   );

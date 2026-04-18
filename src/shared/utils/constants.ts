@@ -7,6 +7,7 @@
 export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
+  PLANES: '/auth/planes',
   DASHBOARD: '/dashboard',
   VENTAS: '/ventas',
   PRODUCTOS: '/productos',

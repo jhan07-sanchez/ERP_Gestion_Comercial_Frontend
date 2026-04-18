@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Button, Input, Table, Badge, PageContainer, PageHeader } from "@/shared/components/ui";
+import { useSuscripcion } from "@/modules/auth/hooks/useSuscripcion";
 import { useProductosList, useProductoActions } from "../hooks";
 import type { ProductoFilters } from "../types";
 import { formatCurrency } from "@/shared/utils/formatters";
@@ -25,6 +26,7 @@ export default function ProductosList() {
     applyFilters,
   } = useProductosList();
   const { showAlert, confirm } = useAlert();
+  const { isReadOnly } = useSuscripcion();
 
   const { deleteProducto } = useProductoActions(async () => {
     await fetchProductos();
@@ -80,7 +82,9 @@ export default function ProductosList() {
         actions={
           <Button
             onClick={() => navigate("/productos/crear")}
+            disabled={isReadOnly}
             className="w-full sm:w-auto shadow-lg shadow-primary-100"
+            title={isReadOnly ? "Acción bloqueada por suscripción expirada" : "Nuevo Producto"}
           >
             <IconPlus size={18} className="mr-2" />
             Nuevo Producto
@@ -200,9 +204,10 @@ export default function ProductosList() {
                                 size="sm"
                                 variant="danger"
                                 iconOnly
+                                disabled={isReadOnly}
                                 onClick={() => handleDelete(producto.id)}
                                 className="bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white border-none"
-                                title="Eliminar"
+                                title={isReadOnly ? "Acción bloqueada" : "Eliminar"}
                               >
                                 <IconTrash size={14} />
                               </Button>

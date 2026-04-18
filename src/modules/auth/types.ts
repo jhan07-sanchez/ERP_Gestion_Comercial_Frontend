@@ -7,6 +7,19 @@
  */
 
 /**
+ * Opciones de Suscripción
+ */
+export interface Suscripcion {
+  plan: string;
+  es_trial: boolean;
+  fecha_inicio: string;
+  fecha_fin: string;
+  activa: boolean;
+  esta_activa: boolean;
+  dias_restantes: number;
+}
+
+/**
  * Datos de usuario autenticado
  */
 export interface User {
@@ -16,6 +29,7 @@ export interface User {
   is_active: boolean;
   is_staff: boolean;
   roles: UserRole[];
+  suscripcion?: Suscripcion;
 }
 
 /**

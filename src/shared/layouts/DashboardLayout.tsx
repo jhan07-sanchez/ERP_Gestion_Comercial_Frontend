@@ -10,6 +10,7 @@ import { useUIStore } from "@/shared/store/ui.store";
 import { Sidebar } from "./components/Sidebar";
 import { MobileHeader } from "./components/MobileHeader";
 import { CajaBanner } from "../components/CajaBanner";
+import { TrialBanner } from "../components/TrialBanner";
 
 export default function DashboardLayout() {
   const { sidebarOpen } = useUIStore();
@@ -27,8 +28,11 @@ export default function DashboardLayout() {
         {/* Header para Móviles */}
         <MobileHeader />
 
-        {/* Banner Global de Estado de Caja */}
-        <CajaBanner />
+        {/* Banners Superiores */}
+        <div className="flex flex-col w-full">
+          <TrialBanner />
+          <CajaBanner />
+        </div>
 
         {/* Contenido de la Página con Scroll independiente */}
         <main className="flex-1 overflow-x-hidden overflow-y-auto custom-scrollbar bg-[#f8fafc]">

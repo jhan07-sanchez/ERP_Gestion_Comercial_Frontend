@@ -43,6 +43,14 @@ export const authAPI = {
   },
 
   /**
+   * Solicitar nueva cuenta SaaS / Trial
+   */
+  solicitarCuenta: async (data: { nombre: string; empresa: string; email: string; telefono: string; plan: string }) => {
+    const response = await axiosInstance.post('/auth/solicitar-cuenta/', data);
+    return response.data;
+  },
+
+  /**
    * Cerrar sesión (limpiar tokens)
    */
   logout: async () => {

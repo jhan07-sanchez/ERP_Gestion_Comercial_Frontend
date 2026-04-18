@@ -6,6 +6,7 @@ import { createElement } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import Login from '@/modules/auth/pages/Login';
+import PlanesPage from '@/modules/auth/pages/PlanesPage';
 import ProtectedRoute from '@/modules/auth/components/ProtectedRoute';
 import DashboardLayout from '@/shared/layouts/DashboardLayout';
 import NotFoundPage from '@/core/routes/NotFoundPage';
@@ -23,6 +24,7 @@ export default function AppRouter() {
         <Routes>
           <Route path={ROUTES.HOME} element={<Navigate to={defaultAuthenticatedPath} replace />} />
           <Route path={ROUTES.LOGIN} element={<Login />} />
+          <Route path={ROUTES.PLANES} element={<PlanesPage />} />
 
           <Route
             path="/*"

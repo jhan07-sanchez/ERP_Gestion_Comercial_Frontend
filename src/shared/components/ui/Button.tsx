@@ -30,7 +30,8 @@ type ButtonVariant =
   | "secondary"
   | "danger"
   | "ghost"
-  | "success";
+  | "success"
+  | "outline";
 type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -104,6 +105,13 @@ export function Button({
       focus:ring-success-500
       shadow-sm
     `,
+    outline: `
+      bg-transparent text-primary-700
+      hover:bg-primary-100
+      active:bg-primary-200
+      focus:ring-primary-500
+    `
+
   };
 
   // Estilos por tamaño

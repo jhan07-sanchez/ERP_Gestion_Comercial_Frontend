@@ -1,39 +1,127 @@
 // src/modules/dashboard/types.ts
 
 /**
- * Tipos para el módulo Dashboard
+ * Tipos para la respuesta cruda del Backend (Django snake_case)
  */
 
-// Estadísticas de KPI
-export interface KPIStats {
-  totalProducts: number;
-  productsTrend: "up" | "down" | "stable";
-  productsPercentage: number;
-  totalSales: number;
-  salesTrend: "up" | "down" | "stable";
-  salesPercentage: number;
-  pendingOrders: number;
-  ordersTrend: "up" | "down" | "stable";
-  ordersPercentage: number;
-  lowStockProducts: number;
-  stockTrend: "up" | "down" | "stable";
-  stockPercentage: number;
-  newCustomers: number;
-  customersTrend: "up" | "down" | "stable";
-  customersPercentage: number;
+export interface BackendComparison {
+  total: number;
+  cantidad?: number;
+  variacion: number;
 }
 
-// Actividad reciente
-export interface RecentActivity {
+export interface BackendResumen {
+  ventas_mes: BackendComparison;
+  compras_mes: BackendComparison;
+  ganancia_mes: BackendComparison;
+  clientes_nuevos: BackendComparison;
+  productos_activos: number;
+  alertas_stock: number;
+}
+
+export interface BackendVentaDiaria {
+  fecha: string;
+  total: number;
+  cantidad: number;
+}
+
+export interface BackendProductoTop {
   id: number;
-  type: 'sale' | 'order' | 'product' | 'customer';
+  nombre: string;
+  total_unidades: number; // El backend envía total_unidades
+  total_monto: number;
+  veces_vendido: number;
+}
+
+export interface BackendAlertaItem {
+  producto_id?: number;
+  venta_id?: number;
+  nombre?: string;
+  mensaje: string;
+  timestamp: string;
+}
+
+export interface BackendAlertas {
+  total: number;
+  sin_stock: BackendAlertaItem[];
+  stock_critico: BackendAlertaItem[];
+  stock_advertencia: BackendAlertaItem[];
+  ventas_pendientes: BackendAlertaItem[];
+}
+
+export interface BackendCajaResumen {
+  total_ingresos: number;
+  total_egresos: number;
+  saldo_neto: number; // El backend envía saldo_neto
+  sesiones_abiertas: number;
+}
+
+export interface BackendActividad {
+  id: number;
+  type: string; // El backend envía 'type', no 'tipo'
+  accion: string;
   descripcion: string;
+  usuario: string;
   timestamp: string;
   fecha: string;
   estado: 'success' | 'warning' | 'info' | 'error';
 }
 
-// Alerta del sistema
+/**
+ * Tipos Procesados para el Frontend (camelCase)
+ */
+
+export interface ComparisonStats {
+  value: number;
+  percentage: number;
+  trend: "up" | "down" | "stable";
+  label: string;
+}
+
+export interface KPIStats {
+  totalSales: number;
+  salesComparison: ComparisonStats;
+  salesTarget: number;
+  
+  newCustomers: number;
+  customersComparison: ComparisonStats;
+  customersTarget: number;
+
+  pendingOrders: number;
+  ordersComparison: ComparisonStats;
+  
+  lowStockProducts: number;
+  stockTrend: "up" | "down" | "stable";
+  criticalStockCount: number;
+}
+
+export interface SalesDataPoint {
+  name: string;
+  ventas: number;
+}
+
+export interface ProductDataPoint {
+  name: string;
+  cantidad: number;
+}
+
+export interface CashFlowPoint {
+  name: string;
+  ingresos: number;
+  egresos: number;
+}
+
+export interface RecentActivity {
+  id: number;
+  type: 'sale' | 'order' | 'product' | 'customer';
+  descripcion: string;
+  usuario: string;
+  modulo: string;
+  timestamp: string;
+  fecha: string;
+  estado: 'success' | 'warning' | 'info' | 'error';
+}
+
 export interface SystemAlert {
   id: number;
   severidad: "critica" | "media" | "baja" | "advertencia" | "informacion";
@@ -41,18 +129,33 @@ export interface SystemAlert {
   message: string;
   timestamp: string;
   type: 'product' | 'sale';
+  actionable?: boolean;
 }
 
-// Datos completos del dashboard
+export interface CashStats {
+  balanceActual: number;
+  ingresosDia: number;
+  egresosDia: number;
+  estado: 'abierta' | 'cerrada';
+  ultimaApertura: string;
+}
+
 export interface DashboardData {
   kpis: KPIStats;
+  charts: {
+    salesHistory: SalesDataPoint[];
+    topProducts: ProductDataPoint[];
+    cashFlow: CashFlowPoint[];
+  };
+  cash: CashStats;
   recentActivities: RecentActivity[];
   systemAlerts: SystemAlert[];
 }
 
-// Filtros del dashboard
 export interface DashboardFilters {
   dateRange: 'today' | 'week' | 'month' | 'year';
+  mode: 'executive' | 'operational';
   customStartDate?: string;
   customEndDate?: string;
 }
+

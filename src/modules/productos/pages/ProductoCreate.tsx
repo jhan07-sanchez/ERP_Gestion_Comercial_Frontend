@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, PageContainer, PageHeader, Card } from "@/shared/components/ui";
+import { useSuscripcion } from "@/modules/auth/hooks/useSuscripcion";
 import { useProductoActions } from "../hooks";
 import { useCategorias } from "../../../modules/categorias/hooks/useCategorias";
 import {
@@ -15,6 +16,7 @@ export default function ProductoCreate() {
 
   const { createProducto, error } = useProductoActions();
   const { showAlert, confirm } = useAlert();
+  const { isReadOnly } = useSuscripcion();
 
   const {
     categorias,
@@ -122,8 +124,8 @@ export default function ProductoCreate() {
           value={formData}
           categorias={categorias}
           loadingCategorias={loadingCategorias}
-          submitting={submitting}
-          error={error}
+          submitting={submitting || isReadOnly}
+          error={isReadOnly ? "No puedes crear productos: tu periodo de prueba ha expirado." : error}
           onChange={setFormData}
           onSubmit={handleSubmit}
           onCancel={handleCancel}

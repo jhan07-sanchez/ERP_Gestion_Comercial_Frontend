@@ -34,7 +34,6 @@ export const PageContainer: React.FC<PageContainerProps> = ({
       px-4 sm:px-6 md:px-8 
       py-4 md:py-6 
       space-y-6 
-      animate-in fade-in slide-in-from-bottom-2 duration-500
       ${maxWidthClasses[maxWidth]} 
       ${className}
     `}>

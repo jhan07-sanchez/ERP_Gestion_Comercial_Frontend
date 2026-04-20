@@ -63,7 +63,12 @@ export default function ProductosList() {
   if (isLoading && productos.length === 0) {
     return (
       <PageContainer>
-        <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <PageHeader
+          title="Productos"
+          subtitle="Gestiona el catálogo de productos y servicios"
+          icon={<IconPackage size={24} />}
+        />
+        <div className="flex flex-col items-center justify-center min-h-[400px] bg-white rounded-xl border border-primary-100 shadow-sm">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto" />
           <p className="mt-4 text-primary-600 font-medium">Cargando catálogo...</p>
         </div>

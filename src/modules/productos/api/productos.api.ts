@@ -48,15 +48,20 @@ export const productosAPI = {
       }
     });
 
-    const { data } = await axiosInstance.post<Producto>(
+    const response = await axiosInstance.post<{ data?: Producto } & Producto>(
       `${API_BASE}/`,
       formData,
       { headers: { "Content-Type": "multipart/form-data" } },
     );
 
-    console.log("Producto creado backend:", data);
+    // 🔥 NORMALIZACIÓN DE RESPUESTA (CREACIÓN)
+    // El backend puede devolver { data: { ... } } o { ... } directamente
+    const rawData = response.data;
+    const normalizedData = (rawData as unknown as { data?: Producto })?.data || rawData;
 
-    return data; // ✅ DIRECTO, SIN .data
+    console.log("Producto creado backend (normalizado):", normalizedData);
+
+    return normalizedData as Producto;
   },
 
   updateProducto: async (

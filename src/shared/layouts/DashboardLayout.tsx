@@ -35,7 +35,10 @@ export default function DashboardLayout() {
         </div>
 
         {/* Contenido de la Página con Scroll independiente */}
-        <main className="flex-1 overflow-x-hidden overflow-y-auto custom-scrollbar bg-[#f8fafc]">
+        <main 
+          key="erp-main-content"
+          className="flex-1 overflow-x-hidden overflow-y-auto custom-scrollbar bg-[#f8fafc]"
+        >
           <Outlet />
         </main>
 

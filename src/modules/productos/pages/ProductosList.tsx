@@ -157,25 +157,27 @@ export default function ProductosList() {
                         <Table.Row key={producto.id} className="hover:bg-primary-50/20">
                           <Table.Cell>
                             <span className="font-mono text-[10px] font-bold text-primary-400 bg-primary-50 px-2 py-0.5 rounded border border-primary-100 uppercase tracking-tighter">
-                              {producto.codigo || "S/C"}
+                              <span>{producto.codigo || "S/C"}</span>
                             </span>
                           </Table.Cell>
                           <Table.Cell>
                             <div className="flex flex-col">
-                              <span className="font-bold text-primary-900 leading-tight">{producto.nombre}</span>
+                              <span className="font-bold text-primary-900 leading-tight">
+                                <span>{producto.nombre}</span>
+                              </span>
                               <span className="text-[10px] text-primary-400 md:hidden italic">
-                                {producto.categoria_info?.nombre || "General"}
+                                <span>{producto.categoria_info?.nombre || "General"}</span>
                               </span>
                             </div>
                           </Table.Cell>
                           <Table.Cell className="hidden md:table-cell">
                             <div className="flex items-center gap-1.5 text-xs text-primary-600 font-medium">
                               <IconTag size={12} className="text-primary-400" />
-                              {producto.categoria_info?.nombre || "Sin categoría"}
+                              <span>{producto.categoria_info?.nombre || "Sin categoría"}</span>
                             </div>
                           </Table.Cell>
                           <Table.Cell className="text-right font-black text-primary-900">
-                            {formatCurrency(producto.precio_venta)}
+                            <span>{formatCurrency(producto.precio_venta)}</span>
                           </Table.Cell>
                           <Table.Cell className="text-center">
                             <span
@@ -184,7 +186,7 @@ export default function ProductosList() {
                                 : "bg-green-100 text-green-700 border border-green-200"
                                 }`}
                             >
-                              {producto.stock_actual || 0}
+                              <span>{producto.stock_actual || 0}</span>
                             </span>
                           </Table.Cell>
                           <Table.Cell className="text-center">

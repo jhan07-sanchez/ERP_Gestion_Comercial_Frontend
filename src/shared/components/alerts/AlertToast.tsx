@@ -87,11 +87,11 @@ export function AlertToast({ t, title, type, options, onClose }: AlertToastProps
                 {/* Content */}
                 <div className="flex-1 space-y-2">
                     <h3 className={`text-sm font-black uppercase tracking-tight ${styles.text}`}>
-                        {title}
+                        <span>{title}</span>
                     </h3>
                     {options?.description && (
                         <p className={`text-xs font-bold leading-relaxed opacity-70 ${styles.text}`}>
-                            {options.description}
+                            <span>{options.description}</span>
                         </p>
                     )}
 

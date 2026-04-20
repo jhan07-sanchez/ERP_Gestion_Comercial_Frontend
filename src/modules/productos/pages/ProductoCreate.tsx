@@ -62,7 +62,7 @@ export default function ProductoCreate() {
       const nuevoProducto = await createProducto(apiData);
 
       showAlert("Producto Creado", "success", {
-        description: `¡Producto creado exitosamente! Código: ${nuevoProducto.codigo}`
+        description: <span>¡Producto creado exitosamente! Código: <b>{nuevoProducto.codigo}</b></span>
       });
 
       // 🔥 NAVEGACIÓN INMEDIATA (Evita colisiones de DOM por timers)

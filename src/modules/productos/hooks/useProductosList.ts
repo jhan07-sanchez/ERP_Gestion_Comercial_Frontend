@@ -1,9 +1,8 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { productosAPI } from "../api/productos.api";
 import type {
     ProductoList,
     ProductoFilters,
-    PaginatedResponse,
 } from "../types";
 
 export function useProductosList() {
@@ -20,16 +19,38 @@ export function useProductosList() {
             setError(null);
 
             try {
-                const response: PaginatedResponse<ProductoList> =
-                    await productosAPI.getProductos(currentFilters, page);
+                const response = await productosAPI.getProductos(currentFilters, page);
+                
+                // ✅ TIPADO SEGURO (ERP READY)
+                const data = response as unknown;
+                let productosNormalizados: ProductoList[] = [];
+                let total = 0;
 
-                setProductos(response.results ?? []);
+                if (Array.isArray(data)) {
+                    productosNormalizados = data;
+                    total = data.length;
+                } else if (data && typeof data === 'object' && 'results' in data) {
+                    const paginatedData = data as { results: ProductoList[]; count?: number };
+                    if (Array.isArray(paginatedData.results)) {
+                        productosNormalizados = paginatedData.results;
+                        total = paginatedData.count ?? paginatedData.results.length;
+                    }
+                } else {
+                    console.warn("⚠️ Formato inesperado de API en productos:", data);
+                    productosNormalizados = [];
+                    total = 0;
+                }
+
+                setProductos(productosNormalizados);
                 setCurrentPage(page);
-                setTotalCount(response.count);
+                setTotalCount(total);
             } catch (err: unknown) {
+                console.error("❌ Error en fetchProductos:", err);
                 setError(
                     err instanceof Error ? err.message : "Error al cargar productos",
                 );
+                setProductos([]);
+                setTotalCount(0);
             } finally {
                 setIsLoading(false);
             }
@@ -37,12 +58,16 @@ export function useProductosList() {
         [filters],
     );
 
+    // 🔥 AUTO-FETCH: Hidratación automática
+    useEffect(() => {
+        fetchProductos(1, filters);
+    }, [fetchProductos, filters]);
+
     const applyFilters = useCallback(
-        async (newFilters: ProductoFilters) => {
+        (newFilters: ProductoFilters) => {
             setFilters(newFilters);
-            await fetchProductos(1, newFilters);
         },
-        [fetchProductos],
+        [],
     );
 
     const changePage = useCallback(

@@ -344,22 +344,20 @@ export function VentaForm({
                 <button
                   type="button"
                   onClick={() => onChange({ ...value, tipo_documento: 'FACTURA' })}
-                  className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    value.tipo_documento === 'FACTURA'
+                  className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${value.tipo_documento === 'FACTURA'
                       ? 'bg-white text-blue-600 shadow-sm'
                       : 'text-gray-500 hover:text-gray-700'
-                  }`}
+                    }`}
                 >
                   FACTURA
                 </button>
                 <button
                   type="button"
                   onClick={() => onChange({ ...value, tipo_documento: 'RECIBO' })}
-                  className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    value.tipo_documento === 'RECIBO'
+                  className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${value.tipo_documento === 'RECIBO'
                       ? 'bg-white text-blue-600 shadow-sm'
                       : 'text-gray-500 hover:text-gray-700'
-                  }`}
+                    }`}
                 >
                   RECIBO POS
                 </button>
@@ -371,8 +369,8 @@ export function VentaForm({
               <div className="mb-4 flex items-center gap-2 text-sm text-gray-500 bg-gray-50 p-2 rounded-lg border border-dashed border-gray-200 w-fit">
                 <span className="font-medium">Próximo Correlativo:</span>
                 <Badge variant="info" className="font-mono">
-                  {value.tipo_documento === 'FACTURA' 
-                    ? config.numero_factura_preview 
+                  {value.tipo_documento === 'FACTURA'
+                    ? config.numero_factura_preview
                     : config.numero_recibo_preview}
                 </Badge>
               </div>

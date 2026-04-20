@@ -65,7 +65,8 @@ export default function ProductoCreate() {
         description: `¡Producto creado exitosamente! Código: ${nuevoProducto.codigo}`
       });
 
-      setTimeout(() => navigate("/productos"), 1500);
+      // 🔥 NAVEGACIÓN INMEDIATA (Evita colisiones de DOM por timers)
+      navigate("/productos/lista");
     } catch (err: unknown) {
       console.error("❌ ERROR AL CREAR PRODUCTO:", err);
       const errorMsg = err instanceof Error ? err.message : "Error al crear el producto.";
@@ -107,9 +108,9 @@ export default function ProductoCreate() {
         subtitle="Crea un nuevo producto en el catálogo"
         icon={<IconPackage size={24} />}
         backButton={
-          <Button 
-            variant="secondary" 
-            size="sm" 
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={handleCancel}
             className="p-2 h-10 w-10 flex items-center justify-center rounded-xl"
           >
@@ -137,7 +138,7 @@ export default function ProductoCreate() {
             <div className="space-y-1">
               <h3 className="text-sm font-bold text-blue-900">Información</h3>
               <p className="text-xs text-blue-800 opacity-90">
-                Los productos creados aparecerán inmediatamente en el catálogo de ventas y compras. 
+                Los productos creados aparecerán inmediatamente en el catálogo de ventas y compras.
                 Asegúrate de asignar la categoría correcta para reportes precisos.
               </p>
             </div>

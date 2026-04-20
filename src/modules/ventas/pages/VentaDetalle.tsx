@@ -108,9 +108,9 @@ export default function VentaDetalle() {
         subtitle={`Registrada el ${formatDate(venta.fecha)} por ${venta.usuario_nombre}`}
         icon={<IconReceipt size={24} />}
         backButton={
-          <Button 
-            variant="secondary" 
-            size="sm" 
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={() => navigate("/ventas")}
             className="p-2 h-10 w-10 flex items-center justify-center rounded-xl"
           >
@@ -184,10 +184,10 @@ export default function VentaDetalle() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <KPICard label="Total Venta" value={formatCurrency(venta.total)} color="blue" />
         <KPICard label="Monto Pagado" value={formatCurrency(venta.total_pagado)} color="emerald" />
-        <KPICard 
-          label="Saldo Pendiente" 
-          value={formatCurrency(venta.saldo_pendiente)} 
-          color={venta.saldo_pendiente > 0 ? "rose" : "indigo"} 
+        <KPICard
+          label="Saldo Pendiente"
+          value={formatCurrency(venta.saldo_pendiente)}
+          color={venta.saldo_pendiente > 0 ? "rose" : "indigo"}
           isHighlighted={venta.saldo_pendiente > 0}
         />
       </div>

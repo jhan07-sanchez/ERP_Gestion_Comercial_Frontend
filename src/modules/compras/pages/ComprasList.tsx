@@ -175,7 +175,7 @@ export default function ComprasList() {
                           >
                             <IconEye size={16} className="text-primary-600" />
                           </Button>
-                          
+
                           {compra.estado === "PENDIENTE" && (
                             <>
                               <Button

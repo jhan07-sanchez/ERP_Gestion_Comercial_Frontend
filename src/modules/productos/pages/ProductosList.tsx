@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Button, Input, Table, Badge, PageContainer, PageHeader } from "@/shared/components/ui";
 import { useSuscripcion } from "@/modules/auth/hooks/useSuscripcion";
@@ -6,12 +6,12 @@ import { useProductosList, useProductoActions } from "../hooks";
 import type { ProductoFilters } from "../types";
 import { formatCurrency } from "@/shared/utils/formatters";
 import { useAlert } from "@/shared/components/alerts";
-import { 
-  IconPackage, 
-  IconPlus, 
-  IconSearch, 
-  IconEdit, 
-  IconTrash, 
+import {
+  IconPackage,
+  IconPlus,
+  IconSearch,
+  IconEdit,
+  IconTrash,
   IconAlertCircle,
   IconTag
 } from "@tabler/icons-react";
@@ -34,9 +34,7 @@ export default function ProductosList() {
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    fetchProductos();
-  }, [fetchProductos]);
+  // La carga inicial y persistencia están ahora centralizadas en useProductosList
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);

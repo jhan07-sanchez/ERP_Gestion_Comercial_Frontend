@@ -3,11 +3,11 @@
  */
 
 import axiosInstance from "@/shared/api/axios";
-import type { 
-  DocumentoList, 
-  DocumentoDetail, 
+import type {
+  DocumentoList,
+  DocumentoDetail,
   DocumentoFilters,
-  PaginatedResponse 
+  PaginatedResponse
 } from "../types/documentos.types";
 
 
@@ -20,12 +20,12 @@ export const documentosAPI = {
     page = 1
   ): Promise<PaginatedResponse<DocumentoList>> => {
     const params = new URLSearchParams();
-    
+
     if (filters?.tipo) params.append("tipo", filters.tipo);
     if (filters?.venta_id) params.append("venta_id", String(filters.venta_id));
     if (filters?.compra_id) params.append("compra_id", String(filters.compra_id));
     if (filters?.search) params.append("search", filters.search);
-    
+
     params.append("page", String(page));
 
     const response = await axiosInstance.get(`${API_BASE}/`, { params });
@@ -54,7 +54,7 @@ export const documentosAPI = {
       link.setAttribute('download', filename);
       document.body.appendChild(link);
       link.click();
-      
+
       // Limpieza
       link.parentNode?.removeChild(link);
       window.URL.revokeObjectURL(url);

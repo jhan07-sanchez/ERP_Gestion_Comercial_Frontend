@@ -39,8 +39,8 @@ export default function CompraCreate() {
   });
 
   useEffect(() => {
-    fetchProveedores().catch(() => {});
-    fetchProductos().catch(() => {});
+    fetchProveedores().catch(() => { });
+    fetchProductos().catch(() => { });
   }, [fetchProveedores, fetchProductos]);
 
   const validateForm = (): { valid: boolean; message?: string } => {
@@ -194,9 +194,9 @@ export default function CompraCreate() {
         subtitle="Registra una compra de proveedor"
         icon={<IconShoppingCart size={24} />}
         backButton={
-          <Button 
-            variant="secondary" 
-            size="sm" 
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={handleCancel}
             className="p-2 h-10 w-10 flex items-center justify-center rounded-xl"
             disabled={submitting}
@@ -214,7 +214,7 @@ export default function CompraCreate() {
             </div>
             <h2 className="text-2xl font-black text-rose-900 mb-3 tracking-tight">Caja Cerrada</h2>
             <p className="text-rose-800/80 mb-8 max-w-md font-medium">
-              Para registrar nuevas compras es necesario tener una sesión de caja abierta. 
+              Para registrar nuevas compras es necesario tener una sesión de caja abierta.
               Esto es requerido para el control financiero.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">

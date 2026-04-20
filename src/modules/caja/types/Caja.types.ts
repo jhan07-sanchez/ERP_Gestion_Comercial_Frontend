@@ -201,7 +201,7 @@ export interface RegistrarArqueoInput {
  */
 export interface CajaFormData {
   nombre: string;
-  monto_inicial: string; // "50000.00"
+  monto_inicial: number | "";
   observaciones: string;
 }
 
@@ -209,8 +209,8 @@ export interface CajaFormData {
  * Estado del formulario para cerrar caja
  */
 export interface CierreSesionFormData {
-  monto_contado: string;
-  detalle_billetes: Record<string, { cantidad: string }>;
+  monto_contado: number | "";
+  detalle_billetes: Record<string, { cantidad: number | "" }>;
   observaciones: string;
 }
 
@@ -219,17 +219,17 @@ export interface CierreSesionFormData {
  */
 export interface MovimientoFormData {
   tipo: TipoMovimiento;
-  monto: string;
+  monto: number | "";
   descripcion: string;
-  metodo_pago_id: string; // ID como string en el form
+  metodo_pago_id: string | number; // ID en el form
 }
 
 /**
  * Estado del formulario para arqueo
  */
 export interface ArqueoFormData {
-  monto_contado: string;
-  detalle_billetes: Record<string, string>; // "{"100000": "1", "50000": "2"}"
+  monto_contado: number | "";
+  detalle_billetes: Record<string, number | "">; // "{"100000": 1, "50000": 2}"
   observaciones: string;
 }
 

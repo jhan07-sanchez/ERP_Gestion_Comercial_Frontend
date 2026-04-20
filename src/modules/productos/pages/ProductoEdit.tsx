@@ -48,7 +48,7 @@ export default function ProductoEdit() {
                             ? producto.categoria.id
                             : producto.categoria,
                     precio_venta: producto.precio_venta,
-                    precio_compra: producto.precio_compra ?? 0,
+                    precio_compra: producto.precio_compra ?? "",
                     stock_minimo: producto.stock_minimo,
                     estado: producto.estado,
                 };
@@ -70,9 +70,9 @@ export default function ProductoEdit() {
             nombre: data.nombre,
             descripcion: data.descripcion,
             categoria: data.categoria,
-            precio_venta: data.precio_venta,
-            precio_compra: data.precio_compra,
-            stock_minimo: data.stock_minimo,
+            precio_venta: Number(data.precio_venta),
+            precio_compra: data.precio_compra === "" ? 0 : Number(data.precio_compra),
+            stock_minimo: Number(data.stock_minimo) || 0,
             estado: data.estado,
         };
     };

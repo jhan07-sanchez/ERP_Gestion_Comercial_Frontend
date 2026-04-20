@@ -70,7 +70,15 @@ export default function CategoriaForm({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value, type } = e.target;
-    const fieldValue = type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
+    let fieldValue: string | number | boolean | null;
+
+    if (type === "checkbox") {
+      fieldValue = (e.target as HTMLInputElement).checked;
+    } else if (type === "number") {
+      fieldValue = value === "" ? "" : Number(value);
+    } else {
+      fieldValue = value;
+    }
 
     setFormData(prev => ({
       ...prev,

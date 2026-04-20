@@ -31,11 +31,16 @@ export function ProveedorForm({
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const { name, value: inputValue, type } = e.target as HTMLInputElement;
-    let processedValue: string | boolean = inputValue;
+    const { name, value: inputValue, type } = e.target;
+
+    let processedValue: string | number | boolean | null;
 
     if (type === "checkbox") {
       processedValue = (e.target as HTMLInputElement).checked;
+    } else if (type === "number") {
+      processedValue = inputValue === "" ? "" : Number(inputValue);
+    } else {
+      processedValue = inputValue;
     }
 
     onChange({

@@ -68,8 +68,8 @@ export interface ProductoFormValues {
     codigo: string;
     descripcion?: string;
     categoria: number;
-    precio_venta: number;
-    precio_compra?: number;
-    stock_minimo: number;
+    precio_venta: number | "";
+    precio_compra?: number | "";
+    stock_minimo: number | "";
     estado?: boolean;
 }

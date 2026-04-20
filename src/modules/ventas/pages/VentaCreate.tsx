@@ -33,11 +33,11 @@ export default function VentaCreate() {
     }
     for (let i = 0; i < data.detalles.length; i++) {
       const d = data.detalles[i];
-      if (d.cantidad <= 0) return { valid: false, message: `Producto #${i + 1}: La cantidad debe ser mayor a 0` };
-      if (d.precio_unitario <= 0) return { valid: false, message: `Producto #${i + 1}: El precio debe ser mayor a 0` };
-      if (d.cantidad > d.stock_disponible) return { valid: false, message: `${d.producto_nombre}: Stock insuficiente (disponible: ${d.stock_disponible})` };
+      if (Number(d.cantidad) <= 0) return { valid: false, message: `Producto #${i + 1}: La cantidad debe ser mayor a 0` };
+      if (Number(d.precio_unitario) <= 0) return { valid: false, message: `Producto #${i + 1}: El precio debe ser mayor a 0` };
+      if (Number(d.cantidad) > d.stock_disponible) return { valid: false, message: `${d.producto_nombre}: Stock insuficiente (disponible: ${d.stock_disponible})` };
     }
-    if (data.total <= 0) return { valid: false, message: "El total debe ser mayor a 0" };
+    if (Number(data.total) <= 0) return { valid: false, message: "El total debe ser mayor a 0" };
     return { valid: true };
   };
 
@@ -47,8 +47,8 @@ export default function VentaCreate() {
     tipo_documento: data.tipo_documento,
     detalles: data.detalles.map((d) => ({
       producto_id: d.producto_id,
-      cantidad: d.cantidad,
-      precio_unitario: d.precio_unitario,
+      cantidad: Number(d.cantidad) || 0,
+      precio_unitario: Number(d.precio_unitario) || 0,
     })),
   });
 

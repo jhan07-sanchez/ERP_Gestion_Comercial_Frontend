@@ -84,8 +84,8 @@ export default function CompraCreate() {
       observaciones: data.observaciones?.trim() || undefined,
       detalles: data.detalles.map((d) => ({
         producto_id: d.producto,
-        cantidad: d.cantidad,
-        precio_compra: d.precio_unitario,
+        cantidad: Number(d.cantidad) || 0,
+        precio_compra: Number(d.precio_unitario) || 0,
       })),
     };
   };

@@ -48,14 +48,14 @@ export function CajaForm({
       return false;
     }
 
-    if (!value.monto_inicial || value.monto_inicial.trim() === "") {
+    if (value.monto_inicial === undefined || value.monto_inicial === null || value.monto_inicial === "") {
       showAlert("Validación", "warning", {
         description: "El monto inicial es obligatorio.",
       });
       return false;
     }
 
-    const monto = parseFloat(value.monto_inicial);
+    const monto = Number(value.monto_inicial);
 
     if (isNaN(monto)) {
       showAlert("Validación", "warning", {
@@ -85,11 +85,21 @@ export function CajaForm({
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const { name, value: inputValue } = e.target;
+    const { name, value: inputValue, type } = e.target;
+
+    let fieldValue: string | number | boolean | null;
+
+    if (type === "checkbox") {
+      fieldValue = (e.target as HTMLInputElement).checked;
+    } else if (type === "number") {
+      fieldValue = inputValue === "" ? "" : Number(inputValue);
+    } else {
+      fieldValue = inputValue;
+    }
 
     onChange({
       ...value,
-      [name]: inputValue,
+      [name]: fieldValue as string | number | boolean | null,
     });
   };
 

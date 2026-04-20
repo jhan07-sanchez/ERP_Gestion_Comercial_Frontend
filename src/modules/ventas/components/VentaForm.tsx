@@ -183,7 +183,7 @@ export function VentaForm({
     if (indexExistente >= 0) {
       nuevosDetalles = [...value.detalles];
       const detalle = nuevosDetalles[indexExistente];
-      const nuevaCantidad = detalle.cantidad + 1;
+      const nuevaCantidad = Number(detalle.cantidad) + 1;
 
       if (nuevaCantidad > producto.stock_actual && !permitirVentaSinStock) {
         showAlert("Stock Insuficiente", "warning", {
@@ -195,7 +195,7 @@ export function VentaForm({
       nuevosDetalles[indexExistente] = {
         ...detalle,
         cantidad: nuevaCantidad,
-        subtotal: nuevaCantidad * detalle.precio_unitario,
+        subtotal: nuevaCantidad * Number(detalle.precio_unitario),
       };
     } else {
       if (producto.stock_actual <= 0 && !permitirVentaSinStock) {
@@ -250,17 +250,20 @@ export function VentaForm({
     newValue: number | string,
   ) => {
     const detalles = [...value.detalles];
-    let numValue: number;
+    let processedValue: number | "";
 
-    if (field === "precio_unitario") {
-      // Si es string (del input), parsear. Si es número (de props/v-model), usar directo.
+    if (newValue === "") {
+      processedValue = "";
+    } else if (field === "precio_unitario") {
       const raw = typeof newValue === "string" ? parseNumberInput(newValue) : newValue.toString();
-      numValue = parseFloat(raw) || 0;
+      const numValue = parseFloat(raw);
+      processedValue = isNaN(numValue) ? "" : numValue;
     } else {
-      numValue = typeof newValue === "string" ? parseInt(newValue) : newValue;
+      const numValue = typeof newValue === "string" ? parseInt(newValue) : newValue;
+      processedValue = isNaN(numValue) ? "" : numValue;
     }
 
-    const detalle = { ...detalles[index], [field]: isNaN(numValue) ? 0 : numValue };
+    const detalle = { ...detalles[index], [field]: processedValue };
 
     // Validar stock solo si aumenta cantidad y no se permite venta sin stock
     if (field === "cantidad" && (detalle.cantidad || 0) > (detalle.stock_disponible || 0) && !permitirVentaSinStock) {
@@ -298,11 +301,11 @@ export function VentaForm({
 
     for (let i = 0; i < value.detalles.length; i++) {
       const d = value.detalles[i];
-      if (d.cantidad <= 0) {
+      if (Number(d.cantidad) <= 0) {
         showAlert("Validación", "warning", { description: `Producto #${i + 1}: La cantidad debe ser mayor a 0` });
         return false;
       }
-      if (d.precio_unitario <= 0) {
+      if (Number(d.precio_unitario) <= 0) {
         showAlert("Validación", "warning", { description: `Producto #${i + 1}: El precio debe ser mayor a 0` });
         return false;
       }
@@ -615,8 +618,8 @@ export function VentaForm({
                             </button>
                             <input
                               type="number"
-                              value={detalle.cantidad}
-                              onChange={(e) => updateDetalle(index, "cantidad", parseInt(e.target.value) || 0)}
+                              value={detalle.cantidad ?? ""}
+                              onChange={(e) => updateDetalle(index, "cantidad", e.target.value)}
                               className={`w-12 text-center text-sm font-bold focus:outline-none ${numberClass}`}
                             />
                             <button

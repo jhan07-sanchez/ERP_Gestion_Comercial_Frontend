@@ -31,9 +31,9 @@ export default function ProductoCreate() {
     codigo: "",
     descripcion: "",
     categoria: 0,
-    precio_venta: 0,
-    precio_compra: 0,
-    stock_minimo: 0,
+    precio_venta: "",
+    precio_compra: "",
+    stock_minimo: "",
     fecha_ingreso: new Date().toISOString().split("T")[0],
   });
 
@@ -47,8 +47,8 @@ export default function ProductoCreate() {
       descripcion: data.descripcion?.trim() || undefined,
       categoria: Number(data.categoria),
       precio_venta: Number(data.precio_venta),
-      precio_compra: Number(data.precio_compra),
-      stock_minimo: Number(data.stock_minimo),
+      precio_compra: data.precio_compra === "" ? 0 : Number(data.precio_compra),
+      stock_minimo: Number(data.stock_minimo) || 0,
       fecha_ingreso: data.fecha_ingreso,
       estado: true,
     };
@@ -82,9 +82,9 @@ export default function ProductoCreate() {
       formData.nombre.trim() ||
       formData.descripcion?.trim() ||
       formData.categoria !== 0 ||
-      formData.precio_venta > 0 ||
-      (formData.precio_compra ?? 0) > 0 ||
-      formData.stock_minimo > 0 ||
+      Number(formData.precio_venta) > 0 ||
+      Number(formData.precio_compra || 0) > 0 ||
+      Number(formData.stock_minimo) > 0 ||
       formData.codigo.trim().length > 0;
 
     if (hasData) {

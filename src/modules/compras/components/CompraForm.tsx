@@ -23,8 +23,8 @@ import { useConfiguracion } from "@/modules/configuracion/hooks/useConfiguracion
  */
 export interface CompraDetalleForm {
   producto: number;
-  cantidad: number;
-  precio_unitario: number;
+  cantidad: number | "";
+  precio_unitario: number | "";
   subtotal: number; // calculado en UI
 }
 
@@ -87,12 +87,16 @@ export function CompraForm({
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ) => {
-    const { name, value: inputValue, type } = e.target as HTMLInputElement;
+    const { name, value: inputValue, type } = e.target;
 
-    let processedValue: string | number | boolean = inputValue;
+    let processedValue: string | number | boolean | null;
 
     if (type === "checkbox") {
       processedValue = (e.target as HTMLInputElement).checked;
+    } else if (type === "number") {
+      processedValue = inputValue === "" ? "" : Number(inputValue);
+    } else {
+      processedValue = inputValue;
     }
 
     onChange({
@@ -136,7 +140,7 @@ export function CompraForm({
   const updateDetalle = (
     index: number,
     field: keyof CompraDetalleForm,
-    newValue: number,
+    newValue: number | "",
   ) => {
     const detalles = [...value.detalles];
 
@@ -146,7 +150,7 @@ export function CompraForm({
     };
 
     detalleActualizado.subtotal =
-      detalleActualizado.cantidad * detalleActualizado.precio_unitario;
+      (Number(detalleActualizado.cantidad) || 0) * (Number(detalleActualizado.precio_unitario) || 0);
 
     detalles[index] = detalleActualizado;
 
@@ -178,7 +182,7 @@ export function CompraForm({
 
     if (
       value.detalles.some(
-        (d) => !d.producto || d.cantidad <= 0 || d.precio_unitario <= 0,
+        (d) => !d.producto || Number(d.cantidad) <= 0 || Number(d.precio_unitario) <= 0,
       )
     ) {
       showAlert("Validación", "warning", { description: "Revisa que todos los productos seleccionados tengan cantidad y precio válidos" });
@@ -323,9 +327,9 @@ export function CompraForm({
                 <Input
                   type="number"
                   label=""
-                  value={detalle.cantidad}
+                  value={detalle.cantidad ?? ""}
                   onChange={(e) =>
-                    updateDetalle(index, "cantidad", Number(e.target.value))
+                    updateDetalle(index, "cantidad", e.target.value === "" ? "" : Number(e.target.value))
                   }
                   min={1}
                 />
@@ -337,7 +341,7 @@ export function CompraForm({
                   value={
                     focusedIndex === index
                       ? detalle.precio_unitario.toString()
-                      : formatCurrency(detalle.precio_unitario)
+                      : formatCurrency(Number(detalle.precio_unitario) || 0)
                   }
                   onFocus={() => setFocusedIndex(index)}
                   onBlur={() => setFocusedIndex(null)}

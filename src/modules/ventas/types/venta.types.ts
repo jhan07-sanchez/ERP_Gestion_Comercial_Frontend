@@ -228,15 +228,15 @@ export interface VentaFormData {
   estado?: EstadoVenta;
   tipo_documento: "FACTURA" | "RECIBO";
   metodo_pago?: MetodoPago;
-  monto_recibido?: number;
-  vuelto?: number;
+  monto_recibido?: number | "";
+  vuelto?: number | "";
   detalles: {
     producto_id: number;
     producto_codigo: string;
     producto_nombre: string;
     stock_disponible: number;
-    cantidad: number;
-    precio_unitario: number;
+    cantidad: number | "";
+    precio_unitario: number | "";
     subtotal: number;
   }[];
   total: number;

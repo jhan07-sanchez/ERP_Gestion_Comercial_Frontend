@@ -103,7 +103,7 @@ export const sidebarConfig: SidebarItem[] = [
       {
         section: "Administración",
         items: [
-          { label: "Lista de precios", path: "/compras/lista_precios" },
+          { label: "Lista de precios", path: "/precios/lista" },
           { label: "Proveedores", path: "/proveedores/lista" },
         ],
       },

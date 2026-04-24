@@ -64,7 +64,7 @@ export default function ProveedorEdit() {
   };
 
   const handleCancel = () => {
-    navigate("/proveedores");
+    navigate("/proveedores/lista");
   };
 
   if (loading || !formData) {

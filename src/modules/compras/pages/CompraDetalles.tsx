@@ -115,7 +115,7 @@ export default function CompraDetallePage() {
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => navigate("/compras")}
+            onClick={() => navigate("/compras/lista")}
             className="p-2 h-10 w-10 flex items-center justify-center rounded-xl"
           >
             <IconArrowLeft size={20} />

@@ -23,6 +23,7 @@ import CompraDetalles from "@/modules/compras/pages/CompraDetalles";
 import ProveedorList from '@/modules/proveedores/pages/ProveedorList';
 import ProveedorCreate from '@/modules/proveedores/pages/ProveedorCreate';
 import ProveedorEdit from "@/modules/proveedores/pages/ProveedorEdit";
+import ProveedorDetailPage from "@/modules/proveedores/pages/ProveedorDetailPage";
 
 import { Dashboard } from '@/modules/dashboard'; //  Importar del módulo dashboard
 
@@ -46,6 +47,11 @@ import { CajaDashboard } from '@/modules/caja/pages';
 import { AuditPage as AuditoriaLogs } from '@/modules/auditoria';
 import { ConfiguracionPage } from '@/modules/configuracion';
 import DocumentosList from '@/modules/documentos/pages/DocumentosList';
+
+import PrecioListPage from '@/modules/precios/pages/PreciosListPage';
+import PrecioCreate from '@/modules/precios/pages/PrecioCreate';
+import PrecioEdit from '@/modules/precios/pages/PrecioCreate';
+import PrecioDetalle from '@/modules/precios/pages/PrecioDetalle';
 
 type RouteComponentProps = Record<string, string | undefined>;
 
@@ -79,6 +85,7 @@ export const protectedRouteComponents: Record<
   ProveedorList,
   ProveedorEdit,
   ProveedorCreate,
+  ProveedorDetailPage,
 
   ComprasList,
   CompraCreate,
@@ -94,5 +101,9 @@ export const protectedRouteComponents: Record<
   CajaArqueo,
   CajaDashboard,
 
+  PrecioListPage,
+  PrecioCreate,
+  PrecioEdit,
+  PrecioDetalle,
 
 };

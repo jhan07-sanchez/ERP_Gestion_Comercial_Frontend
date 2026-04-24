@@ -48,11 +48,13 @@ export default function ProveedorDetailPage() {
     getProveedor(proveedorId).then(setProveedor);
   }, [proveedorId, getProveedor]);
 
-  const handleBack = () => navigate("/proveedores");
+  const handleBack = () => navigate("/proveedores/lista");
 
   const handleEdit = () => {
     if (proveedorId) navigate(`/proveedores/${proveedorId}/editar`);
+
   };
+
 
   const handleDelete = async () => {
     if (!proveedorId || !proveedor) return;
@@ -63,7 +65,7 @@ export default function ProveedorDetailPage() {
       const success = await deleteProveedor(proveedorId);
       if (success) {
         showAlert("¡Eliminado!", "success", { description: "El proveedor ha sido eliminado correctamente." });
-        navigate("/proveedores");
+        navigate("/proveedores/lista");
       } else {
         showAlert("Error", "error", { description: "No se pudo eliminar el proveedor. Intenta de nuevo." });
       }

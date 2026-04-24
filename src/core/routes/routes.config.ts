@@ -14,37 +14,30 @@ export interface RouteConfigItem {
 /** Claves de componentes para rutas protegidas */
 export type ProtectedRouteKey =
   | "Dashboard"
-
   | "VentasList"
   | "VentaCreate"
   | "VentaEdit"
   | "VentaDetalle"
-
   | "Reportes"
-
   | "AuditoriaLogs"
   | "DocumentosList"
   | "Configuracion"
-
   | "ProductosList"
   | "ProductoCreate"
   | "ProductoEdit"
   | "CategoriasList"
   | "CategoriasCreate" // ← NUEVO
-
   | "ClientesList"
   | "ClienteCreate"
   | "ClienteEdit"
-
   | "ProveedorList"
   | "ProveedorCreate"
   | "ProveedorEdit"
-
+  | "ProveedorDetailPage"
   | "ComprasList"
   | "CompraCreate"
   | "CompraEdit"
   | "CompraDetalles"
-
   | "CajaCreate"
   | "CajaList"
   | "CajaAbrir"
@@ -53,6 +46,11 @@ export type ProtectedRouteKey =
   | "CajaMovimientos"
   | "CajaArqueo"
   | "CajaDashboard"
+  | "PrecioListPage"
+  | "PrecioCreate"
+  | "PrecioEdit"
+  | "PrecioDetalle";
+
 
 
 
@@ -265,7 +263,14 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
       description: "Modifica los detalles del proveedor.",
     },
   },
-
+  {
+    path: "proveedores/:id",
+    componentKey: "ProveedorDetailPage",
+    placeholderProps: {
+      title: "Detalle del Proveedor",
+      description: "Información detallada del proveedor.",
+    },
+  },
   {
     path: "compras/lista",
     componentKey: "ComprasList",
@@ -329,6 +334,38 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
       description: "Configuración del sistema.",
     },
   },
+  {
+    path: "precios/lista",
+    componentKey: "PrecioListPage",
+    placeholderProps: {
+      title: "Precios",
+      description: "Gestión de precios de productos.",
+    },
+  },
+  {
+    path: "precios/crear",
+    componentKey: "PrecioCreate",
+    placeholderProps: {
+      title: "Crear Precio",
+      description: "Registra un nuevo precio.",
+    },
+  },
+  {
+    path: "precios/:id/editar",
+    componentKey: "PrecioEdit",
+    placeholderProps: {
+      title: "Editar Precio",
+      description: "Modifica los detalles del precio.",
+    },
+  },
+  {
+    path: "precios/:id/detalles",
+    componentKey: "PrecioDetalle",
+    placeholderProps: {
+      title: "Detalles de Precio",
+      description: "Información detallada del precio.",
+    },
+  }
 ];
 
 export const defaultAuthenticatedPath = ROUTES.DASHBOARD;

@@ -230,6 +230,13 @@ export default function ProveedorList() {
                                         >
                                             <IconTrash size={16} stroke={2.5} />
                                         </button>
+                                        <button
+                                            onClick={() => navigate(`../proveedores/${proveedor.id}`, { relative: "route" })}
+                                            className="p-2 text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors"
+                                            title="Ver Detalles"
+                                        >
+                                            <IconSearch size={16} stroke={2.5} />
+                                        </button>
                                     </div>
                                 </td>
                             </tr>

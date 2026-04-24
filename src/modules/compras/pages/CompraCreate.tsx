@@ -136,7 +136,7 @@ export default function CompraCreate() {
       const confirmar = await confirm("Confirmar Cancelación", "¿Seguro que deseas cancelar? Se perderán los datos ingresados.", "warning");
       if (!confirmar) return;
     }
-    navigate("/compras");
+    navigate("/compras/lista");
   };
 
   if (loadingProveedores || loadingProductos) {
@@ -159,7 +159,7 @@ export default function CompraCreate() {
           <p className="text-gray-600 mb-6">{errorProveedores || errorProductos}</p>
           <div className="flex gap-3">
             <Button onClick={() => { fetchProveedores(); fetchProductos(); }}>Reintentar</Button>
-            <Button variant="secondary" onClick={() => navigate("/compras")}>Volver</Button>
+            <Button variant="secondary" onClick={() => navigate("/compras/lista")}>Volver</Button>
           </div>
         </div>
       </PageContainer>
@@ -180,7 +180,7 @@ export default function CompraCreate() {
           <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
             {proveedores.length === 0 && <Button className="flex-1" onClick={() => navigate("/proveedores/crear")}>Crear Proveedor</Button>}
             {productos.length === 0 && <Button className="flex-1" onClick={() => navigate("/productos/crear")}>Crear Producto</Button>}
-            <Button variant="secondary" onClick={() => navigate("/compras")} className="flex-1">Volver</Button>
+            <Button variant="secondary" onClick={() => navigate("/compras/lista")} className="flex-1">Volver</Button>
           </div>
         </div>
       </PageContainer>

@@ -89,7 +89,7 @@ export default function ProveedorCreate() {
       if (!confirmar) return;
     }
 
-    navigate("/proveedores");
+    navigate("/proveedores/lista");
   };
 
   return (

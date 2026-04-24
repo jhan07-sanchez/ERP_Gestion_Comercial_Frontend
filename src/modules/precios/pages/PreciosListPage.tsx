@@ -12,7 +12,7 @@ import {
   PageHeader,
 } from "@/shared/components/ui";
 
-import { usePrecios } from "../hooks/usePrecios";
+import { usePreciosList, useDeletePrecio } from "../hooks/usePrecios";
 import { formatCurrency } from "@/shared/utils/formatters";
 import { useAlert } from "@/shared/components/alerts";
 
@@ -26,16 +26,16 @@ import {
 
 export default function PreciosList() {
   const navigate = useNavigate();
-
-  const { precios, loading, fetchPrecios } = usePrecios();
-
   const { showAlert, confirm } = useAlert();
 
   const [searchTerm, setSearchTerm] = useState("");
+  const { data: preciosData, isLoading } = usePreciosList({ search: searchTerm });
+  const deleteMutation = useDeletePrecio();
+
+  const precios = preciosData?.results || [];
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
-    fetchPrecios({ search: value });
   };
 
   const handleDelete = async (id: number) => {
@@ -47,21 +47,29 @@ export default function PreciosList() {
 
     if (confirmar) {
       try {
-        // ⚠️ OJO: en tu backend esto es "desactivar", no borrar
-        await fetch(`/api/precios/${id}/`, { method: "DELETE" });
-        await fetchPrecios();
-        showAlert("Precio desactivado", "success");
+        await deleteMutation.mutateAsync(id);
+        showAlert("Precio desactivado exitosamente", "success");
       } catch (error) {
         console.error(error);
-        showAlert("Error", "error");
+        showAlert("Error al desactivar el precio", "error");
       }
     }
   };
 
-  if (loading && precios.length === 0) {
+  if (isLoading && precios.length === 0) {
     return (
       <PageContainer>
         <PageHeader title="Precios" subtitle="Cargando precios..." />
+        <Card>
+          <Card.Content>
+            <div className="space-y-4">
+              <div className="h-10 bg-gray-200 rounded animate-pulse w-full"></div>
+              <div className="h-10 bg-gray-200 rounded animate-pulse w-full"></div>
+              <div className="h-10 bg-gray-200 rounded animate-pulse w-full"></div>
+              <div className="h-10 bg-gray-200 rounded animate-pulse w-full"></div>
+            </div>
+          </Card.Content>
+        </Card>
       </PageContainer>
     );
   }

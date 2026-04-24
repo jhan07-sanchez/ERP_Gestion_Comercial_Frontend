@@ -50,7 +50,7 @@ import DocumentosList from '@/modules/documentos/pages/DocumentosList';
 
 import PrecioListPage from '@/modules/precios/pages/PreciosListPage';
 import PrecioCreate from '@/modules/precios/pages/PrecioCreate';
-import PrecioEdit from '@/modules/precios/pages/PrecioCreate';
+import PrecioEdit from '@/modules/precios/pages/PrecioEdit';
 import PrecioDetalle from '@/modules/precios/pages/PrecioDetalle';
 
 type RouteComponentProps = Record<string, string | undefined>;

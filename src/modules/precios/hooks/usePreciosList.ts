@@ -8,6 +8,7 @@ import type { PrecioFilters } from "../types/precio.types";
 export function usePreciosList() {
   const [precios, setPrecios] = useState<PrecioList[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [filters, setFilters] = useState({
     producto: undefined,
@@ -19,11 +20,13 @@ export function usePreciosList() {
   const fetchPrecios = useCallback(
   async (filtersParam?: PrecioFilters) => {
     setLoading(true);
+    setError(null);
     try {
       const data = await preciosAPI.getAll(filtersParam || {});
       setPrecios(data?.results ?? []);
     } catch (error) {
       console.error("Error cargando precios:", error);
+      setError("Error al cargar precios. Por favor, intenta de nuevo.");
     } finally {
       setLoading(false);
     }
@@ -32,13 +35,12 @@ export function usePreciosList() {
 
   );
 
-
-
   return {
     precios,
     loading,
     filters,
     setFilters,
     fetchPrecios,
+    error,
   };
 }

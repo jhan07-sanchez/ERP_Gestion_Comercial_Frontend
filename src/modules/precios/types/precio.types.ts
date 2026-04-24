@@ -68,7 +68,9 @@ export interface PrecioCreateInput {
   producto: number;
   proveedor: number;
   precio: number;
+  vigente: boolean;
   fecha_inicio?: string;
+  fecha_fin?: string;
 }
 
 export interface PrecioUpdateInput {
@@ -95,6 +97,7 @@ export interface PrecioFormValues {
   proveedor: number | "";
   precio: number | "";
   fecha_inicio?: string;
+  fecha_fin?: string;
 }
 
 export interface PaginatedResponse<T> {

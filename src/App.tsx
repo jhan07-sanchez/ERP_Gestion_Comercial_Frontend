@@ -10,15 +10,27 @@ import AppRouter from '@/core/routes/AppRouter';
 import { AlertProvider } from '@/shared/components/alerts';
 import { ConfigLoader } from '@/core/providers/ConfigLoader';
 import { SessionTimeoutManager } from '@/shared/components/session/SessionTimeoutManager';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   return (
-    <AlertProvider>
-      <ConfigLoader>
-        <SessionTimeoutManager />
-        <AppRouter />
-      </ConfigLoader>
-    </AlertProvider>
+    <QueryClientProvider client={queryClient}>
+      <AlertProvider>
+        <ConfigLoader>
+          <SessionTimeoutManager />
+          <AppRouter />
+        </ConfigLoader>
+      </AlertProvider>
+    </QueryClientProvider>
   );
 }
 

@@ -1,55 +1,46 @@
 import axiosInstance from "@/shared/api/axios";
-import type { PrecioFilters } from "../types/precio.types";
+import type { 
+  PrecioFilters,
+  PrecioList,
+  PrecioDetail,
+  PrecioCreateInput,
+  PrecioUpdateInput,
+  PaginatedResponse
+} from "../types/precio.types";
 
 export const preciosAPI = {
-  getAll: async (params?: PrecioFilters) => {
-    const response = await axiosInstance.get("/precios/", { params });
+  getAll: async (params?: PrecioFilters): Promise<PaginatedResponse<PrecioList>> => {
+    const response = await axiosInstance.get("/precios/precios/", { params });
     return response.data;
   },
 
-  getById: async (id: number) => {
-    const response = await axiosInstance.get(`/precios/${id}/`);
+  getById: async (id: number): Promise<PrecioDetail> => {
+    const response = await axiosInstance.get(`/precios/precios/${id}/`);
     return response.data;
   },
 
-  create: async (data: {
-    producto: number;
-    proveedor: number;
-    precio: number;
-    fecha_inicio?: string;
-  }) => {
-    const response = await axiosInstance.post("/precios/", data);
+  create: async (data: PrecioCreateInput): Promise<PrecioDetail> => {
+    const response = await axiosInstance.post("/precios/precios/", data);
     return response.data;
   },
 
-  update: async (
-    id: number,
-    data: {
-      precio?: number;
-      fecha_inicio?: string;
-      fecha_fin?: string;
-    },
-  ) => {
-    const response = await axiosInstance.patch(`/precios/${id}/`, data);
+  update: async (id: number, data: PrecioUpdateInput): Promise<PrecioDetail> => {
+    const response = await axiosInstance.patch(`/precios/precios/${id}/`, data);
     return response.data;
   },
 
-  delete: async (id: number) => {
-    const response = await axiosInstance.delete(`/precios/${id}/`);
-    return response.data;
+  delete: async (id: number): Promise<void> => {
+    await axiosInstance.delete(`/precios/precios/${id}/`);
   },
 
-  getPrecioVigente: async (productoId: number, proveedorId: number) => {
-    const response = await axiosInstance.get("/precios/", {
+  getPrecioVigente: async (productoId: number, proveedorId: number): Promise<PrecioDetail | null> => {
+    const response = await axiosInstance.get("/precios/precios/precio_vigente/", {
       params: {
         producto: productoId,
         proveedor: proveedorId,
-        vigente: true,
       },
     });
 
-    const results = response.data.results || response.data;
-
-    return results.length > 0 ? results[0] : null;
+    return response.data.precio === null ? null : response.data;
   },
 };

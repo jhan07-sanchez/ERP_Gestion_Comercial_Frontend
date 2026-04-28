@@ -154,13 +154,13 @@ export default function CompraEdit() {
       />
 
       {!isCajaAbierta ? (
-        <Card className="border-red-100 bg-red-50/30">
+        <Card className="border-danger-100 bg-danger-50/30">
           <Card.Content className="flex flex-col items-center text-center p-12">
-            <div className="p-4 bg-red-100 rounded-2xl text-red-600 mb-4">
+            <div className="p-4 bg-danger-100 rounded-2xl text-danger-600 mb-4">
               <IconLock size={48} />
             </div>
-            <h2 className="text-2xl font-black text-gray-900 mb-2">Caja Cerrada</h2>
-            <p className="text-gray-600 mb-6 max-w-md">
+            <h2 className="text-2xl font-black text-primary-900 mb-2">Caja Cerrada</h2>
+            <p className="text-primary-600 mb-6 max-w-md">
               Es necesario tener una sesión de caja abierta para poder editar compras y mantener el control financiero.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
@@ -186,12 +186,12 @@ export default function CompraEdit() {
             onCancel={() => navigate("/compras")}
           />
 
-          <Card className="bg-amber-50 border-amber-200">
+          <Card className="bg-warning-50 border-warning-200">
             <Card.Content className="p-4 flex gap-3">
-              <IconAlertTriangle className="text-amber-600 shrink-0" size={20} />
+              <IconAlertTriangle className="text-warning-600 shrink-0" size={20} />
               <div className="space-y-1">
-                <h3 className="text-sm font-bold text-amber-900">Importante</h3>
-                <ul className="text-xs text-amber-800 space-y-1 list-disc list-inside opacity-90">
+                <h3 className="text-sm font-bold text-warning-900">Importante</h3>
+                <ul className="text-xs text-warning-800 space-y-1 list-disc list-inside opacity-90">
                   <li>Los cambios afectarán directamente el inventario actual.</li>
                   <li>Asegúrate de verificar los precios de costo antes de guardar.</li>
                   <li>Las modificaciones quedan registradas en el historial de auditoría.</li>

@@ -14,7 +14,7 @@ export function Loader({ size = 'md', variant = 'primary' }: LoaderProps) {
   }[size];
 
   const variantClass = {
-    default: 'border-gray-300',
+    default: 'border-primary-300',
     primary: 'border-primary',
     secondary: 'border-secondary',
   }[variant];

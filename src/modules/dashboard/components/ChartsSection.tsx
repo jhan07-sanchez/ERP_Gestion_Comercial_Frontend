@@ -26,10 +26,10 @@ export function ChartsSection({ charts }: ChartsSectionProps) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Ventas Semanales */}
-      <Card className="p-6 border-none shadow-sm ring-1 ring-slate-100">
+      <Card className="p-6 border-none shadow-sm ring-1 ring-primary-100">
         <div className="mb-6">
-          <h3 className="text-sm font-black text-slate-800 uppercase tracking-tight">Ventas últimos 7 días</h3>
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tendencia de ingresos semanal</p>
+          <h3 className="text-sm font-black text-primary-800 uppercase tracking-tight">Ventas últimos 7 días</h3>
+          <p className="text-[10px] font-bold text-primary-400 uppercase tracking-widest">Tendencia de ingresos semanal</p>
         </div>
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
@@ -65,10 +65,10 @@ export function ChartsSection({ charts }: ChartsSectionProps) {
       </Card>
 
       {/* Top Productos */}
-      <Card className="p-6 border-none shadow-sm ring-1 ring-slate-100">
+      <Card className="p-6 border-none shadow-sm ring-1 ring-primary-100">
         <div className="mb-6">
-          <h3 className="text-sm font-black text-slate-800 uppercase tracking-tight">Productos más vendidos</h3>
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Ranking por volumen de salida</p>
+          <h3 className="text-sm font-black text-primary-800 uppercase tracking-tight">Productos más vendidos</h3>
+          <p className="text-[10px] font-bold text-primary-400 uppercase tracking-widest">Ranking por volumen de salida</p>
         </div>
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
@@ -98,20 +98,20 @@ export function ChartsSection({ charts }: ChartsSectionProps) {
       </Card>
 
       {/* Flujo de Caja */}
-      <Card className="lg:col-span-2 p-6 border-none shadow-sm ring-1 ring-slate-100">
+      <Card className="lg:col-span-2 p-6 border-none shadow-sm ring-1 ring-primary-100">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-black text-slate-800 uppercase tracking-tight">Flujo de Caja del Día</h3>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Comparativa Ingresos vs Egresos</p>
+            <h3 className="text-sm font-black text-primary-800 uppercase tracking-tight">Flujo de Caja del Día</h3>
+            <p className="text-[10px] font-bold text-primary-400 uppercase tracking-widest">Comparativa Ingresos vs Egresos</p>
           </div>
           <div className="flex gap-4">
              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                <span className="text-[10px] font-black uppercase text-slate-500">Ingresos</span>
+                <div className="w-3 h-3 rounded-full bg-success-500" />
+                <span className="text-[10px] font-black uppercase text-primary-500">Ingresos</span>
              </div>
              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-rose-500" />
-                <span className="text-[10px] font-black uppercase text-slate-500">Egresos</span>
+                <div className="w-3 h-3 rounded-full bg-danger-500" />
+                <span className="text-[10px] font-black uppercase text-primary-500">Egresos</span>
              </div>
           </div>
         </div>

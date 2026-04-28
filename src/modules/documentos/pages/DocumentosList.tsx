@@ -48,7 +48,7 @@ const DocumentosList: React.FC = () => {
       <PageHeader
         title="Gestión de Documentos"
         subtitle="Listado centralizado de facturas, recibos y órdenes de compra."
-        icon={<IconFileText className="text-blue-600" />}
+        icon={<IconFileText className="text-accent-600" />}
       />
 
       <Card className="mb-6 p-4">

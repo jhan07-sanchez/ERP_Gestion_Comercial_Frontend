@@ -174,9 +174,9 @@ export default function PrecioForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {(submitError || error) && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex gap-2">
-          <IconX size={18} className="text-red-600" />
-          <p className="text-sm text-red-600">{submitError || error}</p>
+        <div className="p-4 bg-danger-50 border border-danger-200 rounded-lg flex gap-2">
+          <IconX size={18} className="text-danger-600" />
+          <p className="text-sm text-danger-600">{submitError || error}</p>
         </div>
       )}
 
@@ -203,7 +203,7 @@ export default function PrecioForm({
             {resultadosProducto.map((p) => (
               <div
                 key={p.id}
-                className="p-2 hover:bg-gray-100 cursor-pointer"
+                className="p-2 hover:bg-primary-100 cursor-pointer"
                 onClick={() => {
                   setProductoSeleccionado(p);
                   setFormData((prev) => ({
@@ -221,7 +221,7 @@ export default function PrecioForm({
         )}
 
         {errors.producto_id && (
-          <p className="text-red-600 text-xs">{errors.producto_id}</p>
+          <p className="text-danger-600 text-xs">{errors.producto_id}</p>
         )}
       </div>
 
@@ -248,7 +248,7 @@ export default function PrecioForm({
             {resultadosProveedor.map((p) => (
               <div
                 key={p.id}
-                className="p-2 hover:bg-gray-100 cursor-pointer"
+                className="p-2 hover:bg-primary-100 cursor-pointer"
                 onClick={() => {
                   setProveedorSeleccionado(p);
                   setFormData((prev) => ({
@@ -266,7 +266,7 @@ export default function PrecioForm({
         )}
 
         {errors.proveedor_id && (
-          <p className="text-red-600 text-xs">{errors.proveedor_id}</p>
+          <p className="text-danger-600 text-xs">{errors.proveedor_id}</p>
         )}
       </div>
 
@@ -282,7 +282,7 @@ export default function PrecioForm({
           }
         />
         {errors.precio && (
-          <p className="text-red-600 text-xs">{errors.precio}</p>
+          <p className="text-danger-600 text-xs">{errors.precio}</p>
         )}
       </div>
 

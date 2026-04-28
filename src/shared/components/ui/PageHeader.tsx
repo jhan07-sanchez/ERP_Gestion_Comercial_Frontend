@@ -32,13 +32,13 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
         <div className="flex items-center gap-3">
           {backButton}
           {onBack && !backButton && (
-            <Button variant="secondary" onClick={onBack} size="sm" className="mr-2 px-3 bg-white hover:bg-slate-50 border border-slate-200">
+            <Button variant="secondary" onClick={onBack} size="sm" className="mr-2 px-3 bg-white hover:bg-primary-50 border border-primary-200">
                <IconArrowLeft size={16} />
                <span className="hidden sm:inline-block ml-1 font-bold">Volver</span>
             </Button>
           )}
           {icon && (
-            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 shadow-sm border border-blue-100">
+            <div className="w-10 h-10 rounded-xl bg-accent-50 flex items-center justify-center text-accent-600 shadow-sm border border-accent-100">
               {icon}
             </div>
           )}

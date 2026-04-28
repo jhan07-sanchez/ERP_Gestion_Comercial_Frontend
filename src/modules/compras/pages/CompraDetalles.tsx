@@ -126,7 +126,7 @@ export default function CompraDetallePage() {
             <Button
               variant="success"
               onClick={() => setIsPagoModalOpen(true)}
-              className="w-full sm:w-auto shadow-lg shadow-green-100"
+              className="w-full sm:w-auto shadow-lg shadow-success-100"
             >
               <IconCash size={18} className="mr-2" />
               Registrar Pago
@@ -161,20 +161,20 @@ export default function CompraDetallePage() {
       </div>
 
       {compra.documento && (
-        <Card className="border-emerald-200 bg-emerald-50/40 shadow-sm">
+        <Card className="border-success-200 bg-success-50/40 shadow-sm">
           <Card.Content className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-emerald-100 text-emerald-800">
+              <div className="p-2 rounded-lg bg-success-100 text-success-800">
                 <IconFileText size={22} />
               </div>
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                <p className="text-xs font-bold uppercase tracking-wider text-success-800">
                   Documento de compra
                 </p>
-                <p className="text-sm font-semibold text-emerald-950">
+                <p className="text-sm font-semibold text-success-950">
                   {compra.documento.tipo_display} — {compra.documento.numero_interno}
                 </p>
-                <p className="text-xs text-emerald-700/80 mt-0.5">
+                <p className="text-xs text-success-700/80 mt-0.5">
                   Ref. operación: {compra.documento.referencia_operacion || "—"}
                 </p>
               </div>
@@ -182,7 +182,7 @@ export default function CompraDetallePage() {
             <Button
               type="button"
               variant="secondary"
-              className="shrink-0 border-emerald-300 bg-white hover:bg-emerald-50"
+              className="shrink-0 border-success-300 bg-white hover:bg-success-50"
               onClick={() =>
                 openCompraDocumentoPdf(compra.id).catch(() =>
                   showAlert("Error", "error", { description: "No se pudo abrir el PDF del documento." }),
@@ -274,7 +274,7 @@ export default function CompraDetallePage() {
                           <Table.Cell className="hidden sm:table-cell text-xs text-primary-600 font-medium">
                             {p.metodo_pago_display || p.metodo_pago}
                           </Table.Cell>
-                          <Table.Cell className="text-right font-black text-green-600">
+                          <Table.Cell className="text-right font-black text-success-600">
                             {formatCurrency(p.monto)}
                           </Table.Cell>
                         </Table.Row>
@@ -331,16 +331,16 @@ export default function CompraDetallePage() {
           <Card className="shadow-sm border-primary-100 overflow-hidden bg-primary-50/30">
             <Card.Header className="bg-white py-3 border-b border-primary-100">
               <Card.Title className="text-xs font-bold text-primary-900 flex items-center gap-2 uppercase tracking-widest">
-                <IconTrendingUp size={16} className="text-green-500" />
+                <IconTrendingUp size={16} className="text-success-500" />
                 Margen Estimado
               </Card.Title>
             </Card.Header>
             <Card.Content className="p-4 space-y-4">
               <DetailItem label="Costo Total" value={formatCurrency(compra.margen_potencial.valor_compra)} />
               <DetailItem label="Venta Potencial" value={formatCurrency(compra.margen_potencial.valor_venta_potencial)} />
-              <div className="py-2 flex justify-between items-center bg-green-50 px-2 rounded-lg">
-                <span className="text-[10px] font-bold text-green-600 uppercase">Ganancia Est.</span>
-                <span className="font-black text-green-700">{formatCurrency(compra.margen_potencial.ganancia_potencial)}</span>
+              <div className="py-2 flex justify-between items-center bg-success-50 px-2 rounded-lg">
+                <span className="text-[10px] font-bold text-success-600 uppercase">Ganancia Est.</span>
+                <span className="font-black text-success-700">{formatCurrency(compra.margen_potencial.ganancia_potencial)}</span>
               </div>
             </Card.Content>
           </Card>
@@ -369,16 +369,16 @@ function KPIItem({ label, value, variant = "primary", icon, badge }: {
 }) {
   const colors = {
     primary: "border-primary-100 text-primary-600 bg-primary-50/20",
-    success: "border-green-100 text-green-600 bg-green-50/20",
-    warning: "border-amber-100 text-amber-600 bg-amber-50/20",
-    danger: "border-rose-100 text-rose-600 bg-rose-50/20",
+    success: "border-success-100 text-success-600 bg-success-50/20",
+    warning: "border-warning-100 text-warning-600 bg-warning-50/20",
+    danger: "border-danger-100 text-danger-600 bg-danger-50/20",
   }[variant];
 
   const textColors = {
     primary: "text-primary-700",
-    success: "text-green-700",
-    warning: "text-amber-700",
-    danger: "text-rose-700",
+    success: "text-success-700",
+    warning: "text-warning-700",
+    danger: "text-danger-700",
   }[variant];
 
   return (

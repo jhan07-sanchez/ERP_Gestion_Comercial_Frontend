@@ -132,12 +132,12 @@ export default function ProductoCreate() {
           onCancel={handleCancel}
         />
 
-        <Card className="bg-blue-50 border-blue-100">
+        <Card className="bg-accent-50 border-accent-100">
           <Card.Content className="p-4 flex gap-3">
-            <IconInfoCircle className="text-blue-500 shrink-0" size={20} />
+            <IconInfoCircle className="text-accent-500 shrink-0" size={20} />
             <div className="space-y-1">
-              <h3 className="text-sm font-bold text-blue-900">Información</h3>
-              <p className="text-xs text-blue-800 opacity-90">
+              <h3 className="text-sm font-bold text-accent-900">Información</h3>
+              <p className="text-xs text-accent-800 opacity-90">
                 Los productos creados aparecerán inmediatamente en el catálogo de ventas y compras.
                 Asegúrate de asignar la categoría correcta para reportes precisos.
               </p>

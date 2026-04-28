@@ -18,8 +18,8 @@ export function SidebarItem({ label, path, icon: IconComponent, collapsed, inden
             className={({ isActive }) => `
         group relative flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200
         ${isActive
-                    ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
-                    : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"}
+                    ? "bg-accent-600 text-white shadow-lg shadow-accent-200"
+                    : "text-primary-500 hover:bg-primary-100 hover:text-primary-900"}
         ${indent ? "ml-4" : ""}
         ${collapsed ? "justify-center px-2" : ""}
       `}
@@ -30,7 +30,7 @@ export function SidebarItem({ label, path, icon: IconComponent, collapsed, inden
                         <IconComponent
                             size={collapsed ? 22 : 18}
                             stroke={isActive ? 2.5 : 2}
-                            className={`shrink-0 transition-colors ${isActive ? "text-white" : "text-gray-400 group-hover:text-gray-900"}`}
+                            className={`shrink-0 transition-colors ${isActive ? "text-white" : "text-primary-400 group-hover:text-primary-900"}`}
                         />
                     )}
 
@@ -42,7 +42,7 @@ export function SidebarItem({ label, path, icon: IconComponent, collapsed, inden
 
                     {/* Tooltip for collapsed state */}
                     {collapsed && (
-                        <div className="absolute left-full ml-4 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 whitespace-nowrap">
+                        <div className="absolute left-full ml-4 px-2 py-1 bg-primary-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 whitespace-nowrap">
                             {label}
                         </div>
                     )}

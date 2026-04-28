@@ -7,16 +7,16 @@ export function MobileHeader() {
   const { toggleSidebar } = useUIStore();
 
   return (
-    <header className="lg:hidden h-16 bg-white border-b border-gray-100 flex items-center justify-between px-4 sticky top-0 z-40 shadow-sm">
+    <header className="lg:hidden h-16 bg-white border-b border-primary-100 flex items-center justify-between px-4 sticky top-0 z-40 shadow-sm">
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-md shadow-blue-200">
+        <div className="w-8 h-8 bg-accent-600 rounded-button flex items-center justify-center shadow-md shadow-accent-200">
           <IconBolt size={18} fill="white" className="text-white" />
         </div>
         <div className="flex flex-col">
-          <span className="text-sm font-black text-gray-900 tracking-tighter leading-none">
+          <span className="text-sm font-black text-primary-900 tracking-tighter leading-none">
             {APP_NAME}
           </span>
-          <span className="text-[8px] font-black text-blue-600 uppercase tracking-widest">
+          <span className="text-[8px] font-black text-accent-600 uppercase tracking-widest">
             ERP Enterprise
           </span>
         </div>
@@ -24,7 +24,7 @@ export function MobileHeader() {
 
       <button
         onClick={toggleSidebar}
-        className="w-10 h-10 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-600 hover:text-blue-600 transition-all active:scale-95"
+        className="w-10 h-10 rounded-xl bg-primary-50 border border-primary-100 flex items-center justify-center text-primary-600 hover:text-accent-600 transition-all active:scale-95"
       >
         <IconMenu2 size={24} />
       </button>

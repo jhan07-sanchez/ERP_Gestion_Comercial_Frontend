@@ -16,7 +16,7 @@ export default function DashboardLayout() {
   const { sidebarOpen } = useUIStore();
 
   return (
-    <div className="min-h-screen bg-gray-50 flex overflow-hidden">
+    <div className="min-h-screen bg-primary-50 flex overflow-hidden">
       {/* Sidebar Modular (Ancho fijo controlado por el store) */}
       <Sidebar />
 
@@ -43,12 +43,12 @@ export default function DashboardLayout() {
         </main>
 
         {/* Footer Corporativo ERP */}
-        <footer className="py-4 px-4 md:px-8 text-center bg-white border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-2">
-          <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+        <footer className="py-4 px-4 md:px-8 text-center bg-white border-t border-primary-100 flex flex-col md:flex-row items-center justify-between gap-2">
+          <div className="text-[10px] font-black text-primary-400 uppercase tracking-widest">
             &copy; {new Date().getFullYear()} ERP System · Gestión empresarial avanzada
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-[9px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full uppercase">
+            <span className="text-[9px] font-bold text-accent-600 bg-accent-50 px-2 py-0.5 rounded-full uppercase">
               v1.0
             </span>
           </div>

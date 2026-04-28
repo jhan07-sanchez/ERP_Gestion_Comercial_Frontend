@@ -96,10 +96,10 @@ export default function ProductosList() {
       />
 
       {error ? (
-        <Card className="border-red-100 bg-red-50/30">
+        <Card className="border-danger-100 bg-danger-50/30">
           <Card.Content className="p-6 text-center">
-            <IconAlertCircle className="mx-auto text-red-500 mb-2" size={32} />
-            <p className="text-red-600 font-medium mb-4">{error}</p>
+            <IconAlertCircle className="mx-auto text-danger-500 mb-2" size={32} />
+            <p className="text-danger-600 font-medium mb-4">{error}</p>
             <Button onClick={() => fetchProductos()} variant="secondary">Reintentar</Button>
           </Card.Content>
         </Card>
@@ -130,8 +130,8 @@ export default function ProductosList() {
                   <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-4 text-primary-400">
                     <IconPackage size={32} />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900">No hay productos</h3>
-                  <p className="text-gray-500 text-sm max-w-xs mx-auto mt-1 mb-6">
+                  <h3 className="text-lg font-bold text-primary-900">No hay productos</h3>
+                  <p className="text-primary-500 text-sm max-w-xs mx-auto mt-1 mb-6">
                     Aún no has registrado productos. Comienza creando uno ahora mismo.
                   </p>
                   <Button onClick={() => navigate("/productos/crear")}>
@@ -182,8 +182,8 @@ export default function ProductosList() {
                           <Table.Cell className="text-center">
                             <span
                               className={`inline-flex items-center justify-center min-w-[32px] px-2 py-0.5 rounded-lg text-[10px] font-black ${(producto.stock_actual || 0) <= (producto.stock_minimo || 0)
-                                ? "bg-rose-100 text-rose-700 border border-rose-200"
-                                : "bg-green-100 text-green-700 border border-green-200"
+                                ? "bg-danger-100 text-danger-700 border border-danger-200"
+                                : "bg-success-100 text-success-700 border border-success-200"
                                 }`}
                             >
                               <span>{producto.stock_actual || 0}</span>
@@ -211,7 +211,7 @@ export default function ProductosList() {
                                 iconOnly
                                 disabled={isReadOnly}
                                 onClick={() => handleDelete(producto.id)}
-                                className="bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white border-none"
+                                className="bg-danger-50 text-danger-600 hover:bg-danger-600 hover:text-white border-none"
                                 title={isReadOnly ? "Acción bloqueada" : "Eliminar"}
                               >
                                 <IconTrash size={14} />

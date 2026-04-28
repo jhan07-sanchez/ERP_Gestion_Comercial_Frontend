@@ -140,12 +140,12 @@ export default function ProductoEdit() {
                     onCancel={handleCancel}
                 />
 
-                <Card className="bg-amber-50 border-amber-100">
+                <Card className="bg-warning-50 border-warning-100">
                     <Card.Content className="p-4 flex gap-3">
-                        <IconAlertCircle className="text-amber-500 shrink-0" size={20} />
+                        <IconAlertCircle className="text-warning-500 shrink-0" size={20} />
                         <div className="space-y-1">
-                            <h3 className="text-sm font-bold text-amber-900">Advertencia</h3>
-                            <p className="text-xs text-amber-800 opacity-90">
+                            <h3 className="text-sm font-bold text-warning-900">Advertencia</h3>
+                            <p className="text-xs text-warning-800 opacity-90">
                                 Los cambios realizados afectarán a todas las ventas y compras futuras que utilicen este producto. 
                                 El código de barras/SKU es único y debe mantenerse coherente.
                             </p>

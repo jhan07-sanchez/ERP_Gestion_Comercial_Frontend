@@ -24,7 +24,7 @@ export function Pagination({
     return (
         <div className="flex items-center justify-between px-4 py-3 border-t">
             {/* Info */}
-            <div className="text-sm text-gray-700">
+            <div className="text-sm text-primary-700">
                 Mostrando{" "}
                 <span className="font-medium">{(currentPage - 1) * pageSize + 1}</span>{" "}
                 a{" "}
@@ -38,7 +38,7 @@ export function Pagination({
             <div className="flex items-center gap-4">
                 {/* Tamaño de página */}
                 <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-700">Items por página:</span>
+                    <span className="text-sm text-primary-700">Items por página:</span>
                     <select
                         value={pageSize}
                         onChange={(e) => onPageSizeChange(Number(e.target.value))}
@@ -62,7 +62,7 @@ export function Pagination({
                         Anterior
                     </button>
 
-                    <span className="text-sm text-gray-700">
+                    <span className="text-sm text-primary-700">
                         Página {currentPage} de {totalPages}
                     </span>
 

@@ -114,25 +114,25 @@ export default function ProveedorCreate() {
         </div>
 
         <div className="space-y-6">
-            <Card className="border-blue-200 bg-blue-50/50 shadow-sm sticky top-6">
+            <Card className="border-accent-200 bg-accent-50/50 shadow-sm sticky top-6">
                 <Card.Content className="p-6">
                     <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600">
+                        <div className="w-10 h-10 rounded-xl bg-accent-100 flex items-center justify-center text-accent-600">
                             <IconInfoCircle size={24} stroke={2} />
                         </div>
-                        <h3 className="text-sm font-black uppercase tracking-tight text-blue-900">Tips de Registro</h3>
+                        <h3 className="text-sm font-black uppercase tracking-tight text-accent-900">Tips de Registro</h3>
                     </div>
-                    <ul className="text-xs font-medium text-blue-800 space-y-3">
+                    <ul className="text-xs font-medium text-accent-800 space-y-3">
                         <li className="flex gap-2 isolate">
-                            <span className="text-blue-500 font-bold shrink-0">•</span>
+                            <span className="text-accent-500 font-bold shrink-0">•</span>
                             <span className="leading-relaxed">El <strong>nombre comercial</strong> o razón social es obligatorio para facturación y documentos formales.</span>
                         </li>
                         <li className="flex gap-2 isolate">
-                            <span className="text-blue-500 font-bold shrink-0">•</span>
+                            <span className="text-accent-500 font-bold shrink-0">•</span>
                             <span className="leading-relaxed">Ingresar el <strong>NIT / RUT</strong> correcto evita que se generen registros duplicados en contabilidad.</span>
                         </li>
                         <li className="flex gap-2 isolate">
-                            <span className="text-blue-500 font-bold shrink-0">•</span>
+                            <span className="text-accent-500 font-bold shrink-0">•</span>
                             <span className="leading-relaxed">Solo los proveedores marcados como <strong>Activos</strong> aparecerán en el módulo de compras.</span>
                         </li>
                     </ul>

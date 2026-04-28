@@ -88,7 +88,7 @@ export function Select({
             disabled:bg-primary-50 disabled:text-primary-500 disabled:cursor-not-allowed
             ${error
               ? 'border-danger-300 focus:border-danger-500 focus:ring-danger-200'
-              : 'border-primary-300 focus:border-blue-500 focus:ring-blue-200'
+              : 'border-primary-300 focus:border-accent-500 focus:ring-accent-200'
             }
             ${className}
           `}

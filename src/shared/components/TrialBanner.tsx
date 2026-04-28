@@ -11,8 +11,8 @@ export function TrialBanner() {
   return (
     <div className={`p-4 text-center text-sm font-medium sticky top-0 z-50 flex items-center justify-center gap-4 ${
       estaActiva 
-        ? 'bg-blue-600 text-white shadow-md' 
-        : 'bg-red-600 text-white shadow-lg'
+        ? 'bg-accent-600 text-white shadow-md' 
+        : 'bg-danger-600 text-white shadow-lg'
       }`}>
       {estaActiva ? (
         <span>Te quedan {diasRestantes} días de prueba gratuita.</span>
@@ -24,8 +24,8 @@ export function TrialBanner() {
         onClick={() => navigate(ROUTES.PLANES)}
         className={`px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${
           estaActiva 
-            ? 'bg-white text-blue-600 hover:bg-blue-50' 
-            : 'bg-white text-red-600 hover:bg-red-50'
+            ? 'bg-white text-accent-600 hover:bg-accent-50' 
+            : 'bg-white text-danger-600 hover:bg-danger-50'
         }`}
       >
         {estaActiva ? 'Actualizar Plan' : 'Ver Planes'}

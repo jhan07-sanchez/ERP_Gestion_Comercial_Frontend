@@ -155,8 +155,8 @@ export default function CompraCreate() {
       <PageContainer>
         <div className="flex flex-col items-center justify-center p-12 text-center bg-white rounded-2xl border border-danger-100 shadow-sm">
           <IconAlertCircle size={48} className="text-danger-500 mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 mb-2">Error al cargar datos</h2>
-          <p className="text-gray-600 mb-6">{errorProveedores || errorProductos}</p>
+          <h2 className="text-xl font-bold text-primary-900 mb-2">Error al cargar datos</h2>
+          <p className="text-primary-600 mb-6">{errorProveedores || errorProductos}</p>
           <div className="flex gap-3">
             <Button onClick={() => { fetchProveedores(); fetchProductos(); }}>Reintentar</Button>
             <Button variant="secondary" onClick={() => navigate("/compras/lista")}>Volver</Button>
@@ -169,10 +169,10 @@ export default function CompraCreate() {
   if (proveedores.length === 0 || productos.length === 0) {
     return (
       <PageContainer>
-        <div className="flex flex-col items-center justify-center p-12 text-center bg-white rounded-2xl border border-amber-100 shadow-sm">
-          <IconBulb size={48} className="text-amber-500 mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 mb-2">Datos incompletos</h2>
-          <p className="text-gray-600 mb-8 max-w-sm">
+        <div className="flex flex-col items-center justify-center p-12 text-center bg-white rounded-2xl border border-warning-100 shadow-sm">
+          <IconBulb size={48} className="text-warning-500 mb-4" />
+          <h2 className="text-xl font-bold text-primary-900 mb-2">Datos incompletos</h2>
+          <p className="text-primary-600 mb-8 max-w-sm">
             {proveedores.length === 0 && "No hay proveedores registrados. "}
             {productos.length === 0 && "No hay productos registrados. "}
             Debes tener al menos un proveedor y un producto creados.
@@ -207,19 +207,19 @@ export default function CompraCreate() {
       />
 
       {!isCajaAbierta && (
-        <Card className="border-rose-100 bg-rose-50/30 overflow-hidden animate-in fade-in zoom-in-95 duration-500 mb-6">
+        <Card className="border-danger-100 bg-danger-50/30 overflow-hidden animate-in fade-in zoom-in-95 duration-500 mb-6">
           <Card.Content className="flex flex-col items-center justify-center p-12 text-center">
-            <div className="w-20 h-20 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 mb-6 shadow-sm border border-rose-200">
+            <div className="w-20 h-20 rounded-full bg-danger-100 flex items-center justify-center text-danger-600 mb-6 shadow-sm border border-danger-200">
               <IconLock size={40} />
             </div>
-            <h2 className="text-2xl font-black text-rose-900 mb-3 tracking-tight">Caja Cerrada</h2>
-            <p className="text-rose-800/80 mb-8 max-w-md font-medium">
+            <h2 className="text-2xl font-black text-danger-900 mb-3 tracking-tight">Caja Cerrada</h2>
+            <p className="text-danger-800/80 mb-8 max-w-md font-medium">
               Para registrar nuevas compras es necesario tener una sesión de caja abierta.
               Esto es requerido para el control financiero.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
               <Link to="/caja" className="flex-1">
-                <Button className="w-full shadow-lg shadow-rose-200" variant="danger">
+                <Button className="w-full shadow-lg shadow-danger-200" variant="danger">
                   Ir a Caja
                 </Button>
               </Link>

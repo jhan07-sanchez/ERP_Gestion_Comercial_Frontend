@@ -20,43 +20,43 @@ interface AlertToastProps {
 const config = {
     success: {
         icon: IconCheck,
-        bg: "bg-emerald-50",
-        border: "border-emerald-100",
-        text: "text-emerald-900",
-        iconColor: "text-emerald-500",
-        bar: "bg-emerald-500"
+        bg: "bg-success-50",
+        border: "border-success-100",
+        text: "text-success-900",
+        iconColor: "text-success-500",
+        bar: "bg-success-500"
     },
     error: {
         icon: IconAlertCircle,
-        bg: "bg-red-50",
-        border: "border-red-100",
-        text: "text-red-900",
-        iconColor: "text-red-500",
-        bar: "bg-red-500"
+        bg: "bg-danger-50",
+        border: "border-danger-100",
+        text: "text-danger-900",
+        iconColor: "text-danger-500",
+        bar: "bg-danger-500"
     },
     warning: {
         icon: IconAlertTriangle,
-        bg: "bg-amber-50",
-        border: "border-amber-100",
-        text: "text-amber-900",
-        iconColor: "text-amber-500",
-        bar: "bg-amber-500"
+        bg: "bg-warning-50",
+        border: "border-warning-100",
+        text: "text-warning-900",
+        iconColor: "text-warning-500",
+        bar: "bg-warning-500"
     },
     info: {
         icon: IconInfoCircle,
-        bg: "bg-blue-50",
-        border: "border-blue-100",
-        text: "text-blue-900",
-        iconColor: "text-blue-500",
-        bar: "bg-blue-500"
+        bg: "bg-info-50",
+        border: "border-info-100",
+        text: "text-info-900",
+        iconColor: "text-info-500",
+        bar: "bg-info-500"
     },
     critical: {
         icon: IconAlertCircle,
-        bg: "bg-gray-900",
-        border: "border-gray-800",
+        bg: "bg-primary-900",
+        border: "border-primary-800",
         text: "text-white",
-        iconColor: "text-red-500",
-        bar: "bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.5)]"
+        iconColor: "text-danger-500",
+        bar: "bg-danger-600 shadow-[0_0_10px_rgba(220,38,38,0.5)]"
     }
 };
 
@@ -100,7 +100,7 @@ export function AlertToast({ t, title, type, options, onClose }: AlertToastProps
                             type="text"
                             autoFocus
                             placeholder={options.inputPlaceholder || "Escribe aquí..."}
-                            className={`w-full rounded-lg border border-current bg-white/20 p-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-white/50 ${styles.text}`}
+                            className={`w-full rounded-button border border-current bg-white/20 p-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-white/50 ${styles.text}`}
                             onKeyDown={(e) => {
                                 if (e.key === "Enter") {
                                     options.action?.onClick((e.currentTarget as HTMLInputElement).value);
@@ -127,7 +127,7 @@ export function AlertToast({ t, title, type, options, onClose }: AlertToastProps
                 {/* Close Button */}
                 <button
                     onClick={() => onClose(t.id)}
-                    className={`shrink-0 rounded-lg p-1 transition-colors hover:bg-white/20 ${styles.text}`}
+                    className={`shrink-0 rounded-button p-1 transition-colors hover:bg-white/20 ${styles.text}`}
                 >
                     <IconX size={18} stroke={2.5} />
                 </button>

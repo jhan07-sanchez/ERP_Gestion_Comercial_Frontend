@@ -201,10 +201,10 @@ export default function CajaCierrePage() {
             <div
               className={`p-4 rounded-xl border-2 transition-all ${
                 clasificacion === "EXACTO"
-                  ? "bg-emerald-50 border-emerald-200"
+                  ? "bg-success-50 border-success-200"
                   : clasificacion === "SOBRANTE"
-                    ? "bg-amber-50 border-amber-200"
-                    : "bg-rose-50 border-rose-200"
+                    ? "bg-warning-50 border-warning-200"
+                    : "bg-danger-50 border-danger-200"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
@@ -275,7 +275,7 @@ export default function CajaCierrePage() {
               className="
                 block w-full px-4 py-2.5 
                 border border-primary-300 rounded-button 
-                text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all
+                text-sm bg-white focus:ring-2 focus:ring-accent-100 focus:border-accent-500 transition-all
               "
               maxLength={500}
             />
@@ -294,7 +294,7 @@ export default function CajaCierrePage() {
           </Button>
           <Button
             variant="danger"
-            className="w-full sm:w-auto shadow-lg shadow-rose-200"
+            className="w-full sm:w-auto shadow-lg shadow-danger-200"
             onClick={handleCerrar}
             disabled={loadingCerrar || isVerifying || !montoContado}
             isLoading={loadingCerrar || isVerifying}
@@ -321,10 +321,10 @@ function SummaryCard({
   highlighted?: boolean;
 }) {
   const colorMap: Record<string, string> = {
-    blue: "bg-blue-50 border-blue-100 text-blue-700",
-    emerald: "bg-emerald-50 border-emerald-100 text-emerald-700",
-    rose: "bg-rose-50 border-rose-100 text-rose-700",
-    indigo: "bg-indigo-50 border-indigo-100 text-indigo-700",
+    blue: "bg-accent-50 border-accent-100 text-accent-700",
+    emerald: "bg-success-50 border-success-100 text-success-700",
+    rose: "bg-danger-50 border-danger-100 text-danger-700",
+    indigo: "bg-accent-50 border-accent-100 text-accent-700",
   };
 
   return (

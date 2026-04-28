@@ -142,7 +142,7 @@ export default function CajaDetailPage() {
                       <Table.Cell className="max-w-[200px] truncate font-medium text-primary-700">
                         {mov.descripcion}
                       </Table.Cell>
-                      <Table.Cell className={`text-right font-bold ${mov.es_ingreso ? "text-emerald-600" : "text-rose-600"}`}>
+                      <Table.Cell className={`text-right font-bold ${mov.es_ingreso ? "text-success-600" : "text-danger-600"}`}>
                         {mov.es_ingreso ? "+" : "-"} {formatCurrency(mov.monto)}
                       </Table.Cell>
                       <Table.Cell className="hidden sm:table-cell text-xs text-primary-400 font-medium">
@@ -173,7 +173,7 @@ export default function CajaDetailPage() {
           <Button 
             onClick={() => navigate(`/caja/sesion/${sesionId}/cerrar`)}
             variant="danger"
-            className="w-full sm:w-auto shadow-lg shadow-rose-100"
+            className="w-full sm:w-auto shadow-lg shadow-danger-100"
           >
             <IconLock size={18} />
             Cerrar Caja
@@ -196,10 +196,10 @@ export default function CajaDetailPage() {
 
 function KPICard({ label, value, color, isHighlighted }: { label: string; value: string; color: string; isHighlighted?: boolean }) {
   const colorClasses: Record<string, string> = {
-    blue: "bg-blue-50 border-blue-100 text-blue-700",
-    emerald: "bg-emerald-50 border-emerald-100 text-emerald-700",
-    rose: "bg-rose-50 border-rose-100 text-rose-700",
-    indigo: "bg-indigo-50 border-indigo-100 text-indigo-700",
+    blue: "bg-accent-50 border-accent-100 text-accent-700",
+    emerald: "bg-success-50 border-success-100 text-success-700",
+    rose: "bg-danger-50 border-danger-100 text-danger-700",
+    indigo: "bg-accent-50 border-accent-100 text-accent-700",
   };
 
   return (

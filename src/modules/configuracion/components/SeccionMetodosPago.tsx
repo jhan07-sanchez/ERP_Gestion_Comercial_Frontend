@@ -70,8 +70,8 @@ export const SeccionMetodosPago: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Crear método */}
-      <Card className="border-slate-200 shadow-sm">
-        <Card.Header className="bg-slate-50 flex items-center gap-2">
+      <Card className="border-primary-200 shadow-sm">
+        <Card.Header className="bg-primary-50 flex items-center gap-2">
           <IconCreditCard size={18} />
           <Card.Title>Métodos de Pago</Card.Title>
         </Card.Header>
@@ -93,16 +93,16 @@ export const SeccionMetodosPago: React.FC = () => {
       </Card>
 
       {/* Lista */}
-      <Card className="border-slate-200 shadow-sm">
+      <Card className="border-primary-200 shadow-sm">
         <Card.Header>
           <Card.Title>Listado</Card.Title>
         </Card.Header>
 
         <Card.Content className="space-y-3">
           {loading ? (
-            <p className="text-sm text-slate-400">Cargando...</p>
+            <p className="text-sm text-primary-400">Cargando...</p>
           ) : metodos.length === 0 ? (
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-primary-400">
               No hay métodos de pago registrados
             </p>
           ) : (

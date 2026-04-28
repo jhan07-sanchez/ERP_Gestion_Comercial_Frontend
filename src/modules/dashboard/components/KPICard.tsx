@@ -25,28 +25,28 @@ export function KPICard({
   // Configuración de colores por variante
   const variantMap = {
     primary: {
-      light: 'bg-blue-50 text-blue-600',
-      bold: 'bg-blue-600 text-white',
-      border: 'border-blue-100',
-      gradient: 'from-blue-600 to-blue-700'
+      light: 'bg-accent-50 text-accent-600',
+      bold: 'bg-accent-600 text-white',
+      border: 'border-accent-100',
+      gradient: 'from-accent-600 to-accent-700'
     },
     success: {
-      light: 'bg-emerald-50 text-emerald-600',
-      bold: 'bg-emerald-600 text-white',
-      border: 'border-emerald-100',
-      gradient: 'from-emerald-600 to-emerald-700'
+      light: 'bg-success-50 text-success-600',
+      bold: 'bg-success-600 text-white',
+      border: 'border-success-100',
+      gradient: 'from-success-600 to-success-700'
     },
     warning: {
-      light: 'bg-amber-50 text-amber-600',
-      bold: 'bg-amber-600 text-white',
-      border: 'border-amber-100',
-      gradient: 'from-amber-600 to-amber-700'
+      light: 'bg-warning-50 text-warning-600',
+      bold: 'bg-warning-600 text-white',
+      border: 'border-warning-100',
+      gradient: 'from-warning-600 to-warning-700'
     },
     danger: {
-      light: 'bg-red-50 text-red-600',
-      bold: 'bg-red-600 text-white',
-      border: 'border-red-100',
-      gradient: 'from-red-600 to-red-700'
+      light: 'bg-danger-50 text-danger-600',
+      bold: 'bg-danger-600 text-white',
+      border: 'border-danger-100',
+      gradient: 'from-danger-600 to-danger-700'
     }
   };
 
@@ -54,7 +54,7 @@ export function KPICard({
   const badgeVariant = trend === 'up' ? 'success' : trend === 'down' ? 'danger' : 'gray';
 
   return (
-    <Card hover className="overflow-hidden border-none shadow-sm ring-1 ring-gray-100 group">
+    <Card hover className="overflow-hidden border-none shadow-sm ring-1 ring-primary-100 group">
       <Card.Content className="p-0">
         <div className="flex flex-col">
           {/* Header con Icono y Trend */}
@@ -76,10 +76,10 @@ export function KPICard({
 
           {/* Valor y Título */}
           <div className="px-5 pb-5">
-            <h3 className="text-3xl font-black text-gray-900 tracking-tighter mb-1">
+            <h3 className="text-3xl font-black text-primary-900 tracking-tighter mb-1">
               {value}
             </h3>
-            <p className="text-[11px] font-black text-gray-400 uppercase tracking-widest">
+            <p className="text-[11px] font-black text-primary-400 uppercase tracking-widest">
               {title}
             </p>
           </div>

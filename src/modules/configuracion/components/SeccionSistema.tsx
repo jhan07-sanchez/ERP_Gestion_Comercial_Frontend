@@ -51,22 +51,22 @@ export const SeccionSistema: React.FC<Props> = ({ config, onSave, isSaving }) =>
     return (
         <form onSubmit={handleSubmit} className="space-y-6 pb-24 lg:pb-0">
             {/* Fiscal & Currency */}
-            <Card className="border-slate-200 shadow-sm overflow-hidden">
-                <Card.Header className="bg-slate-50/50 border-b border-slate-100 flex items-center gap-2 py-4">
-                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+            <Card className="border-primary-200 shadow-sm overflow-hidden">
+                <Card.Header className="bg-primary-50/50 border-b border-primary-100 flex items-center gap-2 py-4">
+                    <div className="w-8 h-8 rounded-lg bg-accent-50 flex items-center justify-center text-accent-600">
                         <IconCurrencyDollar size={18} />
                     </div>
-                    <Card.Title className="text-sm font-black uppercase tracking-tight text-slate-700">Fiscal y Moneda</Card.Title>
+                    <Card.Title className="text-sm font-black uppercase tracking-tight text-primary-700">Fiscal y Moneda</Card.Title>
                 </Card.Header>
                 <Card.Content className="p-4 sm:p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Régimen Fiscal</label>
+                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Régimen Fiscal</label>
                             <Select
                                 name="regimen_fiscal"
                                 value={formData.regimen_fiscal || ''}
                                 onChange={(val) => handleChange('regimen_fiscal', val)}
-                                className="bg-slate-50/50"
+                                className="bg-primary-50/50"
                                 options={[
                                     { value: 'SIMPLIFICADO', label: 'Régimen Simplificado' },
                                     { value: 'COMUN', label: 'Régimen Común' },
@@ -76,22 +76,22 @@ export const SeccionSistema: React.FC<Props> = ({ config, onSave, isSaving }) =>
                             />
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Impuesto (%)</label>
+                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Impuesto (%)</label>
                             <Input
                                 name="impuesto_porcentaje"
                                 type="number"
                                 value={formData.impuesto_porcentaje}
                                 onChange={handleInputChange}
-                                leftIcon={<IconPercentage size={16} className="text-slate-400" />}
+                                leftIcon={<IconPercentage size={16} className="text-primary-400" />}
                                 step="0.01"
                                 required
-                                className="bg-slate-50/50"
+                                className="bg-primary-50/50"
                             />
                         </div>
                         
                         <div className="md:col-span-2">
-                             <label className="flex items-center gap-3 p-4 bg-slate-50/50 border border-slate-100 rounded-xl cursor-pointer hover:bg-slate-100/50 transition-colors group">
-                                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${formData.aplicar_impuesto_por_defecto ? 'bg-blue-600 border-blue-600' : 'bg-white border-slate-300 group-hover:border-blue-400'}`}>
+                             <label className="flex items-center gap-3 p-4 bg-primary-50/50 border border-primary-100 rounded-xl cursor-pointer hover:bg-primary-100/50 transition-colors group">
+                                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${formData.aplicar_impuesto_por_defecto ? 'bg-accent-600 border-accent-600' : 'bg-white border-primary-300 group-hover:border-accent-400'}`}>
                                     {formData.aplicar_impuesto_por_defecto && <IconCheck size={14} className="text-white" />}
                                 </div>
                                 <input
@@ -101,18 +101,18 @@ export const SeccionSistema: React.FC<Props> = ({ config, onSave, isSaving }) =>
                                     onChange={handleInputChange}
                                     className="hidden"
                                 />
-                                <span className="text-xs font-black text-slate-600 uppercase tracking-tight">Aplicar impuesto por defecto en ventas</span>
+                                <span className="text-xs font-black text-primary-600 uppercase tracking-tight">Aplicar impuesto por defecto en ventas</span>
                             </label>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4 md:col-span-2">
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Moneda Principal</label>
+                                <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Moneda Principal</label>
                                 <Select
                                     name="moneda"
                                     value={formData.moneda || ''}
                                     onChange={(val) => handleChange('moneda', val)}
-                                    className="bg-slate-50/50"
+                                    className="bg-primary-50/50"
                                     options={[
                                         { value: 'COP', label: 'Peso Colombiano (COP)' },
                                         { value: 'USD', label: 'Dólar (USD)' },
@@ -125,14 +125,14 @@ export const SeccionSistema: React.FC<Props> = ({ config, onSave, isSaving }) =>
                                 />
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Símbolo</label>
+                                <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Símbolo</label>
                                 <Input
                                     name="simbolo_moneda"
                                     value={formData.simbolo_moneda}
                                     onChange={handleInputChange}
                                     placeholder="$"
                                     required
-                                    className="bg-slate-50/50 text-center font-black"
+                                    className="bg-primary-50/50 text-center font-black"
                                 />
                             </div>
                         </div>
@@ -141,29 +141,29 @@ export const SeccionSistema: React.FC<Props> = ({ config, onSave, isSaving }) =>
             </Card>
 
             {/* Inventario Section */}
-            <Card className="border-slate-200 shadow-sm overflow-hidden">
-                <Card.Header className="bg-slate-50/50 border-b border-slate-100 flex items-center gap-2 py-4">
+            <Card className="border-primary-200 shadow-sm overflow-hidden">
+                <Card.Header className="bg-primary-50/50 border-b border-primary-100 flex items-center gap-2 py-4">
                     <div className="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center text-orange-600">
                         <IconPackages size={18} />
                     </div>
-                    <Card.Title className="text-sm font-black uppercase tracking-tight text-slate-700">Control de Existencias</Card.Title>
+                    <Card.Title className="text-sm font-black uppercase tracking-tight text-primary-700">Control de Existencias</Card.Title>
                 </Card.Header>
                 <Card.Content className="p-4 sm:p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Stock Mínimo Global</label>
+                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Stock Mínimo Global</label>
                             <Input
                                 name="stock_minimo_global"
                                 type="number"
                                 value={formData.stock_minimo_global}
                                 onChange={handleInputChange}
                                 required
-                                className="bg-slate-50/50"
+                                className="bg-primary-50/50"
                             />
                         </div>
                         <div className="flex items-center">
-                            <label className="flex items-center gap-3 p-4 bg-slate-50/50 border border-slate-100 rounded-xl cursor-pointer hover:bg-slate-100/50 transition-colors group w-full">
-                                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${formData.alertar_stock_bajo ? 'bg-orange-600 border-orange-600' : 'bg-white border-slate-300 group-hover:border-orange-400'}`}>
+                            <label className="flex items-center gap-3 p-4 bg-primary-50/50 border border-primary-100 rounded-xl cursor-pointer hover:bg-primary-100/50 transition-colors group w-full">
+                                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${formData.alertar_stock_bajo ? 'bg-orange-600 border-orange-600' : 'bg-white border-primary-300 group-hover:border-orange-400'}`}>
                                     {formData.alertar_stock_bajo && <IconCheck size={14} className="text-white" />}
                                 </div>
                                 <input
@@ -173,7 +173,7 @@ export const SeccionSistema: React.FC<Props> = ({ config, onSave, isSaving }) =>
                                     onChange={handleInputChange}
                                     className="hidden"
                                 />
-                                <span className="text-xs font-black text-slate-600 uppercase tracking-tight">Activar alertas de stock crítico</span>
+                                <span className="text-xs font-black text-primary-600 uppercase tracking-tight">Activar alertas de stock crítico</span>
                             </label>
                         </div>
                     </div>
@@ -181,18 +181,18 @@ export const SeccionSistema: React.FC<Props> = ({ config, onSave, isSaving }) =>
             </Card>
 
             {/* Ventas Section */}
-            <Card className="border-slate-200 shadow-sm overflow-hidden">
-                <Card.Header className="bg-slate-50/50 border-b border-slate-100 flex items-center gap-2 py-4">
-                    <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
+            <Card className="border-primary-200 shadow-sm overflow-hidden">
+                <Card.Header className="bg-primary-50/50 border-b border-primary-100 flex items-center gap-2 py-4">
+                    <div className="w-8 h-8 rounded-lg bg-accent-50 flex items-center justify-center text-accent-600">
                         <IconTruck size={18} />
                     </div>
-                    <Card.Title className="text-sm font-black uppercase tracking-tight text-slate-700">Políticas Comerciales</Card.Title>
+                    <Card.Title className="text-sm font-black uppercase tracking-tight text-primary-700">Políticas Comerciales</Card.Title>
                 </Card.Header>
                 <Card.Content className="p-4 sm:p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4">
-                            <label className="flex items-center gap-3 p-4 bg-slate-50/50 border border-slate-100 rounded-xl cursor-pointer hover:bg-slate-100/50 transition-colors group w-full">
-                                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${formData.permitir_descuentos ? 'bg-indigo-600 border-indigo-600' : 'bg-white border-slate-300 group-hover:border-indigo-400'}`}>
+                            <label className="flex items-center gap-3 p-4 bg-primary-50/50 border border-primary-100 rounded-xl cursor-pointer hover:bg-primary-100/50 transition-colors group w-full">
+                                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${formData.permitir_descuentos ? 'bg-accent-600 border-accent-600' : 'bg-white border-primary-300 group-hover:border-accent-400'}`}>
                                     {formData.permitir_descuentos && <IconCheck size={14} className="text-white" />}
                                 </div>
                                 <input
@@ -202,28 +202,28 @@ export const SeccionSistema: React.FC<Props> = ({ config, onSave, isSaving }) =>
                                     onChange={handleInputChange}
                                     className="hidden"
                                 />
-                                <span className="text-xs font-black text-slate-600 uppercase tracking-tight">Permitir descuentos</span>
+                                <span className="text-xs font-black text-primary-600 uppercase tracking-tight">Permitir descuentos</span>
                             </label>
                             
                             {formData.permitir_descuentos && (
                                 <div className="space-y-1.5 animate-in slide-in-from-top-2 duration-300">
-                                    <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Tope Máximo de Descuento (%)</label>
+                                    <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Tope Máximo de Descuento (%)</label>
                                     <Input
                                         name="descuento_maximo"
                                         type="number"
                                         value={formData.descuento_maximo}
                                         onChange={handleInputChange}
-                                        leftIcon={<IconPercentage size={16} className="text-slate-400" />}
+                                        leftIcon={<IconPercentage size={16} className="text-primary-400" />}
                                         required
-                                        className="bg-white border-indigo-100"
+                                        className="bg-white border-accent-100"
                                     />
                                 </div>
                             )}
                         </div>
 
                         <div className="flex items-start">
-                             <label className="flex items-center gap-3 p-4 bg-slate-50/50 border border-slate-100 rounded-xl cursor-pointer hover:bg-slate-100/50 transition-colors group w-full">
-                                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${formData.permitir_venta_sin_stock ? 'bg-indigo-600 border-indigo-600' : 'bg-white border-slate-300 group-hover:border-indigo-400'}`}>
+                             <label className="flex items-center gap-3 p-4 bg-primary-50/50 border border-primary-100 rounded-xl cursor-pointer hover:bg-primary-100/50 transition-colors group w-full">
+                                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${formData.permitir_venta_sin_stock ? 'bg-accent-600 border-accent-600' : 'bg-white border-primary-300 group-hover:border-accent-400'}`}>
                                     {formData.permitir_venta_sin_stock && <IconCheck size={14} className="text-white" />}
                                 </div>
                                 <input
@@ -233,7 +233,7 @@ export const SeccionSistema: React.FC<Props> = ({ config, onSave, isSaving }) =>
                                     onChange={handleInputChange}
                                     className="hidden"
                                 />
-                                <span className="text-xs font-black text-slate-600 uppercase tracking-tight">Vender sin existencias (Stock Negativo)</span>
+                                <span className="text-xs font-black text-primary-600 uppercase tracking-tight">Vender sin existencias (Stock Negativo)</span>
                             </label>
                         </div>
                     </div>
@@ -241,12 +241,12 @@ export const SeccionSistema: React.FC<Props> = ({ config, onSave, isSaving }) =>
             </Card>
 
             {/* Actions */}
-            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-slate-200 z-[40] lg:relative lg:bg-transparent lg:border-none lg:p-0 lg:z-0 lg:flex lg:justify-end">
+            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-primary-200 z-[40] lg:relative lg:bg-transparent lg:border-none lg:p-0 lg:z-0 lg:flex lg:justify-end">
                 <Button
                     type="submit"
                     variant="primary"
                     isLoading={isSaving}
-                    className="w-full lg:w-auto px-10 h-12 shadow-xl shadow-blue-200 lg:shadow-none"
+                    className="w-full lg:w-auto px-10 h-12 shadow-xl shadow-accent-200 lg:shadow-none"
                     leftIcon={<IconDeviceFloppy size={20} />}
                 >
                     Guardar Configuración

@@ -23,10 +23,10 @@ export const ConfigLoader = ({ children }: { children: React.ReactNode }) => {
     // Si no está autenticado, dejamos pasar al Login (donde no se necesita config global aún)
     if (isAuthenticated && !isReady) {
         return (
-            <div className="flex h-screen w-full items-center justify-center bg-gray-50">
+            <div className="flex h-screen w-full items-center justify-center bg-primary-50">
                 <div className="flex flex-col items-center gap-4">
-                    <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
-                    <p className="text-sm font-medium text-gray-600">Cargando parámetros del ERP...</p>
+                    <div className="h-12 w-12 animate-spin rounded-full border-4 border-accent-600 border-t-transparent"></div>
+                    <p className="text-sm font-medium text-primary-600">Cargando parámetros del ERP...</p>
                 </div>
             </div>
         );

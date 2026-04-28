@@ -127,13 +127,13 @@ export default function CajaCreatePage() {
         mode="create"
       />
 
-      <div className="p-5 bg-blue-50/50 border border-blue-100 rounded-2xl flex gap-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0 shadow-sm border border-blue-200">
+      <div className="p-5 bg-accent-50/50 border border-accent-100 rounded-2xl flex gap-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="w-10 h-10 rounded-full bg-accent-100 flex items-center justify-center text-accent-600 shrink-0 shadow-sm border border-accent-200">
           <IconBulb size={20} />
         </div>
         <div>
-          <h3 className="text-sm font-bold text-blue-900 mb-1 uppercase tracking-wider">💡 Recomendaciones</h3>
-          <ul className="text-xs text-blue-800 space-y-1.5 list-disc list-inside font-medium opacity-90">
+          <h3 className="text-sm font-bold text-accent-900 mb-1 uppercase tracking-wider">💡 Recomendaciones</h3>
+          <ul className="text-xs text-accent-800 space-y-1.5 list-disc list-inside font-medium opacity-90">
             <li>Asegúrate de contar el efectivo inicial con precisión.</li>
             <li>El nombre de la caja debe ser único y descriptivo (ej: "Caja Principal - Sede Norte").</li>
             <li>El monto inicial se registrará como el balance base de la sesión.</li>

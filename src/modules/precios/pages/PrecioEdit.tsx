@@ -82,7 +82,7 @@ export default function PrecioEdit() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-24 lg:pb-0">
         {/* FORMULARIO */}
         <div className="lg:col-span-2">
-          <Card className="border-slate-200 shadow-sm bg-white/50 backdrop-blur-sm">
+          <Card className="border-primary-200 shadow-sm bg-white/50 backdrop-blur-sm">
             <Card.Content className="p-8">
               <PrecioForm
                 precio={precioActual}
@@ -97,12 +97,12 @@ export default function PrecioEdit() {
 
         {/* PANEL DERECHO */}
         <div className="space-y-4">
-          <Card className="border-amber-100 bg-amber-50/50 shadow-sm">
+          <Card className="border-warning-100 bg-warning-50/50 shadow-sm">
             <Card.Content className="p-4">
-              <h3 className="font-black uppercase tracking-widest text-[10px] text-amber-900 mb-2">
+              <h3 className="font-black uppercase tracking-widest text-[10px] text-warning-900 mb-2">
                 ⚠️ Importante
               </h3>
-              <ul className="space-y-2 text-xs text-amber-800 font-medium">
+              <ul className="space-y-2 text-xs text-warning-800 font-medium">
                 <li>• No se puede cambiar producto o proveedor de un precio existente.</li>
                 <li>• Si el precio cambia drásticamente, considera crear uno nuevo.</li>
                 <li>• Asegúrate de colocar una fecha de inicio correcta.</li>

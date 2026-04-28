@@ -72,10 +72,10 @@ export function Button({
   // Estilos por variante
   const variantStyles = {
     primary: `
-      bg-blue-600 text-white
-      hover:bg-blue-700
-      active:bg-blue-800
-      focus:ring-blue-500
+      bg-accent-600 text-white
+      hover:bg-accent-700
+      active:bg-accent-800
+      focus:ring-accent-500
       shadow-sm
     `,
     secondary: `

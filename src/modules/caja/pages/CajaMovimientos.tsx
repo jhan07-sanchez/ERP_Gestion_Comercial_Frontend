@@ -217,7 +217,7 @@ export default function CajaMovimientosPage() {
           sesionAbierta ? (
             <Button
               onClick={() => setShowForm(!showForm)}
-              className="shadow-md shadow-blue-200"
+              className="shadow-md shadow-accent-200"
             >
               <IconPlus size={18} />
               Nuevo Movimiento
@@ -262,8 +262,8 @@ export default function CajaMovimientosPage() {
 
       {/* Formulario de nuevo movimiento */}
       {showForm && sesionAbierta && (
-        <Card className="shadow-lg border-blue-100 animate-in fade-in slide-in-from-top-2 duration-300">
-          <Card.Header className="bg-blue-50/50">
+        <Card className="shadow-lg border-accent-100 animate-in fade-in slide-in-from-top-2 duration-300">
+          <Card.Header className="bg-accent-50/50">
             <Card.Title>Registrar Movimiento</Card.Title>
           </Card.Header>
           <Card.Content className="space-y-4">
@@ -276,7 +276,7 @@ export default function CajaMovimientosPage() {
                 <select
                   value={formTipo}
                   onChange={(e) => setFormTipo(e.target.value as TipoMovimiento)}
-                  className="block w-full px-4 py-2.5 border border-primary-300 rounded-button text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all"
+                  className="block w-full px-4 py-2.5 border border-primary-300 rounded-button text-sm bg-white focus:ring-2 focus:ring-accent-100 focus:border-accent-500 transition-all"
                 >
                   {TIPOS_MOVIMIENTO_MANUALES.map((t) => (
                     <option key={t} value={t}>
@@ -294,7 +294,7 @@ export default function CajaMovimientosPage() {
                 <select
                   value={formMetodoPago}
                   onChange={(e) => setFormMetodoPago(e.target.value)}
-                  className="block w-full px-4 py-2.5 border border-primary-300 rounded-button text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all"
+                  className="block w-full px-4 py-2.5 border border-primary-300 rounded-button text-sm bg-white focus:ring-2 focus:ring-accent-100 focus:border-accent-500 transition-all"
                 >
                   {metodosPago.map((mp) => (
                     <option key={mp.id} value={mp.id}>
@@ -367,7 +367,7 @@ export default function CajaMovimientosPage() {
             <select
               value={filtroTipo}
               onChange={(e) => setFiltroTipo(e.target.value)}
-              className="text-xs px-3 py-1.5 border border-primary-200 rounded-lg bg-white focus:ring-1 focus:ring-blue-200"
+              className="text-xs px-3 py-1.5 border border-primary-200 rounded-lg bg-white focus:ring-1 focus:ring-accent-200"
             >
               <option value="TODOS">Todos los tipos</option>
               <option value="APERTURA">Apertura</option>
@@ -429,7 +429,7 @@ export default function CajaMovimientosPage() {
                       </Table.Cell>
                       <Table.Cell
                         className={`text-right font-bold tabular-nums ${
-                          ingreso ? "text-emerald-600" : "text-rose-600"
+                          ingreso ? "text-success-600" : "text-danger-600"
                         }`}
                       >
                         {ingreso ? "+" : "-"} {formatCurrency(monto)}
@@ -465,10 +465,10 @@ function MiniKPI({
   color: string;
 }) {
   const colorMap: Record<string, string> = {
-    blue: "bg-blue-50 border-blue-100 text-blue-700",
-    emerald: "bg-emerald-50 border-emerald-100 text-emerald-700",
-    rose: "bg-rose-50 border-rose-100 text-rose-700",
-    indigo: "bg-indigo-50 border-indigo-100 text-indigo-700",
+    blue: "bg-accent-50 border-accent-100 text-accent-700",
+    emerald: "bg-success-50 border-success-100 text-success-700",
+    rose: "bg-danger-50 border-danger-100 text-danger-700",
+    indigo: "bg-accent-50 border-accent-100 text-accent-700",
   };
 
   return (

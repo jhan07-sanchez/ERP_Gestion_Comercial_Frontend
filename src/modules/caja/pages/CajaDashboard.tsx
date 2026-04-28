@@ -148,7 +148,7 @@ export default function CajaDashboardPage() {
             </p>
             <Button
               onClick={() => navigate("/caja/lista")}
-              className="shadow-lg shadow-blue-200 mt-2"
+              className="shadow-lg shadow-accent-200 mt-2"
             >
               <IconDoor size={18} />
               Ir a Cajas
@@ -173,17 +173,17 @@ export default function CajaDashboardPage() {
           <div className="flex items-center gap-2">
             {!isSynced && loadingDetalle && (
               <Badge variant="warning" className="text-xs px-2 py-1 animate-pulse flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-600 animate-ping"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-warning-600 animate-ping"></span>
                 Sincronizando...
               </Badge>
             )}
             {isSynced && (
               <Badge variant="success" className="text-xs px-2 py-1 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-100"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-success-100"></span>
                 Sincronizado
               </Badge>
             )}
-            <Badge variant="success" className="text-sm px-3 py-1 ml-2 shadow-sm shadow-emerald-100">
+            <Badge variant="success" className="text-sm px-3 py-1 ml-2 shadow-sm shadow-success-100">
               Sesión Abierta
             </Badge>
           </div>
@@ -315,7 +315,7 @@ export default function CajaDashboardPage() {
                         </Table.Cell>
                         <Table.Cell
                           className={`text-right font-bold tabular-nums ${
-                            ingreso ? "text-emerald-600" : "text-rose-600"
+                            ingreso ? "text-success-600" : "text-danger-600"
                           }`}
                         >
                           {ingreso ? "+" : "-"} {formatCurrency(monto)}
@@ -375,10 +375,10 @@ function DashKPI({
   highlighted?: boolean;
 }) {
   const colorMap: Record<string, string> = {
-    blue: "bg-blue-50 border-blue-100 text-blue-700",
-    emerald: "bg-emerald-50 border-emerald-100 text-emerald-700",
-    rose: "bg-rose-50 border-rose-100 text-rose-700",
-    indigo: "bg-indigo-50 border-indigo-100 text-indigo-700",
+    blue: "bg-accent-50 border-accent-100 text-accent-700",
+    emerald: "bg-success-50 border-success-100 text-success-700",
+    rose: "bg-danger-50 border-danger-100 text-danger-700",
+    indigo: "bg-accent-50 border-accent-100 text-accent-700",
   };
 
   return (
@@ -417,10 +417,10 @@ function ActionButton({
   onClick: () => void;
 }) {
   const colorMap: Record<string, string> = {
-    blue: "bg-blue-50 text-blue-600 border-blue-100 hover:bg-blue-100",
-    amber: "bg-amber-50 text-amber-600 border-amber-100 hover:bg-amber-100",
-    rose: "bg-rose-50 text-rose-600 border-rose-100 hover:bg-rose-100",
-    indigo: "bg-indigo-50 text-indigo-600 border-indigo-100 hover:bg-indigo-100",
+    blue: "bg-accent-50 text-accent-600 border-accent-100 hover:bg-accent-100",
+    amber: "bg-warning-50 text-warning-600 border-warning-100 hover:bg-warning-100",
+    rose: "bg-danger-50 text-danger-600 border-danger-100 hover:bg-danger-100",
+    indigo: "bg-accent-50 text-accent-600 border-accent-100 hover:bg-accent-100",
   };
 
   return (

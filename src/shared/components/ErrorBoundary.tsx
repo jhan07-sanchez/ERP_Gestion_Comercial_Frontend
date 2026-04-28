@@ -33,8 +33,8 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="min-h-[400px] flex items-center justify-center p-6">
           <div className="text-center max-w-md">
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">Algo salió mal</h2>
-            <p className="text-gray-600 mb-4">{this.state.error.message}</p>
+            <h2 className="text-xl font-semibold text-primary-900 mb-2">Algo salió mal</h2>
+            <p className="text-primary-600 mb-4">{this.state.error.message}</p>
             <Button
               variant="primary"
               onClick={() => this.setState({ hasError: false, error: null })}

@@ -104,8 +104,8 @@ export default function ProveedorDetailPage() {
     return (
       <PageContainer>
         <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
-            <IconLoader2 className="animate-spin text-blue-600" size={48} stroke={1.5} />
-            <p className="text-slate-600 font-black uppercase tracking-widest text-[10px] animate-pulse">Cargando información del proveedor...</p>
+            <IconLoader2 className="animate-spin text-accent-600" size={48} stroke={1.5} />
+            <p className="text-primary-600 font-black uppercase tracking-widest text-[10px] animate-pulse">Cargando información del proveedor...</p>
         </div>
       </PageContainer>
     );
@@ -116,17 +116,17 @@ export default function ProveedorDetailPage() {
     return (
       <PageContainer>
         <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="max-w-md w-full text-center space-y-6 bg-rose-50/50 p-10 rounded-3xl border border-rose-100 shadow-sm backdrop-blur-sm">
-            <div className="w-20 h-20 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-rose-200/50">
+          <div className="max-w-md w-full text-center space-y-6 bg-danger-50/50 p-10 rounded-3xl border border-danger-100 shadow-sm backdrop-blur-sm">
+            <div className="w-20 h-20 bg-danger-100 text-danger-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-danger-200/50">
               <IconAlertCircle size={40} stroke={1.5} />
             </div>
             <div className="space-y-2">
-              <h3 className="text-xl font-black text-rose-900 uppercase tracking-tight">Proveedor no encontrado</h3>
-              <p className="text-sm text-rose-700 font-medium leading-relaxed">{error || "No se pudo localizar este registro."}</p>
+              <h3 className="text-xl font-black text-danger-900 uppercase tracking-tight">Proveedor no encontrado</h3>
+              <p className="text-sm text-danger-700 font-medium leading-relaxed">{error || "No se pudo localizar este registro."}</p>
             </div>
             <Button 
                 onClick={handleBack} 
-                className="w-full h-12 bg-rose-600 hover:bg-rose-700 text-white border-none shadow-xl shadow-rose-200 font-black uppercase tracking-widest text-[10px]"
+                className="w-full h-12 bg-danger-600 hover:bg-danger-700 text-white border-none shadow-xl shadow-danger-200 font-black uppercase tracking-widest text-[10px]"
             >
               Volver al Directorio
             </Button>
@@ -139,10 +139,10 @@ export default function ProveedorDetailPage() {
   return (
     <PageContainer>
         {actionLoading && (
-            <div className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-50 flex items-center justify-center">
+            <div className="fixed inset-0 bg-primary-900/20 backdrop-blur-sm z-50 flex items-center justify-center">
                 <div className="bg-white p-6 rounded-2xl shadow-xl flex items-center gap-4">
-                    <IconLoader2 className="animate-spin text-blue-600" size={24} />
-                    <span className="text-sm font-black text-slate-700 uppercase tracking-widest">Procesando...</span>
+                    <IconLoader2 className="animate-spin text-accent-600" size={24} />
+                    <span className="text-sm font-black text-primary-700 uppercase tracking-widest">Procesando...</span>
                 </div>
             </div>
         )}
@@ -157,31 +157,31 @@ export default function ProveedorDetailPage() {
                 <Badge variant={proveedor.estado ? "success" : "gray"} className="mb-2 sm:mb-0 sm:mr-4 self-start sm:self-auto py-1 px-3">
                     {proveedor.estado ? "Activo" : "Inactivo"}
                 </Badge>
-                <div className="flex bg-slate-100 p-1 rounded-xl shadow-inner border border-slate-200/60 w-full sm:w-auto">
+                <div className="flex bg-primary-100 p-1 rounded-xl shadow-inner border border-primary-200/60 w-full sm:w-auto">
                     <Button 
                         variant="ghost" 
                         onClick={handleEdit}
-                        className="flex-1 sm:flex-none text-slate-600 hover:bg-white hover:text-blue-600 hover:shadow-sm"
+                        className="flex-1 sm:flex-none text-primary-600 hover:bg-white hover:text-accent-600 hover:shadow-sm"
                         leftIcon={<IconEdit size={16} />}
                         size="sm"
                     >
                         Editar
                     </Button>
-                    <div className="w-px bg-slate-200 my-2 mx-1 hidden sm:block"></div>
+                    <div className="w-px bg-primary-200 my-2 mx-1 hidden sm:block"></div>
                     <Button 
                         variant="ghost" 
                         onClick={handleToggleEstado}
-                        className={`flex-1 sm:flex-none hover:bg-white hover:shadow-sm ${proveedor.estado ? 'text-amber-600 hover:text-amber-700' : 'text-emerald-600 hover:text-emerald-700'}`}
+                        className={`flex-1 sm:flex-none hover:bg-white hover:shadow-sm ${proveedor.estado ? 'text-warning-600 hover:text-warning-700' : 'text-success-600 hover:text-success-700'}`}
                         leftIcon={<IconPower size={16} />}
                         size="sm"
                     >
                         {proveedor.estado ? "Desactivar" : "Activar"}
                     </Button>
-                    <div className="w-px bg-slate-200 my-2 mx-1 hidden sm:block"></div>
+                    <div className="w-px bg-primary-200 my-2 mx-1 hidden sm:block"></div>
                     <Button 
                         variant="ghost" 
                         onClick={handleDelete}
-                        className="flex-1 sm:flex-none text-rose-600 hover:bg-white hover:text-rose-700 hover:shadow-sm"
+                        className="flex-1 sm:flex-none text-danger-600 hover:bg-white hover:text-danger-700 hover:shadow-sm"
                         leftIcon={<IconTrash size={16} />}
                         size="sm"
                     >
@@ -194,12 +194,12 @@ export default function ProveedorDetailPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-24 lg:pb-0">
         <div className="lg:col-span-2 space-y-6">
-            <Card className="border-slate-200 shadow-sm overflow-hidden">
-                <Card.Header className="bg-slate-50/50 border-b border-slate-100 py-4 px-6 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+            <Card className="border-primary-200 shadow-sm overflow-hidden">
+                <Card.Header className="bg-primary-50/50 border-b border-primary-100 py-4 px-6 flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-accent-50 text-accent-600 flex items-center justify-center">
                         <IconBuildingStore size={18} />
                     </div>
-                    <h2 className="text-sm font-black text-slate-800 uppercase tracking-tight">Información Principal</h2>
+                    <h2 className="text-sm font-black text-primary-800 uppercase tracking-tight">Información Principal</h2>
                 </Card.Header>
                 <Card.Content className="p-0">
                     <ProveedorDetalleList proveedor={proveedor} />
@@ -208,33 +208,33 @@ export default function ProveedorDetailPage() {
         </div>
 
         <div className="space-y-6">
-            <Card className="border-slate-200 shadow-sm overflow-hidden">
-                <Card.Header className="bg-slate-50/50 border-b border-slate-100 py-4 px-6 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <Card className="border-primary-200 shadow-sm overflow-hidden">
+                <Card.Header className="bg-primary-50/50 border-b border-primary-100 py-4 px-6 flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-accent-50 text-accent-600 flex items-center justify-center">
                         <IconChartBar size={18} />
                     </div>
-                    <h2 className="text-sm font-black text-slate-800 uppercase tracking-tight">Estadísticas</h2>
+                    <h2 className="text-sm font-black text-primary-800 uppercase tracking-tight">Estadísticas</h2>
                 </Card.Header>
                 <Card.Content className="p-6">
-                    <div className="text-center py-6 px-4 bg-slate-50 border border-slate-100 border-dashed rounded-2xl">
-                        <p className="text-xs font-bold text-slate-500 tracking-wide leading-relaxed">
+                    <div className="text-center py-6 px-4 bg-primary-50 border border-primary-100 border-dashed rounded-2xl">
+                        <p className="text-xs font-bold text-primary-500 tracking-wide leading-relaxed">
                             Métricas se integrarán al habilitar el módulo de compras y cuentas por pagar.
                         </p>
                     </div>
                 </Card.Content>
             </Card>
 
-            <Card className="border-slate-200 shadow-sm overflow-hidden">
-                <Card.Header className="bg-slate-50/50 border-b border-slate-100 py-4 px-6 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center">
+            <Card className="border-primary-200 shadow-sm overflow-hidden">
+                <Card.Header className="bg-primary-50/50 border-b border-primary-100 py-4 px-6 flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-primary-100 text-primary-600 flex items-center justify-center">
                         <IconHistory size={18} />
                     </div>
-                    <h2 className="text-sm font-black text-slate-800 uppercase tracking-tight">Historial</h2>
+                    <h2 className="text-sm font-black text-primary-800 uppercase tracking-tight">Historial</h2>
                 </Card.Header>
                 <Card.Content className="p-6">
-                    <div className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Fecha de Creación</span>
-                        <span className="text-xs font-bold text-slate-700">
+                    <div className="flex items-center justify-between p-4 bg-primary-50 rounded-2xl border border-primary-100">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-primary-400">Fecha de Creación</span>
+                        <span className="text-xs font-bold text-primary-700">
                             {new Date(proveedor.fecha_creacion ?? "").toLocaleString("es-ES")}
                         </span>
                     </div>

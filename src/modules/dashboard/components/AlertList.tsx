@@ -8,6 +8,7 @@ import {
 } from "@tabler/icons-react";
 import type { SystemAlert } from "../types";
 import { useNavigate } from "react-router-dom";
+import { formatDateTime } from "@/shared/utils";
 
 interface AlertListProps {
     alerts: SystemAlert[];
@@ -18,7 +19,7 @@ export function AlertList({ alerts }: AlertListProps) {
 
     if (alerts.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center py-12 text-gray-400">
+            <div className="flex flex-col items-center justify-center py-12 text-primary-400">
                 <IconInfoCircle size={48} stroke={1} className="mb-2 opacity-20" />
                 <p className="text-sm font-medium">No hay alertas del sistema</p>
             </div>
@@ -29,49 +30,35 @@ export function AlertList({ alerts }: AlertListProps) {
         switch (severity) {
             case 'critica':
                 return {
-                    container: "bg-red-50 border-red-100 hover:border-red-200",
-                    iconContainer: "bg-red-100 text-red-600",
+                    container: "bg-danger-50 border-danger-100 hover:border-danger-200",
+                    iconContainer: "bg-danger-100 text-danger-600",
                     icon: <IconAlertCircle size={20} />,
-                    badge: "bg-red-200 text-red-800",
-                    title: "text-red-900"
+                    badge: "bg-danger-200 text-danger-800",
+                    title: "text-danger-900"
                 };
             case 'media':
             case 'advertencia':
                 return {
-                    container: "bg-amber-50 border-amber-100 hover:border-amber-200",
-                    iconContainer: "bg-amber-100 text-amber-600",
+                    container: "bg-warning-50 border-warning-100 hover:border-warning-200",
+                    iconContainer: "bg-warning-100 text-warning-600",
                     icon: <IconAlertTriangle size={20} />,
-                    badge: "bg-amber-200 text-amber-800",
-                    title: "text-amber-900"
+                    badge: "bg-warning-200 text-warning-800",
+                    title: "text-warning-900"
                 };
             case 'informacion':
             case 'baja':
             default:
                 return {
-                    container: "bg-blue-50 border-blue-100 hover:border-blue-200",
-                    iconContainer: "bg-blue-100 text-blue-600",
+                    container: "bg-accent-50 border-accent-100 hover:border-accent-200",
+                    iconContainer: "bg-accent-100 text-accent-600",
                     icon: <IconInfoCircle size={20} />,
-                    badge: "bg-blue-200 text-blue-800",
-                    title: "text-blue-900"
+                    badge: "bg-accent-200 text-accent-800",
+                    title: "text-accent-900"
                 };
         }
     };
 
-    const formatAlertTime = (dateStr: string) => {
-        try {
-            const date = new Date(dateStr);
-            return date.toLocaleString('es-CO', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false
-            });
-        } catch {
-            return dateStr;
-        }
-    };
+
 
     const handleDetailClick = (alert: SystemAlert) => {
         if (alert.type === 'sale') {
@@ -100,13 +87,13 @@ export function AlertList({ alerts }: AlertListProps) {
                                 <h4 className={`text-sm font-black uppercase tracking-tight truncate ${styles.title}`}>
                                     {alert.title}
                                 </h4>
-                                <div className="flex items-center gap-1.5 text-[10px] font-bold text-gray-400 shrink-0">
+                                <div className="flex items-center gap-1.5 text-[10px] font-bold text-primary-400 shrink-0">
                                     <IconClock size={12} />
-                                    {formatAlertTime(alert.timestamp)}
+                                    {formatDateTime(alert.timestamp)}
                                 </div>
                             </div>
 
-                            <p className="text-xs text-gray-600 leading-relaxed font-medium">
+                            <p className="text-xs text-primary-600 leading-relaxed font-medium">
                                 {alert.message}
                             </p>
 
@@ -117,7 +104,7 @@ export function AlertList({ alerts }: AlertListProps) {
 
                                 <button
                                     onClick={() => handleDetailClick(alert)}
-                                    className="text-[10px] font-black text-blue-600 bg-blue-50/80 hover:bg-blue-100 px-3 py-1 rounded-lg flex items-center gap-1 transition-colors lg:opacity-0 lg:group-hover:opacity-100 opacity-100"
+                                    className="text-[10px] font-black text-accent-600 bg-accent-50/80 hover:bg-accent-100 px-3 py-1 rounded-lg flex items-center gap-1 transition-colors lg:opacity-0 lg:group-hover:opacity-100 opacity-100"
                                 >
                                     VER DETALLE
                                     <IconChevronRight size={12} stroke={2.5} />

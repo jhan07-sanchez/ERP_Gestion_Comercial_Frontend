@@ -59,7 +59,7 @@ export default function CajaList() {
         actions={
           <Button
             onClick={() => navigate("/caja/crear")}
-            className="w-full sm:w-auto shadow-md shadow-blue-200"
+            className="w-full sm:w-auto shadow-md shadow-accent-200"
           >
             Nueva Caja
           </Button>
@@ -137,7 +137,7 @@ export default function CajaList() {
                             <Button
                               size="sm"
                               variant="secondary"
-                              className="bg-blue-50 text-blue-700 border-blue-100 hover:bg-blue-100"
+                              className="bg-accent-50 text-accent-700 border-accent-100 hover:bg-accent-100"
                               onClick={() => navigate(`/caja/sesion/${caja.sesion_activa_id}`)}
                             >
                               Ver Sesión
@@ -146,7 +146,7 @@ export default function CajaList() {
                             <Button
                               size="sm"
                               variant="secondary"
-                              className="bg-emerald-50 text-emerald-700 border-emerald-100 hover:bg-emerald-100"
+                              className="bg-success-50 text-success-700 border-success-100 hover:bg-success-100"
                               onClick={() => navigate(`/caja/dashboard`)}
                             >
                               Gestionar

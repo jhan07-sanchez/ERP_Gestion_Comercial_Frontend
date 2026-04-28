@@ -151,15 +151,15 @@ export function PagoCompraModal({
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[92vh]">
 
                 {/* ── Header ── */}
-                <div className="px-6 py-4 bg-gradient-to-r from-gray-50 to-white border-b flex justify-between items-center">
+                <div className="px-6 py-4 bg-gradient-to-r from-primary-50 to-white border-b flex justify-between items-center">
                     <div>
-                        <h2 className="text-xl font-black text-gray-800">Registrar Pago</h2>
-                        <p className="text-xs text-gray-400 font-medium mt-0.5">Compra al proveedor</p>
+                        <h2 className="text-xl font-black text-primary-800">Registrar Pago</h2>
+                        <p className="text-xs text-primary-400 font-medium mt-0.5">Compra al proveedor</p>
                     </div>
                     <button
                         onClick={onClose}
                         disabled={submitting}
-                        className="p-2 rounded-full hover:bg-gray-100 text-gray-400 transition-colors"
+                        className="p-2 rounded-full hover:bg-primary-100 text-primary-400 transition-colors"
                     >
                         <IconX size={18} />
                     </button>
@@ -169,9 +169,9 @@ export function PagoCompraModal({
 
                     {/* ── Alerta: caja cerrada (solo para CONTADO) ── */}
                     {requiereCajaAbierta && (
-                        <div className="bg-red-50 border border-red-200 rounded-xl p-3 flex items-start gap-3">
-                            <IconAlertTriangle size={18} className="text-red-500 shrink-0 mt-0.5" />
-                            <p className="text-sm text-red-700 font-medium">
+                        <div className="bg-danger-50 border border-danger-200 rounded-xl p-3 flex items-start gap-3">
+                            <IconAlertTriangle size={18} className="text-danger-500 shrink-0 mt-0.5" />
+                            <p className="text-sm text-danger-700 font-medium">
                                 Caja cerrada. Para pagos en efectivo/tarjeta debes abrir una sesión de caja.
                                 O selecciona <strong>Crédito</strong> para diferir el pago.
                             </p>
@@ -180,9 +180,9 @@ export function PagoCompraModal({
 
                     {/* ── Fondos insuficientes ── */}
                     {fondosInsuficientes && !requiereCajaAbierta && (
-                        <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start gap-3">
-                            <IconAlertTriangle size={18} className="text-amber-500 shrink-0 mt-0.5" />
-                            <div className="text-sm text-amber-700">
+                        <div className="bg-warning-50 border border-warning-200 rounded-xl p-3 flex items-start gap-3">
+                            <IconAlertTriangle size={18} className="text-warning-500 shrink-0 mt-0.5" />
+                            <div className="text-sm text-warning-700">
                                 <p className="font-bold">Fondos insuficientes en caja</p>
                                 <p>Saldo disponible: <strong>{formatCurrency(saldoCaja)}</strong></p>
                                 <p className="mt-1 opacity-80">
@@ -193,7 +193,7 @@ export function PagoCompraModal({
                     )}
 
                     {/* ── Card total deuda ── */}
-                    <div className="bg-gradient-to-br from-slate-700 to-slate-900 rounded-2xl p-5 text-white">
+                    <div className="bg-gradient-to-br from-primary-700 to-primary-900 rounded-2xl p-5 text-white">
                         <p className="text-xs font-bold uppercase tracking-widest opacity-60 mb-1">
                             Saldo Pendiente
                         </p>
@@ -204,7 +204,7 @@ export function PagoCompraModal({
 
                     {/* ── Selector de método ── */}
                     {loadingMetodos ? (
-                        <div className="flex items-center justify-center py-6 gap-2 text-gray-400">
+                        <div className="flex items-center justify-center py-6 gap-2 text-primary-400">
                             <IconLoader2 size={20} className="animate-spin" />
                             <span className="text-sm">Cargando métodos de pago...</span>
                         </div>
@@ -213,8 +213,8 @@ export function PagoCompraModal({
                             {/* CONTADO */}
                             {metodosContado.length > 0 && (
                                 <div>
-                                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block"></span>
+                                    <p className="text-xs font-bold text-primary-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-success-400 inline-block"></span>
                                         Pago inmediato (Contado)
                                     </p>
                                     <div className="grid grid-cols-3 gap-2">
@@ -235,8 +235,8 @@ export function PagoCompraModal({
                             {/* CRÉDITO */}
                             {metodosCredito.length > 0 && (
                                 <div>
-                                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-400 inline-block"></span>
+                                    <p className="text-xs font-bold text-primary-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-accent-400 inline-block"></span>
                                         Pago diferido (Crédito)
                                     </p>
                                     <div className="grid grid-cols-3 gap-2">
@@ -261,8 +261,8 @@ export function PagoCompraModal({
                     {mensajeTipo && (
                         <div className={`rounded-xl p-3 flex items-start gap-2.5 text-sm font-medium
                             ${mensajeTipo.tipo === 'info'
-                                ? 'bg-blue-50 border border-blue-100 text-blue-700'
-                                : 'bg-emerald-50 border border-emerald-100 text-emerald-700'
+                                ? 'bg-accent-50 border border-accent-100 text-accent-700'
+                                : 'bg-success-50 border border-success-100 text-success-700'
                             }`}
                         >
                             <IconInfoCircle size={16} className="shrink-0 mt-0.5" />
@@ -272,12 +272,12 @@ export function PagoCompraModal({
 
                     {/* ── Monto ── */}
                     <div className="space-y-2">
-                        <label className="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                        <label className="text-sm font-bold text-primary-700 flex items-center gap-1.5">
                             <IconCurrencyDollar size={16} />
                             Monto a {esCredito ? 'registrar como crédito' : 'abonar'}
                         </label>
                         <div className="relative">
-                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-lg pointer-events-none">
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary-400 font-bold text-lg pointer-events-none">
                                 $
                             </span>
                             <input
@@ -287,15 +287,15 @@ export function PagoCompraModal({
                                 disabled={submitting}
                                 className={`w-full pl-8 pr-4 py-4 text-2xl font-bold text-right border-2 rounded-2xl outline-none transition-colors
                                     ${(montoPagar > maxPagar || montoPagar <= 0)
-                                        ? 'border-red-300 bg-red-50 text-red-700'
+                                        ? 'border-danger-300 bg-danger-50 text-danger-700'
                                         : fondosInsuficientes
-                                            ? 'border-amber-300 bg-amber-50 text-amber-700'
-                                            : 'border-gray-100 bg-gray-50 focus:border-slate-400 text-gray-800'
+                                            ? 'border-warning-300 bg-warning-50 text-warning-700'
+                                            : 'border-primary-100 bg-primary-50 focus:border-primary-400 text-primary-800'
                                     }`}
                             />
                         </div>
                         {montoPagar > maxPagar && (
-                            <p className="text-xs text-red-500 font-bold">
+                            <p className="text-xs text-danger-500 font-bold">
                                 Excede el saldo pendiente ({formatCurrency(maxPagar)})
                             </p>
                         )}
@@ -303,8 +303,8 @@ export function PagoCompraModal({
 
                     {/* ── Referencia ── */}
                     <div className="space-y-2">
-                        <label className="text-sm font-bold text-gray-700">
-                            Referencia <span className="text-gray-400 font-normal">(opcional)</span>
+                        <label className="text-sm font-bold text-primary-700">
+                            Referencia <span className="text-primary-400 font-normal">(opcional)</span>
                         </label>
                         <input
                             type="text"
@@ -312,13 +312,13 @@ export function PagoCompraModal({
                             onChange={(e) => setReferencia(e.target.value)}
                             placeholder="Ej: Factura 001-232, Transferencia #987654"
                             disabled={submitting}
-                            className="w-full px-4 py-3 border-2 border-gray-100 bg-gray-50 rounded-xl focus:border-slate-300 transition-colors outline-none text-gray-800 text-sm"
+                            className="w-full px-4 py-3 border-2 border-primary-100 bg-primary-50 rounded-xl focus:border-primary-300 transition-colors outline-none text-primary-800 text-sm"
                         />
                     </div>
                 </div>
 
                 {/* ── Footer ── */}
-                <div className="p-5 border-t bg-gray-50 flex gap-3">
+                <div className="p-5 border-t bg-primary-50 flex gap-3">
                     <Button
                         type="button"
                         variant="secondary"
@@ -332,8 +332,8 @@ export function PagoCompraModal({
                         type="button"
                         className={`flex-1 rounded-2xl font-bold transition-all
                             ${esCredito
-                                ? 'bg-blue-600 hover:bg-blue-700 shadow-blue-100'
-                                : 'bg-slate-800 hover:bg-slate-900 shadow-slate-100'
+                                ? 'bg-accent-600 hover:bg-accent-700 shadow-accent-100'
+                                : 'bg-primary-800 hover:bg-primary-900 shadow-primary-100'
                             } shadow-lg`}
                         onClick={handleConfirmar}
                         disabled={!puedeConfirmar || submitting}
@@ -360,11 +360,11 @@ interface MetodoBtnProps {
 
 function MetodoBtn({ metodo, seleccionado, onSelect, icon, disabled, variant = 'green' }: MetodoBtnProps) {
     const selectedCls = variant === 'blue'
-        ? 'border-blue-500 bg-blue-50 text-blue-700'
-        : 'border-slate-700 bg-slate-50 text-slate-800';
+        ? 'border-accent-500 bg-accent-50 text-accent-700'
+        : 'border-primary-700 bg-primary-50 text-primary-800';
     const hoverCls = variant === 'blue'
-        ? 'hover:border-blue-200 hover:bg-blue-50/50'
-        : 'hover:border-slate-300 hover:bg-gray-50';
+        ? 'hover:border-accent-200 hover:bg-accent-50/50'
+        : 'hover:border-primary-300 hover:bg-primary-50';
 
     return (
         <button
@@ -372,9 +372,9 @@ function MetodoBtn({ metodo, seleccionado, onSelect, icon, disabled, variant = '
             onClick={() => onSelect(metodo)}
             disabled={disabled}
             className={`flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border-2 transition-all text-center
-                ${seleccionado ? selectedCls : `border-gray-100 bg-white text-gray-400 ${hoverCls}`}`}
+                ${seleccionado ? selectedCls : `border-primary-100 bg-white text-primary-400 ${hoverCls}`}`}
         >
-            <div className={`p-1.5 rounded-lg ${seleccionado ? 'bg-white shadow-sm' : 'bg-gray-50'}`}>
+            <div className={`p-1.5 rounded-lg ${seleccionado ? 'bg-white shadow-sm' : 'bg-primary-50'}`}>
                 {icon}
             </div>
             <span className="text-[10px] font-bold uppercase tracking-tight leading-tight">

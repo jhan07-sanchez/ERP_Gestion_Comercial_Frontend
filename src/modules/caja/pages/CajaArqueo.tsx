@@ -164,12 +164,12 @@ export default function CajaArqueoPage() {
         {/* Formulario de arqueo */}
         <div className="space-y-6">
           {/* Saldo del sistema */}
-          <Card className="border-indigo-100 shadow-sm">
+          <Card className="border-accent-100 shadow-sm">
             <Card.Content className="p-5">
-              <p className="text-xs font-bold uppercase tracking-widest text-indigo-500 mb-1">
+              <p className="text-xs font-bold uppercase tracking-widest text-accent-500 mb-1">
                 Saldo Esperado (Sistema)
               </p>
-              <p className="text-3xl font-black text-indigo-700 tabular-nums">
+              <p className="text-3xl font-black text-accent-700 tabular-nums">
                 {formatCurrency(saldoEsperado)}
               </p>
               <p className="text-xs text-primary-400 mt-1">
@@ -207,10 +207,10 @@ export default function CajaArqueoPage() {
                 <div
                   className={`p-4 rounded-xl border-2 transition-all ${
                     clasificacion === "EXACTO"
-                      ? "bg-emerald-50 border-emerald-200"
+                      ? "bg-success-50 border-success-200"
                       : clasificacion === "SOBRANTE"
-                        ? "bg-amber-50 border-amber-200"
-                        : "bg-rose-50 border-rose-200"
+                        ? "bg-warning-50 border-warning-200"
+                        : "bg-danger-50 border-danger-200"
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
@@ -280,7 +280,7 @@ export default function CajaArqueoPage() {
                   className="
                     block w-full px-4 py-2.5 
                     border border-primary-300 rounded-button 
-                    text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all
+                    text-sm bg-white focus:ring-2 focus:ring-accent-100 focus:border-accent-500 transition-all
                   "
                   maxLength={500}
                 />
@@ -298,7 +298,7 @@ export default function CajaArqueoPage() {
                 onClick={handleRegistrar}
                 disabled={loadingArqueo || isVerifying || !montoContado}
                 isLoading={loadingArqueo || isVerifying}
-                className="shadow-lg shadow-blue-200"
+                className="shadow-lg shadow-accent-200"
               >
                 <IconClipboardList size={18} />
                 Registrar Arqueo
@@ -354,10 +354,10 @@ export default function CajaArqueoPage() {
                         <Table.Cell
                           className={`text-right font-bold tabular-nums ${
                             clasif === "EXACTO"
-                              ? "text-emerald-600"
+                              ? "text-success-600"
                               : clasif === "SOBRANTE"
-                                ? "text-amber-600"
-                                : "text-rose-600"
+                                ? "text-warning-600"
+                                : "text-danger-600"
                           }`}
                         >
                           {diff >= 0 ? "+" : ""}

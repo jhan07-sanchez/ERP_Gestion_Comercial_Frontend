@@ -123,7 +123,7 @@ export default function VentaDetalle() {
               <Button
                 variant="success"
                 onClick={handleAbrirPago}
-                className="shadow-lg shadow-emerald-100 flex-1 sm:flex-none"
+                className="shadow-lg shadow-success-100 flex-1 sm:flex-none"
                 disabled={!isCajaAbierta}
               >
                 <IconCash size={18} />
@@ -145,20 +145,20 @@ export default function VentaDetalle() {
       />
 
       {venta.estado === "COMPLETADA" && venta.documento && (
-        <Card className="border-emerald-200 bg-emerald-50/40 shadow-sm">
+        <Card className="border-success-200 bg-success-50/40 shadow-sm">
           <Card.Content className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-emerald-100 text-emerald-800">
+              <div className="p-2 rounded-lg bg-success-100 text-success-800">
                 <IconFileText size={22} />
               </div>
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                <p className="text-xs font-bold uppercase tracking-wider text-success-800">
                   Documento generado
                 </p>
-                <p className="text-sm font-semibold text-emerald-950">
+                <p className="text-sm font-semibold text-success-950">
                   {venta.documento.tipo_display} — {venta.documento.numero_interno}
                 </p>
-                <p className="text-xs text-emerald-700/80 mt-0.5">
+                <p className="text-xs text-success-700/80 mt-0.5">
                   Ref. operación: {venta.documento.referencia_operacion || "—"}
                 </p>
               </div>
@@ -166,7 +166,7 @@ export default function VentaDetalle() {
             <Button
               type="button"
               variant="secondary"
-              className="shrink-0 border-emerald-300 bg-white hover:bg-emerald-50"
+              className="shrink-0 border-success-300 bg-white hover:bg-success-50"
               onClick={() =>
                 openVentaDocumentoPdf(venta.id, venta.tipo_documento).catch(() =>
                   showAlert("Error", "error", { description: "No se pudo abrir el PDF del documento." }),
@@ -182,12 +182,12 @@ export default function VentaDetalle() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <KPICard label="Total Venta" value={formatCurrency(venta.total)} color="blue" />
-        <KPICard label="Monto Pagado" value={formatCurrency(venta.total_pagado)} color="emerald" />
+        <KPICard label="Total Venta" value={formatCurrency(venta.total)} color="accent" />
+        <KPICard label="Monto Pagado" value={formatCurrency(venta.total_pagado)} color="success" />
         <KPICard
           label="Saldo Pendiente"
           value={formatCurrency(venta.saldo_pendiente)}
-          color={venta.saldo_pendiente > 0 ? "rose" : "indigo"}
+          color={venta.saldo_pendiente > 0 ? "danger" : "accent"}
           isHighlighted={venta.saldo_pendiente > 0}
         />
       </div>
@@ -295,17 +295,17 @@ export default function VentaDetalle() {
                         </Table.Cell>
                         <Table.Cell>
                           <div className="flex flex-col">
-                            <span className="font-bold text-emerald-700 text-xs">{p.metodo_pago_display}</span>
+                            <span className="font-bold text-success-700 text-xs">{p.metodo_pago_display}</span>
                             <span className="text-[10px] text-primary-400">Por {p.usuario_nombre}</span>
                           </div>
                         </Table.Cell>
-                        <Table.Cell className="text-right font-black text-emerald-600">{formatCurrency(p.monto)}</Table.Cell>
+                        <Table.Cell className="text-right font-black text-success-600">{formatCurrency(p.monto)}</Table.Cell>
                       </Table.Row>
                     ))}
                   </Table.Body>
                 </Table>
               ) : (
-                <div className="p-8 text-center bg-gray-50 flex flex-col items-center">
+                <div className="p-8 text-center bg-primary-50 flex flex-col items-center">
                   <IconCash size={32} className="text-primary-200 mb-2" />
                   <p className="text-xs font-bold text-primary-400 uppercase tracking-widest">Sin pagos registrados</p>
                 </div>
@@ -330,17 +330,16 @@ export default function VentaDetalle() {
 
 function KPICard({ label, value, color, isHighlighted }: { label: string; value: string; color: string; isHighlighted?: boolean }) {
   const colorClasses: Record<string, string> = {
-    blue: "bg-blue-50 border-blue-100 text-blue-700",
-    emerald: "bg-emerald-50 border-emerald-100 text-emerald-700",
-    rose: "bg-rose-50 border-rose-100 text-rose-700",
-    indigo: "bg-indigo-50 border-indigo-100 text-indigo-700",
+    accent: "bg-accent-50 border-accent-100 text-accent-700",
+    success: "bg-success-50 border-success-100 text-success-700",
+    danger: "bg-danger-50 border-danger-100 text-danger-700",
   };
 
   return (
     <Card className={`${colorClasses[color]} border shadow-sm`}>
       <Card.Content className="p-5 flex flex-col justify-center gap-1">
         <p className="text-[10px] font-bold uppercase tracking-widest opacity-70 leading-none">{label}</p>
-        <p className={`text-2xl font-black tabular-nums transition-all ${isHighlighted ? 'scale-105 origin-left text-rose-800' : ''}`}>
+        <p className={`text-2xl font-black tabular-nums transition-all ${isHighlighted ? 'scale-105 origin-left text-danger-800' : ''}`}>
           {value}
         </p>
       </Card.Content>

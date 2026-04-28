@@ -26,22 +26,22 @@ export const ProveedorDetalleRow: React.FC<ProveedorDetalleRowProps> = ({
     switch (type) {
       case "email":
         return value && value !== "-" ? (
-            <a href={`mailto:${value}`} className="text-blue-600 hover:text-blue-800 hover:underline font-medium transition-colors">
+            <a href={`mailto:${value}`} className="text-accent-600 hover:text-accent-800 hover:underline font-medium transition-colors">
                 {value}
             </a>
-        ) : <span className="text-slate-400 italic font-medium">—</span>;
+        ) : <span className="text-primary-400 italic font-medium">—</span>;
 
       case "phone":
         return value && value !== "-" ? (
-            <a href={`tel:${value}`} className="text-blue-600 hover:text-blue-800 hover:underline font-medium transition-colors">
+            <a href={`tel:${value}`} className="text-accent-600 hover:text-accent-800 hover:underline font-medium transition-colors">
                 {value}
             </a>
-        ) : <span className="text-slate-400 italic font-medium">—</span>;
+        ) : <span className="text-primary-400 italic font-medium">—</span>;
 
       case "date":
-        if (!value || value === "-") return <span className="text-slate-400 italic font-medium">—</span>;
+        if (!value || value === "-") return <span className="text-primary-400 italic font-medium">—</span>;
         return (
-            <span className="text-slate-700 font-medium">
+            <span className="text-primary-700 font-medium">
                 {new Date(value as string).toLocaleDateString("es-ES", {
                 year: "numeric",
                 month: "long",
@@ -59,14 +59,14 @@ export const ProveedorDetalleRow: React.FC<ProveedorDetalleRowProps> = ({
 
       default:
         return value && value !== "-" ? (
-            <span className="text-slate-700 font-medium">{value}</span>
-        ) : <span className="text-slate-400 italic font-medium">—</span>;
+            <span className="text-primary-700 font-medium">{value}</span>
+        ) : <span className="text-primary-400 italic font-medium">—</span>;
     }
   };
 
   return (
-    <div className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 transition-colors hover:bg-slate-50/50 ${!isLast ? 'border-b border-slate-100' : ''}`}>
-      <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 sm:mb-0 w-full sm:w-1/3">
+    <div className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 transition-colors hover:bg-primary-50/50 ${!isLast ? 'border-b border-primary-100' : ''}`}>
+      <div className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1 sm:mb-0 w-full sm:w-1/3">
         {label}
       </div>
       <div className="w-full sm:w-2/3 sm:text-right text-sm">

@@ -13,17 +13,17 @@ const AuditTable: React.FC<AuditTableProps> = ({ logs, onViewDetail, isLoading }
         return (
             <div className="w-full space-y-4 animate-pulse">
                 {[...Array(5)].map((_, i) => (
-                    <div key={i} className="h-20 bg-slate-50 border border-slate-100 rounded-2xl w-full" />
+                    <div key={i} className="h-20 bg-primary-50 border border-primary-100 rounded-2xl w-full" />
                 ))}
             </div>
         );
     }
 
     return (
-        <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="w-full overflow-hidden rounded-2xl border border-primary-200 bg-white shadow-sm">
             <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left border-collapse">
-                    <thead className="bg-slate-50/50 text-slate-500 border-b border-slate-200">
+                    <thead className="bg-primary-50/50 text-primary-500 border-b border-primary-200">
                         <tr>
                             <th className="px-4 sm:px-6 py-4 font-black uppercase text-[10px] tracking-widest">Acción</th>
                             <th className="hidden md:table-cell px-6 py-4 font-black uppercase text-[10px] tracking-widest">Módulo</th>
@@ -33,51 +33,51 @@ const AuditTable: React.FC<AuditTableProps> = ({ logs, onViewDetail, isLoading }
                             <th className="px-4 py-4 font-black uppercase text-[10px] tracking-widest text-center">Ver</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-primary-100">
                         {logs.length > 0 ? logs.map((log) => (
-                            <tr key={log.id} className="group hover:bg-slate-50/50 transition-all border-l-2 border-l-transparent hover:border-l-blue-500">
+                            <tr key={log.id} className="group hover:bg-primary-50/50 transition-all border-l-2 border-l-transparent hover:border-l-accent-500">
                                 <td className="px-4 sm:px-6 py-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-9 h-9 min-w-[36px] rounded-xl bg-white flex items-center justify-center text-lg shadow-sm border border-slate-100 group-hover:border-blue-100 group-hover:bg-blue-50/20 transition-all">
+                                        <div className="w-9 h-9 min-w-[36px] rounded-xl bg-white flex items-center justify-center text-lg shadow-sm border border-primary-100 group-hover:border-accent-100 group-hover:bg-accent-50/20 transition-all">
                                             {log.icono}
                                         </div>
                                         <div className="flex flex-col">
                                             <span className={`px-2 py-0.5 rounded-md text-[9px] w-fit font-black uppercase tracking-wider ${getActionBadgeColor(log.accion)}`}>
                                                 {log.accion_display}
                                             </span>
-                                            <span className="text-[10px] font-bold text-slate-400 mt-0.5 md:hidden uppercase">
+                                            <span className="text-[10px] font-bold text-primary-400 mt-0.5 md:hidden uppercase">
                                                 {log.modulo_display}
                                             </span>
                                         </div>
                                     </div>
                                 </td>
                                 <td className="hidden md:table-cell px-6 py-4">
-                                    <span className="font-black text-slate-600 px-2 py-1 bg-slate-50 rounded-lg text-[10px] border border-slate-200 uppercase tracking-tighter">
+                                    <span className="font-black text-primary-600 px-2 py-1 bg-primary-50 rounded-lg text-[10px] border border-primary-200 uppercase tracking-tighter">
                                         {log.modulo_display}
                                     </span>
                                 </td>
                                 <td className="hidden sm:table-cell px-6 py-4 max-w-xs xl:max-w-md">
-                                    <p className="text-slate-500 font-bold text-xs leading-relaxed truncate group-hover:text-slate-900 transition-colors">
+                                    <p className="text-primary-500 font-bold text-xs leading-relaxed truncate group-hover:text-primary-900 transition-colors">
                                         {log.descripcion}
                                     </p>
                                 </td>
                                 <td className="hidden lg:table-cell px-6 py-4">
                                     <div className="flex items-center gap-2.5">
-                                        <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-black text-[10px] uppercase border border-blue-100">
+                                        <div className="w-8 h-8 rounded-full bg-accent-50 flex items-center justify-center text-accent-600 font-black text-[10px] uppercase border border-accent-100">
                                             {log.usuario_nombre.charAt(0)}
                                         </div>
                                         <div className="flex flex-col min-w-0">
-                                            <span className="font-black text-slate-900 text-[11px] truncate uppercase tracking-tighter">{log.usuario_nombre}</span>
-                                            <span className="text-[9px] text-slate-400 font-bold tabular-nums tracking-widest">{log.ip_address}</span>
+                                            <span className="font-black text-primary-900 text-[11px] truncate uppercase tracking-tighter">{log.usuario_nombre}</span>
+                                            <span className="text-[9px] text-primary-400 font-bold tabular-nums tracking-widest">{log.ip_address}</span>
                                         </div>
                                     </div>
                                 </td>
                                 <td className="px-4 sm:px-6 py-4 text-right">
                                     <div className="flex flex-col items-end whitespace-nowrap">
-                                        <span className="text-slate-900 font-black text-[11px] tabular-nums">
+                                        <span className="text-primary-900 font-black text-[11px] tabular-nums">
                                             {new Date(log.fecha_hora).toLocaleDateString()}
                                         </span>
-                                        <span className="text-[10px] text-slate-400 font-bold tabular-nums">
+                                        <span className="text-[10px] text-primary-400 font-bold tabular-nums">
                                             {new Date(log.fecha_hora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                         </span>
                                     </div>
@@ -85,7 +85,7 @@ const AuditTable: React.FC<AuditTableProps> = ({ logs, onViewDetail, isLoading }
                                 <td className="px-4 py-4 text-center">
                                     <button
                                         onClick={() => onViewDetail(log)}
-                                        className="p-2 hover:bg-blue-50 text-blue-600 rounded-xl transition-all active:scale-90 border border-transparent hover:border-blue-100"
+                                        className="p-2 hover:bg-accent-50 text-accent-600 rounded-xl transition-all active:scale-90 border border-transparent hover:border-accent-100"
                                         title="Ver detalles"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -99,10 +99,10 @@ const AuditTable: React.FC<AuditTableProps> = ({ logs, onViewDetail, isLoading }
                             <tr>
                                 <td colSpan={6} className="px-6 py-24 text-center">
                                     <div className="flex flex-col items-center gap-4">
-                                        <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center text-3xl">🔍</div>
+                                        <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center text-3xl">🔍</div>
                                         <div className="space-y-1">
-                                            <p className="font-black text-slate-900 text-lg">Sin resultados</p>
-                                            <p className="text-slate-400 text-sm">Prueba ajustando los filtros de búsqueda.</p>
+                                            <p className="font-black text-primary-900 text-lg">Sin resultados</p>
+                                            <p className="text-primary-400 text-sm">Prueba ajustando los filtros de búsqueda.</p>
                                         </div>
                                     </div>
                                 </td>
@@ -117,16 +117,16 @@ const AuditTable: React.FC<AuditTableProps> = ({ logs, onViewDetail, isLoading }
 
 const getActionBadgeColor = (action: string): string => {
     const colors: Record<string, string> = {
-        'CREAR': 'bg-emerald-50 text-emerald-600 border border-emerald-100',
-        'ACTUALIZAR': 'bg-blue-50 text-blue-600 border border-blue-100',
-        'ELIMINAR': 'bg-rose-50 text-rose-600 border border-rose-100',
+        'CREAR': 'bg-success-50 text-success-600 border border-success-100',
+        'ACTUALIZAR': 'bg-accent-50 text-accent-600 border border-accent-100',
+        'ELIMINAR': 'bg-danger-50 text-danger-600 border border-danger-100',
         'LOGIN': 'bg-violet-50 text-violet-600 border border-violet-100',
-        'LOGOUT': 'bg-slate-50 text-slate-500 border border-slate-200',
-        'ERROR': 'bg-rose-100 text-rose-700 border border-rose-200',
-        'ACCESO_DENEGADO': 'bg-amber-100 text-amber-700 border border-amber-200',
-        'AJUSTAR_STOCK': 'bg-amber-50 text-amber-600 border border-amber-100',
+        'LOGOUT': 'bg-primary-50 text-primary-500 border border-primary-200',
+        'ERROR': 'bg-danger-100 text-danger-700 border border-danger-200',
+        'ACCESO_DENEGADO': 'bg-warning-100 text-warning-700 border border-warning-200',
+        'AJUSTAR_STOCK': 'bg-warning-50 text-warning-600 border border-warning-100',
     };
-    return colors[action] || 'bg-slate-50 text-slate-500 border border-slate-200';
+    return colors[action] || 'bg-primary-50 text-primary-500 border border-primary-200';
 };
 
 export default AuditTable;

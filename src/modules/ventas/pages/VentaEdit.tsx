@@ -69,12 +69,12 @@ export default function VentaEdit() {
     cliente_id: data.cliente_id,
     estado: data.estado,
     metodo_pago: data.metodo_pago,
-    monto_recibido: data.monto_recibido,
-    vuelto: data.vuelto,
+    monto_recibido: data.monto_recibido ? Number(data.monto_recibido) : undefined,
+    vuelto: data.vuelto ? Number(data.vuelto) : undefined,
     detalles: data.detalles.map((d) => ({
       producto_id: d.producto_id,
-      cantidad: d.cantidad,
-      precio_unitario: d.precio_unitario,
+      cantidad: Number(d.cantidad) || 0,
+      precio_unitario: Number(d.precio_unitario) || 0,
     })),
   });
 
@@ -135,19 +135,19 @@ export default function VentaEdit() {
       />
 
       {!isCajaAbierta && (
-        <Card className="border-rose-100 bg-rose-50/30 overflow-hidden animate-in fade-in zoom-in-95 duration-500 mb-6">
+        <Card className="border-danger-100 bg-danger-50/30 overflow-hidden animate-in fade-in zoom-in-95 duration-500 mb-6">
           <Card.Content className="flex flex-col items-center justify-center p-12 text-center">
-            <div className="w-20 h-20 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 mb-6 shadow-sm border border-rose-200">
+            <div className="w-20 h-20 rounded-full bg-danger-100 flex items-center justify-center text-danger-600 mb-6 shadow-sm border border-danger-200">
               <IconLock size={40} />
             </div>
-            <h2 className="text-2xl font-black text-rose-900 mb-3 tracking-tight">Caja Cerrada</h2>
-            <p className="text-rose-800/80 mb-8 max-w-md font-medium">
+            <h2 className="text-2xl font-black text-danger-900 mb-3 tracking-tight">Caja Cerrada</h2>
+            <p className="text-danger-800/80 mb-8 max-w-md font-medium">
               Para editar ventas es necesario tener una sesión de caja abierta. 
               Esto es requerido para el control financiero.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
               <Link to="/caja" className="flex-1">
-                <Button className="w-full shadow-lg shadow-rose-200" variant="danger">
+                <Button className="w-full shadow-lg shadow-danger-200" variant="danger">
                   Ir a Caja
                 </Button>
               </Link>
@@ -173,13 +173,13 @@ export default function VentaEdit() {
             onCancel={handleCancel}
           />
 
-          <div className="p-5 bg-amber-50/50 border border-amber-100 rounded-2xl flex gap-4">
-            <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shrink-0 shadow-sm border border-amber-200">
+          <div className="p-5 bg-warning-50/50 border border-warning-100 rounded-2xl flex gap-4">
+            <div className="w-10 h-10 rounded-full bg-warning-100 flex items-center justify-center text-warning-600 shrink-0 shadow-sm border border-warning-200">
               <IconAlertTriangle size={20} />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-amber-900 mb-1 uppercase tracking-wider">⚠️ Importante</h3>
-              <ul className="text-xs text-amber-800 space-y-1.5 list-disc list-inside font-medium opacity-90">
+              <h3 className="text-sm font-bold text-warning-900 mb-1 uppercase tracking-wider">⚠️ Importante</h3>
+              <ul className="text-xs text-warning-800 space-y-1.5 list-disc list-inside font-medium opacity-90">
                 <li>Solo se pueden editar ventas en estado PENDIENTE.</li>
                 <li>Los cambios en productos afectan el stock disponible al completar la transacción.</li>
               </ul>

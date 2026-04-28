@@ -209,21 +209,21 @@ export function CompraForm({
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Error */}
           {error && (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-xl shadow-sm">
-              <p className="text-red-700 font-medium">{error}</p>
+            <div className="p-4 bg-danger-50 border border-danger-200 rounded-xl shadow-sm">
+              <p className="text-danger-700 font-medium">{error}</p>
             </div>
           )}
 
           {/* Información general */}
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-6">
-            <h3 className="text-lg font-semibold text-gray-800">
+          <div className="bg-white border border-primary-200 rounded-xl p-6 shadow-sm space-y-6">
+            <h3 className="text-lg font-semibold text-primary-800">
               Información General
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Proveedor */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-600">
+                <label className="text-sm font-medium text-primary-600">
                   Proveedor
                 </label>
                 <select
@@ -236,7 +236,7 @@ export function CompraForm({
                     })
                   }
                   disabled={submitting}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+                  className="w-full px-4 py-2 border border-primary-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-accent-400 focus:border-accent-400 transition"
                 >
                   <option value={0}>Seleccionar proveedor</option>
                   {proveedores.map((p) => (
@@ -260,8 +260,8 @@ export function CompraForm({
 
             {/* Preview del Próximo Correlativo de Compra */}
             {config && (
-              <div className="flex items-center gap-2 text-sm text-gray-500 bg-blue-50/50 p-3 rounded-xl border border-blue-100 w-full md:w-fit">
-                <span className="font-medium text-blue-700">
+              <div className="flex items-center gap-2 text-sm text-primary-500 bg-accent-50/50 p-3 rounded-xl border border-accent-100 w-full md:w-fit">
+                <span className="font-medium text-accent-700">
                   N° de Compra (Siguiente):
                 </span>
                 <Badge variant="success" className="font-mono scale-110">
@@ -272,7 +272,7 @@ export function CompraForm({
 
             {/* Observaciones */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-600">
+              <label className="text-sm font-medium text-primary-600">
                 Observaciones
               </label>
               <textarea
@@ -281,7 +281,7 @@ export function CompraForm({
                 onChange={handleChange}
                 rows={3}
                 placeholder="Escribe una nota adicional sobre la compra..."
-                className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition resize-none"
+                className="w-full border border-primary-300 rounded-lg p-3 bg-white focus:outline-none focus:ring-2 focus:ring-accent-400 focus:border-accent-400 transition resize-none"
                 disabled={submitting}
               />
             </div>
@@ -293,7 +293,7 @@ export function CompraForm({
 
             {/* Encabezado tipo tabla */}
             {value.detalles.length > 0 && (
-              <div className="grid grid-cols-5 gap-3 bg-gray-100 px-3 py-2 rounded-lg font-semibold text-sm text-gray-600">
+              <div className="grid grid-cols-5 gap-3 bg-primary-100 px-3 py-2 rounded-lg font-semibold text-sm text-primary-600">
                 <div>Producto</div>
                 <div className="text-center">Cantidad</div>
                 <div className="text-center">Precio Unitario</div>
@@ -305,7 +305,7 @@ export function CompraForm({
             {value.detalles.map((detalle, index) => (
               <div
                 key={index}
-                className="grid grid-cols-5 gap-3 items-center bg-white px-3 py-2 rounded-lg border border-gray-200 shadow-sm"
+                className="grid grid-cols-5 gap-3 items-center bg-white px-3 py-2 rounded-lg border border-primary-200 shadow-sm"
               >
                 {/* Producto */}
                 <select
@@ -313,7 +313,7 @@ export function CompraForm({
                   onChange={(e) =>
                     updateDetalle(index, "producto", Number(e.target.value))
                   }
-                  className="border rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="border rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-accent-400"
                 >
                   <option value={0}>Producto</option>
                   {productos.map((p) => (
@@ -352,7 +352,7 @@ export function CompraForm({
                 />
 
                 {/* Subtotal */}
-                <div className="font-semibold text-right text-green-600">
+                <div className="font-semibold text-right text-success-600">
                   {formatCurrency(detalle.subtotal)}
                 </div>
 
@@ -374,8 +374,8 @@ export function CompraForm({
 
           {/* Total */}
           <div className="flex justify-end">
-            <div className="bg-gray-900 text-white px-8 py-4 rounded-xl shadow-lg min-w-[250px] text-right">
-              <p className="text-sm uppercase tracking-wide text-gray-300">
+            <div className="bg-primary-900 text-white px-8 py-4 rounded-xl shadow-lg min-w-[250px] text-right">
+              <p className="text-sm uppercase tracking-wide text-primary-300">
                 Total de la Compra
               </p>
               <p className="text-3xl font-bold mt-1">

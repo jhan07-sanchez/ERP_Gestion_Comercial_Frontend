@@ -96,8 +96,8 @@ export default function ClienteEdit() {
     return (
       <PageContainer>
         <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
-            <IconLoader2 className="animate-spin text-blue-600" size={48} stroke={1.5} />
-            <p className="text-slate-600 font-black uppercase tracking-widest text-[10px] animate-pulse">Cargando información del cliente...</p>
+            <IconLoader2 className="animate-spin text-accent-600" size={48} stroke={1.5} />
+            <p className="text-primary-600 font-black uppercase tracking-widest text-[10px] animate-pulse">Cargando información del cliente...</p>
         </div>
       </PageContainer>
     );

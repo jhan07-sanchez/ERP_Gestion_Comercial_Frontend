@@ -134,10 +134,10 @@ export function ProductoForm({
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Mensajes de Error */}
             {error && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div className="p-4 bg-danger-50 border border-danger-200 rounded-lg">
                 <div className="flex items-center gap-2">
                   <svg
-                    className="w-5 h-5 text-red-600"
+                    className="w-5 h-5 text-danger-600"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -147,14 +147,14 @@ export function ProductoForm({
                       clipRule="evenodd"
                     />
                   </svg>
-                  <p className="text-red-700 font-medium">{error}</p>
+                  <p className="text-danger-700 font-medium">{error}</p>
                 </div>
               </div>
             )}
 
             {/* Sección: Información Básica */}
             <div className="border-b pb-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              <h2 className="text-lg font-semibold text-primary-900 mb-4">
                 Información Básica
               </h2>
 
@@ -181,7 +181,7 @@ export function ProductoForm({
                 />
 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  <label className="block text-sm font-medium text-primary-700 mb-1.5">
                     Descripción
                   </label>
                   <textarea
@@ -191,9 +191,9 @@ export function ProductoForm({
                     rows={3}
                     placeholder="Descripción detallada del producto..."
                     disabled={submitting}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg
-                           focus:ring-2 focus:ring-blue-200 focus:border-blue-500
-                           disabled:bg-gray-50 disabled:cursor-not-allowed
+                    className="w-full px-4 py-2.5 border border-primary-300 rounded-lg
+                           focus:ring-2 focus:ring-accent-200 focus:border-accent-500
+                           disabled:bg-primary-50 disabled:cursor-not-allowed
                            transition-all"
                   />
                 </div>
@@ -202,14 +202,14 @@ export function ProductoForm({
 
             {/* Sección: Categoría */}
             <div className="border-b pb-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              <h2 className="text-lg font-semibold text-primary-900 mb-4">
                 Categoría
               </h2>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label className="block text-sm font-medium text-primary-700 mb-1.5">
                   Categoría
-                  <span className="text-red-600 ml-1">*</span>
+                  <span className="text-danger-600 ml-1">*</span>
                 </label>
 
                 <select
@@ -218,9 +218,9 @@ export function ProductoForm({
                   onChange={handleChange}
                   disabled={loadingCategorias || submitting}
                   required
-                  className="block w-full px-4 py-2.5 border border-gray-300 rounded-lg
-                         focus:ring-2 focus:ring-blue-200 focus:border-blue-500
-                         disabled:bg-gray-100 disabled:cursor-not-allowed
+                  className="block w-full px-4 py-2.5 border border-primary-300 rounded-lg
+                         focus:ring-2 focus:ring-accent-200 focus:border-accent-500
+                         disabled:bg-primary-100 disabled:cursor-not-allowed
                          transition-all"
                 >
                   <option value={0}>
@@ -236,7 +236,7 @@ export function ProductoForm({
                 </select>
 
                 {categorias.length === 0 && !loadingCategorias && (
-                  <p className="mt-1.5 text-sm text-yellow-600">
+                  <p className="mt-1.5 text-sm text-warning-600">
                     No hay categorías disponibles. Crea una categoría primero.
                   </p>
                 )}
@@ -245,7 +245,7 @@ export function ProductoForm({
 
             {/* Sección: Precios */}
             <div className="border-b pb-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              <h2 className="text-lg font-semibold text-primary-900 mb-4">
                 Precios
               </h2>
 
@@ -281,8 +281,8 @@ export function ProductoForm({
               {/* Cálculo de margen de ganancia */}
               {Number(value.precio_compra) > 0 &&
                 Number(value.precio_venta) > Number(value.precio_compra) && (
-                  <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-                    <p className="text-sm text-green-800">
+                  <div className="mt-4 p-3 bg-success-50 border border-success-200 rounded-lg">
+                    <p className="text-sm text-success-800">
                       <strong>Margen de ganancia:</strong> $
                       {(Number(value.precio_venta) - Number(value.precio_compra)).toFixed(2)} (
                       {(
@@ -298,7 +298,7 @@ export function ProductoForm({
 
             {/* Sección: Inventario */}
             <div className="border-b pb-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              <h2 className="text-lg font-semibold text-primary-900 mb-4">
                 Inventario
               </h2>
 
@@ -317,7 +317,7 @@ export function ProductoForm({
 
             {/* Fecha de Creación */}
             <div className="border-b pb-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              <h2 className="text-lg font-semibold text-primary-900 mb-4">
                 Fecha de Creación
               </h2>
               <Input
@@ -335,7 +335,7 @@ export function ProductoForm({
             {/* Sección: Estado (solo en edición) */}
             {mode === "edit" && (
               <div className="pb-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                <h2 className="text-lg font-semibold text-primary-900 mb-4">
                   Estado del Producto
                 </h2>
 
@@ -346,11 +346,11 @@ export function ProductoForm({
                     checked={value.estado ?? true}
                     onChange={handleChange}
                     disabled={submitting}
-                    className="w-4 h-4 text-blue-600 border-gray-300 rounded
-                           focus:ring-2 focus:ring-blue-500
+                    className="w-4 h-4 text-accent-600 border-primary-300 rounded
+                           focus:ring-2 focus:ring-accent-500
                            disabled:cursor-not-allowed"
                   />
-                  <span className="text-gray-700">
+                  <span className="text-primary-700">
                     Producto activo y visible en el sistema
                   </span>
                 </label>

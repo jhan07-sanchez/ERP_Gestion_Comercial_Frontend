@@ -142,16 +142,16 @@ export default function CategoriaForm({
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Errores generales */}
       {(submitError || error) && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">
-          <IconX size={18} className="text-red-600 flex-shrink-0" />
-          <p className="text-sm font-medium text-red-600">{submitError || error}</p>
+        <div className="p-4 bg-danger-50 border border-danger-200 rounded-lg flex items-center gap-2">
+          <IconX size={18} className="text-danger-600 flex-shrink-0" />
+          <p className="text-sm font-medium text-danger-600">{submitError || error}</p>
         </div>
       )}
 
       {/* Campo Nombre */}
       <div className="space-y-2">
-        <label htmlFor="nombre" className="block text-sm font-black uppercase tracking-widest text-slate-700">
-          Nombre de la Categoría <span className="text-red-600">*</span>
+        <label htmlFor="nombre" className="block text-sm font-black uppercase tracking-widest text-primary-700">
+          Nombre de la Categoría <span className="text-danger-600">*</span>
         </label>
         <Input
           id="nombre"
@@ -164,26 +164,26 @@ export default function CategoriaForm({
           maxLength={50}
           className={`h-12 ${
             touched.nombre && errors.nombre
-              ? "border-red-500 focus:border-red-500"
-              : "border-slate-200 focus:border-blue-500"
+              ? "border-danger-500 focus:border-danger-500"
+              : "border-primary-200 focus:border-accent-500"
           }`}
           disabled={isLoading}
         />
         {touched.nombre && errors.nombre && (
-          <p className="text-xs font-bold text-red-600 flex items-center gap-1">
+          <p className="text-xs font-bold text-danger-600 flex items-center gap-1">
             <IconX size={14} />
             {errors.nombre}
           </p>
         )}
-        <p className="text-xs text-slate-500 font-medium">
+        <p className="text-xs text-primary-500 font-medium">
           {formData.nombre.length}/50 caracteres
         </p>
       </div>
 
       {/* Campo Descripción */}
       <div className="space-y-2">
-        <label htmlFor="descripcion" className="block text-sm font-black uppercase tracking-widest text-slate-700">
-          Descripción <span className="text-slate-400">(Opcional)</span>
+        <label htmlFor="descripcion" className="block text-sm font-black uppercase tracking-widest text-primary-700">
+          Descripción <span className="text-primary-400">(Opcional)</span>
         </label>
         <textarea
           id="descripcion"
@@ -196,24 +196,24 @@ export default function CategoriaForm({
           rows={4}
           className={`w-full px-4 py-2 rounded-lg border transition-colors ${
             touched.descripcion && errors.descripcion
-              ? "border-red-500 focus:border-red-500"
-              : "border-slate-200 focus:border-blue-500"
+              ? "border-danger-500 focus:border-danger-500"
+              : "border-primary-200 focus:border-accent-500"
           }`}
           disabled={isLoading}
         />
         {touched.descripcion && errors.descripcion && (
-          <p className="text-xs font-bold text-red-600 flex items-center gap-1">
+          <p className="text-xs font-bold text-danger-600 flex items-center gap-1">
             <IconX size={14} />
             {errors.descripcion}
           </p>
         )}
-        <p className="text-xs text-slate-500 font-medium">
+        <p className="text-xs text-primary-500 font-medium">
           {formData.descripcion.length}/500 caracteres
         </p>
       </div>
 
       {/* Campo Estado */}
-      <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg border border-blue-100">
+      <div className="flex items-center gap-3 p-4 bg-accent-50 rounded-lg border border-accent-100">
         <input
           id="estado"
           name="estado"
@@ -226,10 +226,10 @@ export default function CategoriaForm({
           htmlFor="estado"
           className="flex flex-col gap-1 cursor-pointer flex-1"
         >
-          <span className="text-sm font-black uppercase tracking-widest text-slate-700">
+          <span className="text-sm font-black uppercase tracking-widest text-primary-700">
             Categoría Activa
           </span>
-          <span className="text-xs text-slate-600 font-medium">
+          <span className="text-xs text-primary-600 font-medium">
             {formData.estado
               ? "✅ La categoría es visible en el catálogo"
               : "⏸️ La categoría está desactivada"}
@@ -238,7 +238,7 @@ export default function CategoriaForm({
       </div>
 
       {/* Botones de acción */}
-      <div className="flex gap-3 pt-4 border-t border-slate-100">
+      <div className="flex gap-3 pt-4 border-t border-primary-100">
         <Button
           type="button"
           variant="secondary"
@@ -251,7 +251,7 @@ export default function CategoriaForm({
         <Button
           type="submit"
           disabled={isLoading || Object.keys(errors).length > 0}
-          className="flex-1 h-12 shadow-xl shadow-blue-200 font-black uppercase tracking-widest"
+          className="flex-1 h-12 shadow-xl shadow-accent-200 font-black uppercase tracking-widest"
           leftIcon={isLoading ? <IconLoader2 className="animate-spin" size={18} /> : <IconCheck size={18} />}
         >
           {isLoading ? "Procesando..." : isEditing ? "Guardar Cambios" : "Crear Categoría"}

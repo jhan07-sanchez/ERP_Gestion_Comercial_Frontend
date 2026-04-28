@@ -103,15 +103,15 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col max-h-[90vh]">
 
                 {/* Header */}
-                <div className="px-6 py-5 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100 flex justify-between items-center shrink-0">
+                <div className="px-6 py-5 bg-gradient-to-r from-primary-50 to-white border-b border-primary-100 flex justify-between items-center shrink-0">
                     <div>
-                        <h2 className="text-2xl font-black text-gray-800 tracking-tight">Procesar Pago</h2>
-                        <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Finalizar transacción de venta</p>
+                        <h2 className="text-2xl font-black text-primary-800 tracking-tight">Procesar Pago</h2>
+                        <p className="text-xs text-primary-500 font-medium uppercase tracking-wider">Finalizar transacción de venta</p>
                     </div>
                     <button
                         onClick={onClose}
                         disabled={submitting}
-                        className="p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-all"
+                        className="p-2 rounded-full hover:bg-primary-100 text-primary-400 hover:text-primary-600 transition-all"
                     >
                         <IconX size={20} />
                     </button>
@@ -120,7 +120,7 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                 <div className="p-6 space-y-8 overflow-y-auto flex-1 custom-scrollbar">
                     {/* Alerta de Caja Cerrada */}
                     {!isCajaAbierta && (
-                        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl relative flex items-center gap-3">
+                        <div className="bg-danger-50 border border-danger-200 text-danger-700 px-4 py-3 rounded-xl relative flex items-center gap-3">
                             <IconX className="w-6 h-6 shrink-0" />
                             <div className="flex-1">
                                 <strong className="block font-bold">Caja Cerrada</strong>
@@ -130,12 +130,12 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                     )}
 
                     {/* Saldo a Pagar Card */}
-                    <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-6 shadow-lg shadow-blue-200">
+                    <div className="relative overflow-hidden bg-gradient-to-br from-accent-600 to-accent-700 rounded-2xl p-6 shadow-lg shadow-accent-200">
                         <div className="absolute -right-4 -top-4 text-white/10 rotate-12">
                             <IconCash size={120} />
                         </div>
                         <div className="relative z-10">
-                            <p className="text-xs font-bold text-blue-100 uppercase tracking-widest mb-1 opacity-80">
+                            <p className="text-xs font-bold text-accent-100 uppercase tracking-widest mb-1 opacity-80">
                                 Total a Pagar
                             </p>
                             <p className="text-4xl font-black text-white">
@@ -147,8 +147,8 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                     {/* Selector de Método de Pago */}
                     <div className="space-y-4">
                         <div className="flex items-center gap-2">
-                            <div className="h-6 w-1 bg-blue-500 rounded-full"></div>
-                            <label className="text-sm font-bold text-gray-700 uppercase tracking-wider">Método de Pago</label>
+                            <div className="h-6 w-1 bg-accent-500 rounded-full"></div>
+                            <label className="text-sm font-bold text-primary-700 uppercase tracking-wider">Método de Pago</label>
                         </div>
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {metodosDisponibles.map((m) => (
@@ -159,11 +159,11 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                                     disabled={submitting}
                                     className={`group flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all duration-200
                                         ${metodo === m.value
-                                            ? 'border-blue-500 bg-blue-50 text-blue-700 shadow-md transform scale-102'
-                                            : 'border-gray-100 bg-white text-gray-400 hover:border-blue-200 hover:bg-gray-50 hover:text-gray-600'
+                                            ? 'border-accent-500 bg-accent-50 text-accent-700 shadow-md transform scale-102'
+                                            : 'border-primary-100 bg-white text-primary-400 hover:border-accent-200 hover:bg-primary-50 hover:text-primary-600'
                                         }`}
                                 >
-                                    <div className={`mb-2 p-2 rounded-xl transition-colors ${metodo === m.value ? 'bg-blue-100' : 'bg-gray-50 group-hover:bg-blue-50'}`}>
+                                    <div className={`mb-2 p-2 rounded-xl transition-colors ${metodo === m.value ? 'bg-accent-100' : 'bg-primary-50 group-hover:bg-accent-50'}`}>
                                         {m.icon}
                                     </div>
                                     <span className="text-xs font-bold uppercase tracking-tight">{m.label}</span>
@@ -175,7 +175,7 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                     <div className="grid grid-cols-1 gap-6">
                         {/* Monto a Pagar AHORA */}
                         <div className="space-y-3">
-                            <label className="text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2">
+                            <label className="text-sm font-bold text-primary-700 uppercase tracking-wider flex items-center gap-2">
                                 <IconCurrencyDollar size={16} />
                                 Monto a abonar
                             </label>
@@ -188,16 +188,16 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                                     disabled={submitting}
                                     className={`w-full px-5 py-4 text-2xl font-bold text-right border-2 rounded-2xl focus:ring-0 transition-all outline-none
                                         ${montoPagar > maxPagar
-                                            ? 'border-red-400 bg-red-50 text-red-700'
-                                            : 'border-gray-100 bg-gray-50 focus:border-blue-500 focus:bg-white text-gray-800'
+                                            ? 'border-danger-400 bg-danger-50 text-danger-700'
+                                            : 'border-primary-100 bg-primary-50 focus:border-accent-500 focus:bg-white text-primary-800'
                                         }`}
                                 />
-                                <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-lg">
+                                <div className="absolute left-5 top-1/2 -translate-y-1/2 text-primary-400 font-bold text-lg">
                                     $
                                 </div>
                             </div>
                             {montoPagar > maxPagar && (
-                                <p className="text-xs text-red-500 font-bold ml-1">Excede el saldo pendiente</p>
+                                <p className="text-xs text-danger-500 font-bold ml-1">Excede el saldo pendiente</p>
                             )}
                         </div>
 
@@ -205,7 +205,7 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                         {esEfectivo && (
                             <div className="space-y-4 pt-2 animate-in slide-in-from-top-4 duration-300">
                                 <div className="space-y-3">
-                                    <label className="text-sm font-bold text-gray-700 uppercase tracking-wider">Monto Recibido</label>
+                                    <label className="text-sm font-bold text-primary-700 uppercase tracking-wider">Monto Recibido</label>
                                     <div className="relative">
                                         <input
                                             type="text"
@@ -213,9 +213,9 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                                             onChange={handleMontoChange}
                                             placeholder="0.00"
                                             disabled={submitting}
-                                            className="w-full px-5 py-4 text-2xl font-bold text-right border-2 border-gray-100 bg-gray-50 rounded-2xl focus:ring-0 focus:border-blue-500 focus:bg-white transition-all outline-none"
+                                            className="w-full px-5 py-4 text-2xl font-bold text-right border-2 border-primary-100 bg-primary-50 rounded-2xl focus:ring-0 focus:border-accent-500 focus:bg-white transition-all outline-none"
                                         />
-                                        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-lg">
+                                        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-primary-400 font-bold text-lg">
                                             $
                                         </div>
                                     </div>
@@ -229,7 +229,7 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                                             type="button"
                                             onClick={() => setDineroRapido(val)}
                                             disabled={submitting}
-                                            className="px-4 py-2 text-xs font-bold text-gray-600 bg-gray-100 rounded-xl hover:bg-blue-500 hover:text-white transition-all transform active:scale-95"
+                                            className="px-4 py-2 text-xs font-bold text-primary-600 bg-primary-100 rounded-xl hover:bg-accent-500 hover:text-white transition-all transform active:scale-95"
                                         >
                                             ${val}
                                         </button>
@@ -238,7 +238,7 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                                         type="button"
                                         onClick={() => setDineroRapido(montoPagar)}
                                         disabled={submitting || !montoPagarValido}
-                                        className="px-4 py-2 text-xs font-bold text-blue-600 bg-blue-100 rounded-xl hover:bg-blue-600 hover:text-white transition-all transform active:scale-95"
+                                        className="px-4 py-2 text-xs font-bold text-accent-600 bg-accent-100 rounded-xl hover:bg-accent-600 hover:text-white transition-all transform active:scale-95"
                                     >
                                         EXACTO
                                     </button>
@@ -247,24 +247,24 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                                 {/* Resultado del Vuelto */}
                                 <div className={`p-5 rounded-2xl border-2 flex items-center justify-between transition-all duration-300
                                     ${montoNumerico > 0 && montoRecibidoValido
-                                        ? 'bg-emerald-50 border-emerald-100 shadow-sm'
+                                        ? 'bg-success-50 border-success-100 shadow-sm'
                                         : montoNumerico > 0 && !montoRecibidoValido
-                                            ? 'bg-red-50 border-red-100'
-                                            : 'bg-gray-50 border-gray-100 opacity-60'}`}
+                                            ? 'bg-danger-50 border-danger-100'
+                                            : 'bg-primary-50 border-primary-100 opacity-60'}`}
                                 >
                                     <div className="flex flex-col">
-                                        <span className={`text-[10px] uppercase font-black ${montoNumerico > 0 && !montoRecibidoValido ? 'text-red-400' : 'text-emerald-500'}`}>
+                                        <span className={`text-[10px] uppercase font-black ${montoNumerico > 0 && !montoRecibidoValido ? 'text-danger-400' : 'text-success-500'}`}>
                                             Cambio / Vuelto
                                         </span>
-                                        <span className="text-gray-600 font-bold">A entregar</span>
+                                        <span className="text-primary-600 font-bold">A entregar</span>
                                     </div>
-                                    <span className={`text-3xl font-black ${montoNumerico > 0 && !montoRecibidoValido ? 'text-red-600' : 'text-emerald-600'}`}>
+                                    <span className={`text-3xl font-black ${montoNumerico > 0 && !montoRecibidoValido ? 'text-danger-600' : 'text-success-600'}`}>
                                         {montoNumerico > 0 && montoRecibidoValido ? formatCurrency(vuelto) : formatCurrency(0)}
                                     </span>
                                 </div>
 
                                 {montoNumerico > 0 && !montoRecibidoValido && (
-                                    <p className="text-xs text-red-500 text-center font-bold animate-pulse">
+                                    <p className="text-xs text-danger-500 text-center font-bold animate-pulse">
                                         El pago es insuficiente para cubrir los {formatCurrency(montoPagar)}
                                     </p>
                                 )}
@@ -274,7 +274,7 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                 </div>
 
                 {/* Footer Actions */}
-                <div className="p-6 bg-white border-t border-gray-100 flex flex-col sm:flex-row gap-3 shrink-0">
+                <div className="p-6 bg-white border-t border-primary-100 flex flex-col sm:flex-row gap-3 shrink-0">
                     <Button
                         type="button"
                         variant="secondary"
@@ -287,7 +287,7 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                     <Button
                         type="button"
                         className={`flex-1 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs h-auto shadow-lg transition-all
-                            ${(esValido && isCajaAbierta) ? 'bg-blue-600 hover:bg-blue-700 shadow-blue-200' : 'bg-gray-200'}`}
+                            ${(esValido && isCajaAbierta) ? 'bg-accent-600 hover:bg-accent-700 shadow-accent-200' : 'bg-primary-200'}`}
                         onClick={() => onConfirm(metodo, montoPagar, esEfectivo ? montoNumerico : montoPagar, esEfectivo ? vuelto : 0)}
                         disabled={!esValido || submitting || !isCajaAbierta}
                         isLoading={submitting}

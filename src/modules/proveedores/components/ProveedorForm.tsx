@@ -71,95 +71,95 @@ export function ProveedorForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-        <Card className="border-slate-200 shadow-sm overflow-hidden">
+        <Card className="border-primary-200 shadow-sm overflow-hidden">
         <Card.Content className="p-4 sm:p-8 space-y-6">
             {error && (
-                <div className="p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-3">
-                    <IconX size={20} className="text-rose-600 shrink-0" />
-                    <p className="text-[11px] text-rose-800 font-bold uppercase tracking-tight leading-relaxed">{error}</p>
+                <div className="p-4 bg-danger-50 border border-danger-100 rounded-2xl flex items-center gap-3">
+                    <IconX size={20} className="text-danger-600 shrink-0" />
+                    <p className="text-[11px] text-danger-800 font-bold uppercase tracking-tight leading-relaxed">{error}</p>
                 </div>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-1.5 md:col-span-2">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Nombre Comercial <span className="text-rose-500">*</span></label>
+                    <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Nombre Comercial <span className="text-danger-500">*</span></label>
                     <Input
                         name="nombre"
                         value={value.nombre || ''}
                         onChange={handleChange}
                         disabled={submitting}
-                        className="bg-slate-50/50 text-sm font-bold h-12"
+                        className="bg-primary-50/50 text-sm font-bold h-12"
                         placeholder="Ej. Distribuidora Central S.A."
                     />
                 </div>
 
                 <div className="space-y-1.5">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Documento (NIT/RUT)</label>
+                    <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Documento (NIT/RUT)</label>
                     <Input
                         name="documento"
                         value={value.documento || ""}
                         onChange={handleChange}
                         disabled={submitting}
-                        className="bg-slate-50/50 h-11"
+                        className="bg-primary-50/50 h-11"
                         placeholder="Ej. 900.123.456-7"
                     />
                 </div>
 
                 <div className="space-y-1.5">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Teléfono</label>
+                    <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Teléfono</label>
                     <Input
                         name="telefono"
                         value={value.telefono || ""}
                         onChange={handleChange}
                         disabled={submitting}
-                        className="bg-slate-50/50 h-11"
+                        className="bg-primary-50/50 h-11"
                         placeholder="Ej. +57 300 000 0000"
                     />
                 </div>
 
                 <div className="space-y-1.5 md:col-span-2">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Correo Electrónico</label>
+                    <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Correo Electrónico</label>
                     <Input
                         name="email"
                         type="email"
                         value={value.email || ""}
                         onChange={handleChange}
                         disabled={submitting}
-                        className="bg-slate-50/50 h-11"
+                        className="bg-primary-50/50 h-11"
                         placeholder="ejemplo@proveedor.com"
                     />
                 </div>
 
                 <div className="space-y-1.5 md:col-span-2">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Dirección Física</label>
+                    <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Dirección Física</label>
                     <textarea
                         name="direccion"
                         value={value.direccion || ""}
                         onChange={handleChange}
                         rows={3}
                         placeholder="Av. Principal #123, Ciudad..."
-                        className="w-full h-24 p-4 bg-slate-50/50 border border-slate-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all placeholder:text-slate-400 resize-none"
+                        className="w-full h-24 p-4 bg-primary-50/50 border border-primary-200 rounded-2xl text-sm font-medium focus:outline-none focus:ring-4 focus:ring-accent-500/10 focus:border-accent-500 transition-all placeholder:text-primary-400 resize-none"
                         disabled={submitting}
                     />
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-slate-100">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-primary-100">
                 <div className="space-y-1.5">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Fecha de Ingreso</label>
+                    <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Fecha de Ingreso</label>
                     <Input
                       type="date"
                       name="fecha_ingreso"
                       value={value.fecha_creacion ? value.fecha_creacion.split("T")[0] : ""}
                       onChange={handleChange}
                       disabled={submitting}
-                      className="bg-slate-50/50 h-11"
+                      className="bg-primary-50/50 h-11"
                     />
                 </div>
 
                 <div className="flex items-end h-full pt-6 md:pt-0">
-                    <label className="flex items-center gap-3 p-4 bg-slate-50/50 border border-slate-100 rounded-xl cursor-pointer hover:bg-slate-100/50 transition-colors group w-full">
-                        <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${value.estado ? 'bg-blue-600 border-blue-600' : 'bg-white border-slate-300 group-hover:border-blue-400'}`}>
+                    <label className="flex items-center gap-3 p-4 bg-primary-50/50 border border-primary-100 rounded-xl cursor-pointer hover:bg-primary-100/50 transition-colors group w-full">
+                        <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${value.estado ? 'bg-accent-600 border-accent-600' : 'bg-white border-primary-300 group-hover:border-accent-400'}`}>
                             {value.estado && <IconCheck size={14} className="text-white" />}
                         </div>
                         <input
@@ -170,7 +170,7 @@ export function ProveedorForm({
                             className="hidden"
                             disabled={submitting}
                         />
-                        <span className="text-xs font-black text-slate-600 uppercase tracking-tight">Proveedor Activo</span>
+                        <span className="text-xs font-black text-primary-600 uppercase tracking-tight">Proveedor Activo</span>
                     </label>
                 </div>
             </div>
@@ -178,7 +178,7 @@ export function ProveedorForm({
         </Card>
 
         {/* Mobile Sticky / Desktop Row Actions */}
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-slate-200 z-[40] lg:relative lg:bg-transparent lg:border-none lg:p-0 lg:z-0 flex flex-col-reverse sm:flex-row justify-end gap-3">
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-primary-200 z-[40] lg:relative lg:bg-transparent lg:border-none lg:p-0 lg:z-0 flex flex-col-reverse sm:flex-row justify-end gap-3">
             <Button
               type="button"
               variant="secondary"
@@ -192,7 +192,7 @@ export function ProveedorForm({
             <Button 
                 type="submit" 
                 isLoading={submitting}
-                className="w-full sm:w-auto h-12 px-8 shadow-xl shadow-blue-200 lg:shadow-none"
+                className="w-full sm:w-auto h-12 px-8 shadow-xl shadow-accent-200 lg:shadow-none"
                 leftIcon={<IconDeviceFloppy size={20} />}
             >
               Guardar Proveedor

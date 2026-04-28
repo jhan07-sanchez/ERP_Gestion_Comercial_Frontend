@@ -76,7 +76,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-gray-50 font-sans">
+    <div className="min-h-screen flex flex-col md:flex-row bg-primary-50 font-sans">
       {/* 
         Estilos locales para las animaciones específicas solicitadas 
         (Fade In Up) para no alterar el archivo global de tailwind. config.
@@ -100,7 +100,7 @@ export default function Login() {
         COLUMNA IZQUIERDA: BRANDING Y MARKETING (Oculta en Mobile)
         ======================================================================== 
       */}
-      <div className="hidden md:flex md:w-1/2 lg:w-3/5 p-12 flex-col justify-between relative overflow-hidden bg-blue-900">
+      <div className="hidden md:flex md:w-1/2 lg:w-3/5 p-12 flex-col justify-between relative overflow-hidden bg-accent-900">
 
         <div className="absolute inset-0 z-0">
           <img
@@ -109,14 +109,14 @@ export default function Login() {
             className="w-full h-full object-cover animate-erp-bg"
           />
           {/* Degradado progresivo solicitado para mantener contraste y dejar ver la imagen */}
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 via-blue-900/60 to-transparent backdrop-blur-[2px]"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-accent-900/90 via-accent-900/60 to-transparent backdrop-blur-[2px]"></div>
         </div>
 
         {/* Header Branding */}
         <div className="relative z-10 flex items-center gap-3">
           <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-lg">
             <svg
-              className="w-6 h-6 text-blue-600"
+              className="w-6 h-6 text-accent-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -139,7 +139,7 @@ export default function Login() {
           <h1 className="text-4xl lg:text-5xl font-extrabold leading-tight mb-6 drop-shadow-lg">
             Controla tu negocio de forma inteligente
           </h1>
-          <p className="text-lg text-blue-50 mb-8 leading-relaxed drop-shadow-md font-medium">
+          <p className="text-lg text-accent-50 mb-8 leading-relaxed drop-shadow-md font-medium">
             Una solución integral para llevar la contabilidad, facturación, compras y
             ventas al siguiente nivel. Accede a tu información en tiempo real desde
             cualquier lugar.
@@ -147,13 +147,13 @@ export default function Login() {
 
           {/*Lista de beneficios o tags con animaciones de entrada*/}
           <div className="flex flex-wrap gap-3">
-            <span className="animate-fade-in-up delay-100 px-4 py-2 rounded-full bg-blue-900/40 text-white text-sm font-medium backdrop-blur-md border border-white/30 shadow-lg">
+            <span className="animate-fade-in-up delay-100 px-4 py-2 rounded-full bg-accent-900/40 text-white text-sm font-medium backdrop-blur-md border border-white/30 shadow-lg">
               ✓ Facturación Electrónica
             </span>
-            <span className="animate-fade-in-up delay-200 px-4 py-2 rounded-full bg-blue-900/40 text-white text-sm font-medium backdrop-blur-md border border-white/30 shadow-lg">
+            <span className="animate-fade-in-up delay-200 px-4 py-2 rounded-full bg-accent-900/40 text-white text-sm font-medium backdrop-blur-md border border-white/30 shadow-lg">
               ✓ Control de Inventario
             </span>
-            <span className="animate-fade-in-up delay-300 px-4 py-2 rounded-full bg-blue-900/40 text-white text-sm font-medium backdrop-blur-md border border-white/30 shadow-lg">
+            <span className="animate-fade-in-up delay-300 px-4 py-2 rounded-full bg-accent-900/40 text-white text-sm font-medium backdrop-blur-md border border-white/30 shadow-lg">
               ✓ Reportes en tiempo real
             </span>
           </div>
@@ -161,7 +161,7 @@ export default function Login() {
 
         {/* Footer Branding */}
         <div className="relative z-10">
-          <p className="text-blue-200 text-sm drop-shadow-md">
+          <p className="text-accent-200 text-sm drop-shadow-md">
             © {new Date().getFullYear()} Sistema ERP Profesional. Todos los derechos reservados.
           </p>
         </div>
@@ -180,13 +180,13 @@ export default function Login() {
             alt="ERP Background"
             className="w-full h-full object-cover animate-erp-bg"
           />
-          <div className="absolute inset-0 bg-blue-900/80 backdrop-blur-[2px]"></div>
+          <div className="absolute inset-0 bg-accent-900/80 backdrop-blur-[2px]"></div>
         </div>
 
         <div className="w-full max-w-md relative z-10">
           {/* Logo mobile */}
           <div className="flex md:hidden items-center justify-center gap-3 mb-8">
-            <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
+            <div className="w-12 h-12 bg-accent-600 rounded-xl flex items-center justify-center shadow-md">
               <svg
                 className="w-7 h-7 text-white"
                 fill="none"
@@ -203,24 +203,24 @@ export default function Login() {
             </div>
           </div>
 
-          <div className="bg-white md:bg-transparent rounded-2xl md:rounded-none shadow-xl md:shadow-none p-8 md:p-0 border border-gray-100 md:border-none">
+          <div className="bg-white md:bg-transparent rounded-2xl md:rounded-none shadow-xl md:shadow-none p-8 md:p-0 border border-primary-100 md:border-none">
             {/* Cabecera del Formulario */}
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">
+              <h2 className="text-3xl font-bold text-primary-900 mb-2">
                 ¡Bienvenido de nuevo!
               </h2>
-              <p className="text-gray-500 text-base">
+              <p className="text-primary-500 text-base">
                 Por favor, ingresa tus credenciales para acceder a tu cuenta.
               </p>
             </div>
 
             {/* Alerta de Error */}
             {error && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
-                <svg className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="mb-6 p-4 bg-danger-50 border border-danger-200 rounded-xl flex items-start gap-3">
+                <svg className="w-5 h-5 text-danger-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span className="text-sm text-red-600 font-medium">
+                <span className="text-sm text-danger-600 font-medium">
                   {error}
                 </span>
               </div>
@@ -233,12 +233,12 @@ export default function Login() {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-semibold text-gray-700 mb-2"
+                  className="block text-sm font-semibold text-primary-700 mb-2"
                 >
                   Correo electrónico
                 </label>
                 {/* Utilizamos group y focus-within para el color del icono */}
-                <div className="relative group focus-within:text-blue-600 text-gray-400">
+                <div className="relative group focus-within:text-accent-600 text-primary-400">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors">
                     <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
@@ -251,7 +251,7 @@ export default function Login() {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 text-base"
+                    className="w-full pl-11 pr-4 py-3.5 bg-primary-50 border border-primary-200 text-primary-900 rounded-xl focus:bg-white focus:ring-2 focus:ring-accent-500 focus:border-transparent outline-none transition-all duration-200 text-base"
                     placeholder="ejemplo@empresa.com"
                   />
                 </div>
@@ -261,11 +261,11 @@ export default function Login() {
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-semibold text-gray-700 mb-2"
+                  className="block text-sm font-semibold text-primary-700 mb-2"
                 >
                   Contraseña
                 </label>
-                <div className="relative group focus-within:text-blue-600 text-gray-400">
+                <div className="relative group focus-within:text-accent-600 text-primary-400">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors">
                     <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -280,13 +280,13 @@ export default function Login() {
                     onChange={handleChange}
                     onKeyDown={checkCapsLock}
                     onKeyUp={checkCapsLock}
-                    className="w-full pl-11 pr-12 py-3.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 text-base"
+                    className="w-full pl-11 pr-12 py-3.5 bg-primary-50 border border-primary-200 text-primary-900 rounded-xl focus:bg-white focus:ring-2 focus:ring-accent-500 focus:border-transparent outline-none transition-all duration-200 text-base"
                     placeholder="••••••••"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-blue-600 focus:outline-none transition-colors"
+                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-primary-400 hover:text-accent-600 focus:outline-none transition-colors"
                   >
                     {showPassword ? (
                       <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -318,16 +318,16 @@ export default function Login() {
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-4 h-4 text-blue-600 bg-gray-50 border-gray-300 rounded focus:ring-blue-500 cursor-pointer transition-colors"
+                    className="w-4 h-4 text-accent-600 bg-primary-50 border-primary-300 rounded focus:ring-accent-500 cursor-pointer transition-colors"
                   />
-                  <span className="ml-2 text-sm text-gray-600 group-hover:text-gray-800 transition-colors">
+                  <span className="ml-2 text-sm text-primary-600 group-hover:text-primary-800 transition-colors">
                     Recordar mi usuario
                   </span>
                 </label>
 
                 <a
                   href="#"
-                  className="text-sm text-blue-600 hover:text-blue-800 font-semibold transition-colors"
+                  className="text-sm text-accent-600 hover:text-accent-800 font-semibold transition-colors"
                 >
                   ¿Olvidaste tu contraseña?
                 </a>
@@ -337,7 +337,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex justify-center items-center py-3.5 px-4 mt-8 border border-transparent rounded-xl shadow-lg shadow-blue-500/30 text-base font-bold text-white bg-blue-600 hover:bg-blue-700 hover:shadow-blue-600/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:shadow-sm"
+                className="w-full flex justify-center items-center py-3.5 px-4 mt-8 border border-transparent rounded-xl shadow-lg shadow-accent-500/30 text-base font-bold text-white bg-accent-600 hover:bg-accent-700 hover:shadow-accent-600/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:shadow-sm"
               >
                 {isLoading ? (
                   <>
@@ -373,15 +373,15 @@ export default function Login() {
             <div className="mt-8">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-200"></div>
+                  <div className="w-full border-t border-primary-200"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                   <span className="px-4 bg-white md:bg-gray-50 text-gray-500">O continuar con</span>
+                   <span className="px-4 bg-white md:bg-primary-50 text-primary-500">O continuar con</span>
                 </div>
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <button type="button" className="w-full flex items-center justify-center py-2.5 px-4 border border-gray-200 rounded-xl shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 hover:shadow transition-all duration-200">
+                <button type="button" className="w-full flex items-center justify-center py-2.5 px-4 border border-primary-200 rounded-xl shadow-sm bg-white text-sm font-medium text-primary-700 hover:bg-primary-50 hover:shadow transition-all duration-200">
                   <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -390,7 +390,7 @@ export default function Login() {
                   </svg>
                   Google
                 </button>
-                <button type="button" className="w-full flex items-center justify-center py-2.5 px-4 border border-gray-200 rounded-xl shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 hover:shadow transition-all duration-200">
+                <button type="button" className="w-full flex items-center justify-center py-2.5 px-4 border border-primary-200 rounded-xl shadow-sm bg-white text-sm font-medium text-primary-700 hover:bg-primary-50 hover:shadow transition-all duration-200">
                   <svg className="w-5 h-5 mr-2" viewBox="0 0 21 21">
                     <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
                     <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/>
@@ -404,11 +404,11 @@ export default function Login() {
 
             {/* Enlace de Registro */}
             <div className="mt-8 text-center">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-primary-600">
                 ¿Aún no eres parte?{" "}
                 <Link
                   to={ROUTES.PLANES}
-                  className="font-bold text-blue-600 hover:text-blue-800 transition-colors"
+                  className="font-bold text-accent-600 hover:text-accent-800 transition-colors"
                 >
                   Solicita una cuenta
                 </Link>

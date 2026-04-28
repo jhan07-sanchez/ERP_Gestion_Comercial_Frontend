@@ -84,6 +84,26 @@ export function formatDateTime(dateString: string | Date): string {
 }
 
 /**
+ * Formatear solo la hora (HH:mm)
+ *
+ * @param dateString - Fecha en formato ISO o Date
+ * @returns Hora formateada
+ *
+ * @example
+ * formatTime('2024-01-15T14:30:00') // "14:30"
+ */
+export function formatTime(dateString: string | Date): string {
+  const date =
+    typeof dateString === "string" ? new Date(dateString) : dateString;
+
+  return new Intl.DateTimeFormat("es-CO", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(date);
+}
+
+/**
  * Formatear fecha relativa (hace X días/horas)
  *
  * @param dateString - Fecha en formato ISO o Date

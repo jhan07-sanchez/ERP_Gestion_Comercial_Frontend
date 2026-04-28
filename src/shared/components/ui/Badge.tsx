@@ -59,8 +59,8 @@ export function Badge({
       border border-danger-200
     `,
     info: `
-      bg-blue-50 text-blue-700
-      border border-blue-200
+      bg-info-50 text-info-700
+      border border-info-200
     `,
     gray: `
       bg-primary-100 text-primary-700
@@ -80,7 +80,7 @@ export function Badge({
     success: 'bg-success-500',
     warning: 'bg-warning-500',
     danger: 'bg-danger-500',
-    info: 'bg-blue-500',
+    info: 'bg-info-500',
     gray: 'bg-primary-500',
   };
 

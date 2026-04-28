@@ -119,22 +119,22 @@ export function SessionTimeoutManager() {
       title="Advertencia de Inactividad"
     >
       <div className="flex flex-col gap-4 text-center">
-        <p className="text-gray-700">
-          Su sesión caducará en <span className="font-bold text-red-600">{formatCountdown(countdown)}</span> por inactividad.
+        <p className="text-primary-700">
+          Su sesión caducará en <span className="font-bold text-danger-600">{formatCountdown(countdown)}</span> por inactividad.
         </p>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-primary-500">
           ¿Desea mantener su sesión iniciada o cerrarla ahora?
         </p>
         <div className="flex justify-center gap-4 mt-6">
           <button
             onClick={handleAutoLogout}
-            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+            className="px-4 py-2 border border-primary-300 text-primary-700 rounded-button hover:bg-primary-50 transition-colors"
           >
             Cerrar sesión
           </button>
           <button
             onClick={handleKeepSession}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="px-4 py-2 bg-accent-600 text-white rounded-button hover:bg-accent-700 transition-colors"
           >
             Mantener sesión iniciada
           </button>

@@ -146,25 +146,25 @@ export default function ClienteCreate() {
         </div>
 
         <div className="space-y-6">
-            <Card className="border-emerald-200 bg-emerald-50/50 shadow-sm sticky top-6">
+            <Card className="border-success-200 bg-success-50/50 shadow-sm sticky top-6">
                 <Card.Content className="p-6">
                     <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600">
+                        <div className="w-10 h-10 rounded-xl bg-success-100 flex items-center justify-center text-success-600">
                             <IconInfoCircle size={24} stroke={2} />
                         </div>
-                        <h3 className="text-sm font-black uppercase tracking-tight text-emerald-900">Validaciones</h3>
+                        <h3 className="text-sm font-black uppercase tracking-tight text-success-900">Validaciones</h3>
                     </div>
-                    <ul className="text-xs font-medium text-emerald-800 space-y-3">
+                    <ul className="text-xs font-medium text-success-800 space-y-3">
                         <li className="flex gap-2 isolate">
-                            <span className="text-emerald-500 font-bold shrink-0">•</span>
+                            <span className="text-success-500 font-bold shrink-0">•</span>
                             <span className="leading-relaxed">El nombre del cliente es obligatorio para realizar una venta.</span>
                         </li>
                         <li className="flex gap-2 isolate">
-                            <span className="text-emerald-500 font-bold shrink-0">•</span>
+                            <span className="text-success-500 font-bold shrink-0">•</span>
                             <span className="leading-relaxed">El documento (Cédula o NIT) debe ser único en el sistema.</span>
                         </li>
                         <li className="flex gap-2 isolate">
-                            <span className="text-emerald-500 font-bold shrink-0">•</span>
+                            <span className="text-success-500 font-bold shrink-0">•</span>
                             <span className="leading-relaxed">El cliente quedará activo automáticamente y listo para transacciones.</span>
                         </li>
                     </ul>

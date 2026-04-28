@@ -1,6 +1,7 @@
 // src/modules/dashboard/components/KPIGrid.tsx
 import { Card } from '@/shared/components/ui';
 import type { KPIStats } from '../types';
+import { formatCurrency } from '@/shared/utils';
 import { 
   IconReportMoney, 
   IconUsers, 
@@ -35,22 +36,22 @@ function AdvancedKPICard({
   variant
 }: AdvancedKPICardProps) {
   const colorMap = {
-    blue: "text-blue-600 bg-blue-50 border-blue-100 ring-blue-500",
-    emerald: "text-emerald-600 bg-emerald-50 border-emerald-100 ring-emerald-500",
-    amber: "text-amber-600 bg-amber-50 border-amber-100 ring-amber-500",
-    rose: "text-rose-600 bg-rose-50 border-rose-100 ring-rose-500",
+    blue: "text-accent-600 bg-accent-50 border-accent-100 ring-accent-500",
+    emerald: "text-success-600 bg-success-50 border-success-100 ring-success-500",
+    amber: "text-warning-600 bg-warning-50 border-warning-100 ring-warning-500",
+    rose: "text-danger-600 bg-danger-50 border-danger-100 ring-danger-500",
   };
 
   const trendColors = {
-    up: "text-emerald-600 bg-emerald-50",
-    down: "text-rose-600 bg-rose-50",
-    stable: "text-slate-500 bg-slate-50",
+    up: "text-success-600 bg-success-50",
+    down: "text-danger-600 bg-danger-50",
+    stable: "text-primary-500 bg-primary-50",
   };
 
   const progress = target && numericValue ? Math.min(Math.round((numericValue / target) * 100), 100) : null;
 
   return (
-    <Card className="border-none shadow-sm ring-1 ring-slate-100 overflow-hidden group hover:ring-blue-100 hover:shadow-md transition-all">
+    <Card className="border-none shadow-sm ring-1 ring-primary-100 overflow-hidden group hover:ring-accent-100 hover:shadow-md transition-all">
       <div className="p-5 space-y-4">
         <div className="flex items-start justify-between">
           <div className={`p-2.5 rounded-xl border ${colorMap[variant]} shadow-sm group-hover:scale-110 transition-transform`}>
@@ -65,23 +66,23 @@ function AdvancedKPICard({
         </div>
 
         <div>
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">{title}</p>
-          <h3 className="text-2xl font-black text-slate-900 tracking-tight">{value}</h3>
-          <p className="text-[10px] font-bold text-slate-500 mt-1 uppercase tracking-tight">{comparison.label}</p>
+          <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest leading-none mb-1">{title}</p>
+          <h3 className="text-2xl font-black text-primary-900 tracking-tight">{value}</h3>
+          <p className="text-[10px] font-bold text-primary-500 mt-1 uppercase tracking-tight">{comparison.label}</p>
         </div>
 
         {progress !== null && (
           <div className="space-y-1.5">
             <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest">
-              <span className="text-slate-400">Progreso a Meta</span>
-              <span className="text-slate-700">{progress}%</span>
+              <span className="text-primary-400">Progreso a Meta</span>
+              <span className="text-primary-700">{progress}%</span>
             </div>
-            <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-1.5 w-full bg-primary-100 rounded-full overflow-hidden">
               <div 
                 className={`h-full rounded-full transition-all duration-1000 ${
-                  variant === 'rose' ? 'bg-rose-500' : 
-                  variant === 'amber' ? 'bg-amber-500' : 
-                  variant === 'emerald' ? 'bg-emerald-500' : 'bg-blue-500'
+                  variant === 'rose' ? 'bg-danger-500' : 
+                  variant === 'amber' ? 'bg-warning-500' : 
+                  variant === 'emerald' ? 'bg-success-500' : 'bg-accent-500'
                 }`}
                 style={{ width: `${progress}%` }}
               />
@@ -103,7 +104,7 @@ export function KPIGrid({ kpis }: KPIGridProps) {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <AdvancedKPICard
         title="Ventas Totales"
-        value={`$${kpis.totalSales.toLocaleString('es-CO')}`}
+        value={formatCurrency(kpis.totalSales)}
         numericValue={kpis.totalSales}
         target={kpis.salesTarget}
         comparison={kpis.salesComparison}

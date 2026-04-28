@@ -70,11 +70,11 @@ export default function CategoriasList() {
       <PageContainer>
         <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
           <IconLoader2
-            className="animate-spin text-blue-600"
+            className="animate-spin text-accent-600"
             size={48}
             stroke={1.5}
           />
-          <p className="text-slate-600 font-black uppercase tracking-widest text-[10px] animate-pulse">
+          <p className="text-primary-600 font-black uppercase tracking-widest text-[10px] animate-pulse">
             Cargando catálogo de categorías...
           </p>
         </div>
@@ -86,21 +86,21 @@ export default function CategoriasList() {
     return (
       <PageContainer>
         <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="max-w-md w-full text-center space-y-6 bg-rose-50/50 p-10 rounded-3xl border border-rose-100 shadow-sm backdrop-blur-sm">
-            <div className="w-20 h-20 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-rose-200/50">
+          <div className="max-w-md w-full text-center space-y-6 bg-danger-50/50 p-10 rounded-3xl border border-danger-100 shadow-sm backdrop-blur-sm">
+            <div className="w-20 h-20 bg-danger-100 text-danger-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-danger-200/50">
               <IconAlertCircle size={40} stroke={1.5} />
             </div>
             <div className="space-y-2">
-              <h3 className="text-xl font-black text-rose-900 uppercase tracking-tight">
+              <h3 className="text-xl font-black text-danger-900 uppercase tracking-tight">
                 Error de Conexión
               </h3>
-              <p className="text-sm text-rose-700 font-medium leading-relaxed">
+              <p className="text-sm text-danger-700 font-medium leading-relaxed">
                 {error}
               </p>
             </div>
             <Button
               onClick={() => fetchCategorias()}
-              className="w-full h-12 bg-rose-600 hover:bg-rose-700 text-white border-none shadow-xl shadow-rose-200 font-black uppercase tracking-widest text-[10px]"
+              className="w-full h-12 bg-danger-600 hover:bg-danger-700 text-white border-none shadow-xl shadow-danger-200 font-black uppercase tracking-widest text-[10px]"
             >
               Reintentar
             </Button>
@@ -119,7 +119,7 @@ export default function CategoriasList() {
         actions={
           <Button
             onClick={() => navigate("/categorias/crear")}
-            className="w-full sm:w-auto shadow-xl shadow-blue-200"
+            className="w-full sm:w-auto shadow-xl shadow-accent-200"
             leftIcon={<IconPlus size={18} />}
           >
             Nueva Categoría
@@ -128,31 +128,31 @@ export default function CategoriasList() {
       />
 
       <div className="space-y-6 pb-24 lg:pb-0">
-        <Card className="border-slate-200 shadow-sm overflow-hidden bg-white/50 backdrop-blur-sm">
+        <Card className="border-primary-200 shadow-sm overflow-hidden bg-white/50 backdrop-blur-sm">
           <Card.Content className="p-4">
             <div className="relative">
               <Input
                 placeholder="Buscar categorías..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                leftIcon={<IconSearch size={18} className="text-slate-400" />}
-                className="bg-white border-slate-200 focus:border-blue-500 h-12 shadow-sm"
+                leftIcon={<IconSearch size={18} className="text-primary-400" />}
+                className="bg-white border-primary-200 focus:border-accent-500 h-12 shadow-sm"
               />
             </div>
           </Card.Content>
         </Card>
 
-        <Card className="border-slate-200 shadow-sm overflow-hidden">
+        <Card className="border-primary-200 shadow-sm overflow-hidden">
           <Card.Content className="p-0 overflow-x-auto">
             {filteredCategorias.length === 0 ? (
               <div className="text-center py-16 px-4">
-                <div className="w-16 h-16 bg-slate-50 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-slate-100">
+                <div className="w-16 h-16 bg-primary-50 text-primary-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-primary-100">
                   <IconTagOff size={32} stroke={1.5} />
                 </div>
-                <p className="text-slate-600 font-black uppercase tracking-tight mb-2">
+                <p className="text-primary-600 font-black uppercase tracking-tight mb-2">
                   No se encontraron categorías
                 </p>
-                <p className="text-xs text-slate-500 font-medium">
+                <p className="text-xs text-primary-500 font-medium">
                   Revisa el término de búsqueda o crea una nueva.
                 </p>
               </div>
@@ -160,45 +160,45 @@ export default function CategoriasList() {
               <div className="min-w-[600px]">
                 <Table>
                   <thead>
-                    <tr className="bg-slate-50/50 border-b border-slate-100">
-                      <th className="text-left py-4 px-6 text-[10px] font-black uppercase tracking-widest text-slate-500 w-1/3">
+                    <tr className="bg-primary-50/50 border-b border-primary-100">
+                      <th className="text-left py-4 px-6 text-[10px] font-black uppercase tracking-widest text-primary-500 w-1/3">
                         Nombre
                       </th>
-                      <th className="text-left py-4 px-6 text-[10px] font-black uppercase tracking-widest text-slate-500 hidden sm:table-cell">
+                      <th className="text-left py-4 px-6 text-[10px] font-black uppercase tracking-widest text-primary-500 hidden sm:table-cell">
                         Descripción
                       </th>
-                      <th className="text-center py-4 px-6 text-[10px] font-black uppercase tracking-widest text-slate-500 w-32">
+                      <th className="text-center py-4 px-6 text-[10px] font-black uppercase tracking-widest text-primary-500 w-32">
                         Estado
                       </th>
-                      <th className="text-center py-4 px-6 text-[10px] font-black uppercase tracking-widest text-slate-500 w-32">
+                      <th className="text-center py-4 px-6 text-[10px] font-black uppercase tracking-widest text-primary-500 w-32">
                         Acciones
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-primary-100">
                     {filteredCategorias.map((categoria) => (
                       <tr
                         key={categoria.id}
-                        className="hover:bg-blue-50/30 transition-colors group"
+                        className="hover:bg-accent-50/30 transition-colors group"
                       >
                         <td className="py-4 px-6">
                           <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-500 shrink-0 border border-slate-200 group-hover:bg-white group-hover:text-blue-600 transition-colors">
+                            <div className="w-10 h-10 rounded-xl bg-primary-100 flex items-center justify-center text-primary-500 shrink-0 border border-primary-200 group-hover:bg-white group-hover:text-accent-600 transition-colors">
                               <IconTags size={20} stroke={1.5} />
                             </div>
                             <div className="flex flex-col min-w-0">
-                              <span className="font-black text-slate-900 truncate">
+                              <span className="font-black text-primary-900 truncate">
                                 {categoria.nombre}
                               </span>
-                              <span className="text-[10px] font-bold text-slate-400 truncate sm:hidden mt-0.5">
+                              <span className="text-[10px] font-bold text-primary-400 truncate sm:hidden mt-0.5">
                                 {categoria.descripcion || "Sin descripción"}
                               </span>
                             </div>
                           </div>
                         </td>
-                        <td className="py-4 px-6 hidden sm:table-cell text-sm text-slate-600 font-medium">
+                        <td className="py-4 px-6 hidden sm:table-cell text-sm text-primary-600 font-medium">
                           {categoria.descripcion || (
-                            <span className="text-slate-400 italic">—</span>
+                            <span className="text-primary-400 italic">—</span>
                           )}
                         </td>
                         <td className="py-4 px-6 text-center">
@@ -218,14 +218,14 @@ export default function CategoriasList() {
                                     "La función de editar estará disponible pronto.",
                                 })
                               }
-                              className="p-2 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+                              className="p-2 text-accent-600 bg-accent-50 hover:bg-accent-100 rounded-lg transition-colors"
                               title="Editar Categoría"
                             >
                               <IconEdit size={16} stroke={2.5} />
                             </button>
                             <button
                               onClick={() => handleDelete(categoria.id)}
-                              className="p-2 text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-lg transition-colors"
+                              className="p-2 text-danger-600 bg-danger-50 hover:bg-danger-100 rounded-lg transition-colors"
                               title="Eliminar Categoría"
                             >
                               <IconTrash size={16} stroke={2.5} />

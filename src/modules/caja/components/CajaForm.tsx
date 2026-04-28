@@ -118,33 +118,33 @@ export function CajaForm({
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Error backend */}
           {error && (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
-              <p className="text-red-700 font-medium">{error}</p>
+            <div className="p-4 bg-danger-50 border border-danger-200 rounded-xl">
+              <p className="text-danger-700 font-medium">{error}</p>
             </div>
           )}
 
           {/* Header */}
-          <div className="flex items-start gap-3 pb-6 border-b border-gray-200">
-            <div className="p-3 rounded-lg bg-blue-50">
-              <IconWallet size={20} className="text-blue-600" />
+          <div className="flex items-start gap-3 pb-6 border-b border-primary-200">
+            <div className="p-3 rounded-lg bg-accent-50">
+              <IconWallet size={20} className="text-accent-600" />
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-gray-800">
+              <h3 className="text-lg font-semibold text-primary-800">
                 {mode === "create"
                   ? "Abrir Nueva Caja"
                   : "Editar Información de Caja"}
               </h3>
 
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-primary-500 mt-1">
                 Ingresa los datos para abrir la caja.
               </p>
             </div>
           </div>
 
           {/* Información */}
-          <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-6">
-            <h3 className="text-lg font-semibold text-gray-800">
+          <div className="bg-white border border-primary-200 rounded-xl p-6 shadow-sm space-y-6">
+            <h3 className="text-lg font-semibold text-primary-800">
               Información de la Caja
             </h3>
 
@@ -186,8 +186,8 @@ export function CajaForm({
 
           {/* Resumen */}
           <div className="flex justify-end">
-            <div className="bg-gray-900 text-white px-8 py-4 rounded-xl shadow-lg min-w-[250px] text-right">
-              <p className="text-sm uppercase tracking-wide text-gray-300">
+            <div className="bg-primary-900 text-white px-8 py-4 rounded-xl shadow-lg min-w-[250px] text-right">
+              <p className="text-sm uppercase tracking-wide text-primary-300">
                 Monto Inicial
               </p>
 
@@ -214,10 +214,10 @@ export function CajaForm({
           </div>
 
           {/* Nota */}
-          <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg flex gap-3">
-            <IconAlertCircle size={18} className="text-amber-600 mt-1" />
+          <div className="p-4 bg-warning-50 border border-warning-200 rounded-lg flex gap-3">
+            <IconAlertCircle size={18} className="text-warning-600 mt-1" />
 
-            <div className="text-sm text-amber-700">
+            <div className="text-sm text-warning-700">
               <p className="font-medium mb-1">Datos obligatorios</p>
 
               <ul className="list-disc list-inside text-xs space-y-1">

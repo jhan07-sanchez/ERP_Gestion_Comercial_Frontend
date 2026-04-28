@@ -182,12 +182,12 @@ export default function ComprasList() {
                                 variant="secondary"
                                 size="sm"
                                 iconOnly
-                                className="hover:bg-rose-50 shadow-sm border-transparent hover:border-rose-100"
+                                className="hover:bg-danger-50 shadow-sm border-transparent hover:border-danger-100"
                                 onClick={() => handleAnular(compra.id)}
                                 disabled={loadingAnular}
                                 title="Anular compra"
                               >
-                                <IconX size={16} className="text-rose-600" />
+                                <IconX size={16} className="text-danger-600" />
                               </Button>
                             </>
                           )}

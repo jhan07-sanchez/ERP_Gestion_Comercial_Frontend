@@ -63,10 +63,10 @@ export default function PreciosList() {
         <Card>
           <Card.Content>
             <div className="space-y-4">
-              <div className="h-10 bg-gray-200 rounded animate-pulse w-full"></div>
-              <div className="h-10 bg-gray-200 rounded animate-pulse w-full"></div>
-              <div className="h-10 bg-gray-200 rounded animate-pulse w-full"></div>
-              <div className="h-10 bg-gray-200 rounded animate-pulse w-full"></div>
+              <div className="h-10 bg-primary-200 rounded animate-pulse w-full"></div>
+              <div className="h-10 bg-primary-200 rounded animate-pulse w-full"></div>
+              <div className="h-10 bg-primary-200 rounded animate-pulse w-full"></div>
+              <div className="h-10 bg-primary-200 rounded animate-pulse w-full"></div>
             </div>
           </Card.Content>
         </Card>

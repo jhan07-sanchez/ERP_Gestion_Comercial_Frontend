@@ -113,7 +113,7 @@ export default function CajaAbrirPage() {
                     className={`
                       block w-full px-4 py-2.5 
                       border rounded-button text-sm bg-white
-                      focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all
+                      focus:ring-2 focus:ring-accent-100 focus:border-accent-500 transition-all
                       ${errors.caja_id ? 'border-danger-300' : 'border-primary-300'}
                     `}
                   >
@@ -168,7 +168,7 @@ export default function CajaAbrirPage() {
                   className="
                     block w-full px-4 py-2.5 
                     border border-primary-300 rounded-button 
-                    text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all
+                    text-sm bg-white focus:ring-2 focus:ring-accent-100 focus:border-accent-500 transition-all
                   "
                 />
               </div>
@@ -187,7 +187,7 @@ export default function CajaAbrirPage() {
             </Button>
             <Button 
               type="submit" 
-              className="w-full sm:w-auto order-1 sm:order-2 shadow-lg shadow-blue-200"
+              className="w-full sm:w-auto order-1 sm:order-2 shadow-lg shadow-accent-200"
               disabled={loadingAbrir || isLoading}
             >
               {loadingAbrir || isLoading ? "Abriendo..." : "Abrir Caja"}

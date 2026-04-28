@@ -25,19 +25,19 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
         aria-label="Cerrar modal"
       />
       <div
-        className="relative bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto m-4"
+        className="relative bg-white rounded-card shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto m-4"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
       >
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-          <h2 id="modal-title" className="text-lg font-semibold text-gray-900">
+        <div className="sticky top-0 bg-white border-b border-primary-200 px-6 py-4 flex items-center justify-between">
+          <h2 id="modal-title" className="text-lg font-semibold text-primary-900">
             {title}
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-100 text-gray-600"
+            className="p-2 rounded-button hover:bg-primary-100 text-primary-600"
             aria-label="Cerrar"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

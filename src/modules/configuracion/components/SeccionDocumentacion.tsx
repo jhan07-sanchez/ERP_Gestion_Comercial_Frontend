@@ -60,50 +60,50 @@ export const SeccionDocumentacion: React.FC<Props> = ({ config, onSave, onReset,
     return (
         <form onSubmit={handleSubmit} className="space-y-6 pb-24 lg:pb-0">
             {/* Prefijos Card */}
-            <Card className="border-slate-200 shadow-sm overflow-hidden">
-                <Card.Header className="bg-slate-50/50 border-b border-slate-100 flex items-center gap-2 py-4">
-                    <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+            <Card className="border-primary-200 shadow-sm overflow-hidden">
+                <Card.Header className="bg-primary-50/50 border-b border-primary-100 flex items-center gap-2 py-4">
+                    <div className="w-8 h-8 rounded-lg bg-accent-50 flex items-center justify-center text-accent-600">
                         <IconFileInvoice size={18} />
                     </div>
-                    <Card.Title className="text-sm font-black uppercase tracking-tight text-slate-700">Prefijos y Formato</Card.Title>
+                    <Card.Title className="text-sm font-black uppercase tracking-tight text-primary-700">Prefijos y Formato</Card.Title>
                 </Card.Header>
                 <Card.Content className="p-4 sm:p-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Prefijo Factura</label>
+                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Prefijo Factura</label>
                             <Input
                                 name="prefijo_factura"
                                 value={formData.prefijo_factura}
                                 onChange={handleChange}
                                 placeholder="FAC"
-                                className="bg-slate-50/50 uppercase font-bold"
+                                className="bg-primary-50/50 uppercase font-bold"
                             />
-                            <p className="text-[9px] font-bold text-blue-500 uppercase px-1">Próxima: {config.numero_factura_preview}</p>
+                            <p className="text-[9px] font-bold text-accent-500 uppercase px-1">Próxima: {config.numero_factura_preview}</p>
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Prefijo Compra</label>
+                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Prefijo Compra</label>
                             <Input
                                 name="prefijo_compra"
                                 value={formData.prefijo_compra}
                                 onChange={handleChange}
                                 placeholder="COM"
-                                className="bg-slate-50/50 uppercase font-bold"
+                                className="bg-primary-50/50 uppercase font-bold"
                             />
-                            <p className="text-[9px] font-bold text-blue-500 uppercase px-1">Próxima: {config.numero_compra_preview}</p>
+                            <p className="text-[9px] font-bold text-accent-500 uppercase px-1">Próxima: {config.numero_compra_preview}</p>
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Prefijo Recibo POS</label>
+                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Prefijo Recibo POS</label>
                             <Input
                                 name="prefijo_recibo"
                                 value={formData.prefijo_recibo}
                                 onChange={handleChange}
                                 placeholder="REC"
-                                className="bg-slate-50/50 uppercase font-bold"
+                                className="bg-primary-50/50 uppercase font-bold"
                             />
-                            <p className="text-[9px] font-bold text-blue-500 uppercase px-1">Próxima: {config.numero_recibo_preview}</p>
+                            <p className="text-[9px] font-bold text-accent-500 uppercase px-1">Próxima: {config.numero_recibo_preview}</p>
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Dígitos de Relleno</label>
+                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Dígitos de Relleno</label>
                             <Input
                                 name="digitos_consecutivo"
                                 type="number"
@@ -111,31 +111,31 @@ export const SeccionDocumentacion: React.FC<Props> = ({ config, onSave, onReset,
                                 onChange={handleChange}
                                 min={3}
                                 max={8}
-                                leftIcon={<IconHash size={16} className="text-slate-400" />}
-                                className="bg-slate-50/50"
+                                leftIcon={<IconHash size={16} className="text-primary-400" />}
+                                className="bg-primary-50/50"
                             />
-                             <p className="text-[9px] font-bold text-slate-400 uppercase px-1 tracking-tighter">Longitud del número (ej: 0001 = 4)</p>
+                             <p className="text-[9px] font-bold text-primary-400 uppercase px-1 tracking-tighter">Longitud del número (ej: 0001 = 4)</p>
                         </div>
                     </div>
                 </Card.Content>
             </Card>
 
             {/* Consecutivos Card */}
-            <Card className="border-slate-200 shadow-sm overflow-hidden">
-                <Card.Header className="bg-slate-50/50 border-b border-slate-100 flex items-center gap-2 py-4">
-                    <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center text-amber-600">
+            <Card className="border-primary-200 shadow-sm overflow-hidden">
+                <Card.Header className="bg-primary-50/50 border-b border-primary-100 flex items-center gap-2 py-4">
+                    <div className="w-8 h-8 rounded-lg bg-warning-50 flex items-center justify-center text-warning-600">
                         <IconRefresh size={18} />
                     </div>
-                    <Card.Title className="text-sm font-black uppercase tracking-tight text-slate-700">Reinicio de Consecutivos</Card.Title>
+                    <Card.Title className="text-sm font-black uppercase tracking-tight text-primary-700">Reinicio de Consecutivos</Card.Title>
                 </Card.Header>
                 <Card.Content className="p-4 sm:p-6 space-y-6">
-                    <div className="bg-amber-50/50 border border-amber-100 rounded-2xl p-4 flex gap-4 items-start">
-                        <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 shrink-0">
+                    <div className="bg-warning-50/50 border border-warning-100 rounded-2xl p-4 flex gap-4 items-start">
+                        <div className="w-10 h-10 rounded-xl bg-warning-100 flex items-center justify-center text-warning-600 shrink-0">
                             <IconAlertTriangle size={24} />
                         </div>
                         <div className="space-y-1">
-                            <p className="text-xs font-black text-amber-900 uppercase tracking-tight leading-none">Zona de Cuidado</p>
-                            <p className="text-[11px] text-amber-700 leading-relaxed font-medium">
+                            <p className="text-xs font-black text-warning-900 uppercase tracking-tight leading-none">Zona de Cuidado</p>
+                            <p className="text-[11px] text-warning-700 leading-relaxed font-medium">
                                 El reinicio volverá el contador a <span className="font-black">0001</span>. Hazlo solo al cambio de año fiscal para evitar conflictos legales o duplicidades.
                             </p>
                         </div>
@@ -165,31 +165,31 @@ export const SeccionDocumentacion: React.FC<Props> = ({ config, onSave, onReset,
             </Card>
 
             {/* Términos Card */}
-            <Card className="border-slate-200 shadow-sm overflow-hidden">
-                <Card.Header className="bg-slate-50/50 border-b border-slate-100 flex items-center gap-2 py-4">
-                    <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600">
+            <Card className="border-primary-200 shadow-sm overflow-hidden">
+                <Card.Header className="bg-primary-50/50 border-b border-primary-100 flex items-center gap-2 py-4">
+                    <div className="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center text-primary-600">
                         <IconFileInvoice size={18} />
                     </div>
-                    <Card.Title className="text-sm font-black uppercase tracking-tight text-slate-700">Cláusulas de Factura</Card.Title>
+                    <Card.Title className="text-sm font-black uppercase tracking-tight text-primary-700">Cláusulas de Factura</Card.Title>
                 </Card.Header>
                 <Card.Content className="p-4 sm:p-6 font-mono">
                     <textarea
                         name="terminos_condiciones"
                         value={formData.terminos_condiciones}
                         onChange={handleChange}
-                        className="w-full h-40 p-4 bg-slate-50/50 border border-slate-200 rounded-2xl text-[11px] font-bold text-slate-600 focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-500 transition-all placeholder:text-slate-300 resize-none leading-relaxed"
+                        className="w-full h-40 p-4 bg-primary-50/50 border border-primary-200 rounded-2xl text-[11px] font-bold text-primary-600 focus:outline-none focus:ring-4 focus:ring-accent-500/5 focus:border-accent-500 transition-all placeholder:text-primary-300 resize-none leading-relaxed"
                         placeholder="Escribe aquí los términos que aparecerán en el pie de tus facturas..."
                     />
                 </Card.Content>
             </Card>
 
             {/* Actions */}
-            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-slate-200 z-[40] lg:relative lg:bg-transparent lg:border-none lg:p-0 lg:z-0 lg:flex lg:justify-end">
+            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-primary-200 z-[40] lg:relative lg:bg-transparent lg:border-none lg:p-0 lg:z-0 lg:flex lg:justify-end">
                 <Button
                     type="submit"
                     variant="primary"
                     isLoading={isSaving}
-                    className="w-full lg:w-auto px-10 h-12 shadow-xl shadow-blue-200 lg:shadow-none"
+                    className="w-full lg:w-auto px-10 h-12 shadow-xl shadow-accent-200 lg:shadow-none"
                     leftIcon={<IconDeviceFloppy size={20} />}
                 >
                     Guardar Configuración
@@ -200,19 +200,19 @@ export const SeccionDocumentacion: React.FC<Props> = ({ config, onSave, onReset,
 };
 
 const ConsecutivoRow = ({ label, current, preview, onReset }: { label: string, current: number, preview: string, onReset: () => void }) => (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white border border-slate-100 rounded-2xl hover:border-blue-200 hover:bg-blue-50/10 transition-all group gap-4">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white border border-primary-100 rounded-2xl hover:border-accent-200 hover:bg-accent-50/10 transition-all group gap-4">
         <div className="space-y-1">
-            <p className="text-[11px] font-black text-slate-800 uppercase tracking-tight">{label}</p>
+            <p className="text-[11px] font-black text-primary-800 uppercase tracking-tight">{label}</p>
             <div className="flex items-center gap-2">
-                <Badge variant="success" className="bg-slate-100 text-slate-600 border-none font-black text-[10px]">INT: {current}</Badge>
-                <IconChevronRight size={12} className="text-slate-300" />
-                <span className="text-xs font-black text-blue-600 tracking-widest">{preview}</span>
+                <Badge variant="success" className="bg-primary-100 text-primary-600 border-none font-black text-[10px]">INT: {current}</Badge>
+                <IconChevronRight size={12} className="text-primary-300" />
+                <span className="text-xs font-black text-accent-600 tracking-widest">{preview}</span>
             </div>
         </div>
         <button 
             type="button" 
             onClick={onReset}
-            className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-4 py-2 hover:bg-rose-50 hover:text-rose-600 rounded-xl transition-all border border-transparent hover:border-rose-100"
+            className="text-[10px] font-black uppercase tracking-widest text-primary-400 px-4 py-2 hover:bg-danger-50 hover:text-danger-600 rounded-xl transition-all border border-transparent hover:border-danger-100"
         >
             Reiniciar a 1
         </button>

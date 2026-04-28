@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Button } from "@/shared/components/ui";
-import { formatCurrency, formatNumberInput, parseNumberInput, formatNumber } from "@/shared/utils/formatters";
-import type { MetodoPago } from "../types/venta.types";
+import { Button } from "@shared/components/ui";
+import { Modal } from "@shared/components/Modal";
+import { formatCurrency, formatNumberInput, parseNumberInput, formatNumber } from "@shared/utils/formatters";
+import type { MetodoPago } from "@modules/ventas/types/venta.types";
 import {
     IconCash,
     IconCreditCard,
@@ -99,25 +100,8 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
     ];
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col max-h-[90vh]">
-
-                {/* Header */}
-                <div className="px-6 py-5 bg-gradient-to-r from-primary-50 to-white border-b border-primary-100 flex justify-between items-center shrink-0">
-                    <div>
-                        <h2 className="text-2xl font-black text-primary-800 tracking-tight">Procesar Pago</h2>
-                        <p className="text-xs text-primary-500 font-medium uppercase tracking-wider">Finalizar transacción de venta</p>
-                    </div>
-                    <button
-                        onClick={onClose}
-                        disabled={submitting}
-                        className="p-2 rounded-full hover:bg-primary-100 text-primary-400 hover:text-primary-600 transition-all"
-                    >
-                        <IconX size={20} />
-                    </button>
-                </div>
-
-                <div className="p-6 space-y-8 overflow-y-auto flex-1 custom-scrollbar">
+        <Modal isOpen={isOpen} onClose={onClose} title="Procesar Pago">
+            <div className="space-y-8 flex-1">
                     {/* Alerta de Caja Cerrada */}
                     {!isCajaAbierta && (
                         <div className="bg-danger-50 border border-danger-200 text-danger-700 px-4 py-3 rounded-xl relative flex items-center gap-3">
@@ -271,35 +255,33 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                             </div>
                         )}
                     </div>
-                </div>
-
-                {/* Footer Actions */}
-                <div className="p-6 bg-white border-t border-primary-100 flex flex-col sm:flex-row gap-3 shrink-0">
-                    <Button
-                        type="button"
-                        variant="secondary"
-                        className="flex-1 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs h-auto"
-                        onClick={onClose}
-                        disabled={submitting}
-                    >
-                        Cancelar
-                    </Button>
-                    <Button
-                        type="button"
-                        className={`flex-1 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs h-auto shadow-lg transition-all
-                            ${(esValido && isCajaAbierta) ? 'bg-accent-600 hover:bg-accent-700 shadow-accent-200' : 'bg-primary-200'}`}
-                        onClick={() => onConfirm(metodo, montoPagar, esEfectivo ? montoNumerico : montoPagar, esEfectivo ? vuelto : 0)}
-                        disabled={!esValido || submitting || !isCajaAbierta}
-                        isLoading={submitting}
-                    >
-                        <div className="flex items-center justify-center gap-2">
-                            {esValido && !submitting && <IconCheck size={18} />}
-                            Confirmar Pago
-                        </div>
-                    </Button>
-                </div>
-
             </div>
-        </div>
+
+            {/* Footer Actions */}
+            <div className="mt-8 pt-5 border-t border-primary-100 flex flex-col sm:flex-row gap-3 shrink-0">
+                <Button
+                    type="button"
+                    variant="secondary"
+                    className="flex-1 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs h-auto"
+                    onClick={onClose}
+                    disabled={submitting}
+                >
+                    Cancelar
+                </Button>
+                <Button
+                    type="button"
+                    className={`flex-1 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs h-auto shadow-lg transition-all
+                        ${(esValido && isCajaAbierta) ? 'bg-accent-600 hover:bg-accent-700 shadow-accent-200' : 'bg-primary-200'}`}
+                    onClick={() => onConfirm(metodo, montoPagar, esEfectivo ? montoNumerico : montoPagar, esEfectivo ? vuelto : 0)}
+                    disabled={!esValido || submitting || !isCajaAbierta}
+                    isLoading={submitting}
+                >
+                    <div className="flex items-center justify-center gap-2">
+                        {esValido && !submitting && <IconCheck size={18} />}
+                        Confirmar Pago
+                    </div>
+                </Button>
+            </div>
+        </Modal>
     );
 }

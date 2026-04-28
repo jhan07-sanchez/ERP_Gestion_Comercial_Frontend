@@ -12,6 +12,7 @@ import { Select } from "./Select";
 import { Table } from "./Table";
 import { PageContainer } from "./PageContainer";
 import { PageHeader } from "./PageHeader";
+import { Pagination } from "./Pagination";
 
 export { Badge } from "./Badge";
 export { Button } from "./Button";
@@ -21,6 +22,7 @@ export { Select } from "./Select";
 export { Table } from "./Table";
 export { PageContainer } from "./PageContainer";
 export { PageHeader } from "./PageHeader";
+export { Pagination } from "./Pagination";
 
 export default {
   Badge,
@@ -31,4 +33,5 @@ export default {
   Table,
   PageContainer,
   PageHeader,
+  Pagination,
 };

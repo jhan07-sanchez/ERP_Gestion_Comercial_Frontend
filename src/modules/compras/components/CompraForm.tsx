@@ -11,7 +11,7 @@
  * - Validación clara
  */
 import React, { useState } from "react";
-import { Card, Button, Input, Badge } from "@/shared/components/ui";
+import { Card, Button, Input, Badge, Select } from "@/shared/components/ui";
 import type { EstadoCompra } from "../types";
 import { formatCurrency } from "@/shared/utils/formatters";
 import { useAlert } from "@/shared/components/alerts";
@@ -61,7 +61,7 @@ interface CompraFormProps {
 }
 
 export function CompraForm({
-  value,
+  value: valueForm,
   proveedores,
   productos,
   submitting = false,
@@ -100,7 +100,7 @@ export function CompraForm({
     }
 
     onChange({
-      ...value,
+      ...valueForm,
       [name]: processedValue,
     });
   };
@@ -110,12 +110,12 @@ export function CompraForm({
    */
   const addDetalle = () => {
     const nuevosDetalles = [
-      ...value.detalles,
+      ...valueForm.detalles,
       { producto: 0, cantidad: 1, precio_unitario: 0, subtotal: 0 },
     ];
 
     onChange({
-      ...value,
+      ...valueForm,
       detalles: nuevosDetalles,
       total: calcularTotal(nuevosDetalles),
     });
@@ -125,10 +125,10 @@ export function CompraForm({
    * ❌ Eliminar detalle
    */
   const removeDetalle = (index: number) => {
-    const nuevosDetalles = value.detalles.filter((_, i) => i !== index);
+    const nuevosDetalles = valueForm.detalles.filter((_, i) => i !== index);
 
     onChange({
-      ...value,
+      ...valueForm,
       detalles: nuevosDetalles,
       total: calcularTotal(nuevosDetalles),
     });
@@ -142,7 +142,7 @@ export function CompraForm({
     field: keyof CompraDetalleForm,
     newValue: number | "",
   ) => {
-    const detalles = [...value.detalles];
+    const detalles = [...valueForm.detalles];
 
     const detalleActualizado = {
       ...detalles[index],
@@ -155,7 +155,7 @@ export function CompraForm({
     detalles[index] = detalleActualizado;
 
     onChange({
-      ...value,
+      ...valueForm,
       detalles,
       total: calcularTotal(detalles),
     });
@@ -165,23 +165,23 @@ export function CompraForm({
    * ✅ Validación
    */
   const validateForm = (): boolean => {
-    if (!value.proveedor_id) {
+    if (!valueForm.proveedor_id) {
       showAlert("Validación", "warning", { description: "Debes seleccionar un proveedor para la compra" });
       return false;
     }
 
-    if (!value.fecha) {
+    if (!valueForm.fecha) {
       showAlert("Validación", "warning", { description: "La fecha de la compra es obligatoria" });
       return false;
     }
 
-    if (value.detalles.length === 0) {
+    if (valueForm.detalles.length === 0) {
       showAlert("Validación", "warning", { description: "Debes agregar al menos un producto a la compra" });
       return false;
     }
 
     if (
-      value.detalles.some(
+      valueForm.detalles.some(
         (d) => !d.producto || Number(d.cantidad) <= 0 || Number(d.precio_unitario) <= 0,
       )
     ) {
@@ -223,28 +223,22 @@ export function CompraForm({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Proveedor */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-primary-600">
-                  Proveedor
-                </label>
-                <select
+                <Select
                   name="proveedor_id"
-                  value={value.proveedor_id || 0}
-                  onChange={(e) =>
+                  label="Proveedor"
+                  value={valueForm.proveedor_id || 0}
+                  onChange={(value) =>
                     onChange({
-                      ...value,
-                      proveedor_id: Number(e.target.value),
+                      ...valueForm,
+                      proveedor_id: Number(value),
                     })
                   }
                   disabled={submitting}
-                  className="w-full px-4 py-2 border border-primary-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-accent-400 focus:border-accent-400 transition"
-                >
-                  <option value={0}>Seleccionar proveedor</option>
-                  {proveedores.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.nombre}
-                    </option>
-                  ))}
-                </select>
+                  options={[
+                    { value: 0, label: "Seleccionar proveedor" },
+                    ...proveedores.map(p => ({ value: p.id, label: p.nombre }))
+                  ]}
+                />
               </div>
 
               {/* Fecha */}
@@ -252,7 +246,7 @@ export function CompraForm({
                 type="date"
                 name="fecha"
                 label="Fecha"
-                value={value.fecha}
+                value={valueForm.fecha}
                 onChange={handleChange}
                 disabled={submitting}
               />
@@ -277,7 +271,7 @@ export function CompraForm({
               </label>
               <textarea
                 name="observaciones"
-                value={value.observaciones ?? ""}
+                value={valueForm.observaciones ?? ""}
                 onChange={handleChange}
                 rows={3}
                 placeholder="Escribe una nota adicional sobre la compra..."
@@ -292,7 +286,7 @@ export function CompraForm({
             <h3 className="text-lg font-semibold">Seleccionar productos</h3>
 
             {/* Encabezado tipo tabla */}
-            {value.detalles.length > 0 && (
+            {valueForm.detalles.length > 0 && (
               <div className="grid grid-cols-5 gap-3 bg-primary-100 px-3 py-2 rounded-lg font-semibold text-sm text-primary-600">
                 <div>Producto</div>
                 <div className="text-center">Cantidad</div>
@@ -302,26 +296,26 @@ export function CompraForm({
               </div>
             )}
 
-            {value.detalles.map((detalle, index) => (
+            {valueForm.detalles.map((detalle, index) => (
               <div
                 key={index}
                 className="grid grid-cols-5 gap-3 items-center bg-white px-3 py-2 rounded-lg border border-primary-200 shadow-sm"
               >
                 {/* Producto */}
-                <select
-                  value={detalle.producto || 0}
-                  onChange={(e) =>
-                    updateDetalle(index, "producto", Number(e.target.value))
-                  }
-                  className="border rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-accent-400"
-                >
-                  <option value={0}>Producto</option>
-                  {productos.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.nombre}
-                    </option>
-                  ))}
-                </select>
+                <div className="w-full">
+                  <Select
+                    name="producto"
+                    label=""
+                    value={detalle.producto || 0}
+                    onChange={(value) =>
+                      updateDetalle(index, "producto", Number(value))
+                    }
+                    options={[
+                      { value: 0, label: "Producto" },
+                      ...productos.map(p => ({ value: p.id, label: p.nombre }))
+                    ]}
+                  />
+                </div>
 
                 {/* Cantidad */}
                 <Input
@@ -379,29 +373,30 @@ export function CompraForm({
                 Total de la Compra
               </p>
               <p className="text-3xl font-bold mt-1">
-                {formatCurrency(value.total)}
+                {formatCurrency(valueForm.total)}
               </p>
             </div>
           </div>
 
           {/* Estado (solo edit) */}
           {mode === "edit" && (
-            <select
+            <Select
               name="estado"
-              value={value.estado ?? "pendiente"}
-              onChange={(e) =>
+              label=""
+              value={valueForm.estado ?? "pendiente"}
+              onChange={(value) =>
                 onChange({
-                  ...value,
-                  estado: e.target.value as EstadoCompra,
+                  ...valueForm,
+                  estado: value as EstadoCompra,
                 })
               }
               disabled={submitting}
-              className="w-full px-4 py-2 border rounded-lg"
-            >
-              <option value="PENDIENTE">Pendiente</option>
-              <option value="REALIZADA">Realizada</option>
-              <option value="ANULADA">Anulada</option>
-            </select>
+              options={[
+                { value: "PENDIENTE", label: "Pendiente" },
+                { value: "REALIZADA", label: "Realizada" },
+                { value: "ANULADA", label: "Anulada" }
+              ]}
+            />
           )}
 
           {/* Acciones */}

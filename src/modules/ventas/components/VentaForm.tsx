@@ -14,8 +14,8 @@
  */
 
 import { useState, useEffect, useRef } from "react";
-import { Card, Button, Badge } from "@/shared/components/ui";
-import { formatCurrency, formatNumberInput, parseNumberInput, numberClass } from "@/shared/utils/formatters";
+import { Card, Button, Badge } from "@shared/components/ui";
+import { formatCurrency, formatNumberInput, parseNumberInput, numberClass } from "@shared/utils/formatters";
 import {
   IconUser,
   IconSearch,
@@ -29,15 +29,15 @@ import {
   IconChevronRight,
   IconReceipt
 } from "@tabler/icons-react";
-import { clientesVentaAPI, productosVentaAPI } from "../api/ventas.api";
-import { useAlert } from "@/shared/components/alerts";
-import { useConfiguracion } from "@/modules/configuracion/hooks/useConfiguracion";
-import { useConfigStore } from "@/shared/store/config.store";
+import { clientesVentaAPI, productosVentaAPI } from "@modules/ventas/api/ventas.api";
+import { useAlert } from "@shared/components/alerts";
+import { useConfiguracion } from "@modules/configuracion/hooks/useConfiguracion";
+import { useConfigStore } from "@shared/store/config.store";
 import type {
   VentaFormData,
   ClienteParaVenta,
   ProductoParaVenta,
-} from "../types/venta.types";
+} from "@modules/ventas/types/venta.types";
 
 interface VentaFormProps {
   value: VentaFormData;
@@ -651,13 +651,14 @@ export function VentaForm({
 
                         {/* Eliminar */}
                         <div className="col-span-1 flex justify-end">
-                          <button
+                          <Button
                             type="button"
+                            variant="danger"
                             onClick={() => removeDetalle(index)}
-                            className="p-2 text-primary-300 hover:text-danger-500 hover:bg-danger-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                            className="p-2 opacity-0 group-hover:opacity-100"
                           >
                             <IconTrash size={18} />
-                          </button>
+                          </Button>
                         </div>
                       </div>
                     ))}

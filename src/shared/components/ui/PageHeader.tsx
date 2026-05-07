@@ -5,6 +5,7 @@ import { IconArrowLeft } from '@tabler/icons-react';
 export interface PageHeaderProps {
   title: string;
   subtitle?: string;
+  description?: string;
   actions?: React.ReactNode;
   icon?: React.ReactNode;
   backButton?: React.ReactNode;

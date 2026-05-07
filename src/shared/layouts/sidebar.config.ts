@@ -14,8 +14,41 @@ import {
   IconRotateClockwise,
   IconHistory,
   IconCashRegister,
+  IconTrendingUp,
+  IconTrendingDown,
+  IconChartLine,
+  IconBuildingBank,
+  IconFileInvoice,
+  IconScale,
+  IconCashBanknotePlus,
+  IconTrendingDown3,
+  IconChartBar,
+  IconRefresh,
+  IconUserDollar,
+  IconUserSearch,
+  IconCalculator,
+  IconTrendingUp2,
 } from "@tabler/icons-react";
+
 import type { Icon } from "@tabler/icons-react";
+
+export interface SidebarSubItem {
+  label: string;
+  path: string;
+  icon?: Icon;
+}
+
+export interface SidebarItemChild {
+  label: string;
+  path?: string;
+  icon?: Icon;
+  children?: SidebarSubItem[];
+}
+
+export interface SidebarSection {
+  section: string;
+  items: SidebarItemChild[];
+}
 
 export interface SidebarItem {
   label: string;
@@ -24,39 +57,31 @@ export interface SidebarItem {
   children?: SidebarSection[];
 }
 
-export interface SidebarSection {
-  section: string;
-  items: {
-    label: string;
-    path: string;
-    icon?: Icon;
-  }[];
-}
-
 export const sidebarConfig: SidebarItem[] = [
   {
     label: "Panel de Control",
     icon: IconLayoutDashboard,
     children: [
       {
-        section: "General",
+        section: "GENERAL",
         items: [
           { label: "Resumen ejecutivo", path: "/dashboard" },
-          { label: "KPIs", path: "/dashboar/kpis" },
+          { label: "KPIs", path: "/dashboard/kpis" },
           {
-            label: "Analisis de rendimiento",
-            path: "/dashboar/analisis_rendimiento",
+            label: "Análisis de rendimiento",
+            path: "/dashboard/analisis_rendimiento",
           },
         ],
       },
     ],
   },
+
   {
     label: "Ventas",
     icon: IconShoppingCart,
     children: [
       {
-        section: "Transacciones",
+        section: "TRANSACCIONES",
         items: [
           {
             label: "Nueva Venta",
@@ -76,7 +101,7 @@ export const sidebarConfig: SidebarItem[] = [
         ],
       },
       {
-        section: "Administración",
+        section: "ADMINISTRACIÓN",
         items: [
           { label: "Lista de Ventas", path: "/ventas/lista", icon: IconList },
           {
@@ -88,20 +113,21 @@ export const sidebarConfig: SidebarItem[] = [
       },
     ],
   },
+
   {
     label: "Compras",
     icon: IconTruck,
     children: [
       {
-        section: "Transacciones",
+        section: "TRANSACCIONES",
         items: [
           { label: "Nueva Compra", path: "/compras/crear" },
-          { label: "Nueva requisicion", path: "/compras/requisicion" },
+          { label: "Nueva requisición", path: "/compras/requisicion" },
           { label: "Lista de Compras", path: "/compras/lista" },
         ],
       },
       {
-        section: "Administración",
+        section: "ADMINISTRACIÓN",
         items: [
           { label: "Lista de precios", path: "/precios/lista" },
           { label: "Proveedores", path: "/proveedores/lista" },
@@ -109,19 +135,20 @@ export const sidebarConfig: SidebarItem[] = [
       },
     ],
   },
+
   {
     label: "Caja",
     icon: IconCashRegister,
     children: [
       {
-        section: "Operaciones",
+        section: "OPERACIONES",
         items: [
           { label: "Dashboard Caja", path: "/caja/dashboard" },
           { label: "Abrir Sesión", path: "/caja/sesiones/nueva" },
         ],
       },
       {
-        section: "Administración",
+        section: "ADMINISTRACIÓN",
         items: [
           { label: "Cajas Registradas", path: "/caja/lista" },
           { label: "Crear Caja Fija", path: "/caja/crear" },
@@ -129,12 +156,13 @@ export const sidebarConfig: SidebarItem[] = [
       },
     ],
   },
+
   {
     label: "Productos",
     icon: IconBox,
     children: [
       {
-        section: "Catálogo",
+        section: "CATÁLOGO",
         items: [
           { label: "Lista de productos", path: "/productos/lista" },
           { label: "Nuevo producto", path: "/productos/crear" },
@@ -142,57 +170,63 @@ export const sidebarConfig: SidebarItem[] = [
         ],
       },
       {
-        section: "Administración",
+        section: "ADMINISTRACIÓN",
         items: [{ label: "Stock bajo", path: "/productos/stock_bajo" }],
       },
     ],
   },
+
   {
     label: "Clientes",
     icon: IconUsers,
     children: [
       {
-        section: "Transacciones",
+        section: "GESTIÓN",
         items: [
           { label: "Nuevo Cliente", path: "/clientes/crear" },
           { label: "Cotizaciones", path: "/clientes/cotizaciones" },
+          { label: "Lista de Clientes", path: "/clientes/lista" },
         ],
-      },
-      {
-        section: "Administración",
-        items: [{ label: "Lista de Clientes", path: "/clientes/lista" }],
       },
     ],
   },
+
   {
     label: "Inventario",
     icon: IconBuildingWarehouse,
     children: [
       {
-        section: "Movimientos",
+        section: "MOVIMIENTOS",
         items: [{ label: "Entradas/Salidas", path: "/inventario/movimientos" }],
       },
       {
-        section: "Reportes",
+        section: "REPORTES",
         items: [
           { label: "Stock actual", path: "/inventario/stock" },
-          { label: "Productos con Stock bajo", path: "/productos/stock_bajo" },
+          { label: "Stock bajo", path: "/productos/stock_bajo" },
         ],
       },
     ],
   },
+
   {
     label: "Documentos",
     icon: IconFileText,
     children: [
       {
-        section: "Consultas",
+        section: "CONSULTAS",
         items: [
-          { label: "Todos los documentos", path: "/documentos", icon: IconList },
+          {
+            label: "Todos los documentos",
+            path: "/documentos",
+            icon: IconList,
+          },
         ],
       },
     ],
   },
+
+  // 🔥 REPORTES BIEN ESTRUCTURADO
   {
     label: "Reportes",
     icon: IconReportAnalytics,
@@ -200,39 +234,149 @@ export const sidebarConfig: SidebarItem[] = [
       {
         section: "FINANCIEROS",
         items: [
-          { label: "Balance general", path: "/reportes/balance_general" },
-          { label: "Estado de resultado", path: "/reportes/estado_resultado" },
-          { label: "Flujo de caja", path: "/reportes/flujos_caja" },
+          {
+            label: "Balance general",
+            children: [
+              {
+                label: "Activos",
+                path: "/reportes/balance_general/activos",
+                icon: IconBuildingBank,
+              },
+              {
+                label: "Pasivos",
+                path: "/reportes/balance_general/pasivos",
+                icon: IconFileInvoice,
+              },
+              {
+                label: "Patrimonio",
+                path: "/reportes/balance_general/patrimonio",
+                icon: IconScale,
+              },
+            ],
+          },
+          {
+            label: "Estado de resultados",
+            children: [
+              {
+                label: "Ingresos",
+                path: "/reportes/estado_resultados/ingresos",
+                icon: IconTrendingUp,
+              },
+              {
+                label: "Costos",
+                path: "/reportes/estado_resultados/costos",
+                icon: IconTrendingDown,
+              },
+              {
+                label: "Utilidad",
+                path: "/reportes/estado_resultados/utilidad",
+                icon: IconChartLine,
+              },
+            ],
+          },
+          {
+            label: "Flujo de caja",
+            children: [
+              {
+                label: "Entradas",
+                path: "/reportes/flujo_caja/entradas",
+                icon: IconCashBanknotePlus,
+              },
+              {
+                label: "Salidas",
+                path: "/reportes/flujo_caja/salidas",
+                icon: IconTrendingDown3,
+              },
+              {
+                label: "Balance",
+                path: "/reportes/flujo_caja/balance",
+                icon: IconChartBar,
+              },
+            ],
+          },
         ],
       },
+
       {
         section: "OPERATIVOS",
         items: [
           {
             label: "Eficiencia operativa",
-            path: "/reportes/eficiencia_operativa",
+            children: [
+              {
+                label: "Costos vs Ventas",
+                path: "/reportes/eficiencia_operativa/costos_ventas",
+                icon: IconChartBar,
+              },
+              {
+                label: "Rotación de inventario",
+                path: "/reportes/eficiencia_operativa/rotacion_inventario",
+                icon: IconRefresh,
+              },
+            ],
           },
-          { label: "Productividad", path: "/reportes/productividad" },
+          {
+            label: "Productividad",
+            children: [
+              {
+                label: "Ventas por empleado",
+                path: "/reportes/productividad/ventas_empleado",
+                icon: IconUserDollar,
+              },
+              {
+                label: "Rendimiento",
+                path: "/reportes/productividad/rendimiento",
+                icon: IconChartLine,
+              },
+            ],
+          },
         ],
       },
+
       {
-        section: "ANALISIS",
+        section: "ANALÍTICOS",
         items: [
           {
             label: "Tendencia de mercadeo",
-            path: "/reportes/tendencia_mercadeo",
+            children: [
+              {
+                label: "Crecimiento",
+                path: "/reportes/tendencia_mercadeo/crecimiento",
+                icon: IconTrendingUp,
+              },
+              {
+                label: "Comportamiento del cliente",
+                path: "/reportes/tendencia_mercadeo/comportamiento_cliente",
+                icon: IconUserSearch,
+              },
+            ],
           },
-          { label: "Proyecciones", path: "/reportes/proyecciones" },
+          {
+            label: "Proyecciones",
+            children: [
+              {
+                label: "Ventas futuras",
+                path: "/reportes/proyecciones/ventas_futuras",
+                icon: IconTrendingUp2,
+              },
+              {
+                label: "Estimaciones",
+                path: "/reportes/proyecciones/estimaciones",
+                icon: IconCalculator,
+              },
+            ],
+          },
         ],
       },
     ],
   },
+
   {
     label: "Auditoría",
     icon: IconHistory,
     children: [
       {
-        section: "Control",
+        section: "CONTROL",
         items: [
           {
             label: "Log de Auditoría",
@@ -243,6 +387,7 @@ export const sidebarConfig: SidebarItem[] = [
       },
     ],
   },
+
   {
     label: "Configuración",
     icon: IconSettings,

@@ -100,9 +100,5 @@ export interface PrecioFormValues {
   fecha_fin?: string;
 }
 
-export interface PaginatedResponse<T> {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: T[];
-}
+// Tipos compartidos (re-exportados desde shared)
+export type { PaginatedResponse } from "@shared/types";

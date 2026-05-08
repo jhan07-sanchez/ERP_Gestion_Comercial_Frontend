@@ -59,7 +59,6 @@ export const productosAPI = {
     const rawData = response.data;
     const normalizedData = (rawData as unknown as { data?: Producto })?.data || rawData;
 
-    console.log("Producto creado backend (normalizado):", normalizedData);
 
     return normalizedData as Producto;
   },

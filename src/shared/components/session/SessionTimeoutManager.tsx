@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
-import { Modal } from '@/shared/components/Modal';
+import { Modal } from '@shared/components/ui';
 import { useAlert } from '@/shared/components/alerts/useAlert';
 
 // Configurations (Configurable env vars fallback to 55 / 60 mins)

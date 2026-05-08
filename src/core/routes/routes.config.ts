@@ -14,6 +14,8 @@ export interface RouteConfigItem {
 /** Claves de componentes para rutas protegidas */
 export type ProtectedRouteKey =
   | "Dashboard"
+  | "DashboardKPIs"
+  | "DashboardAnalytics"
   | "VentasList"
   | "VentaCreate"
   | "VentaEdit"
@@ -64,6 +66,22 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
     placeholderProps: {
       title: "Dashboard",
       description: "Bienvenido al sistema ERP.",
+    },
+  },
+  {
+    path: "dashboard/kpis",
+    componentKey: "DashboardKPIs",
+    placeholderProps: {
+      title: "KPIs",
+      description: "Métricas y rendimiento comercial.",
+    },
+  },
+  {
+    path: "dashboard/analisis_rendimiento",
+    componentKey: "DashboardAnalytics",
+    placeholderProps: {
+      title: "Análisis de Rendimiento",
+      description: "Tendencias y comportamiento de inventario.",
     },
   },
 

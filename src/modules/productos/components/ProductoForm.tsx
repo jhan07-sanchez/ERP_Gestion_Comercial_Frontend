@@ -117,14 +117,14 @@ export function ProductoForm({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        console.log("📝 Datos del formulario antes de validar:", value);
+
 
         // Validar antes de enviar
         if (!validateForm()) {
             return;
         }
 
-        console.log("✅ Formulario válido, enviando...");
+
         onSubmit();
     };
 

@@ -46,12 +46,12 @@ export function useCompraActions(
     try {
       setLoadingCreate(true);
       setError(null);
-      console.log(JSON.stringify(data, null, 2));
+
 
       // Enviar directamente al API
       const newCompra = await comprasAPI.createCompra(data);
 
-      console.log("✅ [useCompraActions] Compra creada:", newCompra);
+
 
       if (onSuccess) {
         await onSuccess();
@@ -91,16 +91,16 @@ export function useCompraActions(
       setLoadingUpdate(true);
       setError(null);
 
-      console.log(`📡 [useCompraActions] Actualizando compra ${id}...`, data);
+
 
       // Llamar al API
       const updatedCompra = await comprasAPI.updateCompra(id, data);
 
-      console.log("✅ [useCompraActions] Compra actualizada:", updatedCompra);
+
 
       // Invalidar cache - recargar lista
       if (onSuccess) {
-        console.log("🔄 [useCompraActions] Invalidando cache...");
+
         await onSuccess();
       }
 
@@ -140,16 +140,16 @@ export function useCompraActions(
       setLoadingDelete(true);
       setError(null);
 
-      console.log(`📡 [useCompraActions] Eliminando compra ${id}...`);
+
 
       // Llamar al API
       await comprasAPI.deleteCompra(id);
 
-      console.log("✅ [useCompraActions] Compra eliminada");
+
 
       // Invalidar cache - recargar lista
       if (onSuccess) {
-        console.log("🔄 [useCompraActions] Invalidando cache...");
+
         await onSuccess();
       }
 

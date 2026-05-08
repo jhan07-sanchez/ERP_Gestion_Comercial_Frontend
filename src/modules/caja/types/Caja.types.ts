@@ -274,15 +274,8 @@ export interface FiltrosCaja {
   page_size?: number;
 }
 
-/**
- * Respuesta paginada genérica de Django REST Framework
- */
-export interface PaginatedResponse<T> {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: T[];
-}
+// Tipos compartidos (re-exportados desde shared)
+export type { PaginatedResponse, ApiResponse as RespuestaBackend } from "@shared/types";
 
 // ═══════════════════════════════════════════════════════════════
 // 6. RESPUESTAS ESPECIALES
@@ -294,15 +287,6 @@ export interface PaginatedResponse<T> {
 export interface RespuestaMiSesion {
   sesion_activa: boolean;
   data: SesionCaja | null;
-}
-
-/**
- * Respuesta genérica del backend
- */
-export interface RespuestaBackend<T = unknown> {
-  success?: boolean;
-  message?: string;
-  data: T;
 }
 
 // ═══════════════════════════════════════════════════════════════

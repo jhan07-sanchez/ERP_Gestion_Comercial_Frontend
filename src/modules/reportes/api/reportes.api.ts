@@ -3,8 +3,24 @@ import type {
   ReportFilterOptions,
   BalanceGeneralData,
 } from "../types/reportes.types";
+import type { AnalyticsData } from "../types/analytics.types";
+import axiosInstance from "@/shared/api/axios";
+
+export interface AnalyticsFilters {
+  rango: "7d" | "30d" | "90d" | "ytd";
+  sucursal?: number;
+  caja?: number;
+  vendedor?: number;
+}
 
 export const reportesAPI = {
+  getAnalyticsData: async (filtros: AnalyticsFilters): Promise<AnalyticsData> => {
+    const response = await axiosInstance.get("/dashboard/analytics/", {
+      params: filtros,
+    });
+    return response.data.data;
+  },
+
   getEstadoResultados: async (
     filtros?: ReportFilterOptions,
   ): Promise<MovimientoFinanciero[]> => {
@@ -89,8 +105,8 @@ export const reportesAPI = {
   ): Promise<BalanceGeneralData> => {
     await new Promise((resolve) => setTimeout(resolve, 800));
 
-    // 👇 uso mínimo para evitar warning
-    console.log("filtros:", filtros);
+    // Uso de filtros para evitar warning (mock API)
+    void filtros;
 
     return {
       activos: { corrientes: 120000, noCorrientes: 350000 },

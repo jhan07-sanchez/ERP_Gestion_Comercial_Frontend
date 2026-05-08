@@ -4,7 +4,7 @@
  */
 
 import type { ComponentType } from 'react';
-import PlaceholderPage from '@/core/routes/PlaceholderPage';
+import AnalyticsDashboard from '@/modules/reportes/pages/AnalyticsDashboard';
 import ClientesList from '@/modules/clientes/pages/ClientesList';
 import ClienteCreate from '@/modules/clientes/pages/ClienteCreate';
 import ClienteEdit from '@/modules/clientes/pages/ClienteEdit';
@@ -25,7 +25,7 @@ import ProveedorCreate from '@/modules/proveedores/pages/ProveedorCreate';
 import ProveedorEdit from "@/modules/proveedores/pages/ProveedorEdit";
 import ProveedorDetailPage from "@/modules/proveedores/pages/ProveedorDetailPage";
 
-import { Dashboard } from '@/modules/dashboard'; //  Importar del módulo dashboard
+import { Dashboard, DashboardKPIsPage, DashboardAnalyticsPage } from '@/modules/dashboard'; //  Importar del módulo dashboard
 
 import type { ProtectedRouteKey } from '@/core/routes/routes.config';
 
@@ -60,13 +60,15 @@ export const protectedRouteComponents: Record<
   ComponentType<RouteComponentProps>
 > = {
   Dashboard,
+  DashboardKPIs: DashboardKPIsPage,
+  DashboardAnalytics: DashboardAnalyticsPage,
 
   VentasList,
   VentaCreate, // ← NUEVO
   VentaEdit, // ← NUEVO
   VentaDetalle, // ← NUEVO
 
-  Reportes: PlaceholderPage,
+  Reportes: AnalyticsDashboard,
 
   AuditoriaLogs,
   DocumentosList,

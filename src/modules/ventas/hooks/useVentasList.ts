@@ -1,61 +1,28 @@
-import { useState, useCallback } from "react";
+/**
+ * Hook para lista paginada de ventas.
+ * Usa el hook genérico usePaginatedList.
+ */
+
+import { usePaginatedList } from "@shared/hooks";
 import { ventasAPI } from "../api/ventas.api";
-import type { VentaList, VentaFilters, PaginatedResponse } from "../types/venta.types";
+import type { VentaList, VentaFilters } from "../types/venta.types";
 
 export function useVentasList() {
-  const [ventas, setVentas] = useState<VentaList[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
-  const [filters, setFilters] = useState<VentaFilters>({});
-
-  const fetchVentas = useCallback(
-    async (page = 1, currentFilters: VentaFilters = filters) => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const response: PaginatedResponse<VentaList> =
-          await ventasAPI.getVentas(currentFilters, page);
-
-        setVentas(response.results ?? []);
-        setCurrentPage(page);
-        setTotalCount(response.count);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Error al cargar ventas");
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [filters],
-  );
-
-  const applyFilters = useCallback(
-    async (newFilters: VentaFilters) => {
-      setFilters(newFilters);
-      await fetchVentas(1, newFilters);
-    },
-    [fetchVentas],
-  );
-
-  const changePage = useCallback(
-    (page: number) => {
-      fetchVentas(page, filters);
-    },
-    [fetchVentas, filters],
-  );
+  const list = usePaginatedList<VentaList, VentaFilters>({
+    fetchFn: (filters, page) => ventasAPI.getVentas(filters, page),
+    entityName: "ventas",
+  });
 
   return {
-    ventas,
-    setVentas,
-    isLoading,
-    error,
-    currentPage,
-    totalCount,
-    filters,
-    fetchVentas,
-    applyFilters,
-    changePage,
+    ventas: list.items,
+    setVentas: list.setItems,
+    isLoading: list.isLoading,
+    error: list.error,
+    currentPage: list.currentPage,
+    totalCount: list.totalCount,
+    filters: list.filters,
+    fetchVentas: list.fetchItems,
+    applyFilters: list.applyFilters,
+    changePage: list.changePage,
   };
 }

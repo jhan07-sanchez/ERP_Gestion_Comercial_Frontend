@@ -7,6 +7,8 @@
 
 // Página principal
 export { default as Dashboard } from './pages/Dashboard';
+export { default as DashboardKPIsPage } from './pages/DashboardKPIsPage';
+export { default as DashboardAnalyticsPage } from './pages/DashboardAnalyticsPage';
 
 // Componentes reutilizables
 export { KPICard } from './components/KPICard';

@@ -51,17 +51,8 @@ export interface ProductoFilters {
     precio_max?: number;
 }
 
-export interface PaginatedResponse<T> {
-    count: number;
-    next: string | null;
-    previous: string | null;
-    results: T[];
-}
-
-export interface SuccessResponse<T> {
-    detail: string;
-    data: T;
-}
+// Tipos compartidos (re-exportados desde shared)
+export type { PaginatedResponse, SuccessResponse } from "@shared/types";
 
 export interface ProductoFormValues {
     nombre: string;

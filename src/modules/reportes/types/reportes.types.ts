@@ -1,6 +1,4 @@
 export interface ReportFilterOptions {
-  fechaInicio?: string;
-  fechaFin?: string;
   clienteId?: number;
   productoId?: number;
   categoria?: string;

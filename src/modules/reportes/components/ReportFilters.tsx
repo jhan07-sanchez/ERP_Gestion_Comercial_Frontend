@@ -23,15 +23,15 @@ export function ReportFilters({ filtros, onChange, onExport, isExporting = false
           <Input
             type="date"
             label="Fecha Inicio"
-            name="fechaInicio"
-            value={filtros.fechaInicio || ''}
+            name="fechaDesde"
+            value={filtros.fechaDesde || ''}
             onChange={handleChange}
           />
           <Input
             type="date"
             label="Fecha Fin"
-            name="fechaFin"
-            value={filtros.fechaFin || ''}
+            name="fechaHasta"
+            value={filtros.fechaHasta || ''}
             onChange={handleChange}
           />
           <Select

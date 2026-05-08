@@ -17,13 +17,8 @@ export const ESTADO_DOCUMENTO = {
 
 export type EstadoDocumento = keyof typeof ESTADO_DOCUMENTO;
 
-/** Estructura de respuesta paginada (estándar del backend) */
-export interface PaginatedResponse<T> {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: T[];
-}
+/** Tipos compartidos (re-exportados desde shared) */
+export type { PaginatedResponse } from "@shared/types";
 
 export interface DocumentoDetalle {
   id: number;

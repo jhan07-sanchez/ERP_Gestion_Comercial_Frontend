@@ -21,6 +21,7 @@
  * />
  */
 
+import { memo } from 'react';
 import type { InputHTMLAttributes, ReactNode } from 'react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -32,7 +33,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   fullWidth?: boolean;
 }
 
-export function Input({
+export const Input = memo(function Input({
   label,
   error,
   helperText,
@@ -120,6 +121,6 @@ export function Input({
       )}
     </div>
   );
-}
+});
 
 export default Input;

@@ -29,9 +29,6 @@ export function useProductoActions(onRefresh?: () => Promise<void>) {
     async (data: ProductoCreateInput): Promise<Producto> => {
       try {
         const producto = await productosAPI.createProducto(data);
-
-        console.log("Producto creado correctamente:", producto);
-
         await onRefresh?.();
 
         return producto; // ✅ CORRECTO

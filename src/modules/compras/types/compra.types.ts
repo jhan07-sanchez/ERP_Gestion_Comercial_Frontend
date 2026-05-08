@@ -178,22 +178,9 @@ export interface CompraFilters {
 }
 
 // ===============================
-// Respuesta paginada (reutilizable)
+// Tipos compartidos (re-exportados desde shared)
 // ===============================
-export interface PaginatedResponse<T> {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: T[];
-}
-
-// ===============================
-// Respuesta genérica de éxito
-// ===============================
-export interface SuccessResponse<T> {
-  detail: string;
-  data: T;
-}
+export type { PaginatedResponse, SuccessResponse, PaginationState, ApiResponse as ApiSuccessResponse } from "@shared/types";
 
 /**
  * Tipo exclusivo para formularios (Create / Edit)
@@ -209,19 +196,6 @@ export interface CompraFormValues {
     cantidad: number;
     precio_compra: number;
   }[];
-}
-
-export interface ApiSuccessResponse<T> {
-  success: boolean;
-  message?: string;
-  data: T;
-}
-
-export interface PaginationState {
-  currentPage: number;
-  totalPages: number;
-  pageSize: number;
-  totalCount: number;
 }
 
 // 🆕 Cuenta por Pagar (generada por pagos a crédito)

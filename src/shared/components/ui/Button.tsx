@@ -23,6 +23,7 @@
  * </Button>
  */
 
+import { memo } from 'react';
 import type { ReactNode, ButtonHTMLAttributes } from 'react';
 
 type ButtonVariant =
@@ -45,7 +46,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   iconOnly?: boolean;
 }
 
-export function Button({
+export const Button = memo(function Button({
   variant = 'primary',
   size = 'md',
   children,
@@ -172,6 +173,6 @@ export function Button({
       {rightIcon && <span>{rightIcon}</span>}
     </button>
   );
-}
+});
 
 export default Button;

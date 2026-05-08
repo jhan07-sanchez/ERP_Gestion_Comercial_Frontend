@@ -177,22 +177,9 @@ export interface VentaFilters {
 }
 
 // ===============================
-// Respuesta paginada (reutilizable)
+// Tipos compartidos (re-exportados desde shared)
 // ===============================
-export interface PaginatedResponse<T> {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: T[];
-}
-
-// ===============================
-// Respuesta de éxito genérica
-// ===============================
-export interface SuccessResponse<T> {
-  detail: string;
-  data: T;
-}
+export type { PaginatedResponse, SuccessResponse, PaginationState } from "@shared/types";
 
 // ===============================
 // Producto para seleccionar en formulario
@@ -240,16 +227,6 @@ export interface VentaFormData {
     subtotal: number;
   }[];
   total: number;
-}
-
-// ===============================
-// Paginación state
-// ===============================
-export interface PaginationState {
-  currentPage: number;
-  totalPages: number;
-  pageSize: number;
-  totalCount: number;
 }
 
 

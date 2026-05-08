@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { PageContainer, PageHeader, Card } from '@shared/components/ui';
 import { useEstadoResultados } from '../hooks/useReportes';
 import { reportesDomain } from '../domain/reportes.domain';
@@ -46,7 +46,7 @@ export function EstadoResultadosPage() {
       <ReportFilters 
         filtros={filtros} 
         onChange={setFiltros} 
-        onExport={(format) => console.log('Exporting as', format)} 
+        onExport={(format) => void format /* TODO: Implementar exportación */} 
       />
 
       {isLoading || !reporte || !metricasAvanzadas ? (

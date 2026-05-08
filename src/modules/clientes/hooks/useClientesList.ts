@@ -1,90 +1,28 @@
-import { useState, useCallback } from "react";
+/**
+ * Hook para lista paginada de clientes.
+ * Usa el hook genérico usePaginatedList.
+ */
+
+import { usePaginatedList } from "@shared/hooks";
 import { clientesAPI } from "../api/clientes.api";
-import type { ClienteList, ClienteFilters, PaginatedResponse } from "../types/cliente.types";
+import type { ClienteList, ClienteFilters } from "../types/cliente.types";
 
 export function useClientesList() {
-  const [clientes, setClientes] = useState<ClienteList[]>([]);
-
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [error, setError] = useState<string | null>(null);
-
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const [totalCount, setTotalCount] = useState(0);
-
-  const [filters, setFilters] = useState<ClienteFilters>({});
-
-  // ─────────────────────────────
-  // Fetch clientes
-  // ─────────────────────────────
-  const fetchClientes = useCallback(
-    async (page = 1, currentFilters: ClienteFilters = filters) => {
-      setIsLoading(true);
-
-      setError(null);
-
-      try {
-        const response: PaginatedResponse<ClienteList> =
-          await clientesAPI.getClientes(currentFilters, page);
-
-        setClientes(response.results ?? []);
-
-        setCurrentPage(page);
-
-        setTotalCount(response.count);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Error al cargar clientes",
-        );
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [filters],
-  );
-
-  // ─────────────────────────────
-  // Aplicar filtros
-  // ─────────────────────────────
-  const applyFilters = useCallback(
-    async (newFilters: ClienteFilters) => {
-      setFilters(newFilters);
-
-      await fetchClientes(1, newFilters);
-    },
-    [fetchClientes],
-  );
-
-  // ─────────────────────────────
-  // Cambiar página
-  // ─────────────────────────────
-  const changePage = useCallback(
-    (page: number) => {
-      fetchClientes(page, filters);
-    },
-    [fetchClientes, filters],
-  );
+  const list = usePaginatedList<ClienteList, ClienteFilters>({
+    fetchFn: (filters, page) => clientesAPI.getClientes(filters, page),
+    entityName: "clientes",
+  });
 
   return {
-    clientes,
-
-    setClientes,
-
-    isLoading,
-
-    error,
-
-    currentPage,
-
-    totalCount,
-
-    filters,
-
-    fetchClientes,
-
-    applyFilters,
-
-    changePage,
+    clientes: list.items,
+    setClientes: list.setItems,
+    isLoading: list.isLoading,
+    error: list.error,
+    currentPage: list.currentPage,
+    totalCount: list.totalCount,
+    filters: list.filters,
+    fetchClientes: list.fetchItems,
+    applyFilters: list.applyFilters,
+    changePage: list.changePage,
   };
 }

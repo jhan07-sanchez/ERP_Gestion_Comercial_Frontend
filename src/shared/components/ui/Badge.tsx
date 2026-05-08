@@ -16,6 +16,7 @@
  * <Badge variant="danger">Inactivo</Badge>
  */
 
+import { memo } from 'react';
 import type { ReactNode } from 'react';
 
 type BadgeVariant = 'success' | 'warning' | 'danger' | 'info' | 'gray';
@@ -29,7 +30,7 @@ interface BadgeProps {
   className?: string;
 }
 
-export function Badge({
+export const Badge = memo(function Badge({
   variant = 'gray',
   size = 'md',
   children,
@@ -99,6 +100,6 @@ export function Badge({
       {children}
     </span>
   );
-}
+});
 
 export default Badge;

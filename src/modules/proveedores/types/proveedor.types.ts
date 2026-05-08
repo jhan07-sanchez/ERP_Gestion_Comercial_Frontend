@@ -73,22 +73,9 @@ export interface ProveedorFilters {
 }
 
 // ===============================
-// Respuesta paginada (reutilizable)
+// Tipos compartidos (re-exportados desde shared)
 // ===============================
-export interface PaginatedResponse<T> {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: T[];
-}
-
-// ===============================
-// Respuesta genérica de éxito
-// ===============================
-export interface SuccessResponse<T> {
-  detail: string;
-  data: T;
-}
+export type { PaginatedResponse, SuccessResponse } from "@shared/types";
 
 /**
  * Tipo exclusivo para formularios (Create / Edit)

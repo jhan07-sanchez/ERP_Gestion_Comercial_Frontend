@@ -1,14 +1,8 @@
 import axiosInstance from "@/shared/api/axios";
 import type { Categoria, CategoriaCreateInput, CategoriaUpdateInput } from "../types";
+import type { PaginatedResponse } from "@shared/types";
 
 const API_BASE = "/categorias/categorias";
-
-interface PaginatedResponse<T> {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: T[];
-}
 
 export const categoriasAPI = {
   /**

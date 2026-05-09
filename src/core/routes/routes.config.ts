@@ -21,6 +21,8 @@ export type ProtectedRouteKey =
   | "VentaEdit"
   | "VentaDetalle"
   | "Reportes"
+  | "ReportesFinancieros"
+  | "ReportesOperativos"
   | "AuditoriaLogs"
   | "DocumentosList"
   | "Configuracion"
@@ -323,8 +325,60 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
     path: "reportes",
     componentKey: "Reportes",
     placeholderProps: {
-      title: "Reportes",
-      description: "Visualiza los reportes del sistema.",
+      title: "Centro de Inteligencia",
+      description: "KPIs y analítica general del negocio.",
+    },
+  },
+  {
+    path: "reportes/financieros",
+    componentKey: "ReportesFinancieros",
+    placeholderProps: {
+      title: "Reportes Financieros",
+      description: "Balance General, Estado de Resultados y Flujo de Caja.",
+    },
+  },
+  {
+    path: "reportes/balance_general/activos",
+    componentKey: "ReportesFinancieros",
+  },
+  {
+    path: "reportes/balance_general/pasivos",
+    componentKey: "ReportesFinancieros",
+  },
+  {
+    path: "reportes/balance_general/patrimonio",
+    componentKey: "ReportesFinancieros",
+  },
+  {
+    path: "reportes/estado_resultados/ingresos",
+    componentKey: "ReportesFinancieros",
+  },
+  {
+    path: "reportes/estado_resultados/costos",
+    componentKey: "ReportesFinancieros",
+  },
+  {
+    path: "reportes/estado_resultados/utilidad",
+    componentKey: "ReportesFinancieros",
+  },
+  {
+    path: "reportes/flujo_caja/entradas",
+    componentKey: "ReportesFinancieros",
+  },
+  {
+    path: "reportes/flujo_caja/salidas",
+    componentKey: "ReportesFinancieros",
+  },
+  {
+    path: "reportes/flujo_caja/balance",
+    componentKey: "ReportesFinancieros",
+  },
+  {
+    path: "reportes/operativos",
+    componentKey: "ReportesOperativos",
+    placeholderProps: {
+      title: "Analítica Operativa",
+      description: "Productividad y eficiencia de ventas.",
     },
   },
 

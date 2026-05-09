@@ -76,7 +76,7 @@ export function KPICard({
 
           {/* Valor y Título */}
           <div className="px-5 pb-5">
-            <h3 className="text-3xl font-black text-primary-900 tracking-tighter mb-1">
+            <h3 className="text-2xl 2xl:text-3xl font-black text-primary-900 tracking-tighter mb-1 truncate" title={value.toString()}>
               {value}
             </h3>
             <p className="text-[11px] font-black text-primary-400 uppercase tracking-widest">

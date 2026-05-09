@@ -5,6 +5,9 @@
 
 import type { ComponentType } from 'react';
 import AnalyticsDashboard from '@/modules/reportes/pages/AnalyticsDashboard';
+import ReportsPage from '@/modules/reportes/pages/ReportsPage';
+import FinancialReportsPage from '@/modules/reportes/pages/FinancialReportsPage';
+import OperationalReportsPage from '@/modules/reportes/pages/OperationalReportsPage';
 import ClientesList from '@/modules/clientes/pages/ClientesList';
 import ClienteCreate from '@/modules/clientes/pages/ClienteCreate';
 import ClienteEdit from '@/modules/clientes/pages/ClienteEdit';
@@ -25,7 +28,7 @@ import ProveedorCreate from '@/modules/proveedores/pages/ProveedorCreate';
 import ProveedorEdit from "@/modules/proveedores/pages/ProveedorEdit";
 import ProveedorDetailPage from "@/modules/proveedores/pages/ProveedorDetailPage";
 
-import { Dashboard, DashboardKPIsPage, DashboardAnalyticsPage } from '@/modules/dashboard'; //  Importar del módulo dashboard
+import { Dashboard, DashboardKPIsPage } from '@/modules/dashboard'; //  Importar del módulo dashboard
 
 import type { ProtectedRouteKey } from '@/core/routes/routes.config';
 
@@ -61,14 +64,16 @@ export const protectedRouteComponents: Record<
 > = {
   Dashboard,
   DashboardKPIs: DashboardKPIsPage,
-  DashboardAnalytics: DashboardAnalyticsPage,
+  DashboardAnalytics: AnalyticsDashboard,
 
   VentasList,
   VentaCreate, // ← NUEVO
   VentaEdit, // ← NUEVO
   VentaDetalle, // ← NUEVO
 
-  Reportes: AnalyticsDashboard,
+  Reportes: ReportsPage,
+  ReportesFinancieros: FinancialReportsPage,
+  ReportesOperativos: OperationalReportsPage,
 
   AuditoriaLogs,
   DocumentosList,

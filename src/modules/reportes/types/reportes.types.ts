@@ -17,21 +17,56 @@ export interface MovimientoFinanciero {
 }
 
 export interface EstadoResultadosData {
-  ingresosOperativos: number;
-  costoVentas: number;
-  gastosOperativos: number;
-  impuestos: number;
-  detalles: MovimientoFinanciero[];
+  ingresos: number;
+  costos: number;
+  gastos: number;
+  utilidad_bruta: number;
+  utilidad_neta: number;
+  margen_bruto: number;
+  periodo: {
+    inicio?: string | null;
+    fin?: string | null;
+  };
 }
 
 export interface BalanceGeneralData {
   activos: {
-    corrientes: number;
-    noCorrientes: number;
+    disponible: number;
+    inventarios: number;
+    total_corrientes: number;
+    total: number;
   };
   pasivos: {
-    corrientes: number;
-    noCorrientes: number;
+    cuentasPorPagar: number;
+    total: number;
   };
   patrimonio: number;
+  fecha_corte: string;
+}
+
+export interface ProductividadData {
+  empleado_id: number;
+  nombre: string;
+  total_ventas: number;
+  cantidad: number;
+  ticket_promedio: number;
+}
+
+export interface ProyeccionData {
+  diario_promedio: number;
+  proyeccion_7d: number;
+  proyeccion_15d: number;
+  proyeccion_30d: number;
+}
+
+export interface FlujoCajaData {
+  entradas: number;
+  salidas: number;
+  balance: number;
+  detalle: {
+    tipo: string;
+    monto: number;
+    fecha: string;
+    concepto: string;
+  }[];
 }

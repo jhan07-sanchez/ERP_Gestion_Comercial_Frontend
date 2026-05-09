@@ -11,19 +11,30 @@ interface Props {
 export function AnalyticsFilters({ onFilterChange, currentFilters }: Props) {
   const [cajas, setCajas] = useState<{ id: number; nombre: string }[]>([]);
   const [vendedores, setVendedores] = useState<{ id: number; username: string }[]>([]);
+  const [sucursal, setSucursal] = useState<{ id: string; nombre: string } | null>(null);
 
   useEffect(() => {
-    // Cargar Cajas
-    axiosInstance.get('/caja/').then(res => {
-      if (res.data.success) setCajas(res.data.data);
-      else if (Array.isArray(res.data)) setCajas(res.data);
-    }).catch(() => {});
+    // Cargar Info Empresa (Sucursal)
+    axiosInstance.get('/configuracion/empresa/')
+      .then(res => {
+        if (res.data && res.data.nombre_empresa) {
+          setSucursal({ id: '1', nombre: res.data.nombre_empresa });
+        }
+      }).catch(err => console.error("Error loading sucursal:", err));
+
+    // Cargar Cajas (Manejo de paginación DRF)
+    axiosInstance.get('/caja/cajas/')
+      .then(res => {
+        const data = res.data.results || res.data.data || res.data;
+        if (Array.isArray(data)) setCajas(data);
+      }).catch(err => console.error("Error loading cajas:", err));
 
     // Cargar Vendedores (Usuarios)
-    axiosInstance.get('/usuarios/').then(res => {
-      if (res.data.success) setVendedores(res.data.data);
-      else if (Array.isArray(res.data)) setVendedores(res.data);
-    }).catch(() => {});
+    axiosInstance.get('/usuarios/')
+      .then(res => {
+        const data = res.data.results || res.data.data || res.data;
+        if (Array.isArray(data)) setVendedores(data);
+      }).catch(err => console.error("Error loading usuarios:", err));
   }, []);
 
   return (
@@ -34,10 +45,10 @@ export function AnalyticsFilters({ onFilterChange, currentFilters }: Props) {
         </label>
         <Select
           value={currentFilters.sucursal?.toString() || ''}
-          onChange={(val) => onFilterChange({ sucursal: val ? parseInt(val) : undefined })}
+          onChange={(val) => onFilterChange({ ...currentFilters, sucursal: val ? parseInt(val) : undefined })}
           options={[
             { value: '', label: 'Todas las Sucursales' },
-            { value: '1', label: 'Sede Principal - Norte' }
+            ...(sucursal ? [{ value: sucursal.id, label: sucursal.nombre }] : [])
           ]}
           className="h-10 text-xs font-bold"
         />
@@ -49,7 +60,7 @@ export function AnalyticsFilters({ onFilterChange, currentFilters }: Props) {
         </label>
         <Select
           value={currentFilters.caja?.toString() || ''}
-          onChange={(val) => onFilterChange({ caja: val ? parseInt(val) : undefined })}
+          onChange={(val) => onFilterChange({ ...currentFilters, caja: val ? parseInt(val) : undefined })}
           options={[
             { value: '', label: 'Todas las Cajas' },
             ...cajas.map(c => ({ value: c.id.toString(), label: c.nombre }))
@@ -64,7 +75,7 @@ export function AnalyticsFilters({ onFilterChange, currentFilters }: Props) {
         </label>
         <Select
           value={currentFilters.vendedor?.toString() || ''}
-          onChange={(val) => onFilterChange({ vendedor: val ? parseInt(val) : undefined })}
+          onChange={(val) => onFilterChange({ ...currentFilters, vendedor: val ? parseInt(val) : undefined })}
           options={[
             { value: '', label: 'Todos los Vendedores' },
             ...vendedores.map(v => ({ value: v.id.toString(), label: v.username }))

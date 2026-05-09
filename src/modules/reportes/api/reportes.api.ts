@@ -1,7 +1,10 @@
 import type {
-  MovimientoFinanciero,
   ReportFilterOptions,
   BalanceGeneralData,
+  EstadoResultadosData,
+  FlujoCajaData,
+  ProductividadData,
+  ProyeccionData,
 } from "../types/reportes.types";
 import type { AnalyticsData } from "../types/analytics.types";
 import axiosInstance from "@/shared/api/axios";
@@ -21,21 +24,28 @@ export const reportesAPI = {
     return response.data.data;
   },
 
-  getEstadoResultados: async (
-    filtros?: ReportFilterOptions,
-  ): Promise<MovimientoFinanciero[]> => {
-    const response = await axiosInstance.get("/dashboard/reportes/estado-resultados/", {
-      params: filtros,
-    });
+  getEstadoResultados: async (filtros?: ReportFilterOptions): Promise<EstadoResultadosData> => {
+    const response = await axiosInstance.get("/reportes/financieros/estado-resultados/", { params: filtros });
     return response.data.data;
   },
 
-  getBalanceGeneral: async (
-    filtros?: ReportFilterOptions,
-  ): Promise<BalanceGeneralData> => {
-    const response = await axiosInstance.get("/dashboard/reportes/balance-general/", {
-      params: filtros,
-    });
+  getBalanceGeneral: async (): Promise<BalanceGeneralData> => {
+    const response = await axiosInstance.get("/reportes/financieros/balance-general/");
+    return response.data.data;
+  },
+
+  getFlujoCaja: async (filtros?: ReportFilterOptions): Promise<FlujoCajaData> => {
+    const response = await axiosInstance.get("/reportes/financieros/flujo-caja/", { params: filtros });
+    return response.data.data;
+  },
+
+  getProductividad: async (filtros?: ReportFilterOptions): Promise<ProductividadData[]> => {
+    const response = await axiosInstance.get("/reportes/operativos/productividad/", { params: filtros });
+    return response.data.data;
+  },
+
+  getProyecciones: async (): Promise<ProyeccionData> => {
+    const response = await axiosInstance.get("/reportes/analiticos/proyecciones/");
     return response.data.data;
   },
 };

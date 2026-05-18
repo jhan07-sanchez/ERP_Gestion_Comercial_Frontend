@@ -31,7 +31,7 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError && this.state.error) {
       if (this.props.fallback) return this.props.fallback;
       return (
-        <div className="min-h-[400px] flex items-center justify-center p-6">
+        <div className="min-h-96 flex items-center justify-center p-6">
           <div className="text-center max-w-md">
             <h2 className="text-xl font-semibold text-primary-900 mb-2">Algo salió mal</h2>
             <p className="text-primary-600 mb-4">{this.state.error.message}</p>

@@ -63,7 +63,7 @@ export default function ReportsPage() {
                </div>
                <div>
                   <h3 className="text-sm font-black text-primary-900 uppercase tracking-widest">{module.title}</h3>
-                  <p className="text-[10px] font-bold text-primary-400 uppercase">{module.description}</p>
+                  <p className="text-xs font-bold text-primary-400 uppercase">{module.description}</p>
                </div>
             </div>
 

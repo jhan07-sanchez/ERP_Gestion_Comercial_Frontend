@@ -90,7 +90,7 @@ export default function ClienteDetalle() {
       <PageContainer>
         <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
             <IconLoader2 className="animate-spin text-accent-600" size={48} stroke={1.5} />
-            <p className="text-primary-600 font-black uppercase tracking-widest text-[10px] animate-pulse">Cargando información del cliente...</p>
+            <p className="text-primary-600 font-black uppercase tracking-widest text-xs animate-pulse">Cargando información del cliente...</p>
         </div>
       </PageContainer>
     );
@@ -110,7 +110,7 @@ export default function ClienteDetalle() {
             </div>
             <Button 
                 onClick={() => navigate("/clientes")} 
-                className="w-full h-12 bg-danger-600 hover:bg-danger-700 text-white border-none shadow-xl shadow-danger-200 font-black uppercase tracking-widest text-[10px]"
+                className="w-full h-12 bg-danger-600 hover:bg-danger-700 text-white border-none shadow-xl shadow-danger-200 font-black uppercase tracking-widest text-xs"
             >
               Volver al Directorio
             </Button>
@@ -129,7 +129,7 @@ export default function ClienteDetalle() {
         onBack={() => navigate("/clientes")}
         actions={
             <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
-                <Badge variant={estadoVariantMap[cliente.estado]} className="mb-2 sm:mb-0 sm:mr-4 self-start sm:self-auto py-1 px-3 uppercase tracking-widest font-black text-[10px]">
+                <Badge variant={estadoVariantMap[cliente.estado]} className="mb-2 sm:mb-0 sm:mr-4 self-start sm:self-auto py-1 px-3 uppercase tracking-widest font-black text-xs">
                     {cliente.estado}
                 </Badge>
                 <div className="flex bg-primary-100 p-1 rounded-xl shadow-inner border border-primary-200/60 w-full sm:w-auto">
@@ -186,15 +186,15 @@ export default function ClienteDetalle() {
                 <Card.Content className="p-0">
                     <div className="flex flex-col bg-white">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 transition-colors hover:bg-primary-50/50 border-b border-primary-100">
-                            <div className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1 sm:mb-0 w-full sm:w-1/3">Nombre Comercial</div>
+                            <div className="text-xs font-black text-primary-400 uppercase tracking-widest mb-1 sm:mb-0 w-full sm:w-1/3">Nombre Comercial</div>
                             <div className="w-full sm:w-2/3 sm:text-right text-sm text-primary-700 font-medium">{cliente.nombre}</div>
                         </div>
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 transition-colors hover:bg-primary-50/50 border-b border-primary-100">
-                            <div className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1 sm:mb-0 w-full sm:w-1/3">Documento</div>
+                            <div className="text-xs font-black text-primary-400 uppercase tracking-widest mb-1 sm:mb-0 w-full sm:w-1/3">Documento</div>
                             <div className="w-full sm:w-2/3 sm:text-right text-sm text-primary-700 font-medium">{getTipoDocumentoLabel(cliente.tipo_documento)} {cliente.numero_documento}</div>
                         </div>
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 transition-colors hover:bg-primary-50/50 border-b border-primary-100">
-                            <div className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1 sm:mb-0 w-full sm:w-1/3">Teléfono de Contacto</div>
+                            <div className="text-xs font-black text-primary-400 uppercase tracking-widest mb-1 sm:mb-0 w-full sm:w-1/3">Teléfono de Contacto</div>
                             <div className="w-full sm:w-2/3 sm:text-right text-sm text-primary-700 font-medium">
                                 {cliente.telefono ? (
                                     <a href={`tel:${cliente.telefono}`} className="text-accent-600 hover:text-accent-800 hover:underline transition-colors">{cliente.telefono}</a>
@@ -202,7 +202,7 @@ export default function ClienteDetalle() {
                             </div>
                         </div>
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 transition-colors hover:bg-primary-50/50 border-b border-primary-100">
-                            <div className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1 sm:mb-0 w-full sm:w-1/3">Correo Electrónico</div>
+                            <div className="text-xs font-black text-primary-400 uppercase tracking-widest mb-1 sm:mb-0 w-full sm:w-1/3">Correo Electrónico</div>
                             <div className="w-full sm:w-2/3 sm:text-right text-sm text-primary-700 font-medium">
                                 {cliente.email ? (
                                     <a href={`mailto:${cliente.email}`} className="text-accent-600 hover:text-accent-800 hover:underline transition-colors">{cliente.email}</a>
@@ -210,7 +210,7 @@ export default function ClienteDetalle() {
                             </div>
                         </div>
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 transition-colors hover:bg-primary-50/50">
-                            <div className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1 sm:mb-0 w-full sm:w-1/3">Dirección Física</div>
+                            <div className="text-xs font-black text-primary-400 uppercase tracking-widest mb-1 sm:mb-0 w-full sm:w-1/3">Dirección Física</div>
                             <div className="w-full sm:w-2/3 sm:text-right text-sm text-primary-700 font-medium">{cliente.direccion || <span className="text-primary-400 italic">—</span>}</div>
                         </div>
                     </div>
@@ -244,13 +244,13 @@ export default function ClienteDetalle() {
                 </Card.Header>
                 <Card.Content className="p-6 space-y-4">
                     <div className="flex items-center justify-between p-4 bg-primary-50 rounded-2xl border border-primary-100">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-primary-400">Fecha Creado</span>
+                        <span className="text-xs font-black uppercase tracking-widest text-primary-400">Fecha Creado</span>
                         <span className="text-xs font-bold text-primary-700">
                             {cliente.fecha_creacion ? new Date(cliente.fecha_creacion).toLocaleDateString("es-CO") : "Sin fecha"}
                         </span>
                     </div>
                     <div className="flex items-center justify-between p-4 bg-primary-50 rounded-2xl border border-primary-100">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-primary-400">Última Acc.</span>
+                        <span className="text-xs font-black uppercase tracking-widest text-primary-400">Última Acc.</span>
                         <span className="text-xs font-bold text-primary-700">
                             {cliente.fecha_actualizacion ? new Date(cliente.fecha_actualizacion).toLocaleDateString("es-CO") : "Sin fecha"}
                         </span>

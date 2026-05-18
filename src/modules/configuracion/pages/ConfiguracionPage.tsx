@@ -33,7 +33,7 @@ const ConfiguracionPage: React.FC = () => {
         return (
             <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
                 <IconLoader2 className="animate-spin text-accent-600" size={48} />
-                <p className="text-primary-600 font-black uppercase tracking-widest text-[10px] animate-pulse">Cargando configuración...</p>
+                <p className="text-primary-600 font-black uppercase tracking-widest text-xs animate-pulse">Cargando configuración...</p>
             </div>
         );
     }
@@ -47,7 +47,7 @@ const ConfiguracionPage: React.FC = () => {
                     <p className="text-danger-700 mb-6 font-medium">{error || 'No se pudo cargar la configuración.'}</p>
                     <button
                         onClick={() => window.location.reload()}
-                        className="bg-danger-600 text-white px-8 py-3 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-danger-700 transition-all shadow-lg shadow-danger-200 active:scale-95"
+                        className="bg-danger-600 text-white px-8 py-3 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-danger-700 transition-all shadow-lg shadow-danger-200 active:scale-95"
                     >
                         Reintentar Carga
                     </button>
@@ -73,8 +73,8 @@ const ConfiguracionPage: React.FC = () => {
                 actions={
                     <div className="flex items-center gap-2 bg-primary-100/50 px-3 py-1.5 rounded-lg border border-primary-200/50">
                         <div className="text-right hidden sm:block">
-                            <p className="text-[9px] text-primary-400 uppercase tracking-widest font-black">Último cambio</p>
-                            <p className="text-[10px] font-bold text-primary-700 tabular-nums">
+                            <p className="text-xs opacity-80 text-primary-400 uppercase tracking-widest font-black">Último cambio</p>
+                            <p className="text-xs font-bold text-primary-700 tabular-nums">
                                 {new Date(config.fecha_actualizacion).toLocaleString()}
                             </p>
                         </div>
@@ -88,7 +88,7 @@ const ConfiguracionPage: React.FC = () => {
                 <aside className="w-full lg:w-72 space-y-4 shrink-0">
                     <div className="bg-white border border-primary-200 rounded-2xl overflow-hidden shadow-sm p-2 sticky top-6">
                         <div className="px-3 py-2 border-b border-primary-100 mb-2 hidden lg:block">
-                            <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest flex items-center gap-2">
+                            <p className="text-xs font-black text-primary-400 uppercase tracking-widest flex items-center gap-2">
                                 <IconCategory size={14} />
                                 Secciones
                             </p>
@@ -112,7 +112,7 @@ const ConfiguracionPage: React.FC = () => {
                                     </span>
                                     <div className="text-left">
                                         <p className="font-black truncate uppercase tracking-tight leading-none">{tab.label}</p>
-                                        <p className={`text-[9px] font-bold uppercase tracking-widest mt-1 opacity-60 hidden lg:block ${activeTab === tab.id ? 'text-white' : 'text-primary-400'}`}>
+                                        <p className={`text-xs opacity-80 font-bold uppercase tracking-widest mt-1 opacity-60 hidden lg:block ${activeTab === tab.id ? 'text-white' : 'text-primary-400'}`}>
                                             {tab.desc}
                                         </p>
                                     </div>
@@ -129,14 +129,14 @@ const ConfiguracionPage: React.FC = () => {
                          <div className="absolute top-0 right-0 p-4 opacity-10">
                             <IconInfoCircle size={40} className="text-white" />
                          </div>
-                        <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <p className="text-xs font-black text-primary-400 uppercase tracking-widest mb-3 flex items-center gap-2">
                              Estado del Nodo
                         </p>
                         <div className="flex items-center gap-3">
                             <div className="w-3 h-3 bg-success-500 rounded-full shadow-[0_0_12px_rgba(16,185,129,0.5)]" />
                             <span className="text-xs font-black text-white uppercase tracking-wider">Sistema Operativo</span>
                         </div>
-                        <p className="text-[10px] text-primary-500 mt-4 leading-relaxed font-bold">
+                        <p className="text-xs text-primary-500 mt-4 leading-relaxed font-bold">
                             Todos los servicios de backend y microservicios están sincronizados.
                         </p>
                     </div>

@@ -68,7 +68,7 @@ export default function ProductosList() {
           subtitle="Gestiona el catálogo de productos y servicios"
           icon={<IconPackage size={24} />}
         />
-        <div className="flex flex-col items-center justify-center min-h-[400px] bg-white rounded-xl border border-primary-100 shadow-sm">
+        <div className="flex flex-col items-center justify-center min-h-96 bg-white rounded-xl border border-primary-100 shadow-sm">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto" />
           <p className="mt-4 text-primary-600 font-medium">Cargando catálogo...</p>
         </div>
@@ -156,7 +156,7 @@ export default function ProductosList() {
                       {productos.map((producto) => (
                         <Table.Row key={producto.id} className="hover:bg-primary-50/20">
                           <Table.Cell>
-                            <span className="font-mono text-[10px] font-bold text-primary-400 bg-primary-50 px-2 py-0.5 rounded border border-primary-100 uppercase tracking-tighter">
+                            <span className="font-mono text-xs font-bold text-primary-400 bg-primary-50 px-2 py-0.5 rounded border border-primary-100 uppercase tracking-tighter">
                               <span>{producto.codigo || "S/C"}</span>
                             </span>
                           </Table.Cell>
@@ -165,7 +165,7 @@ export default function ProductosList() {
                               <span className="font-bold text-primary-900 leading-tight">
                                 <span>{producto.nombre}</span>
                               </span>
-                              <span className="text-[10px] text-primary-400 md:hidden italic">
+                              <span className="text-xs text-primary-400 md:hidden italic">
                                 <span>{producto.categoria_info?.nombre || "General"}</span>
                               </span>
                             </div>
@@ -181,7 +181,7 @@ export default function ProductosList() {
                           </Table.Cell>
                           <Table.Cell className="text-center">
                             <span
-                              className={`inline-flex items-center justify-center min-w-[32px] px-2 py-0.5 rounded-lg text-[10px] font-black ${(producto.stock_actual || 0) <= (producto.stock_minimo || 0)
+                              className={`inline-flex items-center justify-center min-w-[32px] px-2 py-0.5 rounded-lg text-xs font-black ${(producto.stock_actual || 0) <= (producto.stock_minimo || 0)
                                 ? "bg-danger-100 text-danger-700 border border-danger-200"
                                 : "bg-success-100 text-success-700 border border-success-200"
                                 }`}
@@ -190,7 +190,7 @@ export default function ProductosList() {
                             </span>
                           </Table.Cell>
                           <Table.Cell className="text-center">
-                            <Badge variant={producto.estado ? "success" : "danger"} className="text-[9px] uppercase font-black px-2">
+                            <Badge variant={producto.estado ? "success" : "danger"} className="text-xs opacity-80 uppercase font-black px-2">
                               {producto.estado ? "Activo" : "Inactivo"}
                             </Badge>
                           </Table.Cell>

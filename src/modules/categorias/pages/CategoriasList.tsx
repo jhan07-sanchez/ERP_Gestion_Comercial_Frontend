@@ -74,7 +74,7 @@ export default function CategoriasList() {
             size={48}
             stroke={1.5}
           />
-          <p className="text-primary-600 font-black uppercase tracking-widest text-[10px] animate-pulse">
+          <p className="text-primary-600 font-black uppercase tracking-widest text-xs animate-pulse">
             Cargando catálogo de categorías...
           </p>
         </div>
@@ -100,7 +100,7 @@ export default function CategoriasList() {
             </div>
             <Button
               onClick={() => fetchCategorias()}
-              className="w-full h-12 bg-danger-600 hover:bg-danger-700 text-white border-none shadow-xl shadow-danger-200 font-black uppercase tracking-widest text-[10px]"
+              className="w-full h-12 bg-danger-600 hover:bg-danger-700 text-white border-none shadow-xl shadow-danger-200 font-black uppercase tracking-widest text-xs"
             >
               Reintentar
             </Button>
@@ -161,16 +161,16 @@ export default function CategoriasList() {
                 <Table>
                   <thead>
                     <tr className="bg-primary-50/50 border-b border-primary-100">
-                      <th className="text-left py-4 px-6 text-[10px] font-black uppercase tracking-widest text-primary-500 w-1/3">
+                      <th className="text-left py-4 px-6 text-xs font-black uppercase tracking-widest text-primary-500 w-1/3">
                         Nombre
                       </th>
-                      <th className="text-left py-4 px-6 text-[10px] font-black uppercase tracking-widest text-primary-500 hidden sm:table-cell">
+                      <th className="text-left py-4 px-6 text-xs font-black uppercase tracking-widest text-primary-500 hidden sm:table-cell">
                         Descripción
                       </th>
-                      <th className="text-center py-4 px-6 text-[10px] font-black uppercase tracking-widest text-primary-500 w-32">
+                      <th className="text-center py-4 px-6 text-xs font-black uppercase tracking-widest text-primary-500 w-32">
                         Estado
                       </th>
-                      <th className="text-center py-4 px-6 text-[10px] font-black uppercase tracking-widest text-primary-500 w-32">
+                      <th className="text-center py-4 px-6 text-xs font-black uppercase tracking-widest text-primary-500 w-32">
                         Acciones
                       </th>
                     </tr>
@@ -190,7 +190,7 @@ export default function CategoriasList() {
                               <span className="font-black text-primary-900 truncate">
                                 {categoria.nombre}
                               </span>
-                              <span className="text-[10px] font-bold text-primary-400 truncate sm:hidden mt-0.5">
+                              <span className="text-xs font-bold text-primary-400 truncate sm:hidden mt-0.5">
                                 {categoria.descripcion || "Sin descripción"}
                               </span>
                             </div>
@@ -204,7 +204,7 @@ export default function CategoriasList() {
                         <td className="py-4 px-6 text-center">
                           <Badge
                             variant={categoria.estado ? "success" : "danger"}
-                            className="uppercase tracking-widest text-[9px] font-black"
+                            className="uppercase tracking-widest text-xs opacity-80 font-black"
                           >
                             {categoria.estado ? "Activa" : "Inactiva"}
                           </Badge>

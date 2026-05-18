@@ -87,7 +87,7 @@ export function AlertList({ alerts }: AlertListProps) {
                                 <h4 className={`text-sm font-black uppercase tracking-tight truncate ${styles.title}`}>
                                     {alert.title}
                                 </h4>
-                                <div className="flex items-center gap-1.5 text-[10px] font-bold text-primary-400 shrink-0">
+                                <div className="flex items-center gap-1.5 text-xs font-bold text-primary-400 shrink-0">
                                     <IconClock size={12} />
                                     {formatDateTime(alert.timestamp)}
                                 </div>
@@ -98,13 +98,13 @@ export function AlertList({ alerts }: AlertListProps) {
                             </p>
 
                             <div className="mt-3 flex items-center justify-between">
-                                <span className={`px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest ${styles.badge}`}>
+                                <span className={`px-2 py-0.5 rounded text-xs opacity-80 font-black uppercase tracking-widest ${styles.badge}`}>
                                     Nivel {alert.severidad}
                                 </span>
 
                                 <button
                                     onClick={() => handleDetailClick(alert)}
-                                    className="text-[10px] font-black text-accent-600 bg-accent-50/80 hover:bg-accent-100 px-3 py-1 rounded-lg flex items-center gap-1 transition-colors lg:opacity-0 lg:group-hover:opacity-100 opacity-100"
+                                    className="text-xs font-black text-accent-600 bg-accent-50/80 hover:bg-accent-100 px-3 py-1 rounded-lg flex items-center gap-1 transition-colors lg:opacity-0 lg:group-hover:opacity-100 opacity-100"
                                 >
                                     VER DETALLE
                                     <IconChevronRight size={12} stroke={2.5} />

@@ -120,7 +120,7 @@ export default function CajaDashboardPage() {
   // ── Loading inicial (esperar hidratación del store) ─────────
   if (!isHydrated || storeLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-96">
         <Loader />
       </div>
     );
@@ -305,12 +305,12 @@ export default function CajaDashboardPage() {
                         <Table.Cell>
                           <Badge
                             variant={ingreso ? "success" : "danger"}
-                            className="text-[10px] uppercase font-bold"
+                            className="text-xs uppercase font-bold"
                           >
                             {getTipoMovimientoLabel(mov.tipo)}
                           </Badge>
                         </Table.Cell>
-                        <Table.Cell className="hidden sm:table-cell max-w-[200px] truncate font-medium text-primary-700">
+                        <Table.Cell className="hidden sm:table-cell max-w-52 truncate font-medium text-primary-700">
                           {mov.descripcion}
                         </Table.Cell>
                         <Table.Cell
@@ -386,7 +386,7 @@ function DashKPI({
       <Card.Content className="p-5 flex flex-col gap-2">
         <div className="flex items-center gap-2">
           <div className="opacity-50">{icon}</div>
-          <p className="text-[10px] font-bold uppercase tracking-widest opacity-70">
+          <p className="text-xs font-bold uppercase tracking-widest opacity-70">
             {label}
           </p>
         </div>
@@ -433,7 +433,7 @@ function ActionButton({
       </div>
       <div className="text-left">
         <p className="text-sm font-bold">{label}</p>
-        <p className="text-[11px] opacity-60">{description}</p>
+        <p className="text-xs opacity-60">{description}</p>
       </div>
     </button>
   );

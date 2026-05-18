@@ -20,7 +20,7 @@ export function CustomerRetentionChart({ data }: CustomerRetentionChartProps) {
     <Card className="p-6 border-none shadow-sm ring-1 ring-primary-100 flex flex-col h-full">
       <div className="mb-6">
         <h3 className="text-sm font-black text-primary-800 uppercase tracking-tight">Retención de Clientes</h3>
-        <p className="text-[10px] font-bold text-primary-400 uppercase tracking-widest">Nuevos vs Recurrentes vs Inactivos</p>
+        <p className="text-xs font-bold text-primary-400 uppercase tracking-widest">Nuevos vs Recurrentes vs Inactivos</p>
       </div>
       <div className="flex-1 w-full min-h-[350px]">
         <ResponsiveContainer width="100%" height="100%">

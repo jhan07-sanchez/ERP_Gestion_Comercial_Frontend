@@ -22,7 +22,7 @@ export default function CajaList() {
 
   if (isLoading && cajas.length === 0) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-96">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
           <p className="mt-4 text-primary-600 font-medium">Cargando cajas...</p>
@@ -114,7 +114,7 @@ export default function CajaList() {
                     <Table.Cell>
                       <div className="flex flex-col">
                         <span className="font-bold text-primary-900">{caja.nombre}</span>
-                        <span className="md:hidden text-xs text-primary-500 truncate max-w-[150px]">
+                        <span className="md:hidden text-xs text-primary-500 truncate max-w-40">
                           {caja.descripcion || "Sin descripción"}
                         </span>
                       </div>

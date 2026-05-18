@@ -139,7 +139,7 @@ export default function CajaCierrePage() {
   // ── Loading ─────────────────────────────────────────────────
   if (loadingDetalle || !sesion) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-96">
         <Loader />
       </div>
     );
@@ -329,7 +329,7 @@ function SummaryCard({
 
   return (
     <div className={`${colorMap[color]} border rounded-xl p-4 shadow-sm`}>
-      <p className="text-[10px] font-bold uppercase tracking-widest opacity-70">{label}</p>
+      <p className="text-xs font-bold uppercase tracking-widest opacity-70">{label}</p>
       <p className={`text-lg font-black tabular-nums mt-1 ${highlighted ? "scale-105 origin-left" : ""}`}>
         {value}
       </p>

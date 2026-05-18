@@ -76,13 +76,13 @@ export function ProveedorForm({
             {error && (
                 <div className="p-4 bg-danger-50 border border-danger-100 rounded-2xl flex items-center gap-3">
                     <IconX size={20} className="text-danger-600 shrink-0" />
-                    <p className="text-[11px] text-danger-800 font-bold uppercase tracking-tight leading-relaxed">{error}</p>
+                    <p className="text-xs text-danger-800 font-bold uppercase tracking-tight leading-relaxed">{error}</p>
                 </div>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-1.5 md:col-span-2">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Nombre Comercial <span className="text-danger-500">*</span></label>
+                    <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Nombre Comercial <span className="text-danger-500">*</span></label>
                     <Input
                         name="nombre"
                         value={value.nombre || ''}
@@ -94,7 +94,7 @@ export function ProveedorForm({
                 </div>
 
                 <div className="space-y-1.5">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Documento (NIT/RUT)</label>
+                    <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Documento (NIT/RUT)</label>
                     <Input
                         name="documento"
                         value={value.documento || ""}
@@ -106,7 +106,7 @@ export function ProveedorForm({
                 </div>
 
                 <div className="space-y-1.5">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Teléfono</label>
+                    <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Teléfono</label>
                     <Input
                         name="telefono"
                         value={value.telefono || ""}
@@ -118,7 +118,7 @@ export function ProveedorForm({
                 </div>
 
                 <div className="space-y-1.5 md:col-span-2">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Correo Electrónico</label>
+                    <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Correo Electrónico</label>
                     <Input
                         name="email"
                         type="email"
@@ -131,7 +131,7 @@ export function ProveedorForm({
                 </div>
 
                 <div className="space-y-1.5 md:col-span-2">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Dirección Física</label>
+                    <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Dirección Física</label>
                     <textarea
                         name="direccion"
                         value={value.direccion || ""}
@@ -146,7 +146,7 @@ export function ProveedorForm({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-primary-100">
                 <div className="space-y-1.5">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Fecha de Ingreso</label>
+                    <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Fecha de Ingreso</label>
                     <Input
                       type="date"
                       name="fecha_ingreso"

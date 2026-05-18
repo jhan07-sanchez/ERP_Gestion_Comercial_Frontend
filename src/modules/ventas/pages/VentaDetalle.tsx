@@ -92,7 +92,7 @@ export default function VentaDetalle() {
 
   if (loading || !venta) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-96">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto" />
           <p className="mt-4 text-primary-600 font-medium">Cargando detalle de venta...</p>
@@ -254,7 +254,7 @@ export default function VentaDetalle() {
                       <Table.Cell>
                         <div className="flex flex-col">
                           <span className="font-bold text-primary-900 leading-tight">{d.producto_nombre}</span>
-                          <span className="text-[10px] text-primary-400 font-mono hidden sm:inline">{d.producto_codigo}</span>
+                          <span className="text-xs text-primary-400 font-mono hidden sm:inline">{d.producto_codigo}</span>
                         </div>
                       </Table.Cell>
                       <Table.Cell className="text-center font-bold text-primary-700">{formatNumber(d.cantidad)}</Table.Cell>
@@ -296,7 +296,7 @@ export default function VentaDetalle() {
                         <Table.Cell>
                           <div className="flex flex-col">
                             <span className="font-bold text-success-700 text-xs">{p.metodo_pago_display}</span>
-                            <span className="text-[10px] text-primary-400">Por {p.usuario_nombre}</span>
+                            <span className="text-xs text-primary-400">Por {p.usuario_nombre}</span>
                           </div>
                         </Table.Cell>
                         <Table.Cell className="text-right font-black text-success-600">{formatCurrency(p.monto)}</Table.Cell>
@@ -338,7 +338,7 @@ function KPICard({ label, value, color, isHighlighted }: { label: string; value:
   return (
     <Card className={`${colorClasses[color]} border shadow-sm`}>
       <Card.Content className="p-5 flex flex-col justify-center gap-1">
-        <p className="text-[10px] font-bold uppercase tracking-widest opacity-70 leading-none">{label}</p>
+        <p className="text-xs font-bold uppercase tracking-widest opacity-70 leading-none">{label}</p>
         <p className={`text-2xl font-black tabular-nums transition-all ${isHighlighted ? 'scale-105 origin-left text-danger-800' : ''}`}>
           {value}
         </p>
@@ -350,7 +350,7 @@ function KPICard({ label, value, color, isHighlighted }: { label: string; value:
 function DetailItem({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between items-center py-2 border-b border-primary-50 last:border-0 last:pb-0">
-      <span className="text-[10px] text-primary-400 font-bold uppercase tracking-wider">{label}</span>
+      <span className="text-xs text-primary-400 font-bold uppercase tracking-wider">{label}</span>
       <span className="text-sm text-primary-900 font-semibold truncate ml-4">{value}</span>
     </div>
   );

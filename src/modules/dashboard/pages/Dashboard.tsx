@@ -70,7 +70,7 @@ export default function Dashboard() {
         {isRefreshing && (
           <div className="fixed bottom-10 right-10 z-50 flex items-center gap-2 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-accent-100 shadow-2xl animate-in fade-in slide-in-from-bottom-5">
             <IconRefresh size={14} className="text-accent-600 animate-spin" />
-            <span className="text-[10px] font-black text-accent-600 uppercase tracking-widest">Sincronizando...</span>
+            <span className="text-xs font-black text-accent-600 uppercase tracking-widest">Sincronizando...</span>
           </div>
         )}
 
@@ -99,7 +99,7 @@ export default function Dashboard() {
                           </div>
                           <div>
                               <h2 className="text-sm font-black text-primary-800 uppercase tracking-tight">Actividad Reciente</h2>
-                              <p className="text-[10px] font-bold text-primary-400 uppercase tracking-widest">Logs de sistema globales</p>
+                              <p className="text-xs font-bold text-primary-400 uppercase tracking-widest">Logs de sistema globales</p>
                           </div>
                       </div>
                       <ActivityTable activities={data.recentActivities} />
@@ -114,7 +114,7 @@ export default function Dashboard() {
                           </div>
                           <div>
                               <h2 className="text-sm font-black text-primary-800 uppercase tracking-tight">Operaciones del Día</h2>
-                              <p className="text-[10px] font-bold text-primary-400 uppercase tracking-widest">Últimas acciones registradas</p>
+                              <p className="text-xs font-bold text-primary-400 uppercase tracking-widest">Últimas acciones registradas</p>
                           </div>
                       </div>
                       <ActivityTable activities={data.recentActivities} />
@@ -148,7 +148,7 @@ export default function Dashboard() {
                               Hemos detectado que hay alertas de stock pendientes. Genera una orden de compra ahora.
                           </p>
                       </div>
-                      <Button variant="secondary" className="bg-white text-accent-700 border-none font-black text-[10px] uppercase tracking-widest h-10 w-full hover:bg-primary-50 transition-all shadow-lg active:scale-95">
+                      <Button variant="secondary" className="bg-white text-accent-700 border-none font-black text-xs uppercase tracking-widest h-10 w-full hover:bg-primary-50 transition-all shadow-lg active:scale-95">
                           Ver sugerencias de compra
                       </Button>
                   </div>

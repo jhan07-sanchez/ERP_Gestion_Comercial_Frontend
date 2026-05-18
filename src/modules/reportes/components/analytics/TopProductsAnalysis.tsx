@@ -12,7 +12,7 @@ export function TopProductsAnalysis({ topProducts, lowRotation }: TopProductsPro
     <Card className="p-6 border-none shadow-sm ring-1 ring-primary-100 flex flex-col h-full">
       <div className="mb-6">
         <h3 className="text-sm font-black text-primary-800 uppercase tracking-tight">Análisis de Productos</h3>
-        <p className="text-[10px] font-bold text-primary-400 uppercase tracking-widest">Rendimiento e inventario por rotación</p>
+        <p className="text-xs font-bold text-primary-400 uppercase tracking-widest">Rendimiento e inventario por rotación</p>
       </div>
       
       <div className="space-y-6 flex-1">
@@ -30,13 +30,13 @@ export function TopProductsAnalysis({ topProducts, lowRotation }: TopProductsPro
                   </div>
                   <div>
                     <p className="text-xs font-bold text-primary-900 line-clamp-1">{p.nombre}</p>
-                    <p className="text-[10px] text-primary-400">{p.ventas} un. • Stock: {p.stockActual}</p>
+                    <p className="text-xs text-primary-400">{p.ventas} un. • Stock: {p.stockActual}</p>
                   </div>
                 </div>
                 <div className="text-right">
                   <p className="text-xs font-black text-primary-800">{formatCurrency(p.ingresos)}</p>
                   <div className="flex items-center justify-end gap-1 mt-0.5">
-                    <span className={`text-[9px] font-bold ${p.tendencia >= 0 ? 'text-success-600' : 'text-danger-600'}`}>
+                    <span className={`text-xs opacity-80 font-bold ${p.tendencia >= 0 ? 'text-success-600' : 'text-danger-600'}`}>
                       {p.tendencia >= 0 ? '↑' : '↓'} {Math.abs(p.tendencia)}%
                     </span>
                   </div>
@@ -60,13 +60,13 @@ export function TopProductsAnalysis({ topProducts, lowRotation }: TopProductsPro
                   </div>
                   <div>
                     <p className="text-xs font-bold text-primary-900 line-clamp-1">{p.nombre}</p>
-                    <p className="text-[10px] text-primary-400">{p.ventas} un. • Stock Intacto: {p.stockActual}</p>
+                    <p className="text-xs text-primary-400">{p.ventas} un. • Stock Intacto: {p.stockActual}</p>
                   </div>
                 </div>
                 <div className="text-right">
                   <p className="text-xs font-black text-primary-800">{formatCurrency(p.ingresos)}</p>
                   <div className="flex items-center justify-end gap-1 mt-0.5">
-                    <span className="text-[9px] font-bold text-danger-600">
+                    <span className="text-xs opacity-80 font-bold text-danger-600">
                       ↓ {Math.abs(p.tendencia)}%
                     </span>
                   </div>

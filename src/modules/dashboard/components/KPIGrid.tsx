@@ -57,7 +57,7 @@ function AdvancedKPICard({
           <div className={`p-2.5 rounded-xl border ${colorMap[variant]} shadow-sm group-hover:scale-110 transition-transform`}>
             {icon}
           </div>
-          <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-tighter ${trendColors[comparison.trend]}`}>
+          <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-black uppercase tracking-tighter ${trendColors[comparison.trend]}`}>
             {comparison.trend === 'up' && <IconArrowUpRight size={12} stroke={3} />}
             {comparison.trend === 'down' && <IconArrowDownRight size={12} stroke={3} />}
             {comparison.trend === 'stable' && <IconMinus size={12} stroke={3} />}
@@ -66,14 +66,14 @@ function AdvancedKPICard({
         </div>
 
         <div>
-          <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest leading-none mb-1">{title}</p>
+          <p className="text-xs font-black text-primary-400 uppercase tracking-widest leading-none mb-1">{title}</p>
           <h3 className="text-2xl font-black text-primary-900 tracking-tight">{value}</h3>
-          <p className="text-[10px] font-bold text-primary-500 mt-1 uppercase tracking-tight">{comparison.label}</p>
+          <p className="text-xs font-bold text-primary-500 mt-1 uppercase tracking-tight">{comparison.label}</p>
         </div>
 
         {progress !== null && (
           <div className="space-y-1.5">
-            <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest">
+            <div className="flex items-center justify-between text-xs font-black uppercase tracking-widest">
               <span className="text-primary-400">Progreso a Meta</span>
               <span className="text-primary-700">{progress}%</span>
             </div>

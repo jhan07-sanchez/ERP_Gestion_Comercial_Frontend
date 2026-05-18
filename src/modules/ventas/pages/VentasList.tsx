@@ -60,7 +60,7 @@ export default function VentasList() {
 
   if (isLoading && ventas.length === 0) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-96">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto" />
           <p className="mt-4 text-primary-600 font-medium">Cargando ventas...</p>
@@ -168,10 +168,10 @@ export default function VentasList() {
                     </Table.Cell>
                     <Table.Cell>
                       <div className="flex flex-col">
-                        <span className="font-bold text-primary-900 truncate max-w-[150px] sm:max-w-[200px]">
+                        <span className="font-bold text-primary-900 truncate max-w-40 sm:max-w-52">
                           {venta.cliente_nombre}
                         </span>
-                        <span className="text-[10px] text-primary-400 font-medium">{venta.cliente_documento}</span>
+                        <span className="text-xs text-primary-400 font-medium">{venta.cliente_documento}</span>
                       </div>
                     </Table.Cell>
                     <Table.Cell className="hidden md:table-cell text-sm text-primary-600">
@@ -184,7 +184,7 @@ export default function VentasList() {
                       {formatCurrency(venta.saldo_pendiente)}
                     </Table.Cell>
                     <Table.Cell className="text-center">
-                      <Badge variant={estadoVariantMap[venta.estado]} className="text-[10px] sm:text-xs">
+                      <Badge variant={estadoVariantMap[venta.estado]} className="text-xs sm:text-xs">
                         {venta.estado}
                       </Badge>
                     </Table.Cell>

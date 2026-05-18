@@ -41,16 +41,16 @@ export function CashFlowSubReport({ data, mode }: Props) {
       <div className={`p-10 rounded-[40px] ${current.bg} border border-primary-100 shadow-xl overflow-hidden relative group`}>
          {current.icon}
          <h3 className={`text-5xl font-black mb-2 ${current.color}`}>{formatCurrency(current.value)}</h3>
-         <p className="text-[12px] font-black uppercase tracking-[0.4em] text-primary-400">{current.title}</p>
+         <p className="text-xs font-black uppercase tracking-[0.4em] text-primary-400">{current.title}</p>
       </div>
 
       <div className="bg-white rounded-[32px] border border-primary-100 shadow-sm overflow-hidden">
         <table className="w-full text-left">
           <thead className="bg-primary-50">
             <tr>
-              <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-primary-400">Fecha</th>
-              <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-primary-400">Concepto</th>
-              <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-primary-400 text-right">Monto</th>
+              <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-primary-400">Fecha</th>
+              <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-primary-400">Concepto</th>
+              <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-primary-400 text-right">Monto</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-primary-50">

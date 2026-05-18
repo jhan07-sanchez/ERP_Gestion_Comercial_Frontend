@@ -29,7 +29,7 @@ export function CashWidget({ cash }: CashWidgetProps) {
                 <h3 className="text-sm font-black text-primary-800 uppercase tracking-tight">Caja Principal</h3>
                 <div className="flex items-center gap-1.5 mt-0.5">
                     <div className={`w-1.5 h-1.5 rounded-full ${cash.estado === 'abierta' ? 'bg-success-500 animate-pulse' : 'bg-primary-300'}`} />
-                    <span className="text-[9px] font-black text-primary-400 uppercase tracking-widest">
+                    <span className="text-xs opacity-80 font-black text-primary-400 uppercase tracking-widest">
                         Sesión {cash.estado}
                     </span>
                 </div>
@@ -45,7 +45,7 @@ export function CashWidget({ cash }: CashWidgetProps) {
 
       <div className="p-5 space-y-6">
         <div>
-            <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest leading-none mb-1">Saldo Disponible</p>
+            <p className="text-xs font-black text-primary-400 uppercase tracking-widest leading-none mb-1">Saldo Disponible</p>
             <h2 className="text-3xl font-black text-primary-900 tracking-tighter">
                 {formatCurrency(cash.balanceActual, true)}
             </h2>
@@ -55,7 +55,7 @@ export function CashWidget({ cash }: CashWidgetProps) {
             <div className="space-y-1">
                 <div className="flex items-center gap-1 text-success-600">
                     <IconTrendingUp size={14} stroke={3} />
-                    <span className="text-[9px] font-black uppercase tracking-widest">Ingresos</span>
+                    <span className="text-xs opacity-80 font-black uppercase tracking-widest">Ingresos</span>
                 </div>
                 <p className="text-sm font-black text-primary-800 tracking-tight">
                     +{formatCurrency(cash.ingresosDia)}
@@ -63,7 +63,7 @@ export function CashWidget({ cash }: CashWidgetProps) {
             </div>
             <div className="space-y-1 text-right">
                 <div className="flex items-center gap-1 text-danger-600 justify-end">
-                    <span className="text-[9px] font-black uppercase tracking-widest">Egresos</span>
+                    <span className="text-xs opacity-80 font-black uppercase tracking-widest">Egresos</span>
                     <IconTrendingDown size={14} stroke={3} />
                 </div>
                 <p className="text-sm font-black text-primary-800 tracking-tight">
@@ -86,7 +86,7 @@ export function CashWidget({ cash }: CashWidgetProps) {
         <div className="pt-2">
             <Button 
                 variant="secondary" 
-                className="w-full h-10 rounded-xl border-primary-200 text-primary-700 font-black uppercase tracking-widest text-[9px] transition-all hover:bg-accent-50 hover:text-accent-600 hover:border-accent-100"
+                className="w-full h-10 rounded-xl border-primary-200 text-primary-700 font-black uppercase tracking-widest text-xs opacity-80 transition-all hover:bg-accent-50 hover:text-accent-600 hover:border-accent-100"
                 onClick={() => navigate('/caja/movimientos')}
             >
                 Ver Movimientos Hoy
@@ -97,9 +97,9 @@ export function CashWidget({ cash }: CashWidgetProps) {
       <div className="px-5 py-3 bg-primary-50 border-t border-primary-100 flex items-center justify-between">
            <div className="flex items-center gap-1.5 text-primary-400">
                <IconClock size={12} />
-               <span className="text-[9px] font-bold uppercase tracking-widest">Iniciada</span>
+               <span className="text-xs opacity-80 font-bold uppercase tracking-widest">Iniciada</span>
            </div>
-           <span className="text-[10px] font-bold text-primary-600 tabular-nums">
+           <span className="text-xs font-bold text-primary-600 tabular-nums">
                                {formatTime(cash.ultimaApertura)}
            </span>
       </div>

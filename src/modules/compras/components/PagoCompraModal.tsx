@@ -360,7 +360,7 @@ function MetodoBtn({ metodo, seleccionado, onSelect, icon, disabled, variant = '
             <div className={`p-1.5 rounded-lg ${seleccionado ? 'bg-white shadow-sm' : 'bg-primary-50'}`}>
                 {icon}
             </div>
-            <span className="text-[10px] font-bold uppercase tracking-tight leading-tight">
+            <span className="text-xs font-bold uppercase tracking-tight leading-tight">
                 {metodo.nombre}
             </span>
         </button>

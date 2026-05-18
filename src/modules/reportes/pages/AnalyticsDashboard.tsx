@@ -68,7 +68,7 @@ export default function AnalyticsDashboard() {
             <button
               key={range}
               onClick={() => setDateRange(range)}
-              className={`px-4 py-2 rounded-lg text-[11px] font-black uppercase tracking-widest transition-all ${dateRange === range
+              className={`px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${dateRange === range
                   ? 'bg-accent-600 text-white shadow-md'
                   : 'text-primary-500 hover:bg-primary-50'
                 }`}

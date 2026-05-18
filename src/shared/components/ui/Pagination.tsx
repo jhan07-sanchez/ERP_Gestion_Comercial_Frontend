@@ -66,7 +66,7 @@ export function Pagination({
                         Anterior
                     </Button>
 
-                    <span className="text-sm font-medium text-primary-700 min-w-[100px] text-center">
+                    <span className="text-sm font-medium text-primary-700 min-w-28 text-center">
                         Página {currentPage} de {totalPages || 1}
                     </span>
 

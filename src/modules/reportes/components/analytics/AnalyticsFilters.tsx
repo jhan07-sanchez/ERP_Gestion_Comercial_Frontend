@@ -40,7 +40,7 @@ export function AnalyticsFilters({ onFilterChange, currentFilters }: Props) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-primary-50/50 p-4 rounded-2xl border border-primary-100 mb-6">
       <div className="space-y-1.5">
-        <label className="text-[10px] font-black uppercase tracking-widest text-primary-400 flex items-center gap-1.5 ml-1">
+        <label className="text-xs font-black uppercase tracking-widest text-primary-400 flex items-center gap-1.5 ml-1">
           <IconBuildingStore size={14} /> Sucursal
         </label>
         <Select
@@ -55,7 +55,7 @@ export function AnalyticsFilters({ onFilterChange, currentFilters }: Props) {
       </div>
 
       <div className="space-y-1.5">
-        <label className="text-[10px] font-black uppercase tracking-widest text-primary-400 flex items-center gap-1.5 ml-1">
+        <label className="text-xs font-black uppercase tracking-widest text-primary-400 flex items-center gap-1.5 ml-1">
           <IconDeviceDesktop size={14} /> Caja / Terminal
         </label>
         <Select
@@ -70,7 +70,7 @@ export function AnalyticsFilters({ onFilterChange, currentFilters }: Props) {
       </div>
 
       <div className="space-y-1.5">
-        <label className="text-[10px] font-black uppercase tracking-widest text-primary-400 flex items-center gap-1.5 ml-1">
+        <label className="text-xs font-black uppercase tracking-widest text-primary-400 flex items-center gap-1.5 ml-1">
           <IconUser size={14} /> Vendedor / Asesor
         </label>
         <Select

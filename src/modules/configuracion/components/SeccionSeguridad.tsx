@@ -22,7 +22,7 @@ export const SeccionSeguridad: React.FC = () => {
                 <Card.Content className="p-4 sm:p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Tiempo de Inactividad (Minutos)</label>
+                            <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Tiempo de Inactividad (Minutos)</label>
                             <Input
                                 type="number"
                                 defaultValue={60}
@@ -38,7 +38,7 @@ export const SeccionSeguridad: React.FC = () => {
                                 </div>
                                 <div className="space-y-0.5">
                                     <span className="text-xs font-black text-primary-400 uppercase tracking-tight">Autenticación MFA</span>
-                                    <p className="text-[9px] font-bold text-accent-400 uppercase">Próximamente disponible</p>
+                                    <p className="text-xs opacity-80 font-bold text-accent-400 uppercase">Próximamente disponible</p>
                                 </div>
                             </label>
                         </div>
@@ -85,7 +85,7 @@ const SecurityToggle = ({ label, checked, disabled }: { label: string, checked: 
         <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${checked ? 'bg-accent-600 border-accent-600' : 'bg-white border-primary-300'}`}>
             {checked && <IconCheck size={14} className="text-white" />}
         </div>
-        <span className={`text-[11px] font-black uppercase tracking-tight ${disabled ? 'text-primary-400' : 'text-primary-600'}`}>
+        <span className={`text-xs font-black uppercase tracking-tight ${disabled ? 'text-primary-400' : 'text-primary-600'}`}>
             {label}
         </span>
     </div>

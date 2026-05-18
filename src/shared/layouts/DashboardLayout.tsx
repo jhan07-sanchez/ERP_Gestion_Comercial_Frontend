@@ -60,11 +60,11 @@ export default function DashboardLayout() {
 
         {/* Footer Corporativo */}
         <footer className="py-3 px-4 md:px-6 text-center bg-white border-t border-primary-100 flex flex-col md:flex-row items-center justify-between gap-2">
-          <div className="text-[10px] font-medium text-primary-400 tracking-wide">
+          <div className="text-xs font-medium text-primary-400 tracking-wide">
             &copy; {new Date().getFullYear()} ERP System · Gestión empresarial
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-[10px] font-medium text-accent-600 bg-accent-50 px-2 py-0.5 rounded-full">
+            <span className="text-xs font-medium text-accent-600 bg-accent-50 px-2 py-0.5 rounded-full">
               v1.0
             </span>
           </div>

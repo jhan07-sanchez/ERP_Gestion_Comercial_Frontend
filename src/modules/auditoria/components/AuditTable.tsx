@@ -25,12 +25,12 @@ const AuditTable: React.FC<AuditTableProps> = ({ logs, onViewDetail, isLoading }
                 <table className="w-full text-sm text-left border-collapse">
                     <thead className="bg-primary-50/50 text-primary-500 border-b border-primary-200">
                         <tr>
-                            <th className="px-4 sm:px-6 py-4 font-black uppercase text-[10px] tracking-widest">Acción</th>
-                            <th className="hidden md:table-cell px-6 py-4 font-black uppercase text-[10px] tracking-widest">Módulo</th>
-                            <th className="hidden sm:table-cell px-6 py-4 font-black uppercase text-[10px] tracking-widest">Descripción</th>
-                            <th className="hidden lg:table-cell px-6 py-4 font-black uppercase text-[10px] tracking-widest">Usuario</th>
-                            <th className="px-4 sm:px-6 py-4 font-black uppercase text-[10px] tracking-widest text-right">Fecha</th>
-                            <th className="px-4 py-4 font-black uppercase text-[10px] tracking-widest text-center">Ver</th>
+                            <th className="px-4 sm:px-6 py-4 font-black uppercase text-xs tracking-widest">Acción</th>
+                            <th className="hidden md:table-cell px-6 py-4 font-black uppercase text-xs tracking-widest">Módulo</th>
+                            <th className="hidden sm:table-cell px-6 py-4 font-black uppercase text-xs tracking-widest">Descripción</th>
+                            <th className="hidden lg:table-cell px-6 py-4 font-black uppercase text-xs tracking-widest">Usuario</th>
+                            <th className="px-4 sm:px-6 py-4 font-black uppercase text-xs tracking-widest text-right">Fecha</th>
+                            <th className="px-4 py-4 font-black uppercase text-xs tracking-widest text-center">Ver</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-primary-100">
@@ -42,17 +42,17 @@ const AuditTable: React.FC<AuditTableProps> = ({ logs, onViewDetail, isLoading }
                                             {log.icono}
                                         </div>
                                         <div className="flex flex-col">
-                                            <span className={`px-2 py-0.5 rounded-md text-[9px] w-fit font-black uppercase tracking-wider ${getActionBadgeColor(log.accion)}`}>
+                                            <span className={`px-2 py-0.5 rounded-md text-xs opacity-80 w-fit font-black uppercase tracking-wider ${getActionBadgeColor(log.accion)}`}>
                                                 {log.accion_display}
                                             </span>
-                                            <span className="text-[10px] font-bold text-primary-400 mt-0.5 md:hidden uppercase">
+                                            <span className="text-xs font-bold text-primary-400 mt-0.5 md:hidden uppercase">
                                                 {log.modulo_display}
                                             </span>
                                         </div>
                                     </div>
                                 </td>
                                 <td className="hidden md:table-cell px-6 py-4">
-                                    <span className="font-black text-primary-600 px-2 py-1 bg-primary-50 rounded-lg text-[10px] border border-primary-200 uppercase tracking-tighter">
+                                    <span className="font-black text-primary-600 px-2 py-1 bg-primary-50 rounded-lg text-xs border border-primary-200 uppercase tracking-tighter">
                                         {log.modulo_display}
                                     </span>
                                 </td>
@@ -63,21 +63,21 @@ const AuditTable: React.FC<AuditTableProps> = ({ logs, onViewDetail, isLoading }
                                 </td>
                                 <td className="hidden lg:table-cell px-6 py-4">
                                     <div className="flex items-center gap-2.5">
-                                        <div className="w-8 h-8 rounded-full bg-accent-50 flex items-center justify-center text-accent-600 font-black text-[10px] uppercase border border-accent-100">
+                                        <div className="w-8 h-8 rounded-full bg-accent-50 flex items-center justify-center text-accent-600 font-black text-xs uppercase border border-accent-100">
                                             {log.usuario_nombre.charAt(0)}
                                         </div>
                                         <div className="flex flex-col min-w-0">
-                                            <span className="font-black text-primary-900 text-[11px] truncate uppercase tracking-tighter">{log.usuario_nombre}</span>
-                                            <span className="text-[9px] text-primary-400 font-bold tabular-nums tracking-widest">{log.ip_address}</span>
+                                            <span className="font-black text-primary-900 text-xs truncate uppercase tracking-tighter">{log.usuario_nombre}</span>
+                                            <span className="text-xs opacity-80 text-primary-400 font-bold tabular-nums tracking-widest">{log.ip_address}</span>
                                         </div>
                                     </div>
                                 </td>
                                 <td className="px-4 sm:px-6 py-4 text-right">
                                     <div className="flex flex-col items-end whitespace-nowrap">
-                                        <span className="text-primary-900 font-black text-[11px] tabular-nums">
+                                        <span className="text-primary-900 font-black text-xs tabular-nums">
                                             {new Date(log.fecha_hora).toLocaleDateString()}
                                         </span>
-                                        <span className="text-[10px] text-primary-400 font-bold tabular-nums">
+                                        <span className="text-xs text-primary-400 font-bold tabular-nums">
                                             {new Date(log.fecha_hora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                         </span>
                                     </div>

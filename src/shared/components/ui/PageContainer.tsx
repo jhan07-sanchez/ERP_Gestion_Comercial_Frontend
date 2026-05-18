@@ -24,7 +24,7 @@ export const PageContainer: React.FC<PageContainerProps> = ({
     'xl': 'max-w-screen-xl',
     '2xl': 'max-w-screen-2xl',
     'full': 'max-w-full',
-    '1600': 'max-w-[1600px]'
+    '1600': 'max-w-screen-2xl'
   };
 
   return (

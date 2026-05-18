@@ -81,7 +81,7 @@ export function SidebarGroup({
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         className={`
-          group relative w-full flex items-center justify-between rounded-lg text-[13px] font-medium
+          group relative w-full flex items-center justify-between rounded-lg text-sm font-medium
           transition-all duration-200 outline-none
           ${collapsed ? "justify-center w-10 h-10 mx-auto px-0" : "px-3 py-2"}
           ${isChildActive
@@ -127,7 +127,7 @@ export function SidebarGroup({
           {children.map((section) => (
             <div key={section.section} className="py-1">
               {/* Section title */}
-              <div className="px-4 pt-2 pb-1 text-[10px] font-semibold text-primary-400 uppercase tracking-wider select-none">
+              <div className="px-4 pt-2 pb-1 text-xs font-semibold text-primary-400 uppercase tracking-wider select-none">
                 {section.section}
               </div>
 
@@ -154,7 +154,7 @@ export function SidebarGroup({
                         <button
                           onClick={() => hasChildren && toggleSubmenu(item.label)}
                           className={`
-                            group w-full flex items-center justify-between pl-4 pr-3 py-[7px] rounded-lg text-[13px] font-medium
+                            group w-full flex items-center justify-between pl-4 pr-3 py-2 rounded-lg text-sm font-medium
                             transition-all duration-200 outline-none
                             ${isSubmenuOpen
                               ? "text-primary-900"

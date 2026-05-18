@@ -127,7 +127,7 @@ export default function CompraEdit() {
   if (loadingProveedores || loadingProductos || loading || !formData) {
     return (
       <PageContainer>
-        <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center justify-center min-h-96">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto" />
           <p className="mt-4 text-primary-600 font-medium">Cargando información...</p>
         </div>

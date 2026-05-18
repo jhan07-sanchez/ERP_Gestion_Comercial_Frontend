@@ -44,7 +44,7 @@ export function DashboardHeader({
              <div className="flex p-1 bg-primary-100 rounded-xl border border-primary-200 shadow-inner">
                 <button
                   onClick={() => onModeChange('executive')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${
                     mode === 'executive' 
                       ? 'bg-white text-accent-600 shadow-sm ring-1 ring-primary-200' 
                       : 'text-primary-500 hover:text-primary-700'
@@ -55,7 +55,7 @@ export function DashboardHeader({
                 </button>
                 <button
                   onClick={() => onModeChange('operational')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${
                     mode === 'operational' 
                       ? 'bg-white text-accent-600 shadow-sm ring-1 ring-primary-200' 
                       : 'text-primary-500 hover:text-primary-700'
@@ -76,7 +76,7 @@ export function DashboardHeader({
         {/* Sync Status */}
         <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
-                <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest leading-none mb-1">Última Sincronización</p>
+                <p className="text-xs font-black text-primary-400 uppercase tracking-widest leading-none mb-1">Última Sincronización</p>
                 <p className="text-xs font-bold text-primary-700 tabular-nums">
                     {(() => {
                         const date = lastSync ? new Date(lastSync) : new Date();
@@ -104,7 +104,7 @@ export function DashboardHeader({
             <div className={`shrink-0 w-8 h-8 rounded-lg ${action.color} text-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform`}>
               {action.icon}
             </div>
-            <span className="text-[11px] font-black text-primary-700 uppercase tracking-widest">
+            <span className="text-xs font-black text-primary-700 uppercase tracking-widest">
               {action.label}
             </span>
             <div className="absolute right-0 top-0 h-full w-1 bg-gradient-to-b from-transparent via-accent-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />

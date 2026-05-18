@@ -30,7 +30,7 @@ export function VentaFormResumen({
         <div className="bg-gradient-to-br from-accent-600 to-accent-700 p-6 border-b border-accent-500/10 text-white">
           <div className="flex items-center gap-3 mb-2 opacity-90">
             <IconReceipt size={18} />
-            <span className="text-[10px] font-black uppercase tracking-widest">Resumen de Transacción</span>
+            <span className="text-xs font-black uppercase tracking-widest">Resumen de Transacción</span>
           </div>
           <h3 className="text-xl font-bold">Total a Facturar</h3>
         </div>
@@ -58,7 +58,7 @@ export function VentaFormResumen({
             <div className="flex flex-col gap-4">
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="text-[11px] font-black text-accent-600 uppercase tracking-widest leading-none mb-1">Total a Pagar</p>
+                  <p className="text-xs font-black text-accent-600 uppercase tracking-widest leading-none mb-1">Total a Pagar</p>
                   <p className="text-xs text-primary-400 font-medium">{moneda} - {simbolo}</p>
                 </div>
               </div>
@@ -106,7 +106,7 @@ export function VentaFormResumen({
             {(!clienteSeleccionado || value.cliente_id === 0) && value.detalles.length > 0 && (
               <div className="flex items-start gap-3 p-3 bg-warning-50 border border-warning-100 rounded-xl animate-pulse">
                 <IconAlertCircle className="text-warning-600 shrink-0" size={16} />
-                <p className="text-[10px] font-bold text-warning-800 leading-relaxed uppercase tracking-tighter">
+                <p className="text-xs font-bold text-warning-800 leading-relaxed uppercase tracking-tighter">
                   Acción Requerida: Se debe seleccionar un cliente para finalizar la transacción.
                 </p>
               </div>
@@ -117,14 +117,14 @@ export function VentaFormResumen({
 
       {/* Panel informativo lateral */}
       <div className="p-5 bg-accent-50/50 border border-accent-100 rounded-2xl hidden lg:block">
-        <h5 className="text-[10px] font-black text-accent-900 uppercase tracking-widest mb-3 flex items-center gap-2">
+        <h5 className="text-xs font-black text-accent-900 uppercase tracking-widest mb-3 flex items-center gap-2">
           <IconAlertCircle size={14} /> Políticas Globales
         </h5>
         <div className="space-y-3">
-          <p className="text-[10px] text-accent-800/70 leading-relaxed">
+          <p className="text-xs text-accent-800/70 leading-relaxed">
             <span className="font-bold text-accent-900">IVA:</span> Se aplica automáticamente el {impuestoPorcentaje}% según configuración.
           </p>
-          <p className="text-[10px] text-accent-800/70 leading-relaxed">
+          <p className="text-xs text-accent-800/70 leading-relaxed">
             <span className="font-bold text-accent-900">STOCK:</span> {permitirVentaSinStock ? 'Permitido vender sin stock.' : 'Venta bloqueada si no hay stock.'}
           </p>
         </div>

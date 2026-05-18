@@ -188,7 +188,7 @@ export default function CajaMovimientosPage() {
   // ── Loading ──────────────────────────────────────────────────
   if (loadingDetalle && !sesion) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-96">
         <Loader />
       </div>
     );
@@ -414,7 +414,7 @@ export default function CajaMovimientosPage() {
                       <Table.Cell>
                         <Badge
                           variant={ingreso ? "success" : "danger"}
-                          className="text-[10px] uppercase font-bold"
+                          className="text-xs uppercase font-bold"
                         >
                           {ingreso ? (
                             <IconArrowDownLeft size={12} className="mr-1" />
@@ -424,7 +424,7 @@ export default function CajaMovimientosPage() {
                           {getTipoMovimientoLabel(mov.tipo)}
                         </Badge>
                       </Table.Cell>
-                      <Table.Cell className="max-w-[200px] truncate font-medium text-primary-700">
+                      <Table.Cell className="max-w-52 truncate font-medium text-primary-700">
                         {mov.descripcion}
                       </Table.Cell>
                       <Table.Cell
@@ -475,7 +475,7 @@ function MiniKPI({
     <div className={`${colorMap[color]} border rounded-xl p-3 shadow-sm flex items-center gap-3`}>
       <div className="opacity-60">{icon}</div>
       <div>
-        <p className="text-[10px] font-bold uppercase tracking-widest opacity-70">
+        <p className="text-xs font-bold uppercase tracking-widest opacity-70">
           {label}
         </p>
         <p className="text-sm font-black tabular-nums">{value}</p>

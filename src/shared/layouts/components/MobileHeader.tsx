@@ -32,10 +32,10 @@ export function MobileHeader() {
           )}
         </div>
         <div className="flex flex-col">
-          <span className="text-[13px] font-semibold text-primary-900 tracking-tight leading-none">
+          <span className="text-sm font-semibold text-primary-900 tracking-tight leading-none">
             {APP_NAME}
           </span>
-          <span className="text-[9px] font-medium text-primary-400 uppercase tracking-wider">
+          <span className="text-xs opacity-80 font-medium text-primary-400 uppercase tracking-wider">
             Enterprise
           </span>
         </div>

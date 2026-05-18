@@ -93,7 +93,7 @@ export function ActivityFeed({ activities, limit }: ActivityFeedProps) {
                                 </span>
                                 <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-primary-50 border border-primary-100">
                                     {getStatusIcon(activity.estado)}
-                                    <span className="text-[10px] font-black uppercase text-primary-500 tracking-tighter">
+                                    <span className="text-xs font-black uppercase text-primary-500 tracking-tighter">
                                         {activity.estado}
                                     </span>
                                 </div>

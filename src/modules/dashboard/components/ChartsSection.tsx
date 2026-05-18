@@ -29,7 +29,7 @@ export function ChartsSection({ charts }: ChartsSectionProps) {
       <Card className="p-6 border-none shadow-sm ring-1 ring-primary-100">
         <div className="mb-6">
           <h3 className="text-sm font-black text-primary-800 uppercase tracking-tight">Ventas últimos 7 días</h3>
-          <p className="text-[10px] font-bold text-primary-400 uppercase tracking-widest">Tendencia de ingresos semanal</p>
+          <p className="text-xs font-bold text-primary-400 uppercase tracking-widest">Tendencia de ingresos semanal</p>
         </div>
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
@@ -68,7 +68,7 @@ export function ChartsSection({ charts }: ChartsSectionProps) {
       <Card className="p-6 border-none shadow-sm ring-1 ring-primary-100">
         <div className="mb-6">
           <h3 className="text-sm font-black text-primary-800 uppercase tracking-tight">Productos más vendidos</h3>
-          <p className="text-[10px] font-bold text-primary-400 uppercase tracking-widest">Ranking por volumen de salida</p>
+          <p className="text-xs font-bold text-primary-400 uppercase tracking-widest">Ranking por volumen de salida</p>
         </div>
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
@@ -102,16 +102,16 @@ export function ChartsSection({ charts }: ChartsSectionProps) {
         <div className="mb-6 flex items-center justify-between">
           <div>
             <h3 className="text-sm font-black text-primary-800 uppercase tracking-tight">Flujo de Caja del Día</h3>
-            <p className="text-[10px] font-bold text-primary-400 uppercase tracking-widest">Comparativa Ingresos vs Egresos</p>
+            <p className="text-xs font-bold text-primary-400 uppercase tracking-widest">Comparativa Ingresos vs Egresos</p>
           </div>
           <div className="flex gap-4">
              <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-success-500" />
-                <span className="text-[10px] font-black uppercase text-primary-500">Ingresos</span>
+                <span className="text-xs font-black uppercase text-primary-500">Ingresos</span>
              </div>
              <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-danger-500" />
-                <span className="text-[10px] font-black uppercase text-primary-500">Egresos</span>
+                <span className="text-xs font-black uppercase text-primary-500">Egresos</span>
              </div>
           </div>
         </div>

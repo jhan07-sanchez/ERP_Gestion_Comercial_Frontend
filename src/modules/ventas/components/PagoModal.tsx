@@ -237,7 +237,7 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
                                             : 'bg-primary-50 border-primary-100 opacity-60'}`}
                                 >
                                     <div className="flex flex-col">
-                                        <span className={`text-[10px] uppercase font-black ${montoNumerico > 0 && !montoRecibidoValido ? 'text-danger-400' : 'text-success-500'}`}>
+                                        <span className={`text-xs uppercase font-black ${montoNumerico > 0 && !montoRecibidoValido ? 'text-danger-400' : 'text-success-500'}`}>
                                             Cambio / Vuelto
                                         </span>
                                         <span className="text-primary-600 font-bold">A entregar</span>

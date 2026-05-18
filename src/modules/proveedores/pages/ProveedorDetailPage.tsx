@@ -105,7 +105,7 @@ export default function ProveedorDetailPage() {
       <PageContainer>
         <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
             <IconLoader2 className="animate-spin text-accent-600" size={48} stroke={1.5} />
-            <p className="text-primary-600 font-black uppercase tracking-widest text-[10px] animate-pulse">Cargando información del proveedor...</p>
+            <p className="text-primary-600 font-black uppercase tracking-widest text-xs animate-pulse">Cargando información del proveedor...</p>
         </div>
       </PageContainer>
     );
@@ -126,7 +126,7 @@ export default function ProveedorDetailPage() {
             </div>
             <Button 
                 onClick={handleBack} 
-                className="w-full h-12 bg-danger-600 hover:bg-danger-700 text-white border-none shadow-xl shadow-danger-200 font-black uppercase tracking-widest text-[10px]"
+                className="w-full h-12 bg-danger-600 hover:bg-danger-700 text-white border-none shadow-xl shadow-danger-200 font-black uppercase tracking-widest text-xs"
             >
               Volver al Directorio
             </Button>
@@ -233,7 +233,7 @@ export default function ProveedorDetailPage() {
                 </Card.Header>
                 <Card.Content className="p-6">
                     <div className="flex items-center justify-between p-4 bg-primary-50 rounded-2xl border border-primary-100">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-primary-400">Fecha de Creación</span>
+                        <span className="text-xs font-black uppercase tracking-widest text-primary-400">Fecha de Creación</span>
                         <span className="text-xs font-bold text-primary-700">
                             {new Date(proveedor.fecha_creacion ?? "").toLocaleString("es-ES")}
                         </span>

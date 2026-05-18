@@ -63,12 +63,12 @@ export function Sidebar() {
             isMobile
               ? // Mobile: slide in/out como overlay
                 sidebarOpen
-                  ? "translate-x-0 w-[280px] shadow-xl"
-                  : "-translate-x-full w-[280px]"
+                  ? "translate-x-0 w-72 shadow-xl"
+                  : "-translate-x-full w-72"
               : // Tablet y Desktop: siempre visible, cambia ancho
                 collapsed
-                  ? "translate-x-0 w-[72px]"
-                  : "translate-x-0 w-[260px]"
+                  ? "translate-x-0 w-20"
+                  : "translate-x-0 w-64"
           }
         `}
       >
@@ -83,7 +83,7 @@ export function Sidebar() {
         >
           <div className={`flex items-center overflow-hidden ${collapsed && isFixed ? "justify-center" : "gap-2.5"}`}>
             {/* Logo */}
-            <div className={`rounded-lg overflow-hidden flex items-center justify-center shrink-0 border border-primary-100 bg-white ${collapsed && isFixed ? "w-[50px] h-[50px]" : "w-12 h-12"}`}>
+            <div className={`rounded-lg overflow-hidden flex items-center justify-center shrink-0 border border-primary-100 bg-white ${collapsed && isFixed ? "w-12 h-12" : "w-12 h-12"}`}>
               {getLogo() ? (
                 <img
                   src={getLogo()!}
@@ -100,10 +100,10 @@ export function Sidebar() {
             {/* Brand text — hidden when collapsed on fixed */}
             {!(collapsed && isFixed) && (
               <div className="flex flex-col min-w-0">
-                <span className="text-[13px] font-semibold text-primary-900 tracking-tight leading-none truncate">
+                <span className="text-sm font-semibold text-primary-900 tracking-tight leading-none truncate">
                   {APP_NAME}
                 </span>
-                <span className="text-[9px] font-medium text-primary-400 uppercase tracking-wider mt-0.5">
+                <span className="text-xs font-medium text-primary-400 uppercase tracking-wider mt-0.5">
                   Enterprise
                 </span>
               </div>
@@ -169,16 +169,16 @@ export function Sidebar() {
             `}
           >
             {/* Avatar */}
-            <div className="w-8 h-8 rounded-full bg-accent-50 flex items-center justify-center text-[10px] text-accent-700 font-semibold shrink-0 border border-accent-100">
+            <div className="w-8 h-8 rounded-full bg-accent-50 flex items-center justify-center text-xs text-accent-700 font-semibold shrink-0 border border-accent-100">
               {user?.username?.substring(0, 2)?.toUpperCase() || "US"}
             </div>
 
             {!(collapsed && isFixed) && (
               <div className="flex flex-col min-w-0 flex-1">
-                <span className="text-xs font-medium text-primary-800 truncate">
+                <span className="text-sm font-medium text-primary-800 truncate">
                   {user?.username}
                 </span>
-                <span className="text-[10px] text-primary-400 truncate leading-tight">
+                <span className="text-xs text-primary-400 truncate leading-tight">
                   Administrador
                 </span>
               </div>
@@ -229,7 +229,7 @@ export function Sidebar() {
             >
               <IconLogout size={15} stroke={2} />
               {!(collapsed && isFixed) && (
-                <span className="text-[11px] font-medium">Salir</span>
+                <span className="text-xs font-medium">Salir</span>
               )}
 
               {/* Tooltip Portal for collapsed logout */}

@@ -14,7 +14,7 @@ export function EquityReport({ data }: Props) {
          <div className="absolute -right-10 -top-10 w-48 h-48 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all duration-1000" />
          <IconScale className="mb-6 text-success-100" size={48} />
          <h3 className="text-5xl font-black mb-2">{formatCurrency(data)}</h3>
-         <p className="text-[12px] font-black uppercase tracking-[0.4em] text-success-100">Patrimonio Neto del Negocio</p>
+         <p className="text-xs font-black uppercase tracking-[0.4em] text-success-100">Patrimonio Neto del Negocio</p>
       </div>
 
       <div className="bg-white p-10 rounded-[40px] border border-primary-100 shadow-sm relative">

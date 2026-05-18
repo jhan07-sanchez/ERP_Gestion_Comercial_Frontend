@@ -59,7 +59,7 @@ export default function ClienteList() {
       <PageContainer>
         <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
             <IconLoader2 className="animate-spin text-accent-600" size={48} stroke={1.5} />
-            <p className="text-primary-600 font-black uppercase tracking-widest text-[10px] animate-pulse">Cargando base de clientes...</p>
+            <p className="text-primary-600 font-black uppercase tracking-widest text-xs animate-pulse">Cargando base de clientes...</p>
         </div>
       </PageContainer>
     );
@@ -79,7 +79,7 @@ export default function ClienteList() {
             </div>
             <Button 
                 onClick={() => fetchClientes()} 
-                className="w-full h-12 bg-danger-600 hover:bg-danger-700 text-white border-none shadow-xl shadow-danger-200 font-black uppercase tracking-widest text-[10px]"
+                className="w-full h-12 bg-danger-600 hover:bg-danger-700 text-white border-none shadow-xl shadow-danger-200 font-black uppercase tracking-widest text-xs"
             >
               Reintentar
             </Button>
@@ -157,19 +157,19 @@ export default function ClienteList() {
                     <Table>
                         <thead>
                         <tr className="bg-primary-50/50 border-b border-primary-100">
-                            <th className="text-left py-4 px-6 text-[10px] font-black uppercase tracking-widest text-primary-500">
+                            <th className="text-left py-4 px-6 text-xs font-black uppercase tracking-widest text-primary-500">
                             Cliente
                             </th>
-                            <th className="text-left py-4 px-6 text-[10px] font-black uppercase tracking-widest text-primary-500">
+                            <th className="text-left py-4 px-6 text-xs font-black uppercase tracking-widest text-primary-500">
                             Identificación
                             </th>
-                            <th className="text-left py-4 px-6 text-[10px] font-black uppercase tracking-widest text-primary-500 hidden sm:table-cell">
+                            <th className="text-left py-4 px-6 text-xs font-black uppercase tracking-widest text-primary-500 hidden sm:table-cell">
                             Contacto
                             </th>
-                            <th className="text-center py-4 px-6 text-[10px] font-black uppercase tracking-widest text-primary-500">
+                            <th className="text-center py-4 px-6 text-xs font-black uppercase tracking-widest text-primary-500">
                             Estado
                             </th>
-                            <th className="text-center py-4 px-6 text-[10px] font-black uppercase tracking-widest text-primary-500">
+                            <th className="text-center py-4 px-6 text-xs font-black uppercase tracking-widest text-primary-500">
                             Acciones
                             </th>
                         </tr>
@@ -184,7 +184,7 @@ export default function ClienteList() {
                                         </div>
                                         <div className="flex flex-col min-w-0">
                                             <span className="font-black text-primary-900 truncate">{cliente.nombre}</span>
-                                            <span className="text-[10px] font-bold text-primary-400 truncate sm:hidden mt-0.5">
+                                            <span className="text-xs font-bold text-primary-400 truncate sm:hidden mt-0.5">
                                                 {cliente.telefono || cliente.email || 'Sin contacto'}
                                             </span>
                                         </div>
@@ -216,7 +216,7 @@ export default function ClienteList() {
                                     </div>
                                 </td>
                                 <td className="py-4 px-6 text-center">
-                                    <Badge variant={estadoVariantMap[cliente.estado]} className="uppercase tracking-widest text-[9px] font-black">
+                                    <Badge variant={estadoVariantMap[cliente.estado]} className="uppercase tracking-widest text-xs opacity-80 font-black">
                                         {cliente.estado}
                                     </Badge>
                                 </td>
@@ -226,14 +226,14 @@ export default function ClienteList() {
                                             size="sm"
                                             variant="secondary"
                                             onClick={() => navigate(`../clientes/${cliente.id}/detalle`, { relative: "route" })}
-                                            className="h-8 text-[10px] font-black uppercase tracking-widest shadow-sm"
+                                            className="h-8 text-xs font-black uppercase tracking-widest shadow-sm"
                                         >
                                             Ver detalle
                                         </Button>
                                         <Button
                                             size="sm"
                                             onClick={() => navigate(`../clientes/${cliente.id}/editar`, { relative: "route" })}
-                                            className="h-8 text-[10px] font-black uppercase tracking-widest shadow-sm shadow-accent-200"
+                                            className="h-8 text-xs font-black uppercase tracking-widest shadow-sm shadow-accent-200"
                                         >
                                             Editar
                                         </Button>

@@ -15,7 +15,7 @@ export const CajaBanner = () => {
                     </div>
                     <div className="flex flex-col">
                         <span className="text-xs font-semibold text-success-800 uppercase tracking-wider">Caja Abierta</span>
-                        <span className="text-[11px] text-success-600 font-medium">
+                        <span className="text-xs text-success-600 font-medium">
                             Sesión activa en: {sesionActiva?.caja_nombre || 'Caja Principal'}
                         </span>
                     </div>
@@ -40,7 +40,7 @@ export const CajaBanner = () => {
                 </div>
                 <div className="flex flex-col">
                     <span className="text-xs font-semibold text-warning-800 uppercase tracking-wider">Caja Cerrada</span>
-                    <span className="text-[11px] text-warning-600 font-medium">
+                    <span className="text-xs text-warning-600 font-medium">
                         Debes abrir una caja para registrar ventas o compras.
                     </span>
                 </div>

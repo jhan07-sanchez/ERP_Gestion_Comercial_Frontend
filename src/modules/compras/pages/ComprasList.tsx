@@ -144,7 +144,7 @@ export default function ComprasList() {
                       <Table.Cell>
                         <div className="flex flex-col">
                           <span className="font-bold text-primary-900">{compra.proveedor_info?.nombre || "----"}</span>
-                          <span className="text-[10px] text-primary-400 font-medium lg:hidden">
+                          <span className="text-xs text-primary-400 font-medium lg:hidden">
                             {formatDate(compra.fecha)}
                           </span>
                         </div>
@@ -152,14 +152,14 @@ export default function ComprasList() {
                       <Table.Cell className="hidden lg:table-cell text-sm text-primary-600">
                         {formatDate(compra.fecha)}
                       </Table.Cell>
-                      <Table.Cell className="hidden md:table-cell text-xs text-primary-500 italic max-w-[200px] truncate">
+                      <Table.Cell className="hidden md:table-cell text-xs text-primary-500 italic max-w-52 truncate">
                         {compra.productos_resumen ? truncateProductos(compra.productos_resumen) : "----"}
                       </Table.Cell>
                       <Table.Cell className="text-right font-black text-primary-900">
                         {formatCurrency(compra.total)}
                       </Table.Cell>
                       <Table.Cell className="text-center">
-                        <Badge variant={estadoVariantMap[compra.estado]} className="text-[10px] uppercase font-bold tracking-tighter">
+                        <Badge variant={estadoVariantMap[compra.estado]} className="text-xs uppercase font-bold tracking-tighter">
                           {compra.estado}
                         </Badge>
                       </Table.Cell>

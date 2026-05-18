@@ -48,7 +48,7 @@ export default function CajaDetailPage() {
 
   if (loading || !cajaDetalle) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-96">
         <Loader />
       </div>
     );
@@ -135,11 +135,11 @@ export default function CajaDetailPage() {
                   {movimientos.map((mov) => (
                     <Table.Row key={mov.id} hover>
                       <Table.Cell>
-                        <Badge variant={mov.es_ingreso ? "success" : "danger"} className="text-[10px] uppercase font-bold">
+                        <Badge variant={mov.es_ingreso ? "success" : "danger"} className="text-xs uppercase font-bold">
                           {mov.tipo}
                         </Badge>
                       </Table.Cell>
-                      <Table.Cell className="max-w-[200px] truncate font-medium text-primary-700">
+                      <Table.Cell className="max-w-52 truncate font-medium text-primary-700">
                         {mov.descripcion}
                       </Table.Cell>
                       <Table.Cell className={`text-right font-bold ${mov.es_ingreso ? "text-success-600" : "text-danger-600"}`}>

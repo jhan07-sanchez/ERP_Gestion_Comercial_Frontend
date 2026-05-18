@@ -42,10 +42,10 @@ export default function OperationalReportsPage() {
                 <table className="w-full text-left">
                    <thead className="bg-primary-50 border-b border-primary-100">
                       <tr>
-                         <th className="px-6 py-4 text-[10px] font-black text-primary-400 uppercase tracking-widest">Asesor</th>
-                         <th className="px-6 py-4 text-[10px] font-black text-primary-400 uppercase tracking-widest">Ventas</th>
-                         <th className="px-6 py-4 text-[10px] font-black text-primary-400 uppercase tracking-widest">Tickets</th>
-                         <th className="px-6 py-4 text-[10px] font-black text-primary-400 uppercase tracking-widest">Promedio</th>
+                         <th className="px-6 py-4 text-xs font-black text-primary-400 uppercase tracking-widest">Asesor</th>
+                         <th className="px-6 py-4 text-xs font-black text-primary-400 uppercase tracking-widest">Ventas</th>
+                         <th className="px-6 py-4 text-xs font-black text-primary-400 uppercase tracking-widest">Tickets</th>
+                         <th className="px-6 py-4 text-xs font-black text-primary-400 uppercase tracking-widest">Promedio</th>
                       </tr>
                    </thead>
                    <tbody className="divide-y divide-primary-50">
@@ -71,22 +71,22 @@ export default function OperationalReportsPage() {
            <div className="space-y-4">
               <Card className="p-8 border-none bg-gradient-to-br from-primary-900 to-slate-900 text-white shadow-xl relative overflow-hidden">
                  <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-accent-500/20 rounded-full blur-2xl" />
-                 <p className="text-[10px] font-black text-primary-300 uppercase tracking-widest mb-1 relative z-10">Proyección 30 Días</p>
+                 <p className="text-xs font-black text-primary-300 uppercase tracking-widest mb-1 relative z-10">Proyección 30 Días</p>
                  <p className="text-3xl font-black relative z-10">
                    ${proyecciones?.proyeccion_30d.toLocaleString() || '---'}
                  </p>
-                 <div className="mt-4 flex items-center gap-2 text-[10px] font-bold text-accent-400 uppercase relative z-10">
+                 <div className="mt-4 flex items-center gap-2 text-xs font-bold text-accent-400 uppercase relative z-10">
                     <IconClock size={12} /> Basado en promedio móvil 30D
                  </div>
               </Card>
 
               <div className="grid grid-cols-2 gap-4">
                  <div className="bg-white p-6 rounded-3xl border border-primary-100 shadow-sm">
-                    <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1">Próximos 7D</p>
+                    <p className="text-xs font-black text-primary-400 uppercase tracking-widest mb-1">Próximos 7D</p>
                     <p className="text-lg font-black text-primary-900">${proyecciones?.proyeccion_7d.toLocaleString() || '---'}</p>
                  </div>
                  <div className="bg-white p-6 rounded-3xl border border-primary-100 shadow-sm">
-                    <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1">Próximos 15D</p>
+                    <p className="text-xs font-black text-primary-400 uppercase tracking-widest mb-1">Próximos 15D</p>
                     <p className="text-lg font-black text-primary-900">${proyecciones?.proyeccion_15d.toLocaleString() || '---'}</p>
                  </div>
               </div>
@@ -96,7 +96,7 @@ export default function OperationalReportsPage() {
                     <IconChartBar size={20} />
                  </div>
                  <div>
-                    <p className="text-[10px] font-black text-accent-600 uppercase tracking-widest">Promedio Diario</p>
+                    <p className="text-xs font-black text-accent-600 uppercase tracking-widest">Promedio Diario</p>
                     <p className="text-sm font-black text-primary-900">${proyecciones?.diario_promedio.toLocaleString() || '---'}</p>
                  </div>
               </div>

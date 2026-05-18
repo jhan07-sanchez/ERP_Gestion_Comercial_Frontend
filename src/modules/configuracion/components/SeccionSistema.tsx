@@ -61,7 +61,7 @@ export const SeccionSistema: React.FC<Props> = ({ config, onSave, isSaving }) =>
                 <Card.Content className="p-4 sm:p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Régimen Fiscal</label>
+                            <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Régimen Fiscal</label>
                             <Select
                                 name="regimen_fiscal"
                                 value={formData.regimen_fiscal || ''}
@@ -76,7 +76,7 @@ export const SeccionSistema: React.FC<Props> = ({ config, onSave, isSaving }) =>
                             />
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Impuesto (%)</label>
+                            <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Impuesto (%)</label>
                             <Input
                                 name="impuesto_porcentaje"
                                 type="number"
@@ -107,7 +107,7 @@ export const SeccionSistema: React.FC<Props> = ({ config, onSave, isSaving }) =>
 
                         <div className="grid grid-cols-2 gap-4 md:col-span-2">
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Moneda Principal</label>
+                                <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Moneda Principal</label>
                                 <Select
                                     name="moneda"
                                     value={formData.moneda || ''}
@@ -125,7 +125,7 @@ export const SeccionSistema: React.FC<Props> = ({ config, onSave, isSaving }) =>
                                 />
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Símbolo</label>
+                                <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Símbolo</label>
                                 <Input
                                     name="simbolo_moneda"
                                     value={formData.simbolo_moneda}
@@ -151,7 +151,7 @@ export const SeccionSistema: React.FC<Props> = ({ config, onSave, isSaving }) =>
                 <Card.Content className="p-4 sm:p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Stock Mínimo Global</label>
+                            <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Stock Mínimo Global</label>
                             <Input
                                 name="stock_minimo_global"
                                 type="number"
@@ -207,7 +207,7 @@ export const SeccionSistema: React.FC<Props> = ({ config, onSave, isSaving }) =>
                             
                             {formData.permitir_descuentos && (
                                 <div className="space-y-1.5 animate-in slide-in-from-top-2 duration-300">
-                                    <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Tope Máximo de Descuento (%)</label>
+                                    <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Tope Máximo de Descuento (%)</label>
                                     <Input
                                         name="descuento_maximo"
                                         type="number"

@@ -70,7 +70,7 @@ export const SeccionEmpresa: React.FC<Props> = ({ config, onSave, isSaving }) =>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                         <div className="space-y-4">
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Nombre Comercial</label>
+                                <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Nombre Comercial</label>
                                 <Input
                                     name="nombre_empresa"
                                     value={formData.nombre_empresa}
@@ -81,7 +81,7 @@ export const SeccionEmpresa: React.FC<Props> = ({ config, onSave, isSaving }) =>
                                 />
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Razón Social</label>
+                                <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Razón Social</label>
                                 <Input
                                     name="razon_social"
                                     value={formData.razon_social}
@@ -91,7 +91,7 @@ export const SeccionEmpresa: React.FC<Props> = ({ config, onSave, isSaving }) =>
                                 />
                             </div>
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">NIT / RUT</label>
+                                <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">NIT / RUT</label>
                                 <Input
                                     name="nit"
                                     value={formData.nit}
@@ -105,7 +105,7 @@ export const SeccionEmpresa: React.FC<Props> = ({ config, onSave, isSaving }) =>
 
                         {/* Logo Upload Section */}
                         <div className="space-y-3">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1 flex items-center gap-2">
+                            <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1 flex items-center gap-2">
                                 <IconPhoto size={14} />
                                 Logo del Sistema
                             </label>
@@ -122,14 +122,14 @@ export const SeccionEmpresa: React.FC<Props> = ({ config, onSave, isSaving }) =>
                                 ) : (
                                     <div className="flex flex-col items-center gap-2 text-primary-300">
                                         <IconPhoto size={48} stroke={1.5} />
-                                        <p className="text-[10px] font-black uppercase tracking-widest">Sin Logo Seleccionado</p>
+                                        <p className="text-xs font-black uppercase tracking-widest">Sin Logo Seleccionado</p>
                                     </div>
                                 )}
                                 
                                 <div className="absolute inset-0 bg-accent-600/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-2xl backdrop-blur-[2px]">
                                     <div className="flex flex-col items-center gap-2 text-white">
                                         <IconUpload size={24} />
-                                        <span className="text-[10px] font-black uppercase tracking-widest">Cambiar Imagen</span>
+                                        <span className="text-xs font-black uppercase tracking-widest">Cambiar Imagen</span>
                                     </div>
                                 </div>
                             </div>
@@ -140,7 +140,7 @@ export const SeccionEmpresa: React.FC<Props> = ({ config, onSave, isSaving }) =>
                                 accept="image/*"
                                 onChange={handleLogoChange}
                             />
-                            <p className="text-[9px] font-bold text-primary-400 text-center uppercase tracking-tighter">Formatos: PNG, JPG (Recomendado 512x512px, máx 2MB)</p>
+                            <p className="text-xs opacity-80 font-bold text-primary-400 text-center uppercase tracking-tighter">Formatos: PNG, JPG (Recomendado 512x512px, máx 2MB)</p>
                         </div>
                     </div>
                 </Card.Content>
@@ -157,7 +157,7 @@ export const SeccionEmpresa: React.FC<Props> = ({ config, onSave, isSaving }) =>
                 <Card.Content className="p-4 sm:p-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Teléfono Principal</label>
+                            <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Teléfono Principal</label>
                             <Input
                                 name="telefono"
                                 value={formData.telefono}
@@ -168,7 +168,7 @@ export const SeccionEmpresa: React.FC<Props> = ({ config, onSave, isSaving }) =>
                             />
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Teléfono Secundario</label>
+                            <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Teléfono Secundario</label>
                             <Input
                                 name="telefono_secundario"
                                 value={formData.telefono_secundario || ''}
@@ -178,7 +178,7 @@ export const SeccionEmpresa: React.FC<Props> = ({ config, onSave, isSaving }) =>
                             />
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Email Corporativo</label>
+                            <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Email Corporativo</label>
                             <Input
                                 name="email"
                                 type="email"
@@ -189,7 +189,7 @@ export const SeccionEmpresa: React.FC<Props> = ({ config, onSave, isSaving }) =>
                             />
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Sitio Web</label>
+                            <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Sitio Web</label>
                             <Input
                                 name="sitio_web"
                                 value={formData.sitio_web || ''}
@@ -214,7 +214,7 @@ export const SeccionEmpresa: React.FC<Props> = ({ config, onSave, isSaving }) =>
                 <Card.Content className="p-4 sm:p-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                         <div className="sm:col-span-2 lg:col-span-2 space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Dirección Física</label>
+                            <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Dirección Física</label>
                             <Input
                                 name="direccion"
                                 value={formData.direccion}
@@ -225,7 +225,7 @@ export const SeccionEmpresa: React.FC<Props> = ({ config, onSave, isSaving }) =>
                             />
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">Ciudad</label>
+                            <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">Ciudad</label>
                             <Input
                                 name="ciudad"
                                 value={formData.ciudad}
@@ -234,7 +234,7 @@ export const SeccionEmpresa: React.FC<Props> = ({ config, onSave, isSaving }) =>
                             />
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">País</label>
+                            <label className="text-xs font-black uppercase tracking-wider text-primary-400 px-1">País</label>
                             <Input
                                 name="pais"
                                 value={formData.pais}

@@ -94,7 +94,7 @@ export default function CompraDetallePage() {
   if (loading || !compra) {
     return (
       <PageContainer>
-        <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <div className="flex flex-col items-center justify-center min-h-96">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto" />
           <p className="mt-4 text-primary-600 font-medium">Cargando detalles de compra...</p>
         </div>
@@ -223,7 +223,7 @@ export default function CompraDetallePage() {
                       <Table.Cell>
                         <div className="flex flex-col">
                           <span className="font-bold text-primary-900">{d.producto_nombre}</span>
-                          <span className="text-[10px] font-mono text-primary-400">Cod: {d.producto}</span>
+                          <span className="text-xs font-mono text-primary-400">Cod: {d.producto}</span>
                         </div>
                       </Table.Cell>
                       <Table.Cell className="text-center font-bold text-primary-700">{d.cantidad}</Table.Cell>
@@ -232,7 +232,7 @@ export default function CompraDetallePage() {
                         {formatCurrency(d.subtotal)}
                       </Table.Cell>
                       <Table.Cell className="text-right hidden sm:table-cell">
-                        <Badge variant="info" className="text-[10px]">
+                        <Badge variant="info" className="text-xs">
                           {formatPercentage(d.margen_potencial.margen_porcentaje)}
                         </Badge>
                       </Table.Cell>
@@ -268,7 +268,7 @@ export default function CompraDetallePage() {
                           <Table.Cell>
                             <div className="flex flex-col">
                               <span className="text-xs font-bold text-primary-900">{formatDateTime(p.fecha)}</span>
-                              <span className="text-[10px] text-primary-400 sm:hidden">{p.metodo_pago_display || p.metodo_pago}</span>
+                              <span className="text-xs text-primary-400 sm:hidden">{p.metodo_pago_display || p.metodo_pago}</span>
                             </div>
                           </Table.Cell>
                           <Table.Cell className="hidden sm:table-cell text-xs text-primary-600 font-medium">
@@ -318,8 +318,8 @@ export default function CompraDetallePage() {
             <Card.Content className="p-4 space-y-4">
               <DetailItem label="Fecha Registro" value={formatDate(compra.fecha)} />
               <div className="py-2 flex justify-between items-center border-b border-primary-50">
-                <span className="text-[10px] font-bold text-primary-400 uppercase tracking-tighter">Estado</span>
-                <Badge variant={estadoVariantMap[compra.estado] || "gray"} className="text-[10px] uppercase font-bold tracking-tighter">
+                <span className="text-xs font-bold text-primary-400 uppercase tracking-tighter">Estado</span>
+                <Badge variant={estadoVariantMap[compra.estado] || "gray"} className="text-xs uppercase font-bold tracking-tighter">
                   {compra.estado}
                 </Badge>
               </div>
@@ -339,7 +339,7 @@ export default function CompraDetallePage() {
               <DetailItem label="Costo Total" value={formatCurrency(compra.margen_potencial.valor_compra)} />
               <DetailItem label="Venta Potencial" value={formatCurrency(compra.margen_potencial.valor_venta_potencial)} />
               <div className="py-2 flex justify-between items-center bg-success-50 px-2 rounded-lg">
-                <span className="text-[10px] font-bold text-success-600 uppercase">Ganancia Est.</span>
+                <span className="text-xs font-bold text-success-600 uppercase">Ganancia Est.</span>
                 <span className="font-black text-success-700">{formatCurrency(compra.margen_potencial.ganancia_potencial)}</span>
               </div>
             </Card.Content>
@@ -389,11 +389,11 @@ function KPIItem({ label, value, variant = "primary", icon, badge }: {
             {icon}
           </div>
           {badge && (
-            <span className={`text-[10px] font-black uppercase tracking-widest opacity-70`}>{badge}</span>
+            <span className={`text-xs font-black uppercase tracking-widest opacity-70`}>{badge}</span>
           )}
         </div>
         <div className="space-y-1">
-          <p className="text-[10px] font-bold uppercase tracking-wider opacity-60 truncate">{label}</p>
+          <p className="text-xs font-bold uppercase tracking-wider opacity-60 truncate">{label}</p>
           <p className={`text-2xl font-black tracking-tight ${textColors}`}>{value}</p>
         </div>
       </Card.Content>
@@ -404,7 +404,7 @@ function KPIItem({ label, value, variant = "primary", icon, badge }: {
 function DetailItem({ label, value, border = true }: { label: string; value: string | number; border?: boolean }) {
   return (
     <div className={`py-2 flex justify-between items-start gap-4 ${border ? 'border-b border-primary-50' : ''}`}>
-      <span className="text-[10px] font-bold text-primary-400 uppercase tracking-tighter shrink-0 pt-0.5">{label}</span>
+      <span className="text-xs font-bold text-primary-400 uppercase tracking-tighter shrink-0 pt-0.5">{label}</span>
       <span className="text-xs font-bold text-primary-900 text-right leading-tight">{value || "—"}</span>
     </div>
   );

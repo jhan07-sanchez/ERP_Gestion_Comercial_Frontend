@@ -45,12 +45,12 @@ const AuditFilters: React.FC<AuditFiltersProps> = ({ onFilter, isLoading }) => {
             <div className="bg-primary-50/50 border-b border-primary-100 px-6 py-3 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <IconFilter size={16} className="text-accent-500" />
-                    <span className="text-[10px] font-black uppercase tracking-widest text-primary-500">Filtros Avanzados</span>
+                    <span className="text-xs font-black uppercase tracking-widest text-primary-500">Filtros Avanzados</span>
                 </div>
                 <button
                     type="button"
                     onClick={handleReset}
-                    className="text-[10px] font-black uppercase tracking-widest text-primary-400 hover:text-danger-500 transition-colors flex items-center gap-1"
+                    className="text-xs font-black uppercase tracking-widest text-primary-400 hover:text-danger-500 transition-colors flex items-center gap-1"
                 >
                     <IconX size={12} />
                     Limpiar
@@ -62,7 +62,7 @@ const AuditFilters: React.FC<AuditFiltersProps> = ({ onFilter, isLoading }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-5">
                         {/* Búsqueda Global */}
                         <div className="space-y-1.5 lg:col-span-2 xl:col-span-2">
-                            <label className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">
+                            <label className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-primary-400 px-1">
                                 <IconSearch size={12} />
                                 Término de Búsqueda
                             </label>
@@ -77,7 +77,7 @@ const AuditFilters: React.FC<AuditFiltersProps> = ({ onFilter, isLoading }) => {
 
                         {/* Módulo */}
                         <div className="space-y-1.5">
-                            <label className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">
+                            <label className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-primary-400 px-1">
                                 <IconApps size={12} />
                                 Módulo
                             </label>
@@ -101,7 +101,7 @@ const AuditFilters: React.FC<AuditFiltersProps> = ({ onFilter, isLoading }) => {
 
                         {/* Acción */}
                         <div className="space-y-1.5">
-                            <label className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">
+                            <label className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-primary-400 px-1">
                                 <IconBolt size={12} />
                                 Acción
                             </label>
@@ -123,7 +123,7 @@ const AuditFilters: React.FC<AuditFiltersProps> = ({ onFilter, isLoading }) => {
 
                         {/* Fecha Inicio */}
                         <div className="space-y-1.5">
-                            <label className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">
+                            <label className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-primary-400 px-1">
                                 <IconCalendar size={12} />
                                 Desde
                             </label>
@@ -138,7 +138,7 @@ const AuditFilters: React.FC<AuditFiltersProps> = ({ onFilter, isLoading }) => {
 
                         {/* Fecha Fin */}
                         <div className="space-y-1.5">
-                            <label className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-primary-400 px-1">
+                            <label className="flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-primary-400 px-1">
                                 <IconCalendar size={12} />
                                 Hasta
                             </label>
@@ -156,7 +156,7 @@ const AuditFilters: React.FC<AuditFiltersProps> = ({ onFilter, isLoading }) => {
                             <Button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-full sm:w-auto px-10 h-11 shadow-lg shadow-accent-100 font-black uppercase tracking-widest text-[10px]"
+                                className="w-full sm:w-auto px-10 h-11 shadow-lg shadow-accent-100 font-black uppercase tracking-widest text-xs"
                             >
                                 {isLoading ? "Buscando..." : "Aplicar Filtros"}
                             </Button>

@@ -115,6 +115,11 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        mono: ['Roboto Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+      },
+      fontSize: {
+        '3xs': ['0.625rem', { lineHeight: '0.75rem' }], // 10px in base 16 (or 8.75px in base 14)
+        '2xs': ['0.75rem', { lineHeight: '1rem' }],    // 12px in base 16 (or 10.5px in base 14)
       },
     },
   },

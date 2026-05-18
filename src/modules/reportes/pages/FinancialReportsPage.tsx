@@ -62,21 +62,21 @@ export default function FinancialReportsPage() {
           icon={<IconWallet size={28} className="text-primary-900" />}
         />
         <div className="flex items-center gap-3">
-           <button className="flex items-center gap-2 px-5 py-2.5 bg-white border border-primary-200 rounded-2xl text-[10px] font-black uppercase tracking-widest text-primary-600 hover:bg-primary-50 transition-all shadow-sm">
+           <button className="flex items-center gap-2 px-5 py-2.5 bg-white border border-primary-200 rounded-2xl text-xs font-black uppercase tracking-widest text-primary-600 hover:bg-primary-50 transition-all shadow-sm">
               <IconPrinter size={16} /> Imprimir
            </button>
-           <button className="flex items-center gap-2 px-5 py-2.5 bg-primary-900 border border-primary-900 rounded-2xl text-[10px] font-black uppercase tracking-widest text-white hover:bg-primary-800 transition-all shadow-xl shadow-primary-200">
+           <button className="flex items-center gap-2 px-5 py-2.5 bg-primary-900 border border-primary-900 rounded-2xl text-xs font-black uppercase tracking-widest text-white hover:bg-primary-800 transition-all shadow-xl shadow-primary-200">
               <IconDownload size={16} /> Exportar Reporte
            </button>
         </div>
       </div>
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center min-h-[400px] space-y-6">
+        <div className="flex flex-col items-center justify-center min-h-96 space-y-6">
            <Loader />
            <div className="text-center space-y-2">
-              <p className="text-[11px] font-black text-primary-900 uppercase tracking-[0.3em]">Cargando Módulo {subSection.toUpperCase()}</p>
-              <p className="text-[10px] text-primary-400 font-bold">Consolidando información financiera real...</p>
+              <p className="text-xs font-black text-primary-900 uppercase tracking-[0.3em]">Cargando Módulo {subSection.toUpperCase()}</p>
+              <p className="text-xs text-primary-400 font-bold">Consolidando información financiera real...</p>
            </div>
         </div>
       ) : (
@@ -94,15 +94,15 @@ export default function FinancialReportsPage() {
             <div className="space-y-8">
                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <Card className="p-8 border-none bg-primary-50/50 border border-primary-100">
-                    <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1">Ingresos Totales</p>
+                    <p className="text-xs font-black text-primary-400 uppercase tracking-widest mb-1">Ingresos Totales</p>
                     <p className="text-3xl font-black text-primary-900">${resultados.ingresos.toLocaleString()}</p>
                   </Card>
                   <Card className="p-8 border-none bg-danger-50/50 border border-danger-100">
-                    <p className="text-[10px] font-black text-danger-400 uppercase tracking-widest mb-1">Costos de Venta</p>
+                    <p className="text-xs font-black text-danger-400 uppercase tracking-widest mb-1">Costos de Venta</p>
                     <p className="text-3xl font-black text-danger-900">${resultados.costos.toLocaleString()}</p>
                   </Card>
                   <Card className="p-8 border-none bg-success-50/50 border border-success-100">
-                    <p className="text-[10px] font-black text-success-400 uppercase tracking-widest mb-1">Utilidad Bruta</p>
+                    <p className="text-xs font-black text-success-400 uppercase tracking-widest mb-1">Utilidad Bruta</p>
                     <p className="text-3xl font-black text-success-900">${resultados.utilidad_bruta.toLocaleString()}</p>
                   </Card>
                </div>

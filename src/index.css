@@ -38,6 +38,14 @@
    ========================================================================== */
 @layer base {
   html {
+    /* ERP High Density Scale: Set root to 14px (instead of default 16px) */
+    /* This makes 1rem = 14px, shrinking all Tailwind rem values by 12.5% */
+    /* Perfect for data-heavy enterprise interfaces */
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
     /* Evitar saltos de layout cuando aparece la scrollbar en tablas o grids */
     scrollbar-gutter: stable;
   }
@@ -49,7 +57,8 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     /* Color base estandarizado para SaaS */
-    @apply text-slate-900 bg-slate-50;
+    @apply text-slate-800 bg-slate-50;
+    overflow-x: hidden;
   }
 
   /* Selección de texto premium */
@@ -62,12 +71,18 @@
     @apply outline-none ring-2 ring-blue-500 ring-offset-2 ring-offset-white transition-shadow;
   }
 
+  /* Normalizar inputs para no sufrir zoom indeseado y forzar consistencia visual */
+  input, textarea, select {
+    font-family: inherit;
+    font-size: inherit;
+  }
+  
   /* Prevenir comportamientos de zoom nativos indeseados en inputs de iOS */
   input[type="text"],
   input[type="number"],
   input[type="email"],
   input[type="password"] {
-    font-size: 16px; /* 16px previene el zoom en iOS Safari */
+    font-size: 16px; /* 16px (1.1428rem en base 14px) previene el zoom en iOS Safari */
   }
   
   @media (min-width: 768px) {
@@ -75,7 +90,8 @@
     input[type="number"],
     input[type="email"],
     input[type="password"] {
-      @apply text-sm;
+      /* En desktop usamos el text-sm relativo (0.875rem = 12.25px o text-base 1rem = 14px) */
+      font-size: 1rem; 
     }
   }
 }

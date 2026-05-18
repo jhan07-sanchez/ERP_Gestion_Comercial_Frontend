@@ -86,7 +86,7 @@ const AuditPage: React.FC = () => {
                 {/* Table Section */}
                 <div className="space-y-4">
                     <div className="flex items-center justify-between px-2">
-                        <span className="text-[10px] sm:text-xs font-black text-primary-400 uppercase tracking-widest bg-primary-100/50 px-2 py-1 rounded-md border border-primary-200/50">
+                        <span className="text-xs sm:text-xs font-black text-primary-400 uppercase tracking-widest bg-primary-100/50 px-2 py-1 rounded-md border border-primary-200/50">
                             {count} Registros Encontrados
                         </span>
                         <div className="flex items-center gap-1">
@@ -99,7 +99,7 @@ const AuditPage: React.FC = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                                 </svg>
                             </button>
-                            <span className="text-[11px] font-black w-24 text-center tabular-nums text-primary-700">Pág. {filters.page} / {totalPages || 1}</span>
+                            <span className="text-xs font-black w-24 text-center tabular-nums text-primary-700">Pág. {filters.page} / {totalPages || 1}</span>
                             <button
                                 disabled={filters.page === totalPages || isLoading}
                                 onClick={() => handlePageChange((filters.page || 1) + 1)}
@@ -139,7 +139,7 @@ const KPIItem = ({ label, value, color, icon }: { label: string, value: string, 
                 {icon}
             </div>
             <div className="min-w-0">
-                <p className="text-[9px] font-black text-primary-400 uppercase tracking-wider mb-0.5 truncate">{label}</p>
+                <p className="text-xs opacity-80 font-black text-primary-400 uppercase tracking-wider mb-0.5 truncate">{label}</p>
                 <p className="text-sm sm:text-2xl font-black text-primary-900 tracking-tight">{value}</p>
             </div>
         </div>

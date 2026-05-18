@@ -354,12 +354,12 @@ export function VentaForm({
                       </p>
                       <div className="flex gap-3 mt-0.5">
                         {clienteSeleccionado.numero_documento && (
-                          <span className="text-[11px] font-medium text-accent-600/70">
+                          <span className="text-xs font-medium text-accent-600/70">
                             DOC: {clienteSeleccionado.numero_documento}
                           </span>
                         )}
                         {clienteSeleccionado.telefono && (
-                          <span className="text-[11px] font-medium text-accent-600/70">
+                          <span className="text-xs font-medium text-accent-600/70">
                             TEL: {clienteSeleccionado.telefono}
                           </span>
                         )}
@@ -493,10 +493,10 @@ export function VentaForm({
                                 {p.nombre}
                               </p>
                               <div className="flex gap-2 items-center mt-0.5">
-                                <span className="text-[10px] font-bold text-primary-400 uppercase">
+                                <span className="text-xs font-bold text-primary-400 uppercase">
                                   REF: {p.codigo}
                                 </span>
-                                <span className={`text-[10px] font-bold px-1.5 rounded ${p.stock_actual > 0 ? 'bg-success-50 text-success-600' : 'bg-danger-50 text-danger-600'}`}>
+                                <span className={`text-xs font-bold px-1.5 rounded ${p.stock_actual > 0 ? 'bg-success-50 text-success-600' : 'bg-danger-50 text-danger-600'}`}>
                                   STOCK: {p.stock_actual}
                                 </span>
                               </div>
@@ -520,7 +520,7 @@ export function VentaForm({
             <div className="space-y-3">
               {value.detalles.length > 0 ? (
                 <>
-                  <div className="hidden md:grid grid-cols-12 gap-4 px-4 py-2 text-[11px] font-black text-primary-400 uppercase tracking-widest border-b border-primary-50">
+                  <div className="hidden md:grid grid-cols-12 gap-4 px-4 py-2 text-xs font-black text-primary-400 uppercase tracking-widest border-b border-primary-50">
                     <div className="col-span-4">Producto</div>
                     <div className="col-span-3 text-center">Cantidad</div>
                     <div className="col-span-2 text-center">Precio Unit.</div>
@@ -544,7 +544,7 @@ export function VentaForm({
                             <p className="text-sm font-bold text-primary-900 truncate">
                               {detalle.producto_nombre}
                             </p>
-                            <p className="text-[10px] font-bold text-primary-400 overflow-hidden text-ellipsis">
+                            <p className="text-xs font-bold text-primary-400 overflow-hidden text-ellipsis">
                               REF: {detalle.producto_codigo} · <span className="text-accent-500">DISP: {detalle.stock_disponible}</span>
                             </p>
                           </div>
@@ -578,8 +578,8 @@ export function VentaForm({
 
                         {/* Precio editable con máscara */}
                         <div className="col-span-1 md:col-span-2 flex justify-center md:justify-start">
-                          <div className="relative w-full max-w-[140px]">
-                            <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-primary-400">{simbolo}</span>
+                          <div className="relative w-full max-w-36">
+                            <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs font-bold text-primary-400">{simbolo}</span>
                             <input
                               type="text"
                               value={formatNumberInput(detalle.precio_unitario?.toString() ?? "")}
@@ -591,7 +591,7 @@ export function VentaForm({
 
                         {/* Subtotal */}
                         <div className={`col-span-1 md:col-span-2 text-right md:text-right font-black text-accent-600 text-sm py-1 md:py-0 ${numberClass}`}>
-                          <span className="md:hidden text-[10px] text-primary-400 mr-2 uppercase">Subtotal:</span>
+                          <span className="md:hidden text-xs text-primary-400 mr-2 uppercase">Subtotal:</span>
                           {formatCurrency(detalle.subtotal || 0)}
                         </div>
 
@@ -616,7 +616,7 @@ export function VentaForm({
                     <IconShoppingCart size={32} className="text-primary-200" />
                   </div>
                   <h4 className="text-primary-400 font-bold tracking-tight">CARRITO VACÍO</h4>
-                  <p className="text-xs text-primary-400 mt-1 max-w-[200px] mx-auto">
+                  <p className="text-xs text-primary-400 mt-1 max-w-52 mx-auto">
                     Busca o escanea productos para comenzar la venta
                   </p>
                 </div>

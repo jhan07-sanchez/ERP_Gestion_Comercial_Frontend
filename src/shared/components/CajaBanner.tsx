@@ -32,7 +32,7 @@ export const CajaBanner = () => {
                 <p className="text-xs font-bold text-success-900 leading-tight">
                   SISTEMA OPERATIVO · CAJA ABIERTA
                 </p>
-                <p className="text-[10px] text-success-600 font-medium">
+                <p className="text-xs text-success-600 font-medium">
                   Sesión activa:{" "}
                   <span className="font-bold">{sesionActiva?.caja_nombre}</span>{" "}
                   · Usuario:{" "}
@@ -46,7 +46,7 @@ export const CajaBanner = () => {
             <Button
               variant="secondary"
               size="sm"
-              className="h-8 text-[10px] font-bold bg-white hover:bg-success-100 border-success-200 text-success-700"
+              className="h-8 text-xs font-bold bg-white hover:bg-success-100 border-success-200 text-success-700"
               onClick={() => navigate("/caja/dashboard")}
             >
               <IconWallet className="w-3 h-3 mr-2" />
@@ -75,7 +75,7 @@ export const CajaBanner = () => {
             <Button
                 variant="primary"
                 size="sm"
-                className="bg-warning-600 hover:bg-warning-700 border-none shadow-md shadow-warning-200 text-[11px] font-black h-9 px-5 w-full sm:w-auto"
+                className="bg-warning-600 hover:bg-warning-700 border-none shadow-md shadow-warning-200 text-xs font-black h-9 px-5 w-full sm:w-auto"
                 onClick={() => navigate("/caja/sesiones/nueva")}
             >
                 <IconWallet className="w-4 h-4 mr-2" />

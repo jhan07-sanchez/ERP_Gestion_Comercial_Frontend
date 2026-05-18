@@ -52,7 +52,7 @@ export const ProveedorDetalleRow: React.FC<ProveedorDetalleRowProps> = ({
 
       case "boolean":
         return (
-          <Badge variant={value ? "success" : "danger"} className="uppercase tracking-widest text-[9px] font-black">
+          <Badge variant={value ? "success" : "danger"} className="uppercase tracking-widest text-xs opacity-80 font-black">
             {value ? "Habilitado" : "Deshabilitado"}
           </Badge>
         );
@@ -66,7 +66,7 @@ export const ProveedorDetalleRow: React.FC<ProveedorDetalleRowProps> = ({
 
   return (
     <div className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 transition-colors hover:bg-primary-50/50 ${!isLast ? 'border-b border-primary-100' : ''}`}>
-      <div className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-1 sm:mb-0 w-full sm:w-1/3">
+      <div className="text-xs font-black text-primary-400 uppercase tracking-widest mb-1 sm:mb-0 w-full sm:w-1/3">
         {label}
       </div>
       <div className="w-full sm:w-2/3 sm:text-right text-sm">

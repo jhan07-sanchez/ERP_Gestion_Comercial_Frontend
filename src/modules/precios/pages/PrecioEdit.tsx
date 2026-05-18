@@ -99,7 +99,7 @@ export default function PrecioEdit() {
         <div className="space-y-4">
           <Card className="border-warning-100 bg-warning-50/50 shadow-sm">
             <Card.Content className="p-4">
-              <h3 className="font-black uppercase tracking-widest text-[10px] text-warning-900 mb-2">
+              <h3 className="font-black uppercase tracking-widest text-xs text-warning-900 mb-2">
                 ⚠️ Importante
               </h3>
               <ul className="space-y-2 text-xs text-warning-800 font-medium">

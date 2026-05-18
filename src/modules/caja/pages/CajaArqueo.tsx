@@ -134,7 +134,7 @@ export default function CajaArqueoPage() {
   // ── Loading ─────────────────────────────────────────────────
   if (loadingDetalle && !sesion) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-96">
         <Loader />
       </div>
     );
@@ -341,7 +341,7 @@ export default function CajaArqueoPage() {
                     return (
                       <Table.Row key={arq.id} hover>
                         <Table.Cell>
-                          <Badge variant="info" className="text-[10px] uppercase font-bold">
+                          <Badge variant="info" className="text-xs uppercase font-bold">
                             {getTipoArqueoLabel(arq.tipo)}
                           </Badge>
                         </Table.Cell>

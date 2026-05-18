@@ -25,12 +25,12 @@ const getActionBadgeColor = (action: string) => {
 
 const InfoCard = ({ label, value, icon, subValue }: { label: string, value: string, icon: string, subValue?: string }) => (
     <div className="bg-primary-50 p-4 rounded-2xl border border-primary-100 group transition-all duration-300">
-        <p className="text-[9px] font-bold uppercase tracking-wider text-primary-400 mb-2">{label}</p>
+        <p className="text-xs opacity-80 font-bold uppercase tracking-wider text-primary-400 mb-2">{label}</p>
         <div className="flex items-center gap-3">
             <span className="text-xl">{icon}</span>
             <div className="min-w-0">
                 <p className="font-bold text-primary-900 truncate leading-tight text-sm">{value}</p>
-                {subValue && <p className="text-[9px] text-primary-400 font-bold uppercase mt-0.5 truncate">{subValue}</p>}
+                {subValue && <p className="text-xs opacity-80 text-primary-400 font-bold uppercase mt-0.5 truncate">{subValue}</p>}
             </div>
         </div>
     </div>
@@ -75,10 +75,10 @@ const AuditDetailModal: React.FC<AuditDetailModalProps> = ({ log, isOpen, onClos
                                             </div>
                                             <div>
                                                 <div className="flex items-center gap-2 mb-1">
-                                                    <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider ${getActionBadgeColor(log.accion)}`}>
+                                                    <span className={`px-2 py-0.5 rounded-md text-xs opacity-80 font-bold uppercase tracking-wider ${getActionBadgeColor(log.accion)}`}>
                                                         {log.accion_display}
                                                     </span>
-                                                    <span className="text-[10px] font-bold text-primary-300 tabular-nums">ID #{log.id}</span>
+                                                    <span className="text-xs font-bold text-primary-300 tabular-nums">ID #{log.id}</span>
                                                 </div>
                                                 <Dialog.Title as="h3" className="text-xl font-bold text-primary-900 tracking-tight leading-tight">
                                                     {log.descripcion}
@@ -105,29 +105,29 @@ const AuditDetailModal: React.FC<AuditDetailModalProps> = ({ log, isOpen, onClos
                                         <div className="space-y-6">
                                             <div className="flex items-center gap-4">
                                                 <div className="h-px flex-1 bg-primary-100" />
-                                                <h4 className="text-[10px] font-bold text-primary-400 uppercase tracking-widest">Detalles técnicos de la acción</h4>
+                                                <h4 className="text-xs font-bold text-primary-400 uppercase tracking-widest">Detalles técnicos de la acción</h4>
                                                 <div className="h-px flex-1 bg-primary-100" />
                                             </div>
 
                                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                                                 {log.datos_antes && (
                                                     <div className="space-y-2">
-                                                        <p className="text-[10px] font-bold uppercase tracking-wider text-danger-500 px-2 flex items-center gap-2">
+                                                        <p className="text-xs font-bold uppercase tracking-wider text-danger-500 px-2 flex items-center gap-2">
                                                             <span className="w-1.5 h-1.5 rounded-full bg-danger-500" />
                                                             Estado Anterior
                                                         </p>
-                                                        <pre className="p-4 bg-danger-50/30 border border-danger-100 rounded-xl text-[11px] font-mono text-danger-800 overflow-auto max-h-[300px] leading-relaxed">
+                                                        <pre className="p-4 bg-danger-50/30 border border-danger-100 rounded-xl text-xs font-mono text-danger-800 overflow-auto max-h-[300px] leading-relaxed">
                                                             {JSON.stringify(log.datos_antes, null, 4)}
                                                         </pre>
                                                     </div>
                                                 )}
                                                 {log.datos_despues && (
                                                     <div className="space-y-2">
-                                                        <p className="text-[10px] font-bold uppercase tracking-wider text-success-600 px-2 flex items-center gap-2">
+                                                        <p className="text-xs font-bold uppercase tracking-wider text-success-600 px-2 flex items-center gap-2">
                                                             <span className="w-1.5 h-1.5 rounded-full bg-success-500" />
                                                             Nuevo Estado
                                                         </p>
-                                                        <pre className="p-4 bg-success-50/30 border border-success-100 rounded-xl text-[11px] font-mono text-success-800 overflow-auto max-h-[300px] leading-relaxed">
+                                                        <pre className="p-4 bg-success-50/30 border border-success-100 rounded-xl text-xs font-mono text-success-800 overflow-auto max-h-[300px] leading-relaxed">
                                                             {JSON.stringify(log.datos_despues, null, 4)}
                                                         </pre>
                                                     </div>

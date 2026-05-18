@@ -74,7 +74,7 @@ export default function CategoriasCreate() {
           {/* Información */}
           <Card className="border-accent-100 bg-accent-50/50 shadow-sm">
             <Card.Content className="p-4">
-              <h3 className="font-black uppercase tracking-widest text-[10px] text-accent-900 mb-2">
+              <h3 className="font-black uppercase tracking-widest text-xs text-accent-900 mb-2">
                 💡 Consejos
               </h3>
               <ul className="space-y-2 text-xs text-accent-800 font-medium">
@@ -89,7 +89,7 @@ export default function CategoriasCreate() {
           {/* Ejemplos */}
           <Card className="border-primary-200 shadow-sm">
             <Card.Content className="p-4">
-              <h3 className="font-black uppercase tracking-widest text-[10px] text-primary-700 mb-3">
+              <h3 className="font-black uppercase tracking-widest text-xs text-primary-700 mb-3">
                 📋 Ejemplos de categorías
               </h3>
               <div className="space-y-2">

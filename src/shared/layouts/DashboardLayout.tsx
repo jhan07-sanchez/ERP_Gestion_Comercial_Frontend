@@ -2,30 +2,46 @@
 /**
  * 🏗️ LAYOUT PRINCIPAL DEL DASHBOARD (VERSIÓN ERP PROFESIONAL)
  *
- * Este layout utiliza una arquitectura modular para la barra lateral (Sidebar)
- * y el contenido principal, permitiendo estados persistentes y una UX premium.
+ * Arquitectura responsive:
+ * - Mobile  (< 768px):  Sin padding-left (sidebar es overlay)
+ * - Tablet  (768–1023px): padding-left = 72px (sidebar colapsado fijo)
+ * - Desktop (≥ 1024px):  padding-left = 260px o 72px según toggle
+ *
+ * El sidebar es `position: fixed`, por lo tanto el contenido
+ * necesita `padding-left` para no quedar debajo en tablet/desktop.
  */
 import { Outlet } from "react-router-dom";
-import { useUIStore } from "@/shared/store/ui.store";
 import { Sidebar } from "./components/Sidebar";
 import { MobileHeader } from "./components/MobileHeader";
 import { CajaBanner } from "../components/CajaBanner";
 import { TrialBanner } from "../components/TrialBanner";
+import { useResponsiveSidebar } from "@/shared/hooks/useResponsiveSidebar";
+
+/** Anchos sincronizados con Sidebar.tsx */
+const SIDEBAR_EXPANDED = 260;
+const SIDEBAR_COLLAPSED = 72;
 
 export default function DashboardLayout() {
-  const { sidebarOpen } = useUIStore();
+  const { sidebarOpen, isMobile, isFixed } = useResponsiveSidebar();
+
+  // Calcular padding-left basado en el estado responsive
+  const paddingLeft = isMobile
+    ? 0
+    : sidebarOpen
+      ? SIDEBAR_EXPANDED
+      : SIDEBAR_COLLAPSED;
 
   return (
     <div className="min-h-screen bg-primary-50 flex overflow-hidden">
-      {/* Sidebar Modular (Ancho fijo controlado por el store) */}
+      {/* Sidebar Modular */}
       <Sidebar />
 
       {/* Área de Contenido Principal */}
       <div
-        className={`flex-1 flex flex-col min-h-screen min-w-0 overflow-x-hidden transition-all duration-300 ease-in-out
-          ${sidebarOpen ? "lg:pl-72" : "lg:pl-20"} pl-0`}
+        className="flex-1 flex flex-col min-h-screen min-w-0 overflow-x-hidden transition-[padding] duration-300 ease-in-out"
+        style={{ paddingLeft }}
       >
-        {/* Header para Móviles */}
+        {/* Header para Móviles — solo visible < md */}
         <MobileHeader />
 
         {/* Banners Superiores */}
@@ -34,21 +50,21 @@ export default function DashboardLayout() {
           <CajaBanner />
         </div>
 
-        {/* Contenido de la Página con Scroll independiente */}
-        <main 
+        {/* Contenido de la Página */}
+        <main
           key="erp-main-content"
-          className="flex-1 overflow-x-hidden overflow-y-auto custom-scrollbar bg-[#f8fafc]"
+          className="flex-1 overflow-x-hidden overflow-y-auto custom-scrollbar bg-primary-50"
         >
           <Outlet />
         </main>
 
-        {/* Footer Corporativo ERP */}
-        <footer className="py-4 px-4 md:px-8 text-center bg-white border-t border-primary-100 flex flex-col md:flex-row items-center justify-between gap-2">
-          <div className="text-[10px] font-black text-primary-400 uppercase tracking-widest">
-            &copy; {new Date().getFullYear()} ERP System · Gestión empresarial avanzada
+        {/* Footer Corporativo */}
+        <footer className="py-3 px-4 md:px-6 text-center bg-white border-t border-primary-100 flex flex-col md:flex-row items-center justify-between gap-2">
+          <div className="text-[10px] font-medium text-primary-400 tracking-wide">
+            &copy; {new Date().getFullYear()} ERP System · Gestión empresarial
           </div>
-          <div className="flex items-center gap-4">
-            <span className="text-[9px] font-bold text-accent-600 bg-accent-50 px-2 py-0.5 rounded-full uppercase">
+          <div className="flex items-center gap-3">
+            <span className="text-[10px] font-medium text-accent-600 bg-accent-50 px-2 py-0.5 rounded-full">
               v1.0
             </span>
           </div>

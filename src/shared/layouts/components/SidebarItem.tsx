@@ -1,6 +1,6 @@
-// src/layouts/components/SidebarItem.tsx
 import { NavLink } from "react-router-dom";
 import type { Icon } from "@tabler/icons-react";
+import { usePortalTooltip } from "@/shared/hooks/usePortalTooltip";
 
 interface SidebarItemProps {
   label: string;
@@ -8,60 +8,77 @@ interface SidebarItemProps {
   icon?: Icon;
   collapsed?: boolean;
   indent?: boolean;
-  showDot?: boolean;
 }
 
-export function SidebarItem({ label, path, icon: IconComponent, collapsed, indent, showDot }: SidebarItemProps) {
-    return (
+/**
+ * Componente atómico de navegación del sidebar.
+ */
+export function SidebarItem({
+  label,
+  path,
+  icon: IconComponent,
+  collapsed,
+  indent,
+}: SidebarItemProps) {
+  const { ref, onMouseEnter, onMouseLeave, renderTooltip } = usePortalTooltip<HTMLAnchorElement>();
+
+  return (
+    <>
       <NavLink
         to={path}
         end={path === "/dashboard"}
-        className={({ isActive }) => `
-        group relative flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-bold transition-all duration-200
-        ${
-          isActive
-            ? "bg-accent-600 text-white shadow-lg shadow-accent-200"
-            : "text-primary-500 hover:bg-primary-100 hover:text-primary-900"
-        }
-        ${indent ? "ml-4" : ""}
-        ${collapsed ? "justify-center px-2" : ""}
-      `}
+        ref={ref}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        className={({ isActive }) => {
+          const base =
+            "group relative flex items-center gap-2.5 rounded-lg text-[13px] font-medium transition-all duration-200 outline-none";
+
+          const active = isActive
+            ? "bg-accent-50 text-accent-700 font-semibold"
+            : "text-primary-600 hover:bg-primary-50 hover:text-primary-900";
+
+          const indented = indent ? "pl-3 pr-3 py-[7px]" : "px-3 py-2";
+          const collapsedStyle = collapsed ? "justify-center !px-0 mx-auto w-10 h-10" : "";
+
+          return `${base} ${active} ${indented} ${collapsedStyle}`;
+        }}
       >
         {({ isActive }) => (
           <>
-            {/* 🔵 PUNTO */}
-            {showDot && (
-              <span className="w-1.5 h-1.5 bg-primary-400 rounded-full shrink-0" />
+            {/* Active indicator — left bar (solo en modo expandido) */}
+            {isActive && !collapsed && (
+              <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 rounded-r-full bg-accent-500 transition-all duration-200" />
             )}
 
-            {/* ICONO + LABEL */}
+            {/* Active indicator — dot (solo en modo colapsado) */}
+            {isActive && collapsed && (
+              <span className="absolute -right-0.5 top-1 w-1.5 h-1.5 rounded-full bg-accent-500" />
+            )}
+
+            {/* Icono */}
             {IconComponent && (
               <IconComponent
-                size={collapsed ? 22 : 18}
-                stroke={isActive ? 2.5 : 2}
-                className={`shrink-0 transition-colors ${isActive ? "text-white" : "text-primary-400 group-hover:text-primary-900"}`}
+                size={collapsed ? 20 : 16}
+                stroke={isActive ? 2.2 : 1.8}
+                className={`shrink-0 transition-colors duration-150 ${
+                  isActive
+                    ? "text-accent-600"
+                    : "text-primary-400 group-hover:text-primary-700"
+                }`}
               />
             )}
 
+            {/* Label */}
             {!collapsed && (
-              <span className="truncate transition-opacity duration-200">
-                {label}
-              </span>
-            )}
-
-            {/* Tooltip for collapsed state */}
-            {collapsed && (
-              <div className="absolute left-full ml-4 px-2 py-1 bg-primary-900 text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 whitespace-nowrap">
-                {label}
-              </div>
-            )}
-
-            {/* Active indicator bar */}
-            {isActive && !collapsed && (
-              <div className="absolute right-2 w-1.5 h-1.5 rounded-full bg-white/50" />
+              <span className="truncate leading-tight">{label}</span>
             )}
           </>
         )}
       </NavLink>
-    );
+      
+      {/* Tooltip Portal (solo visible cuando está colapsado) */}
+      {renderTooltip(label, !collapsed)}
+    </>
+  );
 }

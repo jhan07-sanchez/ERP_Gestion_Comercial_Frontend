@@ -10,3 +10,4 @@
 export { usePaginatedList } from "./usePaginatedList";
 export { useEntityDetail } from "./useEntityDetail";
 export { useDebounceSearch } from "./useDebounceSearch";
+export { useResponsiveSidebar } from "./useResponsiveSidebar";

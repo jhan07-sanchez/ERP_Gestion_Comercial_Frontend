@@ -86,6 +86,7 @@ export default function CompraCreate() {
         producto_id: d.producto,
         cantidad: Number(d.cantidad) || 0,
         precio_compra: Number(d.precio_unitario) || 0,
+        guardar_en_lista_precio: Boolean(d.guardar_en_lista_precio),
       })),
     };
   };

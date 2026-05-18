@@ -26,6 +26,9 @@ export interface CompraDetalleForm {
   cantidad: number | "";
   precio_unitario: number | "";
   subtotal: number; // calculado en UI
+  precio_manual?: boolean;
+  guardar_en_lista_precio?: boolean;
+  precio_cargado_auto?: boolean;
 }
 
 /**
@@ -139,14 +142,13 @@ export function CompraForm({
    */
   const updateDetalle = (
     index: number,
-    field: keyof CompraDetalleForm,
-    newValue: number | "",
+    updates: Partial<CompraDetalleForm>
   ) => {
     const detalles = [...valueForm.detalles];
 
     const detalleActualizado = {
       ...detalles[index],
-      [field]: newValue,
+      ...updates,
     };
 
     detalleActualizado.subtotal =
@@ -159,6 +161,59 @@ export function CompraForm({
       detalles,
       total: calcularTotal(detalles),
     });
+  };
+
+  /**
+   * 🔍 Buscar precio vigente al seleccionar producto
+   */
+  const handleProductoChange = async (index: number, productoId: number) => {
+    // Si no hay producto seleccionado o no hay proveedor, resetear detalle
+    if (!productoId || !valueForm.proveedor_id) {
+      updateDetalle(index, { 
+        producto: productoId || 0, 
+        precio_unitario: 0, 
+        precio_cargado_auto: false,
+        precio_manual: false,
+        guardar_en_lista_precio: false
+      });
+      return;
+    }
+
+    try {
+      const { preciosAPI } = await import("@/modules/precios/api/precios.api");
+      const precioVigente = await preciosAPI.getPrecioVigente(productoId, valueForm.proveedor_id);
+
+      if (precioVigente && precioVigente.precio !== null) {
+        updateDetalle(index, { 
+          producto: productoId,
+          precio_unitario: Number(precioVigente.precio),
+          precio_cargado_auto: true,
+          precio_manual: false, // BLOQUEADO
+          guardar_en_lista_precio: false
+        });
+        showAlert("Precio automático", "success", { description: "Precio cargado automáticamente desde la lista del proveedor." });
+      } else {
+        updateDetalle(index, { 
+          producto: productoId,
+          precio_unitario: "", // Limpiar input para obligar al usuario a ingresarlo si lo activa
+          precio_cargado_auto: false,
+          precio_manual: false, // BLOQUEADO por defecto
+          guardar_en_lista_precio: false
+        });
+        showAlert("Sin precio", "warning", { description: "Este producto no tiene precio configurado para este proveedor. Active 'Editar precio manualmente'." });
+      }
+    } catch (e) {
+      console.error("Error al buscar precio vigente", e);
+      // Fallback a manual si la API falla
+      updateDetalle(index, { 
+          producto: productoId,
+          precio_unitario: "",
+          precio_cargado_auto: false,
+          precio_manual: false,
+          guardar_en_lista_precio: false
+      });
+      showAlert("Error de conexión", "error", { description: "No se pudo consultar el precio del producto." });
+    }
   };
 
   /**
@@ -307,9 +362,7 @@ export function CompraForm({
                     name="producto"
                     label=""
                     value={detalle.producto || 0}
-                    onChange={(value) =>
-                      updateDetalle(index, "producto", Number(value))
-                    }
+                    onChange={(value) => handleProductoChange(index, Number(value))}
                     options={[
                       { value: 0, label: "Producto" },
                       ...productos.map(p => ({ value: p.id, label: p.nombre }))
@@ -323,7 +376,7 @@ export function CompraForm({
                   label=""
                   value={detalle.cantidad ?? ""}
                   onChange={(e) =>
-                    updateDetalle(index, "cantidad", e.target.value === "" ? "" : Number(e.target.value))
+                    updateDetalle(index, { cantidad: e.target.value === "" ? "" : Number(e.target.value) })
                   }
                   min={1}
                 />
@@ -340,10 +393,55 @@ export function CompraForm({
                   onFocus={() => setFocusedIndex(index)}
                   onBlur={() => setFocusedIndex(null)}
                   onChange={(e) => {
-                    const clean = e.target.value.replace(/[^0-9]/g, "");
-                    updateDetalle(index, "precio_unitario", Number(clean || 0));
+                    const clean = e.target.value.replace(/[^0-9.]/g, ""); // Allow decimals
+                    updateDetalle(index, { 
+                      precio_unitario: clean === "" ? "" : Number(clean)
+                    });
                   }}
+                  disabled={!detalle.precio_manual}
                 />
+                
+                {/* 🔹 Badges y Toggles de Precio Automático / Manual */}
+                <div className="col-span-5 flex items-center justify-between bg-primary-50/50 p-2 rounded border border-primary-100 text-xs mt-1 mb-2">
+                  <div className="flex items-center gap-2">
+                    {detalle.precio_cargado_auto ? (
+                      <Badge variant="success" className="text-[10px]">Precio Automático</Badge>
+                    ) : detalle.producto ? (
+                      <Badge variant="warning" className="text-[10px]">Sin precio configurado</Badge>
+                    ) : null}
+                    
+                    {detalle.producto > 0 && (
+                      <label className="flex items-center gap-1.5 cursor-pointer text-primary-600 font-medium">
+                        <input 
+                          type="checkbox" 
+                          checked={detalle.precio_manual || false}
+                          onChange={(e) => {
+                            const isManual = e.target.checked;
+                            updateDetalle(index, { 
+                              precio_manual: isManual,
+                              // Auto-check guardar_en_lista_precio solo si NO tenía precio automático
+                              guardar_en_lista_precio: isManual && !detalle.precio_cargado_auto 
+                            });
+                          }}
+                          className="rounded border-primary-300 text-accent-600 focus:ring-accent-500"
+                        />
+                        Editar precio manualmente
+                      </label>
+                    )}
+                  </div>
+                  
+                  {detalle.precio_manual && detalle.producto > 0 && (
+                    <label className="flex items-center gap-1.5 cursor-pointer text-accent-700 font-semibold bg-accent-50 px-2 py-1 rounded">
+                      <input 
+                        type="checkbox" 
+                        checked={detalle.guardar_en_lista_precio || false}
+                        onChange={(e) => updateDetalle(index, { guardar_en_lista_precio: e.target.checked })}
+                        className="rounded border-accent-300 text-accent-600 focus:ring-accent-500"
+                      />
+                      Guardar para futuras compras
+                    </label>
+                  )}
+                </div>
 
                 {/* Subtotal */}
                 <div className="font-semibold text-right text-success-600">

@@ -83,8 +83,8 @@ export default function CompraEdit() {
     for (let i = 0; i < formData.detalles.length; i++) {
       const detalle = formData.detalles[i];
       if (!detalle.producto) return { valid: false, message: `Producto #${i + 1}: Selecciona un producto` };
-      if (detalle.cantidad <= 0) return { valid: false, message: `Producto #${i + 1}: Cantidad > 0` };
-      if (detalle.precio_unitario <= 0) return { valid: false, message: `Producto #${i + 1}: Precio > 0` };
+      if (!detalle.cantidad || Number(detalle.cantidad) <= 0) return { valid: false, message: `Producto #${i + 1}: Cantidad > 0` };
+      if (!detalle.precio_unitario || Number(detalle.precio_unitario) <= 0) return { valid: false, message: `Producto #${i + 1}: Precio > 0` };
     }
     return { valid: true };
   };
@@ -106,8 +106,9 @@ export default function CompraEdit() {
         estado: formData.estado,
         detalles: formData.detalles.map((d) => ({
           producto_id: d.producto,
-          cantidad: d.cantidad,
-          precio_compra: d.precio_unitario,
+          cantidad: Number(d.cantidad) || 0,
+          precio_compra: Number(d.precio_unitario) || 0,
+          guardar_en_lista_precio: Boolean(d.guardar_en_lista_precio),
         })),
       };
 

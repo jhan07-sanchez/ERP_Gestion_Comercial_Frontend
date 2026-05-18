@@ -12,6 +12,7 @@
  */
 
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { comprasAPI } from "../api/compras.api";
 import type { AxiosError } from "axios";
 import type { Compra, CompraCreateInput, CompraUpdateInput } from "../types";
@@ -24,6 +25,7 @@ interface ApiError {
 export function useCompraActions(
   onSuccess?: (compra?: Compra) => Promise<void> | void,
 ) {
+  const queryClient = useQueryClient();
   // Estados separados para cada operación
   const [loadingCreate, setLoadingCreate] = useState(false);
   const [loadingUpdate, setLoadingUpdate] = useState(false);
@@ -51,7 +53,8 @@ export function useCompraActions(
       // Enviar directamente al API
       const newCompra = await comprasAPI.createCompra(data);
 
-
+      // Invalidar cache de precios de React Query
+      queryClient.invalidateQueries({ queryKey: ["precios"] });
 
       if (onSuccess) {
         await onSuccess();
@@ -96,7 +99,8 @@ export function useCompraActions(
       // Llamar al API
       const updatedCompra = await comprasAPI.updateCompra(id, data);
 
-
+      // Invalidar cache de precios de React Query
+      queryClient.invalidateQueries({ queryKey: ["precios"] });
 
       // Invalidar cache - recargar lista
       if (onSuccess) {

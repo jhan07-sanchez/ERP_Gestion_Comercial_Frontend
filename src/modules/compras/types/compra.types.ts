@@ -162,6 +162,7 @@ export interface CompraDetalleCreateInput {
   producto_id: number;
   cantidad: number;
   precio_compra: number;
+  guardar_en_lista_precio?: boolean;
 }
 
 // ===============================

@@ -9,6 +9,7 @@ import { Card, Button, Input, Table, Badge, PageContainer, PageHeader } from "@/
 import { useProveedor } from "../hooks/useProveedor";
 import type { ProveedorFilters } from "../types/proveedor.types";
 import { useAlert } from "@/shared/components/alerts";
+import { useDebounceValue } from "@/shared/hooks";
 import { 
     IconPlus, 
     IconSearch, 
@@ -35,17 +36,24 @@ export default function ProveedorList() {
   const { showAlert, confirm } = useAlert();
 
   const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounceValue(searchTerm, 500);
 
   // Cargar proveedores al montar
   useEffect(() => {
     fetchProveedores();
-  }, [fetchProveedores]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // Búsqueda
+  // Efecto para la búsqueda con debounce
+  useEffect(() => {
+    const filters: ProveedorFilters = debouncedSearchTerm ? { search: debouncedSearchTerm } : {};
+    applyFilters(filters);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearchTerm]);
+
+  // Manejador del input de búsqueda
   const handleSearch = (value: string) => {
     setSearchTerm(value);
-    const filters: ProveedorFilters = value ? { search: value } : {};
-    applyFilters(filters);
   };
 
   // Eliminación

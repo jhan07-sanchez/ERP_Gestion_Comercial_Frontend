@@ -16,6 +16,7 @@ import {
 } from "@/shared/components/ui";
 import { useCategorias } from "../hooks/useCategorias";
 import { useAlert } from "@/shared/components/alerts";
+import { useDebounceValue } from "@/shared/hooks";
 import {
   IconTags,
   IconSearch,
@@ -34,15 +35,17 @@ export default function CategoriasList() {
   const { showAlert, confirm } = useAlert();
 
   const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounceValue(searchTerm, 300);
 
   useEffect(() => {
     fetchCategorias();
-  }, [fetchCategorias]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const filteredCategorias = categorias.filter(
     (cat) =>
-      cat.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      cat.descripcion?.toLowerCase().includes(searchTerm.toLowerCase()),
+      cat.nombre.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+      cat.descripcion?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()),
   );
 
   const handleDelete = async (id: number) => {

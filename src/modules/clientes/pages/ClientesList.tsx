@@ -9,6 +9,7 @@ import { Card, Button, Input, Table, Badge, PageContainer, PageHeader } from "@/
 import { useClientes } from "../hooks/useClientes";
 import type { ClienteFilters, EstadoCliente } from "../types";
 import { getTipoDocumentoLabel } from "../types";
+import { useDebounceValue } from "@/shared/hooks";
 import { 
     IconUsers, 
     IconPlus, 
@@ -30,28 +31,30 @@ export default function ClienteList() {
   const navigate = useNavigate();
   const { clientes, isLoading, error, fetchClientes, applyFilters } = useClientes();
   const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounceValue(searchTerm, 500);
   const [filtroEstado, setFiltroEstado] = useState<EstadoCliente | "">("");
 
   useEffect(() => {
     fetchClientes();
-  }, [fetchClientes]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const handleSearch = (value: string) => {
-    setSearchTerm(value);
+  // Efecto para aplicar filtros con debounce en búsqueda y cambios de estado
+  useEffect(() => {
     const filters: ClienteFilters = {
-      ...(value ? { search: value } : {}),
+      ...(debouncedSearchTerm ? { search: debouncedSearchTerm } : {}),
       ...(filtroEstado ? { estado: filtroEstado } : {}),
     };
     applyFilters(filters);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearchTerm, filtroEstado]);
+
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
   };
 
   const handleFiltroEstado = (estado: EstadoCliente | "") => {
     setFiltroEstado(estado);
-    const filters: ClienteFilters = {
-      ...(searchTerm ? { search: searchTerm } : {}),
-      ...(estado ? { estado } : {}),
-    };
-    applyFilters(filters);
   };
 
   if (isLoading && clientes.length === 0) {

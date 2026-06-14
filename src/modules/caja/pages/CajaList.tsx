@@ -4,20 +4,28 @@ import { Card, Button, Input, Table, Badge, PageContainer, PageHeader } from "@/
 import { useCaja } from "../hooks/Usecaja";
 import { formatDate } from "../../../shared/utils/formatters";
 import { IconCash } from "@tabler/icons-react";
+import { useDebounceValue } from "@/shared/hooks";
 
 export default function CajaList() {
   const navigate = useNavigate();
   const { cajas, isLoading, error, fetchCajas, applyFilters } = useCaja();
   const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounceValue(searchTerm, 500);
 
   useEffect(() => {
     fetchCajas();
-  }, [fetchCajas]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Efecto para la búsqueda con debounce
+  useEffect(() => {
+    const filters = debouncedSearchTerm ? { search: debouncedSearchTerm } : {};
+    applyFilters(filters);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearchTerm]);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
-    const filters = value ? { search: value } : {};
-    applyFilters(filters);
   };
 
   if (isLoading && cajas.length === 0) {

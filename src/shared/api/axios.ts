@@ -74,9 +74,12 @@ axiosInstance.interceptors.response.use(
 
       showGlobalAlert(title, 'error', { description: message });
     } else if (!status) {
-      showGlobalAlert("Error de Conexión", "critical", {
-        description: "No se pudo conectar con el servidor. Verifica tu internet."
-      });
+      // Ignorar errores generados por peticiones canceladas o abortadas intencionalmente
+      if (!axios.isCancel(error) && error.code !== 'ERR_CANCELED') {
+        showGlobalAlert("Error de Conexión", "critical", {
+          description: "No se pudo conectar con el servidor. Verifica tu internet."
+        });
+      }
     }
 
     // Si el error es 401 (No autorizado) y no es un intento de retry

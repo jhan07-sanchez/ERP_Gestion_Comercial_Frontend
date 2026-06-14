@@ -11,7 +11,7 @@
  * });
  */
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import type { PaginatedResponse } from "@shared/types";
 
 interface UsePaginatedListOptions<T, F extends object> {
@@ -47,17 +47,24 @@ export function usePaginatedList<T, F extends object = object>({
   const [totalCount, setTotalCount] = useState(0);
   const [filters, setFilters] = useState<F>({} as F);
 
+  const fetchFnRef = useRef(fetchFn);
+  useEffect(() => {
+    fetchFnRef.current = fetchFn;
+  }, [fetchFn]);
+
   const fetchItems = useCallback(
     async (page = 1, currentFilters: F = filters) => {
       setIsLoading(true);
       setError(null);
 
       try {
-        const response = await fetchFn(currentFilters, page);
+        const response = await fetchFnRef.current(currentFilters, page);
         setItems(response.results ?? []);
         setCurrentPage(page);
         setTotalCount(response.count);
       } catch (err) {
+        setItems([]);
+        setTotalCount(0);
         setError(
           err instanceof Error
             ? err.message
@@ -67,7 +74,7 @@ export function usePaginatedList<T, F extends object = object>({
         setIsLoading(false);
       }
     },
-    [filters, fetchFn, entityName],
+    [filters, entityName],
   );
 
   const applyFilters = useCallback(

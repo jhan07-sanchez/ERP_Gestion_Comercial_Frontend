@@ -2,7 +2,7 @@
  * 📄 PÁGINA: LISTADO CENTRALIZADO DE DOCUMENTOS
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   PageContainer, 
   PageHeader, 
@@ -25,6 +25,7 @@ import { TIPO_DOCUMENTO, ESTADO_DOCUMENTO } from '../types/documentos.types';
 import type { TipoDocumento, DocumentoList } from '../types/documentos.types';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { useDebounceValue } from '@/shared/hooks';
 
 const DocumentosList: React.FC = () => {
   const { 
@@ -34,6 +35,14 @@ const DocumentosList: React.FC = () => {
     applyFilters, 
     handleDownloadPDF 
   } = useDocumentos();
+
+  const [searchTerm, setSearchTerm] = useState(filters.search || "");
+  const debouncedSearchTerm = useDebounceValue(searchTerm, 500);
+
+  useEffect(() => {
+    applyFilters({ ...filters, search: debouncedSearchTerm });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearchTerm]);
 
   // Función para obtener variantes de Badge por tipo
   const getTipoVariant = (tipo: string) => {
@@ -58,8 +67,8 @@ const DocumentosList: React.FC = () => {
               label="Buscar documento"
               placeholder="Número, cliente o UUID..."
               leftIcon={<IconSearch size={18} />}
-              value={filters.search}
-              onChange={(e) => applyFilters({ ...filters, search: e.target.value })}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           
@@ -80,7 +89,10 @@ const DocumentosList: React.FC = () => {
           <div className="flex justify-end">
              <Button 
                variant="secondary" 
-               onClick={() => applyFilters({ tipo: '', search: '' })}
+               onClick={() => {
+                 setSearchTerm("");
+                 applyFilters({ tipo: '', search: '' });
+               }}
                className="w-full md:w-auto"
                leftIcon={<IconFilter size={18} />}
              >

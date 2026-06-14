@@ -29,7 +29,7 @@ export const ventasAPI = {
   ): Promise<PaginatedResponse<VentaList>> => {
     const params = new URLSearchParams();
 
-    if (filters?.search) params.append("search", filters.search);
+    if (filters?.search) params.append("search", filters.search.trim());
     if (filters?.estado) params.append("estado", filters.estado);
     if (filters?.cliente_id)
       params.append("cliente_id", String(filters.cliente_id));

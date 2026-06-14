@@ -7,6 +7,7 @@ import { formatCurrency, truncateProductos, formatDate } from "@/shared/utils/fo
 import { useAlert } from "@/shared/components/alerts";
 import { useCajaStore } from "@/modules/caja/store/caja.store";
 import { IconShoppingCart, IconPlus, IconSearch, IconX, IconEye } from "@tabler/icons-react";
+import { useDebounceValue } from "@/shared/hooks";
 
 const estadoVariantMap: Record<EstadoCompra, "success" | "warning" | "danger" | "gray"> = {
   COMPLETADA: "success",
@@ -29,15 +30,22 @@ export default function ComprasList() {
   const { isCajaAbierta } = useCajaStore();
   const { showAlert, prompt: alertPrompt } = useAlert();
   const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounceValue(searchTerm, 500);
 
   useEffect(() => {
     fetchCompras();
-  }, [fetchCompras]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Efecto para la búsqueda con debounce
+  useEffect(() => {
+    const filters: CompraFilters = debouncedSearchTerm ? { search: debouncedSearchTerm } : {};
+    applyFilters(filters);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearchTerm]);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
-    const filters: CompraFilters = value ? { search: value } : {};
-    applyFilters(filters);
   };
 
 

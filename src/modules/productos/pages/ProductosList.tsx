@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Button, Input, Table, Badge, PageContainer, PageHeader } from "@/shared/components/ui";
 import { useSuscripcion } from "@/modules/auth/hooks/useSuscripcion";
@@ -6,6 +6,7 @@ import { useProductosList, useProductoActions } from "../hooks";
 import type { ProductoFilters } from "../types";
 import { formatCurrency } from "@/shared/utils/formatters";
 import { useAlert } from "@/shared/components/alerts";
+import { useDebounceValue } from "@/shared/hooks";
 import {
   IconPackage,
   IconPlus,
@@ -33,13 +34,19 @@ export default function ProductosList() {
   });
 
   const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounceValue(searchTerm, 500);
 
   // La carga inicial y persistencia están ahora centralizadas en useProductosList
 
+  // Efecto para la búsqueda con debounce
+  useEffect(() => {
+    const filters: ProductoFilters = debouncedSearchTerm ? { search: debouncedSearchTerm } : {};
+    applyFilters(filters);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearchTerm]);
+
   const handleSearch = (value: string) => {
     setSearchTerm(value);
-    const filters: ProductoFilters = value ? { search: value } : {};
-    applyFilters(filters);
   };
 
   const handleDelete = async (id: number) => {
@@ -87,7 +94,11 @@ export default function ProductosList() {
             onClick={() => navigate("/productos/crear")}
             disabled={isReadOnly}
             className="w-full sm:w-auto shadow-lg shadow-primary-100"
-            title={isReadOnly ? "Acción bloqueada por suscripción expirada" : "Nuevo Producto"}
+            title={
+              isReadOnly
+                ? "Acción bloqueada por suscripción expirada"
+                : "Nuevo Producto"
+            }
           >
             <IconPlus size={18} className="mr-2" />
             Nuevo Producto
@@ -98,9 +109,14 @@ export default function ProductosList() {
       {error ? (
         <Card className="border-danger-100 bg-danger-50/30">
           <Card.Content className="p-6 text-center">
-            <IconAlertCircle className="mx-auto text-danger-500 mb-2" size={32} />
+            <IconAlertCircle
+              className="mx-auto text-danger-500 mb-2"
+              size={32}
+            />
             <p className="text-danger-600 font-medium mb-4">{error}</p>
-            <Button onClick={() => fetchProductos()} variant="secondary">Reintentar</Button>
+            <Button onClick={() => fetchProductos()} variant="secondary">
+              Reintentar
+            </Button>
           </Card.Content>
         </Card>
       ) : (
@@ -116,7 +132,7 @@ export default function ProductosList() {
                   placeholder="Buscar por nombre, código o descripción..."
                   value={searchTerm}
                   onChange={(e) => handleSearch(e.target.value)}
-                  className="pl-11 border-0 focus:ring-0 h-14 text-sm bg-transparent"
+                  className="pl-10 bg-primary-50/30 border-primary-100 focus:bg-white transition-all"
                 />
               </div>
             </Card.Content>
@@ -130,9 +146,12 @@ export default function ProductosList() {
                   <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-4 text-primary-400">
                     <IconPackage size={32} />
                   </div>
-                  <h3 className="text-lg font-bold text-primary-900">No hay productos</h3>
+                  <h3 className="text-lg font-bold text-primary-900">
+                    No hay productos
+                  </h3>
                   <p className="text-primary-500 text-sm max-w-xs mx-auto mt-1 mb-6">
-                    Aún no has registrado productos. Comienza creando uno ahora mismo.
+                    Aún no has registrado productos. Comienza creando uno ahora
+                    mismo.
                   </p>
                   <Button onClick={() => navigate("/productos/crear")}>
                     Crear primer producto
@@ -145,16 +164,25 @@ export default function ProductosList() {
                       <Table.Row>
                         <Table.Head className="w-[120px]">Código</Table.Head>
                         <Table.Head>Producto</Table.Head>
-                        <Table.Head className="hidden md:table-cell">Categoría</Table.Head>
+                        <Table.Head className="hidden md:table-cell">
+                          Categoría
+                        </Table.Head>
                         <Table.Head className="text-right">Precio</Table.Head>
                         <Table.Head className="text-center">Stock</Table.Head>
-                        <Table.Head className="text-center w-[100px]">Estado</Table.Head>
-                        <Table.Head className="text-right w-[100px]">Acciones</Table.Head>
+                        <Table.Head className="text-center w-[100px]">
+                          Estado
+                        </Table.Head>
+                        <Table.Head className="text-right w-[100px]">
+                          Acciones
+                        </Table.Head>
                       </Table.Row>
                     </Table.Header>
                     <Table.Body>
                       {productos.map((producto) => (
-                        <Table.Row key={producto.id} className="hover:bg-primary-50/20">
+                        <Table.Row
+                          key={producto.id}
+                          className="hover:bg-primary-50/20"
+                        >
                           <Table.Cell>
                             <span className="font-mono text-xs font-bold text-primary-400 bg-primary-50 px-2 py-0.5 rounded border border-primary-100 uppercase tracking-tighter">
                               <span>{producto.codigo || "S/C"}</span>
@@ -166,14 +194,19 @@ export default function ProductosList() {
                                 <span>{producto.nombre}</span>
                               </span>
                               <span className="text-xs text-primary-400 md:hidden italic">
-                                <span>{producto.categoria_info?.nombre || "General"}</span>
+                                <span>
+                                  {producto.categoria_info?.nombre || "General"}
+                                </span>
                               </span>
                             </div>
                           </Table.Cell>
                           <Table.Cell className="hidden md:table-cell">
                             <div className="flex items-center gap-1.5 text-xs text-primary-600 font-medium">
                               <IconTag size={12} className="text-primary-400" />
-                              <span>{producto.categoria_info?.nombre || "Sin categoría"}</span>
+                              <span>
+                                {producto.categoria_info?.nombre ||
+                                  "Sin categoría"}
+                              </span>
                             </div>
                           </Table.Cell>
                           <Table.Cell className="text-right font-black text-primary-900">
@@ -181,16 +214,21 @@ export default function ProductosList() {
                           </Table.Cell>
                           <Table.Cell className="text-center">
                             <span
-                              className={`inline-flex items-center justify-center min-w-[32px] px-2 py-0.5 rounded-lg text-xs font-black ${(producto.stock_actual || 0) <= (producto.stock_minimo || 0)
-                                ? "bg-danger-100 text-danger-700 border border-danger-200"
-                                : "bg-success-100 text-success-700 border border-success-200"
-                                }`}
+                              className={`inline-flex items-center justify-center min-w-[32px] px-2 py-0.5 rounded-lg text-xs font-black ${
+                                (producto.stock_actual || 0) <=
+                                (producto.stock_minimo || 0)
+                                  ? "bg-danger-100 text-danger-700 border border-danger-200"
+                                  : "bg-success-100 text-success-700 border border-success-200"
+                              }`}
                             >
                               <span>{producto.stock_actual || 0}</span>
                             </span>
                           </Table.Cell>
                           <Table.Cell className="text-center">
-                            <Badge variant={producto.estado ? "success" : "danger"} className="text-xs opacity-80 uppercase font-black px-2">
+                            <Badge
+                              variant={producto.estado ? "success" : "danger"}
+                              className="text-xs opacity-80 uppercase font-black px-2"
+                            >
                               {producto.estado ? "Activo" : "Inactivo"}
                             </Badge>
                           </Table.Cell>
@@ -200,7 +238,9 @@ export default function ProductosList() {
                                 size="sm"
                                 variant="secondary"
                                 iconOnly
-                                onClick={() => navigate(`/productos/${producto.id}/editar`)}
+                                onClick={() =>
+                                  navigate(`/productos/${producto.id}/editar`)
+                                }
                                 title="Editar"
                               >
                                 <IconEdit size={14} />
@@ -212,7 +252,9 @@ export default function ProductosList() {
                                 disabled={isReadOnly}
                                 onClick={() => handleDelete(producto.id)}
                                 className="bg-danger-50 text-danger-600 hover:bg-danger-600 hover:text-white border-none"
-                                title={isReadOnly ? "Acción bloqueada" : "Eliminar"}
+                                title={
+                                  isReadOnly ? "Acción bloqueada" : "Eliminar"
+                                }
                               >
                                 <IconTrash size={14} />
                               </Button>

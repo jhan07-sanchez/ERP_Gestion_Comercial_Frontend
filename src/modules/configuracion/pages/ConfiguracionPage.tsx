@@ -112,7 +112,7 @@ const ConfiguracionPage: React.FC = () => {
                                     </span>
                                     <div className="text-left">
                                         <p className="font-black truncate uppercase tracking-tight leading-none">{tab.label}</p>
-                                        <p className={`text-xs opacity-80 font-bold uppercase tracking-widest mt-1 opacity-60 hidden lg:block ${activeTab === tab.id ? 'text-white' : 'text-primary-400'}`}>
+                                        <p className={`text-xs font-bold uppercase tracking-widest mt-1 opacity-60 hidden lg:block ${activeTab === tab.id ? 'text-white' : 'text-primary-400'}`}>
                                             {tab.desc}
                                         </p>
                                     </div>

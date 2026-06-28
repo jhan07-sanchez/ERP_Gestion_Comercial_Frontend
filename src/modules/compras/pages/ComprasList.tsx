@@ -16,7 +16,17 @@ const estadoVariantMap: Record<EstadoCompra, "success" | "warning" | "danger" | 
   ANULADA: "danger",
 };
 
-export default function ComprasList() {
+interface ComprasListProps {
+  title?: string;
+  subtitle?: string;
+  defaultEstado?: EstadoCompra | "";
+}
+
+export default function ComprasList({ 
+  title = "Compras", 
+  subtitle = "Gestiona las compras realizadas a proveedores",
+  defaultEstado = ""
+}: ComprasListProps) {
   const navigate = useNavigate();
   const {
     compras,
@@ -32,6 +42,13 @@ export default function ComprasList() {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounceValue(searchTerm, 500);
 
+  // Sync prop changes
+  useEffect(() => {
+    applyFilters({
+      ...(defaultEstado ? { estado: defaultEstado as EstadoCompra } : {})
+    });
+  }, [defaultEstado, applyFilters]);
+
   useEffect(() => {
     fetchCompras();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -39,7 +56,10 @@ export default function ComprasList() {
 
   // Efecto para la búsqueda con debounce
   useEffect(() => {
-    const filters: CompraFilters = debouncedSearchTerm ? { search: debouncedSearchTerm } : {};
+    const filters: CompraFilters = {
+      ...(debouncedSearchTerm ? { search: debouncedSearchTerm } : {}),
+      ...(defaultEstado ? { estado: defaultEstado as EstadoCompra } : {})
+    };
     applyFilters(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchTerm]);
@@ -78,8 +98,8 @@ export default function ComprasList() {
   return (
     <PageContainer>
       <PageHeader
-        title="Compras"
-        subtitle="Gestiona las compras realizadas a proveedores"
+        title={title}
+        subtitle={subtitle}
         icon={<IconShoppingCart size={24} />}
         actions={
           <Button

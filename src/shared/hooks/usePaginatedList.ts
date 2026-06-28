@@ -52,13 +52,19 @@ export function usePaginatedList<T, F extends object = object>({
     fetchFnRef.current = fetchFn;
   }, [fetchFn]);
 
+  const filtersRef = useRef(filters);
+  useEffect(() => {
+    filtersRef.current = filters;
+  }, [filters]);
+
   const fetchItems = useCallback(
-    async (page = 1, currentFilters: F = filters) => {
+    async (page = 1, currentFilters?: F) => {
+      const activeFilters = currentFilters !== undefined ? currentFilters : filtersRef.current;
       setIsLoading(true);
       setError(null);
 
       try {
-        const response = await fetchFnRef.current(currentFilters, page);
+        const response = await fetchFnRef.current(activeFilters, page);
         setItems(response.results ?? []);
         setCurrentPage(page);
         setTotalCount(response.count);
@@ -74,7 +80,7 @@ export function usePaginatedList<T, F extends object = object>({
         setIsLoading(false);
       }
     },
-    [filters, entityName],
+    [entityName],
   );
 
   const applyFilters = useCallback(

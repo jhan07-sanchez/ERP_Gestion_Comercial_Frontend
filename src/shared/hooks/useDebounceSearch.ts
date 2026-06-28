@@ -31,6 +31,7 @@ interface UseDebounceSearchReturn<T> {
   showDropdown: boolean;
   setShowDropdown: (show: boolean) => void;
   clear: () => void;
+  select: (displayValue: string) => void;
 }
 
 export function useDebounceSearch<T>({
@@ -43,8 +44,14 @@ export function useDebounceSearch<T>({
   const [isSearching, setIsSearching] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const skipNextRef = useRef(false);
 
   useEffect(() => {
+    if (skipNextRef.current) {
+      skipNextRef.current = false;
+      return;
+    }
+
     if (!searchTerm.trim() || searchTerm.trim().length < minLength) {
       setResults([]);
       setShowDropdown(false);
@@ -77,6 +84,17 @@ export function useDebounceSearch<T>({
     setShowDropdown(false);
   }, []);
 
+  /**
+   * Seleccionar un resultado: establece el término de búsqueda
+   * y cierra el dropdown SIN re-disparar la búsqueda.
+   */
+  const select = useCallback((displayValue: string) => {
+    skipNextRef.current = true;
+    setSearchTerm(displayValue);
+    setResults([]);
+    setShowDropdown(false);
+  }, []);
+
   return {
     results,
     isSearching,
@@ -85,5 +103,6 @@ export function useDebounceSearch<T>({
     showDropdown,
     setShowDropdown,
     clear,
+    select,
   };
 }

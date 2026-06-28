@@ -1,6 +1,6 @@
 import React from "react";
 // src/components/alerts/types.ts
-export type AlertType = 'success' | 'error' | 'warning' | 'info' | 'critical';
+export type AlertType = 'success' | 'error' | 'warning' | 'info' | 'critical' | 'danger';
 
 export interface AlertOptions {
     id?: string;

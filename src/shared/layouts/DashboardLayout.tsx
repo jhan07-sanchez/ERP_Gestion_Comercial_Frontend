@@ -22,7 +22,7 @@ const SIDEBAR_EXPANDED = 260;
 const SIDEBAR_COLLAPSED = 72;
 
 export default function DashboardLayout() {
-  const { sidebarOpen, isMobile, isFixed } = useResponsiveSidebar();
+  const { sidebarOpen, isMobile } = useResponsiveSidebar();
 
   // Calcular padding-left basado en el estado responsive
   const paddingLeft = isMobile

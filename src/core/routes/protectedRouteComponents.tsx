@@ -46,6 +46,19 @@ import { CajaMovimientos } from '@/modules/caja/pages';
 import { CajaArqueo } from '@/modules/caja/pages';
 import { CajaDashboard } from '@/modules/caja/pages';
 
+import {
+  DashboardFacturacion, 
+  FacturasVentaList,
+  FacturaVentaCreate,
+  FacturaVentaEdit,
+  FacturaVentaDetalle,
+  FacturasCompraList,
+  PagosList,
+  NotasList,
+  ResolucionesList,
+  ImpuestosList
+} from '@/modules/facturacion/pages';
+
 
 import { AuditPage as AuditoriaLogs } from '@/modules/auditoria';
 import { ConfiguracionPage } from '@/modules/configuracion';
@@ -56,6 +69,7 @@ import PrecioCreate from '@/modules/precios/pages/PrecioCreate';
 import PrecioEdit from '@/modules/precios/pages/PrecioEdit';
 import PrecioDetalle from '@/modules/precios/pages/PrecioDetalle';
 
+
 type RouteComponentProps = Record<string, string | undefined>;
 
 export const protectedRouteComponents: Record<
@@ -65,6 +79,7 @@ export const protectedRouteComponents: Record<
   Dashboard,
   DashboardKPIs: DashboardKPIsPage,
   DashboardAnalytics: AnalyticsDashboard,
+  DashboardFacturacion,
 
   VentasList,
   VentaCreate, // ← NUEVO
@@ -113,4 +128,13 @@ export const protectedRouteComponents: Record<
   PrecioEdit,
   PrecioDetalle,
 
+  FacturasVentaList,
+  FacturaVentaCreate,
+  FacturaVentaEdit,
+  FacturaVentaDetalle,
+  PagosList,
+  NotasList,
+  ResolucionesList: ResolucionesList as unknown as ComponentType<RouteComponentProps>,
+  ImpuestosList: ImpuestosList as unknown as ComponentType<RouteComponentProps>,
+  FacturasCompraList
 };

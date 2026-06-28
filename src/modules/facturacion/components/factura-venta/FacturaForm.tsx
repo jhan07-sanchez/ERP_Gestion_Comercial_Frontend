@@ -29,12 +29,13 @@ export function FacturaForm({
   onCancel,
 }: FacturaFormProps) {
   const { showAlert } = useAlert();
-  const { getImpuesto, getSimbolo, getMoneda, getPermitirVentaSinStock } = useConfigStore();
+  const { getImpuesto, getSimbolo, getMoneda, getPermitirVentaSinStock, getCondicionesPago } = useConfigStore();
 
   const simbolo = getSimbolo();
   const moneda = getMoneda();
   const impuestoPorcentaje = getImpuesto();
   const permitirVentaSinStock = getPermitirVentaSinStock();
+  const condicionesPago = getCondicionesPago();
 
   const {
     formData,
@@ -207,6 +208,19 @@ export function FacturaForm({
               <h3 className="text-lg font-bold text-primary-900">Fecha de Factura de Vencimiento</h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Condición de Pago</label>
+                <select
+                  value={formData.condicion_pago_id || ""}
+                  onChange={(e) => updateCampo("condicion_pago_id", e.target.value ? Number(e.target.value) : undefined)}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-accent-500"
+                >
+                  <option value="">Seleccione una condición...</option>
+                  {condicionesPago.map(cp => (
+                    <option key={cp.id} value={cp.id}>{cp.nombre}</option>
+                  ))}
+                </select>
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Fecha de Vencimiento</label>
                 <input

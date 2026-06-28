@@ -59,6 +59,27 @@ export interface Configuracion {
     terminos_condiciones: string;
     tasa_cambio: string | number;
 
+    // Resolución DIAN
+    numero_resolucion_factura: string | null;
+    rango_inicial_factura: number;
+    rango_final_factura: number;
+    fecha_inicio_resolucion: string | null;
+    fecha_fin_resolucion: string | null;
+
+    // Plantillas
+    plantilla_factura_pdf: string;
+    plantilla_correo_factura: string;
+
+    // Contabilidad
+    cuenta_ventas: string;
+    cuenta_impuestos: string;
+    cuenta_cxc_clientes: string;
+
+    // Master Payload
+    impuestos_activos: Impuesto[];
+    metodos_pago_activos: MetodoPago[];
+    condiciones_pago_activas: CondicionPago[];
+
     // Metadata
     fecha_creacion: string;
     fecha_actualizacion: string;
@@ -110,4 +131,28 @@ export interface ResetConsecutivoInput {
     tipo: 'factura' | 'compra' | 'recibo';
     nuevo_consecutivo: number;
     confirmar: boolean;
+}
+
+export interface Impuesto {
+    id: number;
+    nombre: string;
+    porcentaje: string | number;
+    activo: boolean;
+}
+
+export interface MetodoPago {
+    id: number;
+    nombre: string;
+    activo: boolean;
+    es_efectivo: boolean;
+    tipo: 'CONTADO' | 'CREDITO';
+    tipo_display: string;
+}
+
+export interface CondicionPago {
+    id: number;
+    nombre: string;
+    dias_plazo: number;
+    activo: boolean;
+    es_contado: boolean;
 }

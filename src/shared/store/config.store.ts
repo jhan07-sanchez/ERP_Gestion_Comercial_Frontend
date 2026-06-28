@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { configuracionAPI } from '@/modules/configuracion/api/configuracion.api';
-import type { Configuracion } from '@/modules/configuracion/types/configuracion.types';
+import type { Configuracion, Impuesto, MetodoPago, CondicionPago } from '@/modules/configuracion/types/configuracion.types';
 
 interface ConfigState {
     config: Configuracion | null;
@@ -20,6 +20,11 @@ interface ConfigState {
     getTasaCambio: () => number;
     convertPrice: (price: number) => number;
     getLogo: () => string | null;
+
+    // Master Payload Getters
+    getImpuestos: () => Impuesto[];
+    getMetodosPago: () => MetodoPago[];
+    getCondicionesPago: () => CondicionPago[];
 }
 
 export const useConfigStore = create<ConfigState>((set, get) => ({
@@ -88,4 +93,9 @@ export const useConfigStore = create<ConfigState>((set, get) => ({
     if (config.moneda === "COP" || rate === 0) return price;
     return price / rate;
   },
+
+  // Master Payload Getters
+  getImpuestos: () => get().config?.impuestos_activos || [],
+  getMetodosPago: () => get().config?.metodos_pago_activos || [],
+  getCondicionesPago: () => get().config?.condiciones_pago_activas || [],
 }));

@@ -143,6 +143,7 @@ export interface FacturaDetalleCreateInput {
 
 export interface FacturaCreateInput {
   cliente_id: number;
+  condicion_pago_id?: number;
   vendedor_id?: number;
   observaciones?: string;
   fecha_emision?: string;
@@ -156,6 +157,7 @@ export interface FacturaCreateInput {
 
 export interface FacturaUpdateInput {
   cliente_id?: number;
+  condicion_pago_id?: number;
   vendedor_id?: number;
   observaciones?: string;
   fecha_emision?: string;
@@ -269,6 +271,7 @@ export interface FacturaFormState {
   id?: number;
   numero?: string | null;
   cliente_id: number;
+  condicion_pago_id?: number;
   vendedor_id?: number;
   estado?: EstadoFactura;
   fecha_vencimiento?: string;

@@ -11,6 +11,7 @@ export const TIPO_DOCUMENTO = {
 export type TipoDocumento = keyof typeof TIPO_DOCUMENTO;
 
 export const ESTADO_DOCUMENTO = {
+  BORRADOR: 'BORRADOR',
   EMITIDO: 'EMITIDO',
   ANULADO: 'ANULADO',
 } as const;

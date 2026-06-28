@@ -59,9 +59,9 @@ export default function FacturaVentaDetalle() {
     }
   };
 
-  const handlePago = async (metodo: string, monto: number) => {
+  const handlePago = async (metodoId: number, monto: number) => {
     if (!id) return;
-    const success = await registrarPago(Number(id), { metodo_pago: metodo, monto });
+    const success = await registrarPago(Number(id), { metodo_pago_id: metodoId, monto });
     if (success) {
       showAlert("Pago Registrado", "success", { description: "El pago se guardó correctamente." });
       setShowPagoModal(false);

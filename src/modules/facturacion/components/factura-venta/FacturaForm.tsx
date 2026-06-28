@@ -212,7 +212,18 @@ export function FacturaForm({
                 <label className="block text-sm font-medium text-gray-700 mb-2">Condición de Pago</label>
                 <select
                   value={formData.condicion_pago_id || ""}
-                  onChange={(e) => updateCampo("condicion_pago_id", e.target.value ? Number(e.target.value) : undefined)}
+                  onChange={(e) => {
+                    const value = e.target.value ? Number(e.target.value) : undefined;
+                    updateCampo("condicion_pago_id", value);
+                    if (value) {
+                      const condicion = condicionesPago.find(cp => cp.id === value);
+                      if (condicion) {
+                        const date = new Date();
+                        date.setDate(date.getDate() + (condicion.dias_plazo || 0));
+                        updateCampo("fecha_vencimiento", date.toISOString().split("T")[0]);
+                      }
+                    }
+                  }}
                   className="w-full rounded-lg border border-gray-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-accent-500"
                 >
                   <option value="">Seleccione una condición...</option>

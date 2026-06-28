@@ -13,11 +13,12 @@ import {
   IconCheck
 } from '@tabler/icons-react';
 import { usePagoModal } from '../hooks/usePagoModal';
+import { useConfigStore } from '@shared/store/config.store';
 
 interface PagoModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: (metodo: string, monto: number, montoRecibido: number, vuelto: number) => void;
+  onConfirm: (metodoId: number, monto: number, montoRecibido: number, vuelto: number) => void;
   total: number;
   saldoPendiente?: number;
   submitting?: boolean;
@@ -26,6 +27,9 @@ interface PagoModalProps {
 
 export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, submitting = false, isCajaAbierta = true }: PagoModalProps) {
   
+  const { getMetodosPago } = useConfigStore();
+  const metodosDisponiblesBackend = getMetodosPago();
+
   const {
     metodo,
     setMetodo,
@@ -39,7 +43,7 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
     montoPagarValido,
     montoRecibidoValido,
     esValido
-  } = usePagoModal(total, saldoPendiente);
+  } = usePagoModal(total, saldoPendiente, metodosDisponiblesBackend);
 
   if (!isOpen) return null;
 
@@ -59,14 +63,21 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
     setMontoRecibido(isNaN(numeric) ? 0 : numeric);
   };
 
-  const metodosDisponibles: { value: string; label: string; icon: React.ReactNode }[] = [
-    { value: "EFECTIVO", label: "Efectivo", icon: <IconCash size={24} /> },
-    { value: "TARJETA", label: "Tarjeta", icon: <IconCreditCard size={24} /> },
-    { value: "TRANSFERENCIA", label: "Transfer.", icon: <IconBuildingBank size={24} /> },
-    { value: "YAPE", label: "Yape", icon: <IconDeviceMobile size={24} /> },
-    { value: "PLIN", label: "Plin", icon: <IconDeviceMobile size={24} /> },
-    { value: "CREDITO", label: "Crédito", icon: <IconBook size={24} /> },
-  ];
+  const getIcon = (nombre: string) => {
+    const lower = nombre.toLowerCase();
+    if (lower.includes('efectivo')) return <IconCash size={24} />;
+    if (lower.includes('tarjeta')) return <IconCreditCard size={24} />;
+    if (lower.includes('transferencia')) return <IconBuildingBank size={24} />;
+    if (lower.includes('yape') || lower.includes('plin')) return <IconDeviceMobile size={24} />;
+    if (lower.includes('credito') || lower.includes('crédito')) return <IconBook size={24} />;
+    return <IconCash size={24} />;
+  };
+
+  const metodosDisponibles = metodosDisponiblesBackend.map(m => ({
+    value: m.id.toString(),
+    label: m.nombre,
+    icon: getIcon(m.nombre)
+  }));
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Procesar Pago de Factura">
@@ -169,7 +180,7 @@ export function PagoModal({ isOpen, onClose, onConfirm, total, saldoPendiente, s
 
       <div className="mt-8 pt-5 border-t border-primary-100 flex flex-col sm:flex-row gap-3 shrink-0">
         <Button type="button" variant="secondary" className="flex-1 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs h-auto" onClick={onClose} disabled={submitting}>Cancelar</Button>
-        <Button type="button" className={`flex-1 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs h-auto shadow-lg transition-all ${(esValido && isCajaAbierta) ? 'bg-accent-600 hover:bg-accent-700 shadow-accent-200' : 'bg-primary-200'}`} onClick={() => onConfirm(metodo, montoPagar, esEfectivo ? montoRecibido : montoPagar, esEfectivo ? vuelto : 0)} disabled={!esValido || submitting || !isCajaAbierta} isLoading={submitting}>
+        <Button type="button" className={`flex-1 py-4 rounded-2xl font-bold uppercase tracking-widest text-xs h-auto shadow-lg transition-all ${(esValido && isCajaAbierta) ? 'bg-accent-600 hover:bg-accent-700 shadow-accent-200' : 'bg-primary-200'}`} onClick={() => onConfirm(Number(metodo), montoPagar, esEfectivo ? montoRecibido : montoPagar, esEfectivo ? vuelto : 0)} disabled={!esValido || submitting || !isCajaAbierta} isLoading={submitting}>
           <div className="flex items-center justify-center gap-2">{esValido && !submitting && <IconCheck size={18} />} Confirmar Pago</div>
         </Button>
       </div>

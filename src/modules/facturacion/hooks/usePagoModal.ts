@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { FacturacionService } from '../services/facturacionService';
+import type { MetodoPago } from '@/modules/configuracion/types/configuracion.types';
 
-export function usePagoModal(total: number, saldoPendiente?: number) {
+export function usePagoModal(total: number, saldoPendiente?: number, metodos: MetodoPago[] = []) {
   const maxPagar = saldoPendiente !== undefined ? saldoPendiente : total;
   
-  const [metodo, setMetodo] = useState<string>("EFECTIVO");
+  const defaultMetodo = metodos.length > 0 ? metodos[0].id.toString() : "1";
+  const [metodo, setMetodo] = useState<string>(defaultMetodo);
   const [montoPagar, setMontoPagar] = useState<number>(maxPagar);
   const [montoRecibido, setMontoRecibido] = useState<number>(0);
 
@@ -14,11 +16,12 @@ export function usePagoModal(total: number, saldoPendiente?: number) {
     setPrevMaxPagar(maxPagar);
     setMontoPagar(maxPagar);
     setMontoRecibido(0);
-    setMetodo("EFECTIVO");
+    setMetodo(defaultMetodo);
   }
 
-  const esEfectivo = metodo === "EFECTIVO";
-  const esCredito = metodo === "CREDITO";
+  const selectedMetodoObj = metodos.find(m => m.id.toString() === metodo);
+  const esEfectivo = selectedMetodoObj?.es_efectivo || false;
+  const esCredito = selectedMetodoObj?.tipo === 'CREDITO';
 
   const vuelto = esEfectivo ? FacturacionService.calcularVuelto(montoPagar, montoRecibido) : 0;
 

@@ -174,7 +174,7 @@ export interface AnularFacturaInput {
 }
 
 export interface RegistrarPagoInput {
-  metodo_pago: string;
+  metodo_pago_id: number;
   monto: number;
   referencia?: string;
   observaciones?: string;

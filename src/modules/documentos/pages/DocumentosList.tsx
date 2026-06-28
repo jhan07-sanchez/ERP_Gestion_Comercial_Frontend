@@ -158,7 +158,11 @@ const DocumentosList: React.FC = () => {
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <Badge variant={doc.estado === ESTADO_DOCUMENTO.ANULADO ? 'danger' : 'success'}>
+                    <Badge variant={
+                      doc.estado === ESTADO_DOCUMENTO.ANULADO ? 'danger' :
+                      doc.estado === ESTADO_DOCUMENTO.BORRADOR ? 'warning' :
+                      'success'
+                    }>
                       {doc.estado_display}
                     </Badge>
                   </Table.Cell>

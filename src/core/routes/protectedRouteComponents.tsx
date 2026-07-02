@@ -47,7 +47,7 @@ import { CajaArqueo } from '@/modules/caja/pages';
 import { CajaDashboard } from '@/modules/caja/pages';
 
 import {
-  DashboardFacturacion, 
+  DashboardFacturacion,
   FacturasVentaList,
   FacturaVentaCreate,
   FacturaVentaEdit,
@@ -59,7 +59,6 @@ import {
   ImpuestosList
 } from '@/modules/facturacion/pages';
 
-
 import { AuditPage as AuditoriaLogs } from '@/modules/auditoria';
 import { ConfiguracionPage } from '@/modules/configuracion';
 import DocumentosList from '@/modules/documentos/pages/DocumentosList';
@@ -68,6 +67,7 @@ import PrecioListPage from '@/modules/precios/pages/PreciosListPage';
 import PrecioCreate from '@/modules/precios/pages/PrecioCreate';
 import PrecioEdit from '@/modules/precios/pages/PrecioEdit';
 import PrecioDetalle from '@/modules/precios/pages/PrecioDetalle';
+import { CondicionesPagoPage } from '@/modules/configuracion';
 
 
 type RouteComponentProps = Record<string, string | undefined>;
@@ -136,5 +136,7 @@ export const protectedRouteComponents: Record<
   NotasList,
   ResolucionesList: ResolucionesList as unknown as ComponentType<RouteComponentProps>,
   ImpuestosList: ImpuestosList as unknown as ComponentType<RouteComponentProps>,
-  FacturasCompraList
+  FacturasCompraList,
+
+  CondicionesPagoPage,
 };

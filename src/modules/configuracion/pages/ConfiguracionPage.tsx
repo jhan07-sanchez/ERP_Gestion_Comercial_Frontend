@@ -23,7 +23,9 @@ import {
     IconCategory
 } from '@tabler/icons-react';
 
-type TabType = 'empresa' | 'sistema' | 'documentacion' | 'seguridad' | 'metodos-pago';
+import CondicionesPagoPage from './CondicionesPagoPage';
+
+type TabType = 'empresa' | 'sistema' | 'documentacion' | 'seguridad' | 'metodos-pago' | 'condiciones-pago';
 
 const ConfiguracionPage: React.FC = () => {
     const { config, isLoading, isSaving, error, updateConfig, resetConsecutivo } = useConfiguracion();
@@ -62,6 +64,7 @@ const ConfiguracionPage: React.FC = () => {
         { id: 'documentacion', label: 'Documentación', icon: <IconFileText size={18} />, desc: 'Numeración y folios' },
         { id: 'seguridad', label: 'Seguridad', icon: <IconShieldLock size={18} />, desc: 'Accesos y auditoría' },
         { id: 'metodos-pago', label: 'Métodos de Pago', icon: <IconFileText size={18} />, desc: 'Configura métodos de pago' },
+        { id: 'condiciones-pago', label: 'Condiciones de Pago', icon: <IconFileText size={18} />, desc: 'Configura plazos y condiciones' },
     ];
 
     return (
@@ -170,6 +173,8 @@ const ConfiguracionPage: React.FC = () => {
                         {activeTab === 'seguridad' && <SeccionSeguridad />}
 
                         {activeTab === 'metodos-pago' && <SeccionMetodosPago />}
+
+                        {activeTab === 'condiciones-pago' && <CondicionesPagoPage />}
                     </div>
                 </main>
             </div>

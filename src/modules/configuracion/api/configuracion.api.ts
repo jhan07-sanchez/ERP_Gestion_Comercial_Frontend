@@ -9,9 +9,22 @@ import type {
     ConfiguracionResumen,
     ConfiguracionUpdateInput,
     ResetConsecutivoInput,
+    CondicionPago,
+    CondicionPagoInput,
 } from "../types/configuracion.types";
 
 const API_BASE = "/configuracion";
+
+type PaginationResponse<T> = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+};
+
+type CondicionPagoCreateInput = Pick<CondicionPagoInput, 'nombre' | 'dias_plazo' | 'activo'>;
+
+type CondicionPagoUpdateInput = Partial<CondicionPagoCreateInput>;
 
 export const configuracionAPI = {
     /**
@@ -70,5 +83,29 @@ export const configuracionAPI = {
     resetConsecutivo: async (data: ResetConsecutivoInput): Promise<{ mensaje: string; configuracion: Configuracion }> => {
         const response = await axiosInstance.post(`${API_BASE}/reset-consecutivo/`, data);
         return response.data;
+    },
+
+    // === CONDICIONES DE PAGO (CRUD) ===
+    getCondicionesPago: async (): Promise<CondicionPago[]> => {
+        const response = await axiosInstance.get<CondicionPago[] | PaginationResponse<CondicionPago>>(`${API_BASE}/condiciones-pago/`);
+        const data = response.data;
+        if (Array.isArray(data)) {
+            return data;
+        }
+        return data.results || [];
+    },
+
+    createCondicionPago: async (data: CondicionPagoCreateInput): Promise<CondicionPago> => {
+        const response = await axiosInstance.post(`${API_BASE}/condiciones-pago/`, data);
+        return response.data;
+    },
+
+    updateCondicionPago: async (id: number, data: CondicionPagoUpdateInput): Promise<CondicionPago> => {
+        const response = await axiosInstance.patch(`${API_BASE}/condiciones-pago/${id}/`, data);
+        return response.data;
+    },
+
+    deleteCondicionPago: async (id: number): Promise<void> => {
+        await axiosInstance.delete(`${API_BASE}/condiciones-pago/${id}/`);
     },
 };

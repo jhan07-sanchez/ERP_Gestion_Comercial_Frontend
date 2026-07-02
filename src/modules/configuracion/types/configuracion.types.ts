@@ -156,3 +156,10 @@ export interface CondicionPago {
     activo: boolean;
     es_contado: boolean;
 }
+
+export interface CondicionPagoInput {
+    nombre: string;
+    dias_plazo: number;
+    activo?: boolean;
+    es_contado?: boolean;
+}

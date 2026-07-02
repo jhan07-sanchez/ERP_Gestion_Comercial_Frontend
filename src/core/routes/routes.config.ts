@@ -71,7 +71,8 @@ export type ProtectedRouteKey =
   | "PagosList"
   | "NotasList"
   | "ResolucionesList"
-  | "ImpuestosList";
+  | "ImpuestosList"
+  | "CondicionesPagoPage";
 
 
 
@@ -920,6 +921,14 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
     placeholderProps: {
       title: "Reporte de Rentabilidad",
       description: "Estado de resultados y utilidades",
+    },
+  },
+  {
+    path: "facturacion/configuracion/condiciones_pago",
+    componentKey: "CondicionesPagoPage",
+    placeholderProps: {
+      title: "Listado Condiciones de Pago",
+      description: "Administración de condiciones de pago",
     },
   },
 ];

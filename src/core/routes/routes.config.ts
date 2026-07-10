@@ -72,7 +72,13 @@ export type ProtectedRouteKey =
   | "NotasList"
   | "ResolucionesList"
   | "ImpuestosList"
-  | "CondicionesPagoPage";
+  | "CondicionesPagoPage"
+  | "NotasCreditoList"
+  | "NotaCreditoCreate"
+  | "NotaCreditoDetalle"
+  | "NotasDebitoList"
+  | "NotaDebitoCreate"
+  | "NotaDebitoDetalle";
 
 
 
@@ -588,80 +594,122 @@ export const protectedRoutesConfig: RouteConfigItem[] = [
   },
   {
     path: "facturacion/notas_credito/historial",
-    componentKey: "NotasList",
+    componentKey: "NotasCreditoList",
     placeholderProps: {
-      tipo: "CREDITO",
       title: "Historial de Notas de Crédito",
       subtitle: "Todas las notas de crédito registradas",
     },
   },
   {
-    path: "facturacion/notas_credito/pendientes",
-    componentKey: "NotasList",
+    path: "facturacion/notas_credito/lista",
+    componentKey: "NotasCreditoList",
     placeholderProps: {
-      tipo: "CREDITO",
+      title: "Notas de Crédito",
+      subtitle: "Gestiona las devoluciones y saldos a favor",
+    },
+  },
+  {
+    path: "facturacion/notas_credito/nueva",
+    componentKey: "NotaCreditoCreate",
+    placeholderProps: {
+      title: "Nueva Nota de Crédito",
+      subtitle: "Registrar un borrador de devolución o descuento",
+    },
+  },
+  {
+    path: "facturacion/notas_credito/nueva_nota",
+    componentKey: "NotaCreditoCreate",
+    placeholderProps: {
+      title: "Nueva Nota de Crédito",
+      subtitle: "Registrar un borrador de devolución o descuento",
+    },
+  },
+  {
+    path: "facturacion/notas_credito/:id/detalle",
+    componentKey: "NotaCreditoDetalle",
+    placeholderProps: {
+      title: "Detalle de Nota de Crédito",
+      subtitle: "Información completa de la nota",
+    },
+  },
+  {
+    path: "facturacion/notas_credito/pendientes",
+    componentKey: "NotasCreditoList",
+    placeholderProps: {
       title: "Notas de Crédito Pendientes",
       subtitle: "Notas en estado borrador",
-      defaultEstado: "BORRADOR",
     },
   },
   {
     path: "facturacion/notas_credito/aplicadas",
-    componentKey: "NotasList",
+    componentKey: "NotasCreditoList",
     placeholderProps: {
-      tipo: "CREDITO",
       title: "Notas de Crédito Aplicadas",
       subtitle: "Notas aplicadas a facturas",
-      defaultEstado: "EMITIDA",
     },
   },
   {
     path: "facturacion/notas_credito/anuladas",
-    componentKey: "NotasList",
+    componentKey: "NotasCreditoList",
     placeholderProps: {
-      tipo: "CREDITO",
       title: "Notas de Crédito Anuladas",
       subtitle: "Notas anuladas",
-      defaultEstado: "ANULADA",
     },
   },
   {
     path: "facturacion/notas_debito/historial",
-    componentKey: "NotasList",
+    componentKey: "NotasDebitoList",
     placeholderProps: {
-      tipo: "DEBITO",
       title: "Historial de Notas de Débito",
       subtitle: "Todas las notas de débito registradas",
     },
   },
   {
-    path: "facturacion/notas_debito/pendientes",
-    componentKey: "NotasList",
+    path: "facturacion/notas_debito/lista",
+    componentKey: "NotasDebitoList",
     placeholderProps: {
-      tipo: "DEBITO",
+      title: "Notas de Débito",
+      subtitle: "Gestiona los cargos adicionales e intereses",
+    },
+  },
+  {
+    path: "facturacion/notas_debito/nueva_nota",
+    componentKey: "NotaDebitoCreate",
+    placeholderProps: {
+      title: "Nueva Nota de Débito",
+      subtitle: "Registrar un cargo adicional o interés",
+    },
+  },
+  {
+    path: "facturacion/notas_debito/:id/detalle",
+    componentKey: "NotaDebitoDetalle",
+    placeholderProps: {
+      title: "Detalle de Nota de Débito",
+      subtitle: "Información completa de la nota",
+    },
+  },
+  {
+    path: "facturacion/notas_debito/pendientes",
+    componentKey: "NotasDebitoList",
+    placeholderProps: {
       title: "Notas de Débito Pendientes",
       subtitle: "Notas en estado borrador",
-      defaultEstado: "BORRADOR",
     },
   },
   {
     path: "facturacion/notas_debito/aplicadas",
-    componentKey: "NotasList",
+    componentKey: "NotasDebitoList",
     placeholderProps: {
-      tipo: "DEBITO",
       title: "Notas de Débito Aplicadas",
       subtitle: "Notas aplicadas a facturas",
-      defaultEstado: "EMITIDA",
     },
   },
   {
     path: "facturacion/notas_debito/anuladas",
-    componentKey: "NotasList",
+    componentKey: "NotasDebitoList",
     placeholderProps: {
-      tipo: "DEBITO",
       title: "Notas de Débito Anuladas",
       subtitle: "Notas anuladas",
-      defaultEstado: "ANULADA",
     },
   },
   {

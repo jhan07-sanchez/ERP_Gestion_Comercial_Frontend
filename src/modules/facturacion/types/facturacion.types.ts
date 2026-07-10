@@ -1,6 +1,8 @@
 /**
  * Tipos de Dominio y DTOs para el módulo de Facturación
  */
+import type { NotaCredito } from './notaCredito.types';
+import type { NotaDebito } from './notaDebito.types';
 
 // ===============================
 // ENUMS Y TIPOS BASE
@@ -128,6 +130,8 @@ export interface FacturaDetail {
   detalles: FacturaDetalleBackend[];
   desglose_impuestos: FacturaImpuesto[];
   pagos: PagoFactura[];
+  notas_credito?: NotaCredito[];
+  notas_debito?: NotaDebito[];
 }
 
 // ===============================

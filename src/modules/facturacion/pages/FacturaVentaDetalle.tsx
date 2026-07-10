@@ -183,6 +183,110 @@ export default function FacturaVentaDetalle() {
               </Table>
             </Card.Content>
           </Card>
+
+          {factura.notas_credito && factura.notas_credito.length > 0 && (
+            <Card>
+              <Card.Header>
+                <Card.Title>Notas de Crédito Relacionadas</Card.Title>
+              </Card.Header>
+              <Card.Content className="p-0">
+                <Table>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.Head>Número</Table.Head>
+                      <Table.Head>Fecha Emisión</Table.Head>
+                      <Table.Head>Motivo</Table.Head>
+                      <Table.Head className="text-right">Total</Table.Head>
+                      <Table.Head className="text-center">Estado</Table.Head>
+                      <Table.Head className="text-center w-[80px]">Acciones</Table.Head>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    {factura.notas_credito.map((nc) => (
+                      <Table.Row key={nc.id}>
+                        <Table.Cell className="font-mono text-xs font-semibold text-primary-600">
+                          {nc.numero || `#Borrador-${nc.id}`}
+                        </Table.Cell>
+                        <Table.Cell className="text-sm text-primary-600">
+                          {formatDate(nc.fecha_emision)}
+                        </Table.Cell>
+                        <Table.Cell className="text-sm text-gray-500">
+                          {nc.motivo}
+                        </Table.Cell>
+                        <Table.Cell className="text-right font-black text-primary-900">
+                          {formatCurrency(nc.total)}
+                        </Table.Cell>
+                        <Table.Cell className="text-center">
+                          <FacturaStatusBadge estado={nc.estado} />
+                        </Table.Cell>
+                        <Table.Cell className="text-center">
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={() => navigate(`/facturacion/notas_credito/${nc.id}/detalle`)}
+                          >
+                            Ver
+                          </Button>
+                        </Table.Cell>
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table>
+              </Card.Content>
+            </Card>
+          )}
+
+          {factura.notas_debito && factura.notas_debito.length > 0 && (
+            <Card>
+              <Card.Header>
+                <Card.Title>Notas de Débito Relacionadas</Card.Title>
+              </Card.Header>
+              <Card.Content className="p-0">
+                <Table>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.Head>Número</Table.Head>
+                      <Table.Head>Fecha Emisión</Table.Head>
+                      <Table.Head>Motivo</Table.Head>
+                      <Table.Head className="text-right">Total</Table.Head>
+                      <Table.Head className="text-center">Estado</Table.Head>
+                      <Table.Head className="text-center w-[80px]">Acciones</Table.Head>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    {factura.notas_debito.map((nd) => (
+                      <Table.Row key={nd.id}>
+                        <Table.Cell className="font-mono text-xs font-semibold text-primary-600">
+                          {nd.numero || `#Borrador-${nd.id}`}
+                        </Table.Cell>
+                        <Table.Cell className="text-sm text-primary-600">
+                          {formatDate(nd.fecha_emision)}
+                        </Table.Cell>
+                        <Table.Cell className="text-sm text-gray-500">
+                          {nd.motivo}
+                        </Table.Cell>
+                        <Table.Cell className="text-right font-black text-primary-900">
+                          {formatCurrency(nd.total)}
+                        </Table.Cell>
+                        <Table.Cell className="text-center">
+                          <FacturaStatusBadge estado={nd.estado} />
+                        </Table.Cell>
+                        <Table.Cell className="text-center">
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={() => navigate(`/facturacion/notas_debito/${nd.id}/detalle`)}
+                          >
+                            Ver
+                          </Button>
+                        </Table.Cell>
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table>
+              </Card.Content>
+            </Card>
+          )}
         </div>
 
         <div className="space-y-6">

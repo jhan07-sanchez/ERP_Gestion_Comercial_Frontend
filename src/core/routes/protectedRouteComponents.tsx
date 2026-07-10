@@ -56,7 +56,13 @@ import {
   PagosList,
   NotasList,
   ResolucionesList,
-  ImpuestosList
+  ImpuestosList,
+  NotasCreditoList,
+  NotaCreditoCreate,
+  NotaCreditoDetalle,
+  NotasDebitoList,
+  NotaDebitoCreate,
+  NotaDebitoDetalle
 } from '@/modules/facturacion/pages';
 
 import { AuditPage as AuditoriaLogs } from '@/modules/auditoria';
@@ -139,4 +145,11 @@ export const protectedRouteComponents: Record<
   FacturasCompraList,
 
   CondicionesPagoPage,
+
+  NotasCreditoList,
+  NotaCreditoCreate,
+  NotaCreditoDetalle,
+  NotasDebitoList,
+  NotaDebitoCreate,
+  NotaDebitoDetalle,
 };

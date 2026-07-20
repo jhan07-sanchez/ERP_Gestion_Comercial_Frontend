@@ -2,7 +2,7 @@
  * Router principal. Usa routes.config como fuente de verdad.
  */
 
-import { createElement } from 'react';
+import { createElement, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import Login from '@/modules/auth/pages/Login';
@@ -10,6 +10,7 @@ import PlanesPage from '@/modules/auth/pages/PlanesPage';
 import ProtectedRoute from '@/modules/auth/components/ProtectedRoute';
 import DashboardLayout from '@/shared/layouts/DashboardLayout';
 import NotFoundPage from '@/core/routes/NotFoundPage';
+import { Loader } from '@/shared/components/ui';
 import {
   protectedRoutesConfig,
   defaultAuthenticatedPath,
@@ -36,7 +37,11 @@ export default function AppRouter() {
           >
             {protectedRoutesConfig.map(({ path, componentKey, placeholderProps }) => {
               const Component = protectedRouteComponents[componentKey];
-              const element = createElement(Component, placeholderProps ?? {});
+              const element = (
+                <Suspense fallback={<div className="flex justify-center items-center h-full min-h-[50vh]"><Loader /></div>}>
+                  {createElement(Component, placeholderProps ?? {})}
+                </Suspense>
+              );
               return <Route key={path} path={path} element={element} />;
             })}
           </Route>

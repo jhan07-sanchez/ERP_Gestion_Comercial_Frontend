@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, Button, Input, PageContainer, PageHeader, Table } from "@/shared/components/ui";
+import { Card, Button, Input, PageContainer, PageHeader, Table, Pagination } from "@/shared/components/ui";
 import { useFacturasVenta } from "../hooks/useFacturasVenta";
 import { useFacturaActions } from "../hooks/useFacturaActions";
 import { formatCurrency, formatDate } from "@/shared/utils/formatters";
@@ -23,7 +23,7 @@ export default function FacturasVentaList({
   defaultEstado = "",
 }: FacturasVentaListProps) {
   const navigate = useNavigate();
-  const { facturas, isLoading, error, fetchFacturas, applyFilters } = useFacturasVenta();
+  const { facturas, isLoading, error, fetchFacturas, applyFilters, currentPage, totalCount, changePage } = useFacturasVenta();
   const { anularFactura, loadingAnular } = useFacturaActions();
   const { isCajaAbierta } = useCajaStore();
   const { showAlert, prompt } = useAlert();
@@ -239,6 +239,14 @@ export default function FacturasVentaList({
                   ))}
                 </Table.Body>
               </Table>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(totalCount / 10)}
+                pageSize={10}
+                totalCount={totalCount}
+                onPageChange={(page) => changePage(page)}
+                onPageSizeChange={() => {}}
+              />
             </div>
           )}
         </Card.Content>

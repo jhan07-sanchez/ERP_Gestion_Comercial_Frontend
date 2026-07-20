@@ -12,4 +12,16 @@ export default defineConfig({
       "@modules": path.resolve(__dirname, "src/modules"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-query': ['@tanstack/react-query'],
+          'vendor-ui': ['@headlessui/react', 'framer-motion', '@tabler/icons-react', 'recharts'],
+          'vendor-form': ['react-hook-form', '@hookform/resolvers', 'yup', 'zod'],
+        },
+      },
+    },
+  },
 })

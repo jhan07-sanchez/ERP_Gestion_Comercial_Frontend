@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   formatCurrency,
   formatNumberInput,
@@ -15,7 +16,7 @@ interface FacturaDetalleTableProps {
   removeDetalle: (index: number) => void;
 }
 
-export function FacturaDetalleTable({
+export const FacturaDetalleTable = React.memo(function FacturaDetalleTable({
   detalles,
   simbolo,
   updateDetalle,
@@ -35,7 +36,6 @@ export function FacturaDetalleTable({
       </div>
     );
   }
-
 
   return (
     <div className="space-y-3">
@@ -161,4 +161,4 @@ export function FacturaDetalleTable({
       </div>
     </div>
   );
-}
+});

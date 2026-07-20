@@ -1,155 +1,87 @@
 /**
  * Registro de componentes para rutas protegidas.
  * Único archivo que mapea componentKey -> Component para cumplir react-refresh.
+ * Ahora utiliza React.lazy para Code Splitting (Fases 3 y 4).
  */
 
-import type { ComponentType } from 'react';
-import AnalyticsDashboard from '@/modules/reportes/pages/AnalyticsDashboard';
-import ReportsPage from '@/modules/reportes/pages/ReportsPage';
-import FinancialReportsPage from '@/modules/reportes/pages/FinancialReportsPage';
-import OperationalReportsPage from '@/modules/reportes/pages/OperationalReportsPage';
-import ClientesList from '@/modules/clientes/pages/ClientesList';
-import ClienteCreate from '@/modules/clientes/pages/ClienteCreate';
-import ClienteEdit from '@/modules/clientes/pages/ClienteEdit';
-
-import ProductosList from '@/modules/productos/pages/ProductosList';
-import ProductoCreate from '@/modules/productos/pages/ProductoCreate';
-import ProductoEdit from '@/modules/productos/pages/ProductoEdit';
-import CategoriasList from '@/modules/categorias/pages/CategoriasList'; // ← NUEVO
-import CategoriasCreate from '@/modules/categorias/pages/CategoriasCreate'; // ← NUEVO
-
-import ComprasList from '@/modules/compras/pages/ComprasList';
-import CompraCreate from '@/modules/compras/pages/CompraCreate';
-import CompraEdit from "@/modules/compras/pages/CompraEdit";
-import CompraDetalles from "@/modules/compras/pages/CompraDetalles";
-
-import ProveedorList from '@/modules/proveedores/pages/ProveedorList';
-import ProveedorCreate from '@/modules/proveedores/pages/ProveedorCreate';
-import ProveedorEdit from "@/modules/proveedores/pages/ProveedorEdit";
-import ProveedorDetailPage from "@/modules/proveedores/pages/ProveedorDetailPage";
-
-import { Dashboard, DashboardKPIsPage } from '@/modules/dashboard'; //  Importar del módulo dashboard
-
+import { lazy, type ComponentType } from 'react';
 import type { ProtectedRouteKey } from '@/core/routes/routes.config';
 
-import VentasList from '@/modules/ventas/pages/VentasList';    // ← NUEVO
-import VentaCreate from '@/modules/ventas/pages/VentaCreate';   // ← NUEVO
-import VentaEdit from '@/modules/ventas/pages/VentaEdit';     // ← NUEVO
-import VentaDetalle from '@/modules/ventas/pages/VentaDetalle';  // ← NUEVO
-
-import { CajaCreate } from '@/modules/caja/pages';
-import { CajaList } from '@/modules/caja/pages';
-import { CajaAbrir } from '@/modules/caja/pages';
-import { CajaDetail } from '@/modules/caja/pages';
-import { CajaCierre } from '@/modules/caja/pages';
-import { CajaMovimientos } from '@/modules/caja/pages';
-import { CajaArqueo } from '@/modules/caja/pages';
-import { CajaDashboard } from '@/modules/caja/pages';
-
-import {
-  DashboardFacturacion,
-  FacturasVentaList,
-  FacturaVentaCreate,
-  FacturaVentaEdit,
-  FacturaVentaDetalle,
-  FacturasCompraList,
-  PagosList,
-  NotasList,
-  ResolucionesList,
-  ImpuestosList,
-  NotasCreditoList,
-  NotaCreditoCreate,
-  NotaCreditoDetalle,
-  NotasDebitoList,
-  NotaDebitoCreate,
-  NotaDebitoDetalle
-} from '@/modules/facturacion/pages';
-
-import { AuditPage as AuditoriaLogs } from '@/modules/auditoria';
-import { ConfiguracionPage } from '@/modules/configuracion';
-import DocumentosList from '@/modules/documentos/pages/DocumentosList';
-
-import PrecioListPage from '@/modules/precios/pages/PreciosListPage';
-import PrecioCreate from '@/modules/precios/pages/PrecioCreate';
-import PrecioEdit from '@/modules/precios/pages/PrecioEdit';
-import PrecioDetalle from '@/modules/precios/pages/PrecioDetalle';
-import { CondicionesPagoPage } from '@/modules/configuracion';
-
-
-type RouteComponentProps = Record<string, string | undefined>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type RouteComponentProps = Record<string, any>;
 
 export const protectedRouteComponents: Record<
   ProtectedRouteKey,
   ComponentType<RouteComponentProps>
 > = {
-  Dashboard,
-  DashboardKPIs: DashboardKPIsPage,
-  DashboardAnalytics: AnalyticsDashboard,
-  DashboardFacturacion,
+  Dashboard: lazy(() => import('@/modules/dashboard/pages/Dashboard')),
+  DashboardKPIs: lazy(() => import('@/modules/dashboard/pages/DashboardKPIsPage')),
+  DashboardAnalytics: lazy(() => import('@/modules/reportes/pages/AnalyticsDashboard')),
+  DashboardFacturacion: lazy(() => import('@/modules/facturacion/pages/DashboardFacturacion')),
 
-  VentasList,
-  VentaCreate, // ← NUEVO
-  VentaEdit, // ← NUEVO
-  VentaDetalle, // ← NUEVO
+  VentasList: lazy(() => import('@/modules/ventas/pages/VentasList')),
+  VentaCreate: lazy(() => import('@/modules/ventas/pages/VentaCreate')),
+  VentaEdit: lazy(() => import('@/modules/ventas/pages/VentaEdit')),
+  VentaDetalle: lazy(() => import('@/modules/ventas/pages/VentaDetalle')),
 
-  Reportes: ReportsPage,
-  ReportesFinancieros: FinancialReportsPage,
-  ReportesOperativos: OperationalReportsPage,
+  Reportes: lazy(() => import('@/modules/reportes/pages/ReportsPage')),
+  ReportesFinancieros: lazy(() => import('@/modules/reportes/pages/FinancialReportsPage')),
+  ReportesOperativos: lazy(() => import('@/modules/reportes/pages/OperationalReportsPage')),
 
-  AuditoriaLogs,
-  DocumentosList,
-  Configuracion: ConfiguracionPage,
+  AuditoriaLogs: lazy(() => import('@/modules/auditoria/pages/AuditPage')),
+  DocumentosList: lazy(() => import('@/modules/documentos/pages/DocumentosList')),
+  Configuracion: lazy(() => import('@/modules/configuracion/pages/ConfiguracionPage')),
 
-  ProductosList,
-  ProductoCreate,
-  ProductoEdit,
-  CategoriasList, // ← NUEVO
-  CategoriasCreate, // ← NUEVO
+  ProductosList: lazy(() => import('@/modules/productos/pages/ProductosList')),
+  ProductoCreate: lazy(() => import('@/modules/productos/pages/ProductoCreate')),
+  ProductoEdit: lazy(() => import('@/modules/productos/pages/ProductoEdit')),
+  CategoriasList: lazy(() => import('@/modules/categorias/pages/CategoriasList')),
+  CategoriasCreate: lazy(() => import('@/modules/categorias/pages/CategoriasCreate')),
 
-  ClientesList,
-  ClienteCreate,
-  ClienteEdit,
+  ClientesList: lazy(() => import('@/modules/clientes/pages/ClientesList')),
+  ClienteCreate: lazy(() => import('@/modules/clientes/pages/ClienteCreate')),
+  ClienteEdit: lazy(() => import('@/modules/clientes/pages/ClienteEdit')),
 
-  ProveedorList,
-  ProveedorEdit,
-  ProveedorCreate,
-  ProveedorDetailPage,
+  ProveedorList: lazy(() => import('@/modules/proveedores/pages/ProveedorList')),
+  ProveedorEdit: lazy(() => import('@/modules/proveedores/pages/ProveedorEdit')),
+  ProveedorCreate: lazy(() => import('@/modules/proveedores/pages/ProveedorCreate')),
+  ProveedorDetailPage: lazy(() => import('@/modules/proveedores/pages/ProveedorDetailPage')),
 
-  ComprasList,
-  CompraCreate,
-  CompraEdit,
-  CompraDetalles,
+  ComprasList: lazy(() => import('@/modules/compras/pages/ComprasList')),
+  CompraCreate: lazy(() => import('@/modules/compras/pages/CompraCreate')),
+  CompraEdit: lazy(() => import('@/modules/compras/pages/CompraEdit')),
+  CompraDetalles: lazy(() => import('@/modules/compras/pages/CompraDetalles')),
 
-  CajaCreate,
-  CajaList,
-  CajaAbrir,
-  CajaDetail,
-  CajaCierre,
-  CajaMovimientos,
-  CajaArqueo,
-  CajaDashboard,
+  CajaCreate: lazy(() => import('@/modules/caja/pages/CajaCreate')),
+  CajaList: lazy(() => import('@/modules/caja/pages/CajaList')),
+  CajaAbrir: lazy(() => import('@/modules/caja/pages/CajaAbrir')),
+  CajaDetail: lazy(() => import('@/modules/caja/pages/CajaDetail')),
+  CajaCierre: lazy(() => import('@/modules/caja/pages/CajaCierre')),
+  CajaMovimientos: lazy(() => import('@/modules/caja/pages/CajaMovimientos')),
+  CajaArqueo: lazy(() => import('@/modules/caja/pages/CajaArqueo')),
+  CajaDashboard: lazy(() => import('@/modules/caja/pages/CajaDashboard')),
 
-  PrecioListPage,
-  PrecioCreate,
-  PrecioEdit,
-  PrecioDetalle,
+  PrecioListPage: lazy(() => import('@/modules/precios/pages/PreciosListPage')),
+  PrecioCreate: lazy(() => import('@/modules/precios/pages/PrecioCreate')),
+  PrecioEdit: lazy(() => import('@/modules/precios/pages/PrecioEdit')),
+  PrecioDetalle: lazy(() => import('@/modules/precios/pages/PrecioDetalle')),
 
-  FacturasVentaList,
-  FacturaVentaCreate,
-  FacturaVentaEdit,
-  FacturaVentaDetalle,
-  PagosList,
-  NotasList,
-  ResolucionesList: ResolucionesList as unknown as ComponentType<RouteComponentProps>,
-  ImpuestosList: ImpuestosList as unknown as ComponentType<RouteComponentProps>,
-  FacturasCompraList,
+  FacturasVentaList: lazy(() => import('@/modules/facturacion/pages/FacturasVentaList')),
+  FacturaVentaCreate: lazy(() => import('@/modules/facturacion/pages/FacturaVentaCreate')),
+  FacturaVentaEdit: lazy(() => import('@/modules/facturacion/pages/FacturaVentaEdit')),
+  FacturaVentaDetalle: lazy(() => import('@/modules/facturacion/pages/FacturaVentaDetalle')),
+  PagosList: lazy(() => import('@/modules/facturacion/pages/PagosList')),
+  NotasList: lazy(() => import('@/modules/facturacion/pages/NotasList')),
+  ResolucionesList: lazy(() => import('@/modules/facturacion/pages/ResolucionesList')) as unknown as ComponentType<RouteComponentProps>,
+  ImpuestosList: lazy(() => import('@/modules/facturacion/pages/ImpuestosList')) as unknown as ComponentType<RouteComponentProps>,
+  FacturasCompraList: lazy(() => import('@/modules/facturacion/pages/FacturasCompraList')),
 
-  CondicionesPagoPage,
+  CondicionesPagoPage: lazy(() => import('@/modules/configuracion/pages/CondicionesPagoPage')),
 
-  NotasCreditoList,
-  NotaCreditoCreate,
-  NotaCreditoDetalle,
-  NotasDebitoList,
-  NotaDebitoCreate,
-  NotaDebitoDetalle,
+  NotasCreditoList: lazy(() => import('@/modules/facturacion/pages/NotasCreditoList')),
+  NotaCreditoCreate: lazy(() => import('@/modules/facturacion/pages/NotaCreditoCreate')),
+  NotaCreditoDetalle: lazy(() => import('@/modules/facturacion/pages/NotaCreditoDetalle')),
+  NotasDebitoList: lazy(() => import('@/modules/facturacion/pages/NotasDebitoList')),
+  NotaDebitoCreate: lazy(() => import('@/modules/facturacion/pages/NotaDebitoCreate')),
+  NotaDebitoDetalle: lazy(() => import('@/modules/facturacion/pages/NotaDebitoDetalle')),
 };
